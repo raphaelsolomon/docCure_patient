@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doccure_patient/callscreens/pickup/pickup_screen.dart';
 import 'package:doccure_patient/model/call.dart';
 import 'package:doccure_patient/resources/call_methods.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +23,18 @@ class PickupLayout extends StatelessWidget {
     return (userProvider != null && userProvider.getUser != null)
         ? StreamBuilder<DocumentSnapshot>(
             stream: callMethods.callStream(uid: userProvider.getUser.uid!),
-            builder: (context, AsyncSnapshot<DocumentSnapshot>snapshot) {
+            builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
               if (snapshot.hasData) {
-                Call call = Call.fromMap(snapshot.data.);
+                Call call = Call(
+                  callerId: snapshot.data!.get('callerID'),
+                  callerName: snapshot.data!.get('callerName'),
+                  callerPic: snapshot.data!.get('callerPic'),
+                  channelId: snapshot.data!.get('channelId'),
+                  receiverId: snapshot.data!.get('receiverId'),
+                  receiverName: snapshot.data!.get('receiverName'),
+                  receiverPic: snapshot.data!.get('receiverPic'),
+                  hasDialled: snapshot.data!.get('hasDialled'),
+                );
 
                 if (!call.hasDialled!) {
                   return PickupScreen(call: call);
