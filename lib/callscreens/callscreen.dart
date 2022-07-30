@@ -1,4 +1,8 @@
+// ignore_for_file: unnecessary_string_escapes
+
 import 'dart:async';
+import 'package:agora_rtc_engine/rtc_local_view.dart' as rtclocalview;
+import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtcremoteview;
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doccure_patient/constanst/strings.dart';
@@ -18,10 +22,10 @@ class CallScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CallScreenState createState() => _CallScreenState();
+  CallScreenState createState() => CallScreenState();
 }
 
-class _CallScreenState extends State<CallScreen> {
+class CallScreenState extends State<CallScreen> {
   final CallMethods callMethods = CallMethods();
 
   UserProvider? userProvider;
@@ -65,9 +69,8 @@ class _CallScreenState extends State<CallScreen> {
           .callStream(uid: userProvider!.getUser.uid!)
           .listen((DocumentSnapshot ds) {
         // defining the logic
-        switch (ds.data) {
-          case null:
-            // snapshot is null which means that call is hanged and documents are deleted
+        switch (ds.data()) {
+          case Object == null:
             Navigator.pop(context);
             break;
 
@@ -139,10 +142,11 @@ class _CallScreenState extends State<CallScreen> {
 
   /// Helper function to get list of native views
   List<Widget> _getRenderViews() {
-    final List<AgoraRenderWidget> list = [
-      AgoraRenderWidget(0, local: true, preview: true),
-    ];
-    _users.forEach((int uid) => list.add(AgoraRenderWidget(uid)));
+    final List<StatefulWidget> list = [];
+    list.add(const rtclocalview.SurfaceView());
+    for (var uid in _users) {
+      list.add(rtcremoteview.SurfaceView(uid: uid, channelId: widget.call.channelId!,));
+    }
     return list;
   }
 
@@ -166,34 +170,30 @@ class _CallScreenState extends State<CallScreen> {
     final views = _getRenderViews();
     switch (views.length) {
       case 1:
-        return Container(
-            child: Column(
+        return Column(
           children: <Widget>[_videoView(views[0])],
-        ));
+        );
       case 2:
-        return Container(
-            child: Column(
+        return Column(
           children: <Widget>[
-            _expandedVideoRow([views[0]]),
-            _expandedVideoRow([views[1]])
+        _expandedVideoRow([views[0]]),
+        _expandedVideoRow([views[1]])
           ],
-        ));
+        );
       case 3:
-        return Container(
-            child: Column(
+        return Column(
           children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 3))
+        _expandedVideoRow(views.sublist(0, 2)),
+        _expandedVideoRow(views.sublist(2, 3))
           ],
-        ));
+        );
       case 4:
-        return Container(
-            child: Column(
+        return Column(
           children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 4))
+        _expandedVideoRow(views.sublist(0, 2)),
+        _expandedVideoRow(views.sublist(2, 4))
           ],
-        ));
+        );
       default:
     }
     return Container();
@@ -213,7 +213,7 @@ class _CallScreenState extends State<CallScreen> {
             itemCount: _infoStrings.length,
             itemBuilder: (BuildContext context, int index) {
               if (_infoStrings.isEmpty) {
-                return null;
+                return const SizedBox();
               }
               return Padding(
                 padding: const EdgeInsets.symmetric(
@@ -235,7 +235,7 @@ class _CallScreenState extends State<CallScreen> {
                         ),
                         child: Text(
                           _infoStrings[index],
-                          style: TextStyle(color: Colors.blueGrey),
+                          style: const TextStyle(color: Colors.blueGrey),
                         ),
                       ),
                     )
@@ -270,41 +270,41 @@ class _CallScreenState extends State<CallScreen> {
         children: <Widget>[
           RawMaterialButton(
             onPressed: _onToggleMute,
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: muted ? Colors.blueAccent : Colors.white,
+            padding: const EdgeInsets.all(12.0),
             child: Icon(
               muted ? Icons.mic : Icons.mic_off,
               color: muted ? Colors.white : Colors.blueAccent,
               size: 20.0,
             ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: muted ? Colors.blueAccent : Colors.white,
-            padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
             onPressed: () => callMethods.endCall(
               call: widget.call,
             ),
-            child: Icon(
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.redAccent,
+            padding: const EdgeInsets.all(15.0),
+            child: const Icon(
               Icons.call_end,
               color: Colors.white,
               size: 35.0,
             ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.redAccent,
-            padding: const EdgeInsets.all(15.0),
           ),
           RawMaterialButton(
             onPressed: _onSwitchCamera,
-            child: Icon(
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.white,
+            padding: const EdgeInsets.all(12.0),
+            child: const Icon(
               Icons.switch_camera,
               color: Colors.blueAccent,
               size: 20.0,
             ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(12.0),
           )
         ],
       ),

@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doccure_patient/callscreens/pickup/pickup_screen.dart';
 import 'package:doccure_patient/model/call.dart';

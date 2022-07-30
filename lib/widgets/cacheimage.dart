@@ -7,14 +7,13 @@ class CachedImage extends StatelessWidget {
   final double radius;
   final double height;
   final double width;
-
   final BoxFit fit;
 
-  final String noImageAvailable =
-      "https://www.esm.rochester.edu/uploads/NoPhotoAvailable.jpg";
+  final String noImageAvailable = "https://www.esm.rochester.edu/uploads/NoPhotoAvailable.jpg";
 
   const CachedImage(
-    this.imageUrl, {Key? key, 
+    this.imageUrl, 
+    {Key? key, 
     this.isRound = false,
     this.radius = 0,
     this.height = 100,
@@ -40,7 +39,7 @@ class CachedImage extends StatelessWidget {
             )),
       );
     } catch (e) {
-      print(e);
+      debugPrint('$e');
       return Image.network(noImageAvailable, fit: BoxFit.cover);
     }
   }
