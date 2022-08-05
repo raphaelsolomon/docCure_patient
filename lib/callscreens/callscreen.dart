@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_string_escapes
+// ignore_for_file: unnecessary_string_escapes, deprecated_member_use
 
 import 'dart:async';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtclocalview;

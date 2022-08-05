@@ -10,6 +10,21 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  ErrorWidget.builder = ((details) =>  Material(
+    child: Container(
+      color: Colors.green,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(details.exceptionAsString(), style: const TextStyle(
+            fontSize: 30.0,
+            fontWeight: FontWeight.w400,
+            color: Colors.white
+          ),)
+        ],
+      ),
+    ),
+  ));
   runApp(const MyApp());
 }
 
@@ -63,6 +78,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void _incrementCounter() {
     setState(() {
