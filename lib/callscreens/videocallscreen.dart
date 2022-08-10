@@ -1,31 +1,34 @@
 // ignore_for_file: unnecessary_string_escapes, deprecated_member_use
 
 import 'dart:async';
+import 'dart:ui';
+
+import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtclocalview;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtcremoteview;
-import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/model/call.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:doccure_patient/resources/call_methods.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 
-class CallScreen extends StatefulWidget {
+class VideoCallScreen extends StatefulWidget {
   final Call call;
 
-  const CallScreen({
+  const VideoCallScreen({
     Key? key,
     required this.call,
   }) : super(key: key);
 
   @override
-  CallScreenState createState() => CallScreenState();
+  VideoCallScreenState createState() => VideoCallScreenState();
 }
 
-class CallScreenState extends State<CallScreen> {
+class VideoCallScreenState extends State<VideoCallScreen> {
   final CallMethods callMethods = CallMethods();
 
   UserProvider? userProvider;
@@ -35,6 +38,7 @@ class CallScreenState extends State<CallScreen> {
   static final _users = <int>[];
   final _infoStrings = <String>[];
   bool muted = false;
+  int? remoteID;
 
   @override
   void initState() {
@@ -56,8 +60,13 @@ class CallScreenState extends State<CallScreen> {
 
     await _initRtcEngine();
     await _engine.enableWebSdkInteroperability(true);
-    await _engine.setParameters(
-        '''{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":15,\"bitRate\":140}}''');
+    // VideoEncoderConfiguration config = VideoEncoderConfiguration();
+    // config.dimensions = const VideoDimensions(width: 1800, height: 1800);
+    // config.frameRate = VideoFrameRate.Fps15;
+    // config.bitrate = 140;
+    // await _engine.setVideoEncoderConfiguration(config);
+    // await _engine.setParameters(
+    //     '''{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":15,\"bitRate\":140}}''');
     await _engine.joinChannel(null, widget.call.channelId!, null, 0);
   }
 
@@ -70,7 +79,7 @@ class CallScreenState extends State<CallScreen> {
           .listen((DocumentSnapshot ds) {
         // defining the logic
         switch (ds.data()) {
-          case Object == null:
+          case null:
             Navigator.pop(context);
             break;
 
@@ -99,7 +108,11 @@ class CallScreenState extends State<CallScreen> {
       setState(() {
         final info = 'onUserJoined: $uid';
         _infoStrings.add(info);
+        remoteID = uid;
         _users.add(uid);
+        if (kDebugMode) {
+          print(_users);
+        }
       });
     }, userInfoUpdated: (int i, UserInfo userInfo) {
       setState(() {
@@ -145,7 +158,10 @@ class CallScreenState extends State<CallScreen> {
     final List<StatefulWidget> list = [];
     list.add(const rtclocalview.SurfaceView());
     for (var uid in _users) {
-      list.add(rtcremoteview.SurfaceView(uid: uid, channelId: widget.call.channelId!,));
+      list.add(rtcremoteview.SurfaceView(
+        uid: uid,
+        channelId: widget.call.channelId!,
+      ));
     }
     return list;
   }
@@ -170,83 +186,91 @@ class CallScreenState extends State<CallScreen> {
     final views = _getRenderViews();
     switch (views.length) {
       case 1:
-        return Column(
-          children: <Widget>[_videoView(views[0])],
+        return Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              image: DecorationImage(
+                  image: widget.call.hasDialled!
+                      ? NetworkImage(widget.call.receiverPic!)
+                      : const NetworkImage(''),
+                  fit: BoxFit.cover,
+                  filterQuality: FilterQuality.low)),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            child: Center(
+              child: Container(
+                height: 250,
+                width: 250,
+                decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(.1),
+                    borderRadius: BorderRadius.circular(300.0)),
+                child: Center(
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(.2),
+                        borderRadius: BorderRadius.circular(300.0)),
+                    child: Center(
+                      child: Container(
+                        height: 150,
+                        width: 150,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            image: DecorationImage(
+                                image: widget.call.hasDialled!
+                                    ? NetworkImage(widget.call.receiverPic!)
+                                    : const NetworkImage(''),
+                                fit: BoxFit.cover,
+                                filterQuality: FilterQuality.low),
+                            borderRadius: BorderRadius.circular(100.0)),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
         );
       case 2:
-        return Column(
+        return Stack(
           children: <Widget>[
-        _expandedVideoRow([views[0]]),
-        _expandedVideoRow([views[1]])
+            Container(
+              width: 130,
+              height: 180,
+              margin:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(
+                      color: Colors.white,
+                      width: 5.0,
+                      style: BorderStyle.solid)),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: _expandedVideoRow([views[0]]),
+              ),
+            ),
+            _expandedVideoRow([views[1]]),
           ],
         );
       case 3:
         return Column(
           children: <Widget>[
-        _expandedVideoRow(views.sublist(0, 2)),
-        _expandedVideoRow(views.sublist(2, 3))
+            _expandedVideoRow(views.sublist(0, 2)),
+            _expandedVideoRow(views.sublist(2, 3))
           ],
         );
       case 4:
         return Column(
           children: <Widget>[
-        _expandedVideoRow(views.sublist(0, 2)),
-        _expandedVideoRow(views.sublist(2, 4))
+            _expandedVideoRow(views.sublist(0, 2)),
+            _expandedVideoRow(views.sublist(2, 4))
           ],
         );
       default:
     }
     return Container();
-  }
-
-  /// Info panel to show logs
-  Widget _panel() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 48),
-      alignment: Alignment.bottomCenter,
-      child: FractionallySizedBox(
-        heightFactor: 0.5,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 48),
-          child: ListView.builder(
-            reverse: true,
-            itemCount: _infoStrings.length,
-            itemBuilder: (BuildContext context, int index) {
-              if (_infoStrings.isEmpty) {
-                return const SizedBox();
-              }
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 3,
-                  horizontal: 10,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 2,
-                          horizontal: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.yellowAccent,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Text(
-                          _infoStrings[index],
-                          style: const TextStyle(color: Colors.blueGrey),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
   }
 
   void _onToggleMute() {
@@ -287,7 +311,7 @@ class CallScreenState extends State<CallScreen> {
             shape: const CircleBorder(),
             elevation: 2.0,
             fillColor: Colors.redAccent,
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(18.0),
             child: const Icon(
               Icons.call_end,
               color: Colors.white,
@@ -301,7 +325,7 @@ class CallScreenState extends State<CallScreen> {
             fillColor: Colors.white,
             padding: const EdgeInsets.all(12.0),
             child: const Icon(
-              Icons.switch_camera,
+              Icons.switch_access_shortcut,
               color: Colors.blueAccent,
               size: 20.0,
             ),
@@ -326,14 +350,11 @@ class CallScreenState extends State<CallScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Center(
-        child: Stack(
-          children: <Widget>[
-            _viewRows(),
-            // _panel(),
-            _toolbar(),
-          ],
-        ),
+      body: Stack(
+        children: [
+          _viewRows(),
+          _toolbar(),
+        ],
       ),
     );
   }

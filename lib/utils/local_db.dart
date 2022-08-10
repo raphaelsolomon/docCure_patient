@@ -3,6 +3,7 @@ import 'package:doccure_patient/model/log.dart';
 import 'package:doccure_patient/utils/hive_method.dart';
 
 class LogRepository {
+  // ignore: prefer_typing_uninitialized_variables
   static var dbObject;
   static bool isHive = true;
 

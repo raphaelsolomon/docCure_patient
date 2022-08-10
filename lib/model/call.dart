@@ -6,6 +6,7 @@ class Call {
   String? receiverName;
   String? receiverPic;
   String? channelId;
+  bool? type;
   bool? hasDialled;
 
   Call({
@@ -17,6 +18,7 @@ class Call {
     this.receiverPic,
     this.channelId,
     this.hasDialled,
+    this.type,
   });
 
   // to map
@@ -30,10 +32,11 @@ class Call {
     callMap["receiver_pic"] = call.receiverPic;
     callMap["channel_id"] = call.channelId;
     callMap["has_dialled"] = call.hasDialled;
+    callMap["type"] = call.type;
     return callMap;
   }
 
-  Call.fromMap(Map callMap) {
+  Call.fromMap(callMap) {
     callerId = callMap["caller_id"];
     callerName = callMap["caller_name"];
     callerPic = callMap["caller_pic"];
@@ -42,5 +45,6 @@ class Call {
     receiverPic = callMap["receiver_pic"];
     channelId = callMap["channel_id"];
     hasDialled = callMap["has_dialled"];
+    type = callMap["type"];
   }
 }
