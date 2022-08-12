@@ -1,6 +1,6 @@
 import 'package:agora_rtm/agora_rtm.dart';
 import 'package:doccure_patient/chat/msg_log.dart';
-import 'package:doccure_patient/model/user.dart';
+import 'package:doccure_patient/model/person/user.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

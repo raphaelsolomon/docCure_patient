@@ -1,10 +1,21 @@
+import 'package:hive/hive.dart';
+part 'user.g.dart';
+
+@HiveType(typeId: 1)
 class User {
+  @HiveField(0)
   String? uid;
+  @HiveField(1)
   String? name;
+  @HiveField(2)
   String? email;
+  @HiveField(3)
   String? username;
+  @HiveField(4)
   String? status;
+  @HiveField(5)
   int? state;
+  @HiveField(6)
   String? profilePhoto;
 
   User({
@@ -40,3 +51,5 @@ class User {
     profilePhoto = mapData['profile_photo'];
   }
 }
+
+

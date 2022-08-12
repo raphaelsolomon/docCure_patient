@@ -1,9 +1,13 @@
 import 'package:doccure_patient/auth/login.dart';
-import 'package:doccure_patient/homepage/dashboard.dart';
+import 'package:doccure_patient/auth/onboarding.dart';
+import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
@@ -31,6 +35,10 @@ Future<void> main() async {
           ),
         ),
       ));
+  var directory = await getApplicationDocumentsDirectory();
+  Hive.init(directory.path);
+  Hive.registerAdapter(UserAdapter());
+  await Hive.openBox<User>(BoxName);
   runApp(const MyApp());
 }
 
@@ -40,6 +48,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+     final Box<User> box = Hive.box<User>(BoxName);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider())
@@ -51,7 +60,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const AuthLogin(),
+        home: box.get('first') == null ? const OnBoardingScreen() : const AuthLogin(),
       ),
     );
   }

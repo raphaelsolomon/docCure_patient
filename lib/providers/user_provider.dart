@@ -1,4 +1,4 @@
-import 'package:doccure_patient/model/user.dart';
+import 'package:doccure_patient/model/person/user.dart';
 import 'package:flutter/material.dart';
 
 class UserProvider with ChangeNotifier {

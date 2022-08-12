@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:doccure_patient/callscreens/videocallscreen.dart';
 import 'package:doccure_patient/callscreens/voicecallscreen.dart';
 import 'package:doccure_patient/model/call.dart';
-import 'package:doccure_patient/model/user.dart';
+import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/resources/call_methods.dart';
 import 'package:get/get.dart';
 

@@ -1,6 +1,6 @@
+import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AuthLogin extends StatelessWidget {
@@ -20,22 +20,20 @@ class AuthLogin extends StatelessWidget {
               const SizedBox(
                 height: 50.0,
               ),
-              Image.asset('assets/imgs/register.png',
+              Image.asset('assets/imgs/logo.png',
                   repeat: ImageRepeat.noRepeat, fit: BoxFit.contain),
-              SvgPicture.asset('assets/imgs/logo.svg',
-                  width: 290, height: 50.0),
               const SizedBox(
-                height: 5.0,
+                height: 15.0,
               ),
               Row(
                 children: [
                   Flexible(
                       child: Text(
-                    'Login Docure',
+                    'Sign In to your Account',
                     style: GoogleFonts.poppins(
                         fontSize: 20.0,
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal),
+                        color: BLUECOLOR,
+                        fontWeight: FontWeight.w700),
                   ))
                 ],
               ),
