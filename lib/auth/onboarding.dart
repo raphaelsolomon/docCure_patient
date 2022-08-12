@@ -1,5 +1,7 @@
+import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -26,6 +28,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       body: PageView.builder(
           controller: _pageController,
           itemCount: ONBOARDING.length,
+          onPageChanged: ((value) => setState(() => counter = value)),
           itemBuilder: ((context, index) => SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
@@ -50,68 +53,73 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   Expanded(
                       child: Container(
                           margin: const EdgeInsets.all(30.0),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 18.0, vertical: 25.0),
+                          padding: const EdgeInsets.only(
+                              left: 18.0, right: 18.0, top: 20.0, bottom: 10.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.0),
                             color: Colors.white,
                           ),
                           child: Column(children: [
+                            Spacer(),
                             Text(
                               '${ONBOARDING[index]['title']}',
                               style: GoogleFonts.poppins(
                                   color: BLUECOLOR,
-                                  fontSize: 18.0,
+                                  fontSize: 15.0,
                                   fontWeight: FontWeight.w600),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(
-                              height: 10.0,
+                              height: 20.0,
                             ),
                             Text(
                               '${ONBOARDING[index]['description']}',
                               style: GoogleFonts.poppins(
                                   color: BODYTEXT,
-                                  fontSize: 18.0,
+                                  fontSize: 13.0,
                                   fontWeight: FontWeight.w600),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(
-                              height: 20.0,
+                              height: 30.0,
                             ),
-                            dotIndicator(ONBOARDING[index]),
-                            const SizedBox(
-                              height: 20.0,
+                            dotIndicator(counter),
+                            const Spacer(),
+                            GestureDetector(
+                              onTap: () {
+                                if(counter == 4){
+                                  Get.to(() => AuthLogin());
+                                }
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 50,
+                                  decoration: BoxDecoration(
+                                    color: BLUECOLOR,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: Center(
+                                      child: Text(
+                                    counter == 4 ? 'Continue':'Next',
+                                    style: GoogleFonts.poppins(
+                                        color: Colors.white,
+                                        fontSize: 17.0,
+                                        fontWeight: FontWeight.w600),
+                                  ))),
                             ),
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 55,
-                                decoration: BoxDecoration(
-                                  color: BLUECOLOR,
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                child: Center(
-                                    child: Text(
-                                  'Next',
-                                  style: GoogleFonts.poppins(
-                                      color: Colors.white,
-                                      fontSize: 17.0,
-                                      fontWeight: FontWeight.w600),
-                                ))),
-                            const SizedBox(
-                              height: 20.0,
+                            counter == 4 ? const SizedBox() :const Spacer(),
+                            Visibility(
+                              visible: counter < 4,
+                              child: Text(
+                                'Skip for now',
+                                style: GoogleFonts.poppins(
+                                    color: GREYTEXT,
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w400),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
-                            Text(
-                              'Skip for now',
-                              style: GoogleFonts.poppins(
-                                  color: GREYTEXT,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w400),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
+                            Spacer()
                           ])))
                 ],
               )))),
