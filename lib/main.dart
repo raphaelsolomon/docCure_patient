@@ -1,3 +1,4 @@
+import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/homepage/dashboard.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const DashBoard(),
+        home: const AuthLogin(),
       ),
     );
   }
