@@ -3,26 +3,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doccure_patient/callscreens/pickup/pickup_screen.dart';
 import 'package:doccure_patient/model/call.dart';
+import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/resources/call_methods.dart';
 import 'package:flutter/material.dart';
-import '../../providers/user_provider.dart';
 
 class PickupLayout extends StatelessWidget {
-  final UserProvider userProvider;
+  final User? user;
   final Widget scaffold;
   final CallMethods callMethods = CallMethods();
 
   PickupLayout({
     Key? key,
-     required this.userProvider,
+     required this.user,
     required this.scaffold,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return (userProvider != null && userProvider.getUser != null)
+    return (user != null && user!.uid != null)
         ? StreamBuilder<DocumentSnapshot>(
-            stream: callMethods.callStream(uid: userProvider.getUser.uid!),
+            stream: callMethods.callStream(uid: user!.uid!),
             builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
               if (snapshot.data != null && snapshot.data!.exists) {
                 Call call = Call(
@@ -43,10 +43,11 @@ class PickupLayout extends StatelessWidget {
               return scaffold;
             },
           )
-        : const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+        : scaffold;
   }
 }
+// const Scaffold(
+//             body: Center(
+//               child: CircularProgressIndicator(),
+//             ),
+//           );

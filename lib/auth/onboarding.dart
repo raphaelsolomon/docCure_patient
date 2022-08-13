@@ -1,8 +1,11 @@
 import 'package:doccure_patient/auth/login.dart';
+import 'package:doccure_patient/auth/register.dart';
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/model/person/user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -13,18 +16,25 @@ class OnBoardingScreen extends StatefulWidget {
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   PageController? _pageController;
+  final box = Hive.box<User>(BoxName);
   int counter = 0;
 
   @override
   void initState() {
-    _pageController = PageController(initialPage: counter);
+    _pageController = PageController(initialPage: 0);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pageController!.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F7F7),
+      backgroundColor: Color(0xFFF6F6F6),
       body: PageView.builder(
           controller: _pageController,
           itemCount: ONBOARDING.length,
@@ -88,6 +98,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             GestureDetector(
                               onTap: () {
                                 if(counter == 4){
+                                  
                                   Get.to(() => AuthLogin());
                                 }
                               },
@@ -110,13 +121,16 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             counter == 4 ? const SizedBox() :const Spacer(),
                             Visibility(
                               visible: counter < 4,
-                              child: Text(
-                                'Skip for now',
-                                style: GoogleFonts.poppins(
-                                    color: GREYTEXT,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w400),
-                                textAlign: TextAlign.center,
+                              child: InkWell(
+                                onTap: () => Get.to(() => AuthRegister()),
+                                child: Text(
+                                  'Skip for now',
+                                  style: GoogleFonts.poppins(
+                                      color: GREYTEXT,
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w400),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
                             Spacer()

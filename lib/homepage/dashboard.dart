@@ -1,14 +1,21 @@
 import 'package:agora_rtm/agora_rtm.dart';
 import 'package:doccure_patient/callscreens/pickup/pick_layout.dart';
+import 'package:doccure_patient/chat/chat_list.dart';
 import 'package:doccure_patient/chat/msg_log.dart';
-import 'package:doccure_patient/chat/msg_screen.dart';
 import 'package:doccure_patient/constanst/strings.dart';
-import 'package:doccure_patient/permission/permissions.dart';
+import 'package:doccure_patient/homepage/appointment.dart';
+import 'package:doccure_patient/homepage/find_doctors.dart';
+import 'package:doccure_patient/homepage/invoice.dart';
+import 'package:doccure_patient/homepage/patient_profile.dart';
+import 'package:doccure_patient/homepage/time_and_date.dart';
+import 'package:doccure_patient/model/person/user.dart';
+import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
-import 'package:doccure_patient/utils/call_utilities.dart';
+import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 
 class DashBoard extends StatefulWidget {
@@ -21,11 +28,14 @@ class DashBoard extends StatefulWidget {
 class _DashBoardState extends State<DashBoard> {
   AgoraRtmClient? _client;
   LogController logController = LogController();
+  final scaffold = GlobalKey<ScaffoldState>();
+  final box = Hive.box<User>(BoxName);
 
   @override
   void initState() {
-    createClient();
-    context.read<UserProvider>().refreshUser(_client);
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      createClient();
+    });
     super.initState();
   }
 
@@ -37,118 +47,38 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   Widget build(BuildContext context) {
-    var newList = users.where((user) => user.username != 'phoenixk54').toList();
-    return PickupLayout(
-        userProvider: context.read<UserProvider>(),
-        scaffold: Scaffold(
-          drawer: null,
-          backgroundColor: Colors.red,
-          body: SafeArea(
-              child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      ...newList
-                          .map(
-                            (e) => Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0, vertical: 8.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Get.to(() => MessageScreen(
-                                      _client!, logController, e));
-                                },
-                                child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Flexible(
-                                        child: Row(
-                                          children: [
-                                            CircleAvatar(
-                                              radius: 20.0,
-                                              backgroundImage:
-                                                  NetworkImage(e.profilePhoto!),
-                                            ),
-                                            const SizedBox(
-                                              width: 10.0,
-                                            ),
-                                            Flexible(
-                                                child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '${e.email}',
-                                                  style: const TextStyle(
-                                                      fontSize: 16.0,
-                                                      color: Colors.black),
-                                                ),
-                                                const SizedBox(
-                                                  height: 2.0,
-                                                ),
-                                                Text(
-                                                  '${e.username}',
-                                                  style: const TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: Colors.black45),
-                                                ),
-                                              ],
-                                            )),
-                                          ],
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                          onTap: () async => await Permissions
-                                                  .cameraAndMicrophonePermissionsGranted()
-                                              ? CallUtils.dial(
-                                                  from: context
-                                                      .read<UserProvider>()
-                                                      .getUser,
-                                                  to: e,
-                                                  type: false,
-                                                  context: context)
-                                              : {},
-                                          child: const Icon(
-                                            Icons.phone_callback,
-                                            color: Colors.green,
-                                          )),
-                                      const SizedBox(
-                                        width: 18.0,
-                                      ),
-                                      GestureDetector(
-                                          onTap: () async => await Permissions
-                                                  .cameraAndMicrophonePermissionsGranted()
-                                              ? CallUtils.dial(
-                                                  from: context
-                                                      .read<UserProvider>()
-                                                      .getUser,
-                                                  to: e,
-                                                  type: true,
-                                                  context: context)
-                                              : {},
-                                          child: const Icon(
-                                            Icons.video_call,
-                                            color: Colors.redAccent,
-                                            size: 30.0,
-                                          )),
-                                    ]),
-                              ),
-                            ),
-                          )
-                          .toList()
-                    ],
-                  ))),
-        ));
+    final page = context.watch<HomeController>().getPage;
+    return WillPopScope(
+      onWillPop: () => context.read<HomeController>().onBackPress(),
+      child: PickupLayout(
+          user: box.get('details'),
+          scaffold: Scaffold(
+              key: scaffold,
+              drawer: navDrawer(context, scaffold),
+              backgroundColor: Colors.white,
+              body: page == 0
+                  ? FindDoctorsPage(scaffold)
+                  : page == -1
+                      ? TimeAndDate(scaffold)
+                      : page == 4
+                          ? MyAppointment(scaffold)
+                          : page == 5
+                              ? ChatListScreen(scaffold)
+                              : page == 6
+                                  ? MyInvoicePage(scaffold)
+                                  : page == -2
+                                      ? MyProfile(scaffold)
+                                      : Container(
+                                          child: Center(
+                                            child: Text('Development Mode..'),
+                                          ),
+                                        ))),
+    );
   }
 
   void createClient() async {
     _client = await AgoraRtmClient.createInstance(APP_ID);
+    context.read<UserProvider>().refreshUser(_client);
     _client!.onMessageReceived = (AgoraRtmMessage message, String peerId) {
       logController.addLog("Private Message from $peerId: ${message.text}");
     };

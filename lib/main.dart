@@ -2,6 +2,7 @@ import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/auth/onboarding.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/model/person/user.dart';
+import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +52,8 @@ class MyApp extends StatelessWidget {
      final Box<User> box = Hive.box<User>(BoxName);
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider())
+        ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
+        ChangeNotifierProvider<HomeController>(create: (_) => HomeController()),
       ],
       child: GetMaterialApp(
         title: 'DocCure Patient',
@@ -59,6 +61,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: true,
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          primaryColor: Colors.black54
         ),
         home: box.get('first') == null ? const OnBoardingScreen() : const AuthLogin(),
       ),
