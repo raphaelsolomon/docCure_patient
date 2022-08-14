@@ -5,8 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AuthForgotPass extends StatelessWidget {
+class AuthForgotPass extends StatefulWidget {
   const AuthForgotPass({Key? key}) : super(key: key);
+
+  @override
+  State<AuthForgotPass> createState() => _AuthForgotPassState();
+}
+
+class _AuthForgotPassState extends State<AuthForgotPass> {
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,19 +25,21 @@ class AuthForgotPass extends StatelessWidget {
       body: SafeArea(
           child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             children: [
-              const SizedBox(height: 17.0,),
+              const SizedBox(
+                height: 17.0,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
                     onTap: () => Get.back(),
                     child: Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.black,
-                        ),
+                      Icons.arrow_back_ios,
+                      color: Colors.black,
+                    ),
                   ),
                   Text(
                     'Forgot Password',
@@ -36,16 +48,16 @@ class AuthForgotPass extends StatelessWidget {
                         color: Colors.black,
                         fontWeight: FontWeight.w500),
                   ),
-                   Icon(
-                       null,
-                        color: Colors.black,
-                      ),
+                  Icon(
+                    null,
+                    color: Colors.black,
+                  ),
                 ],
               ),
               const SizedBox(
                 height: 20.0,
               ),
-               Image.asset('assets/imgs/register.png',
+              Image.asset('assets/imgs/register.png',
                   repeat: ImageRepeat.noRepeat, fit: BoxFit.contain),
               const SizedBox(
                 height: 20.0,

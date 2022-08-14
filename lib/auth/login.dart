@@ -4,9 +4,11 @@ import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/homepage/dashboard.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:phone_form_field/phone_form_field.dart';
 
 class AuthLogin extends StatefulWidget {
   const AuthLogin({Key? key}) : super(key: key);
@@ -17,6 +19,22 @@ class AuthLogin extends StatefulWidget {
 
 class _AuthLoginState extends State<AuthLogin> {
   bool isEmail = true;
+  late final phoneController;
+
+  @override
+  void initState() {
+    phoneController = PhoneController(null);
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      phoneController.addListener(() => setState(() {}));
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    phoneController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,11 +91,8 @@ class _AuthLoginState extends State<AuthLogin> {
               isEmail
                   ? getRegisterForm(
                       ctl: null, obscure: false, hint: 'Email or username')
-                  : getRegisterForm(
-                      ctl: null,
-                      icon: Icons.phone,
-                      obscure: false,
-                      hint: 'Phone Number'),
+                  : getPhoneNumberForm(
+                      ctl: phoneController),
               const SizedBox(
                 height: 20.0,
               ),

@@ -3,8 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AuthOtp extends StatelessWidget {
+class AuthOtp extends StatefulWidget {
   const AuthOtp({Key? key}) : super(key: key);
+
+  @override
+  State<AuthOtp> createState() => _AuthOtpState();
+}
+
+class _AuthOtpState extends State<AuthOtp> {
+
+  @override
+  void dispose() {
+    
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +24,7 @@ class AuthOtp extends StatelessWidget {
         backgroundColor: Color(0xFFF6F6F6),
         body: SafeArea(
             child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(children: [
             const SizedBox(
               height: 17.0,

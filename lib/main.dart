@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:phone_form_field/l10n/generated/phone_field_localization.dart';
 import 'package:provider/provider.dart';
-
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -30,7 +30,7 @@ Future<void> main() async {
                     fontSize: 14.0,
                     fontWeight: FontWeight.w300,
                     color: Colors.white),
-                    textAlign: TextAlign.center,
+                textAlign: TextAlign.center,
               )
             ],
           ),
@@ -49,21 +49,34 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-     final Box<User> box = Hive.box<User>(BoxName);
+    final Box<User> box = Hive.box<User>(BoxName);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
         ChangeNotifierProvider<HomeController>(create: (_) => HomeController()),
       ],
       child: GetMaterialApp(
+        localizationsDelegates: const [PhoneFieldLocalization.delegate],
+        supportedLocales: const [
+          Locale('en', ''),
+          Locale('fr', ''),
+          Locale('es', ''),
+          Locale('el', ''),
+          Locale('de', ''),
+          Locale('it', ''),
+          Locale('ru', ''),
+          Locale('sv', ''),
+          Locale('tr', ''),
+          Locale('zh', ''),
+        ],
         title: 'DocCure Patient',
         defaultTransition: Transition.zoom,
         debugShowCheckedModeBanner: true,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          primaryColor: Colors.black54
-        ),
-        home: box.get('first') == null ? const OnBoardingScreen() : const AuthLogin(),
+        theme:
+            ThemeData(primarySwatch: Colors.blue, primaryColor: Colors.black54),
+        home: box.get('first') == null
+            ? const OnBoardingScreen()
+            : const AuthLogin(),
       ),
     );
   }

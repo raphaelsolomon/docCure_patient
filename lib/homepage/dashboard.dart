@@ -1,14 +1,16 @@
 import 'package:agora_rtm/agora_rtm.dart';
 import 'package:doccure_patient/callscreens/pickup/pick_layout.dart';
 import 'package:doccure_patient/chat/chat_list.dart';
-import 'package:doccure_patient/chat/msg_log.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/homepage/appointment.dart';
 import 'package:doccure_patient/homepage/find_doctors.dart';
 import 'package:doccure_patient/homepage/invoice.dart';
 import 'package:doccure_patient/homepage/patient_profile.dart';
+import 'package:doccure_patient/homepage/search_doctor.dart';
 import 'package:doccure_patient/homepage/time_and_date.dart';
+import 'package:doccure_patient/homepage/vital_and_tracks.dart';
 import 'package:doccure_patient/model/person/user.dart';
+import 'package:doccure_patient/providers/msg_log.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
@@ -58,21 +60,30 @@ class _DashBoardState extends State<DashBoard> {
               backgroundColor: Colors.white,
               body: page == 0
                   ? FindDoctorsPage(scaffold)
-                  : page == -1
-                      ? TimeAndDate(scaffold)
+                  : page == 1
+                      ? VitalAndTracks(scaffold)
                       : page == 4
                           ? MyAppointment(scaffold)
                           : page == 5
-                              ? ChatListScreen(scaffold)
+                              ? ChatListScreen(scaffold, logController, _client)
                               : page == 6
                                   ? MyInvoicePage(scaffold)
                                   : page == -2
                                       ? MyProfile(scaffold)
-                                      : Container(
-                                          child: Center(
-                                            child: Text('Development Mode..'),
-                                          ),
-                                        ))),
+                                      : page == -3
+                                          ? SearchDoctor(scaffold)
+                                          : page == -1
+                                              ? TimeAndDate(scaffold)
+                                              : Container(
+                                                  child: Center(
+                                                    child: Text(
+                                                      'Development Mode..',
+                                                      style: getCustomFont(
+                                                          size: 19.0,
+                                                          color: Colors.black),
+                                                    ),
+                                                  ),
+                                                ))),
     );
   }
 

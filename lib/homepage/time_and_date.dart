@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/model/timeing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -15,6 +16,27 @@ class TimeAndDate extends StatefulWidget {
 
 class _TimeAndDateState extends State<TimeAndDate> {
   List<String> headers = ['Time and Date', 'Checkout', 'Payment'];
+
+  List<TimingModel> timemodel = [
+    TimingModel(
+        from: DateFormat('hh:mm a').format(DateTime.now()),
+        to: DateFormat('hh:mm a').format(DateTime.now())),
+    TimingModel(
+        from: DateFormat('hh:mm a').format(DateTime.now()),
+        to: DateFormat('hh:mm a').format(DateTime.now())),
+    TimingModel(
+        from: DateFormat('hh:mm a').format(DateTime.now()),
+        to: DateFormat('hh:mm a').format(DateTime.now())),
+    TimingModel(
+        from: DateFormat('hh:mm a').format(DateTime.now()),
+        to: DateFormat('hh:mm a').format(DateTime.now())),
+    TimingModel(
+        from: DateFormat('hh:mm a').format(DateTime.now()),
+        to: DateFormat('hh:mm a').format(DateTime.now())),
+    TimingModel(
+        from: DateFormat('hh:mm a').format(DateTime.now()),
+        to: DateFormat('hh:mm a').format(DateTime.now())),
+  ];
 
   String index = 'Time and Date';
   int currentMonthDate = 0;
@@ -35,7 +57,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
           children: [
             Container(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
               width: MediaQuery.of(context).size.width,
               height: 90.0,
               color: BLUECOLOR,
@@ -70,24 +92,24 @@ class _TimeAndDateState extends State<TimeAndDate> {
               ]),
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 15.0),
-                child: Column(
-                  children: [
-                    Row(
+              child: Column(
+                children: [
+                  const SizedBox(height: 10.0,),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
                       children: [...headers.map((e) => _dashList(e)).toList()],
                     ),
-                    const SizedBox(
-                      height: 25.0,
-                    ),
-                    index == 'Time and Date'
-                        ? getCalenderYear()
-                        : index == 'Checkout'
-                            ? checkOut()
-                            : Container()
-                  ],
-                ),
+                  ),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  index == 'Time and Date'
+                      ? getCalenderYear()
+                      : index == 'Checkout'
+                          ? checkOut()
+                          : Container()
+                ],
               ),
             )
           ],
@@ -132,86 +154,207 @@ class _TimeAndDateState extends State<TimeAndDate> {
       );
 
   //---------------------PAGE 1-----------------------------
-  Widget getCalenderYear() {
-    return Expanded(
-      child: Column(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.all(15.0),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black12,
-                            spreadRadius: 1.0,
-                            blurRadius: 10.0,
-                            offset: Offset(0.0, 1.0))
-                      ]),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      circularButton(Icons.arrow_back_ios, () {
-                        if (DateTime.now().month - 1 < currentMonthDate) {
-                          setState(() {
-                            currentMonthDate = currentMonthDate - 1;
-                          });
-                        }
-                      }),
-                      Text(
-                        '${month[currentMonthDate]} ${DateTime.now().year}',
-                        style: getCustomFont(
-                            size: 19.0,
-                            color: Colors.black,
-                            weight: FontWeight.w400),
-                      ),
-                      circularButton(Icons.arrow_forward_ios, () {
-                        if (currentMonthDate < month.length - 1) {
-                          setState(() {
-                            currentMonthDate = currentMonthDate + 1;
-                          });
-                        }
-                      })
-                    ],
+  Widget getTimeItems(TimingModel timingModel, int i) => Container(
+        padding: const EdgeInsets.all(15.0),
+        width: MediaQuery.of(context).size.width,
+        margin: const EdgeInsets.symmetric(horizontal: 4.0),
+        height: 190,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.0),
+            color: Colors.white,
+             boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey.shade300,
+                              spreadRadius: 1.0,
+                              blurRadius: 10.0,
+                              offset: Offset(0.0, 1.0))
+                        ]),
+        child: Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                  child: Text(
+                'Timings',
+                style: getCustomFont(size: 16.0, color: Colors.black),
+              )),
+              Icon(Icons.timer_outlined, size: 18.0,)
+            ],
+          ),
+          Divider(),
+          Row(
+            children: [
+              Flexible(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'From',
+                    style: getCustomFont(size: 16.0, color: Colors.black54),
                   ),
-                ),
-                const SizedBox(height: 10.0,),
-                ...DateFormat().dateSymbols.WEEKDAYS.map((e) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Column(
+                  const SizedBox(
+                    height: 3.0,
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      height: 40.0,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black, width: 1.0),
+                          borderRadius: BorderRadius.circular(5.0)),
+                      child: Center(
+                          child: Text(
+                        timingModel.timerFrom,
+                        style: getCustomFont(size: 16.0, color: Colors.black),
+                      )),
+                    ),
+                  )
+                ],
+              )),
+              const SizedBox(
+                width: 10.0,
+              ),
+              Flexible(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'To',
+                    style: getCustomFont(size: 16.0, color: Colors.black54),
+                  ),
+                  const SizedBox(
+                    height: 3.0,
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      height: 40.0,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black, width: 1.0),
+                          borderRadius: BorderRadius.circular(5.0)),
+                      child: Center(
+                          child: Text(
+                        timingModel.timerTo,
+                        style: getCustomFont(size: 16.0, color: Colors.black),
+                      )),
+                    ),
+                  )
+                ],
+              ))
+            ],
+          )
+        ]),
+      );
+
+  Widget getCalenderYear() {
+    var width = MediaQuery.of(context).size.width;
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.all(15.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black12,
+                              spreadRadius: 1.0,
+                              blurRadius: 10.0,
+                              offset: Offset(0.0, 1.0))
+                        ]),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.amberAccent,
-                          radius: 18.0,
-                        ),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
+                        circularButton(Icons.arrow_back_ios, () {
+                          if (DateTime.now().month - 1 < currentMonthDate) {
+                            setState(() {
+                              currentMonthDate = currentMonthDate - 1;
+                            });
+                          }
+                        }),
                         Text(
-                          '${e[0]}${e[1]}${e[2]}',
-                          style: getCustomFont(size: 14.0, color: Colors.black),
-                        )
+                          '${month[currentMonthDate]} ${DateTime.now().year}',
+                          style: getCustomFont(
+                              size: 19.0,
+                              color: Colors.black,
+                              weight: FontWeight.w400),
+                        ),
+                        circularButton(Icons.arrow_forward_ios, () {
+                          if (currentMonthDate < month.length - 1) {
+                            setState(() {
+                              currentMonthDate = currentMonthDate + 1;
+                            });
+                          }
+                        })
                       ],
                     ),
-                  );
-                }),
-                const SizedBox(height: 10.0,),
-              ],
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Row(
+                    children: [
+                      ...DateFormat().dateSymbols.WEEKDAYS.map((e) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Colors.white,
+                                child: Text('2', style: getCustomFont(color: Colors.black, size: 14.0),),
+                                radius: 18.0,
+                              ),
+                              const SizedBox(
+                                height: 10.0,
+                              ),
+                              Text(
+                                '${e[0]}${e[1]}${e[2]}',
+                                style: getCustomFont(
+                                    size: 14.0, color: Colors.black),
+                              )
+                            ],
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
+                 
+                  Expanded(
+                      child: GridView.builder(
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: returnCrossAxis(width),
+                              mainAxisSpacing: 15.0,
+                              mainAxisExtent: 135,
+                              crossAxisSpacing: 8.0),
+                          itemCount: timemodel.length,
+                          itemBuilder: (ctx, i) => getTimeItems(timemodel[i], i)))
+                ],
+              ),
             ),
-          ),
-          getButton1(context, () {
-            setState(() {
-              index = 'Checkout';
-            });
-          })
-        ],
+            getButton1(context, () {
+              setState(() {
+                index = 'Checkout';
+              });
+            })
+          ],
+        ),
       ),
     );
+  }
+
+  int returnCrossAxis(width) {
+    return width < 500
+        ? 2
+        : width > 500 && width < 100
+            ? 2
+            : 3;
   }
 
   Widget getButton1(context, callBack, {text = 'Continue'}) => GestureDetector(
@@ -236,91 +379,94 @@ class _TimeAndDateState extends State<TimeAndDate> {
       );
   //-----------------------PAGE 2 -----------------------------
   Widget checkOut() => Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.0),
-                  color: Colors.white,
-                  boxShadow: SHADOW),
-              child: Row(children: [
-                CircleAvatar(
-                  radius: 40.0,
-                  backgroundImage: AssetImage('assets/imgs/1.png'),
-                ),
-                const SizedBox(
-                  width: 15.0,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Dr. Ruby Perrln',
-                      style: GoogleFonts.poppins(
-                          color: Colors.black,
-                          fontSize: 19.0,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      '(47)',
-                      style: GoogleFonts.poppins(
-                          color: Colors.black,
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    const SizedBox(
-                      height: 3.0,
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.location_on,
-                          size: 14.0,
-                          color: Colors.black,
-                        ),
-                        const SizedBox(
-                          width: 5.0,
-                        ),
-                        Text(
-                          'Florida, USA',
-                          style: GoogleFonts.poppins(
-                              color: Colors.black,
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ]),
-            ),
-            const SizedBox(
-              height: 15.0,
-            ),
-            Text(
-              'Booking Summary',
-              style: getCustomFont(
-                  size: 20.0, color: Colors.black, weight: FontWeight.normal),
-            ),
-            const SizedBox(
-              height: 5.0,
-            ),
-            Expanded(
-                child: Column(
-              children: List.generate(2, (index) => bookSummaryItem()),
-            )),
-            getButton(context, () {
-              setState(() {
-                index = 'Payment';
-              });
-            })
-          ],
+        child: Padding(
+          padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(20.0),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                    color: Colors.white,
+                    boxShadow: SHADOW),
+                child: Row(children: [
+                  CircleAvatar(
+                    radius: 40.0,
+                    backgroundImage: AssetImage('assets/imgs/1.png'),
+                  ),
+                  const SizedBox(
+                    width: 15.0,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Dr. Ruby Perrln',
+                        style: GoogleFonts.poppins(
+                            color: Colors.black,
+                            fontSize: 19.0,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Text(
+                        '(47)',
+                        style: GoogleFonts.poppins(
+                            color: Colors.black,
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      const SizedBox(
+                        height: 3.0,
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            size: 14.0,
+                            color: Colors.black,
+                          ),
+                          const SizedBox(
+                            width: 5.0,
+                          ),
+                          Text(
+                            'Florida, USA',
+                            style: GoogleFonts.poppins(
+                                color: Colors.black,
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                ]),
+              ),
+              const SizedBox(
+                height: 15.0,
+              ),
+              Text(
+                'Booking Summary',
+                style: getCustomFont(
+                    size: 20.0, color: Colors.black, weight: FontWeight.normal),
+              ),
+              const SizedBox(
+                height: 5.0,
+              ),
+              Expanded(
+                  child: Column(
+                children: List.generate(2, (index) => bookSummaryItem()),
+              )),
+              getButton(context, () {
+                setState(() {
+                  index = 'Payment';
+                });
+              })
+            ],
+          ),
         ),
       );
 

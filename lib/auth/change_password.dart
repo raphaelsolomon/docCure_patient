@@ -5,8 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AuthChangePass extends StatelessWidget {
+class AuthChangePass extends StatefulWidget {
   const AuthChangePass({Key? key}) : super(key: key);
+
+  @override
+  State<AuthChangePass> createState() => _AuthChangePassState();
+}
+
+class _AuthChangePassState extends State<AuthChangePass> {
+
+  @override
+  void dispose() {
+    
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +27,7 @@ class AuthChangePass extends StatelessWidget {
       body: SafeArea(
           child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             children: [
               const SizedBox(height: 17.0,),

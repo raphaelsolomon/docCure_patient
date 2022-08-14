@@ -1,17 +1,48 @@
 import 'package:doccure_patient/auth/login.dart';
+import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:phone_form_field/phone_form_field.dart';
 
-class AuthRegister extends StatelessWidget {
+class AuthRegister extends StatefulWidget {
   const AuthRegister({Key? key}) : super(key: key);
+
+  @override
+  State<AuthRegister> createState() => _AuthRegisterState();
+}
+
+class _AuthRegisterState extends State<AuthRegister> {
+  late PhoneController phoneController;
+  bool isEmail = true;
+  String country = 'Nigeria';
+
+  @override
+  void initState() {
+    phoneController = PhoneController(null);
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      phoneController.addListener(() => setState(() {
+            var i = countryList.indexWhere((element) =>
+                element['code'] == '${phoneController.value!.isoCode.name}');
+            country = countryList.elementAt(i)['name'];
+          }));
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    phoneController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF6F6F6),
+        backgroundColor: Color(0xFFF6F6F6),
         body: Container(
             margin: const EdgeInsets.symmetric(horizontal: 30.0),
             height: MediaQuery.of(context).size.height,
@@ -31,13 +62,13 @@ class AuthRegister extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      height: 30.0,
+                      height: 25.0,
                     ),
                     Row(
                       children: [
                         Flexible(
                             child: Text(
-                          'Register now',
+                          'Get Started For Free',
                           style: GoogleFonts.poppins(
                               fontSize: 28.0,
                               color: Colors.black,
@@ -45,8 +76,17 @@ class AuthRegister extends StatelessWidget {
                         ))
                       ],
                     ),
+                    Text(
+                      'Sign in your account to continue',
+                      style: GoogleFonts.poppins(
+                          fontSize: 13.0, color: Colors.black45),
+                    ),
                     const SizedBox(
-                      height: 20.0,
+                      height: 25.0,
+                    ),
+                    optionButton(context),
+                    const SizedBox(
+                      height: 15.0,
                     ),
                     getRegisterForm(
                         ctl: null,
@@ -56,20 +96,20 @@ class AuthRegister extends StatelessWidget {
                     const SizedBox(
                       height: 15.0,
                     ),
-                    getRegisterForm(
-                      ctl: null,
-                      icon: Icons.phone,
-                      hint: 'Mobile Number',
-                      obscure: false,
-                    ),
+                    isEmail
+                        ? getRegisterForm(
+                            ctl: null,
+                            icon: Icons.email_outlined,
+                            obscure: false,
+                            hint: 'Email Address')
+                        : getPhoneNumberForm(ctl: phoneController),
                     const SizedBox(
                       height: 15.0,
                     ),
-                    getRegisterForm(
-                        ctl: null,
-                        icon: Icons.email_outlined,
-                        obscure: false,
-                        hint: 'Email Address'),
+                    GestureDetector(
+                      onTap: () => isEmail ? showBottomSheet() : null,
+                      child: getCountryForm(text: country),
+                    ),
                     const SizedBox(
                       height: 15.0,
                     ),
@@ -85,7 +125,8 @@ class AuthRegister extends StatelessWidget {
                         ctl: null,
                         icon: Icons.lock_outlined,
                         obscure: true,
-                        hint: 'Confirm Password'),
+                        hint: 'Confirm Password',
+                        cp: ''),
                     const SizedBox(
                       height: 50.0,
                     ),
@@ -164,4 +205,109 @@ class AuthRegister extends StatelessWidget {
                   ]),
             )));
   }
+
+  void showBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 8.0,
+            ),
+            Text(
+              'Select Country',
+              style: GoogleFonts.poppins(
+                  fontSize: 28.0,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                      children: List.generate(
+                          countryList.length,
+                          (index) => Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        country = '${countryList[index]['name']}';
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Text(
+                                        '${countryList[index]['name']}',
+                                        style: getCustomFont(
+                                            size: 16.0, color: Colors.black),
+                                      ),
+                                    ),
+                                  ),
+                                  Divider(),
+                                ],
+                              ))),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget optionButton(context) => Row(
+        children: [
+          Flexible(
+            child: GestureDetector(
+              onTap: () => setState(() => isEmail = true),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    color: isEmail ? BLUECOLOR : Colors.transparent,
+                    borderRadius: BorderRadius.circular(5.0)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                      child: Text(
+                    'with Email Address',
+                    style: GoogleFonts.poppins(
+                        color: isEmail ? Colors.white : BLUECOLOR),
+                  )),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 20.0,
+          ),
+          Flexible(
+            child: GestureDetector(
+              onTap: () => setState(() => isEmail = false),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    color: !isEmail ? BLUECOLOR : Colors.transparent,
+                    borderRadius: BorderRadius.circular(5.0)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                      child: Text(
+                    'with Phone Number',
+                    style: GoogleFonts.poppins(
+                        color: !isEmail ? Colors.white : BLUECOLOR),
+                  )),
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
 }

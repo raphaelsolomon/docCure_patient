@@ -201,7 +201,9 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
           const SizedBox(
             height: 10.0,
           ),
-          getButton(context, () {})
+          getButton(context, () {
+            context.read<HomeController>().setPage(-3);
+          })
         ],
       );
 
@@ -273,7 +275,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
               spreadRadius: 1.0,
               blurRadius: 10.0,
               offset: Offset(0.0, 1.0))
-        ], color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
+        ], color: Colors.white, borderRadius: BorderRadius.circular(13.0)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
