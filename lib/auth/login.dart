@@ -51,7 +51,7 @@ class _AuthLoginState extends State<AuthLogin> {
               const SizedBox(
                 height: 50.0,
               ),
-              Image.asset('assets/imgs/register.png',
+              Image.asset('assets/auth/2.jpeg',
                   repeat: ImageRepeat.noRepeat, fit: BoxFit.contain),
               const SizedBox(
                 height: 40.0,
@@ -212,6 +212,7 @@ class _AuthLoginState extends State<AuthLogin> {
                       child: Text(
                     'with Email Address',
                     style: GoogleFonts.poppins(
+                      fontSize: 12.0,
                         color: isEmail ? Colors.white : BLUECOLOR),
                   )),
                 ),
@@ -234,7 +235,9 @@ class _AuthLoginState extends State<AuthLogin> {
                   child: Center(
                       child: Text(
                     'with Mobile Number',
+                    maxLines: 1,
                     style: GoogleFonts.poppins(
+                      fontSize: 12.0,
                         color: !isEmail ? Colors.white : BLUECOLOR),
                   )),
                 ),

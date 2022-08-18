@@ -59,7 +59,7 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
               const SizedBox(
                 height: 20.0,
               ),
-              Image.asset('assets/imgs/register.png',
+              Image.asset('assets/auth/4.jpeg',
                   repeat: ImageRepeat.noRepeat, fit: BoxFit.contain),
               const SizedBox(
                 height: 20.0,
@@ -141,6 +141,7 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
                       child: Text(
                     'with Email Address',
                     style: GoogleFonts.poppins(
+                      fontSize: 12.0,
                         color: isEmail ? Colors.white : BLUECOLOR),
                   )),
                 ),
@@ -163,7 +164,9 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
                   child: Center(
                       child: Text(
                     'with Mobile Number',
+                    maxLines: 1,
                     style: GoogleFonts.poppins(
+                      fontSize: 12.0,
                         color: !isEmail ? Colors.white : BLUECOLOR),
                   )),
                 ),

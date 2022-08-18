@@ -34,7 +34,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
             padding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
             width: MediaQuery.of(context).size.width,
-            height: 90.0,
+            height: 100.0,
             color: BLUECOLOR,
             child: Column(children: [
               const SizedBox(
@@ -90,37 +90,29 @@ class _DoctorProfileState extends State<DoctorProfile> {
                       : index == 'Hours'
                           ? Expanded(
                               child: SingleChildScrollView(
-                                child: Column(
-                                  children:[
-                                      hours(),
-                                  ]
-                                ),
+                                child: Column(children: [
+                                  hours(),
+                                ]),
                               ),
                             )
-                          : index == 'Medical Records'
+                          : index == 'Reviews'
                               ? Expanded(
                                   child: SingleChildScrollView(
-                                    child: Column(
-                                      children: List.generate(
-                                          5, (index) => medicalRecordItem()),
-                                    ),
+                                    child: Column(children: []),
                                   ),
                                 )
-                              : index == 'Overview'
-                                  ? Expanded(child: patientProfile())
-                                  : Expanded(
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          children: List.generate(
-                                              5, (index) => billingItem()),
-                                        ),
-                                      ),
-                                    )
+                              : Expanded(child: patientProfile())
                 ],
               ),
             ),
           ),
-          getButton(context, (){}, text: 'Book Appointment')
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: getButton(context, () {}, text: 'Book Appointment'),
+          ),
+          const SizedBox(
+            height: 20.0,
+          )
         ],
       ),
     );
@@ -277,37 +269,43 @@ class _DoctorProfileState extends State<DoctorProfile> {
             ),
             Row(
               children: [
-                Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 9.0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
-                        border: Border.all(width: 1.0, color: Colors.black),
-                        color: Colors.white),
-                    child: Text(
-                      '10:00 AM - 2:00 PM',
-                      style: getCustomFont(
-                        color: Colors.black,
-                        size: 13.0,
-                      ),
-                    )),
+                Flexible(
+                  child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 9.0),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          border: Border.all(width: 1.0, color: Colors.black),
+                          color: Colors.white),
+                      child: Text(
+                        '10:00 AM - 2:00 PM',
+                        maxLines: 1,
+                        style: getCustomFont(
+                          color: Colors.black,
+                          size: 12.0,
+                        ),
+                      )),
+                ),
                 const SizedBox(
                   width: 15.0,
                 ),
-                Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 9.0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
-                        border: Border.all(width: 1.0, color: Colors.black),
-                        color: Colors.white),
-                    child: Text(
-                      '10:00 AM - 2:00 PM',
-                      style: getCustomFont(
-                        color: Colors.black,
-                        size: 13.0,
-                      ),
-                    ))
+                Flexible(
+                  child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 9.0),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          border: Border.all(width: 1.0, color: Colors.black),
+                          color: Colors.white),
+                      child: Text(
+                        '10:00 AM - 2:00 PM',
+                        maxLines: 1,
+                        style: getCustomFont(
+                          color: Colors.black,
+                          size: 12.0,
+                        ),
+                      )),
+                )
               ],
             )
           ],
@@ -315,47 +313,35 @@ class _DoctorProfileState extends State<DoctorProfile> {
   }
 
   Widget getButton(context, callBack,
-          {text = 'View',
-          icon = Icons.remove_red_eye,
-          color = Colors.lightBlueAccent}) =>
+          {color = BLUECOLOR, text = 'Search Now'}) =>
       GestureDetector(
         onTap: () => callBack(),
         child: Container(
+          width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-              color: color, borderRadius: BorderRadius.circular(50.0)),
+              color: color, borderRadius: BorderRadius.circular(7.0)),
           child: Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 14.0, vertical: 7.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(
-                  icon,
-                  size: 14.0,
-                  color: Colors.white,
-                ),
-                const SizedBox(
-                  width: 2.0,
-                ),
-                Text(
-                  '$text',
-                  style: getCustomFont(
-                      size: 14.0,
-                      color: Colors.white,
-                      weight: FontWeight.normal),
-                ),
-              ],
+                const EdgeInsets.symmetric(horizontal: 8.0, vertical: 11.0),
+            child: Center(
+              child: Text(
+                text,
+                maxLines: 1,
+                style: GoogleFonts.poppins(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal),
+              ),
             ),
           ),
         ),
       );
-
 //====================HOURS===============================================
   Widget hours() {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
@@ -365,22 +351,22 @@ class _DoctorProfileState extends State<DoctorProfile> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Image.asset(
               'assets/imgs/today.png',
-              width: 100,
-              height: 100,
+              width: 50,
+              height: 50,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Today',
-                  style: getCustomFont(size: 17.0, color: Colors.black),
+                  style: getCustomFont(size: 15.0, color: Colors.black),
                 ),
                 const SizedBox(
                   height: 5.0,
                 ),
                 Text(
                   '5 Nov 2019',
-                  style: getCustomFont(size: 15.0, color: Colors.black),
+                  style: getCustomFont(size: 13.0, color: Colors.black),
                 ),
               ],
             ),
@@ -389,7 +375,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
               children: [
                 Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 5.0),
+                        horizontal: 7.0, vertical: 5.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.0),
                       color: Colors.green.shade100,
@@ -403,225 +389,25 @@ class _DoctorProfileState extends State<DoctorProfile> {
                 ),
                 Text(
                   '07:00 AM - 09:00 PM',
-                  style: getCustomFont(size: 13.0, color: Colors.black54),
+                  style: getCustomFont(size: 12.0, color: Colors.black54),
                 ),
               ],
             )
           ]),
+        ),
+        const SizedBox(
+          height: 20.0,
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: 300.0,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              color: Colors.white,
+              boxShadow: SHADOW),
         )
-       , const SizedBox(height: 20.0,),
-       Container(
-        width: MediaQuery.of(context).size.width,
-        height: 300.0,
-       )
       ],
     );
-  }
-
-  Widget medicalRecordItem() {
-    return Container(
-        padding: const EdgeInsets.all(15.0),
-        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.0),
-            color: Colors.white,
-            boxShadow: SHADOW),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                    child: Text(
-                  '#MR-0010',
-                  style: getCustomFont(
-                      size: 15.0, color: Colors.black, weight: FontWeight.w400),
-                )),
-                Text(
-                  '14 Mar 2022',
-                  style: getCustomFont(
-                      size: 15.0,
-                      color: Colors.black45,
-                      weight: FontWeight.w400),
-                )
-              ],
-            ),
-            Divider(),
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 30.0,
-                  backgroundImage: AssetImage('assets/imgs/1.png'),
-                ),
-                const SizedBox(
-                  width: 15.0,
-                ),
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Dr. Ruby Perrln',
-                        style: getCustomFont(
-                            color: Colors.black,
-                            size: 19.0,
-                            weight: FontWeight.w400),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Dental',
-                            style: getCustomFont(
-                                color: Colors.black54,
-                                size: 14.0,
-                                weight: FontWeight.w400),
-                          ),
-                          Flexible(
-                            child: Text(
-                              'Dental Filling',
-                              style: getCustomFont(
-                                  color: Colors.black,
-                                  size: 13.0,
-                                  weight: FontWeight.w400),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        'Dental-test.pdf',
-                        style: getCustomFont(
-                            color: Colors.black54,
-                            size: 14.0,
-                            weight: FontWeight.w400),
-                      ),
-                      const SizedBox(
-                        height: 5.0,
-                      ),
-                      Row(
-                        children: [
-                          getButton(context, () {},
-                              color: Colors.lightGreen.shade300),
-                          const SizedBox(
-                            width: 10.0,
-                          ),
-                          getButton(context, () {},
-                              icon: Icons.print,
-                              text: 'Print',
-                              color: Colors.grey),
-                        ],
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ],
-        ));
-  }
-
-  Widget billingItem() {
-    return Container(
-        padding: const EdgeInsets.all(15.0),
-        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.0),
-            color: Colors.white,
-            boxShadow: SHADOW),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                    child: Text(
-                  '#MR-0010',
-                  style: getCustomFont(
-                      size: 15.0, color: Colors.black, weight: FontWeight.w400),
-                )),
-                Text(
-                  'Paid on - 14 Mar 2022',
-                  style: getCustomFont(
-                      size: 15.0,
-                      color: Colors.black45,
-                      weight: FontWeight.w400),
-                )
-              ],
-            ),
-            Divider(),
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 30.0,
-                  backgroundImage: AssetImage('assets/imgs/1.png'),
-                ),
-                const SizedBox(
-                  width: 15.0,
-                ),
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Dr. Ruby Perrln',
-                        style: getCustomFont(
-                            color: Colors.black,
-                            size: 19.0,
-                            weight: FontWeight.w400),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Dental',
-                            style: getCustomFont(
-                                color: Colors.black54,
-                                size: 14.0,
-                                weight: FontWeight.w400),
-                          ),
-                          Flexible(
-                            child: Text(
-                              '\$450',
-                              style: getCustomFont(
-                                  color: Colors.black,
-                                  size: 13.0,
-                                  weight: FontWeight.w400),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        'Dental-test.pdf',
-                        style: getCustomFont(
-                            color: Colors.black54,
-                            size: 14.0,
-                            weight: FontWeight.w400),
-                      ),
-                      const SizedBox(
-                        height: 5.0,
-                      ),
-                      Row(
-                        children: [
-                          getButton(context, () {},
-                              color: Colors.lightGreen.shade300),
-                          const SizedBox(
-                            width: 10.0,
-                          ),
-                          getButton(context, () {},
-                              icon: Icons.print,
-                              text: 'Print',
-                              color: Colors.grey),
-                        ],
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ],
-        ));
   }
 
 //============================OVERVIEW=====================================

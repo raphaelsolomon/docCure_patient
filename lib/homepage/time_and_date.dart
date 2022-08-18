@@ -1,8 +1,9 @@
 // ignore_for_file: must_be_immutable
-
+import 'package:doccure_patient/constanst/weekcalender.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/model/timeing_model.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -16,6 +17,13 @@ class TimeAndDate extends StatefulWidget {
 
 class _TimeAndDateState extends State<TimeAndDate> {
   List<String> headers = ['Time and Date', 'Checkout', 'Payment'];
+  List CONSULT_TYPE = [
+    {'title': 'Audio Call', 'icon': Icons.spatial_audio},
+    {'title': 'Video Call', 'icon': FontAwesome5.video},
+    {'title': 'Chat', 'icon': FontAwesome5.facebook_messenger},
+    {'title': 'Visit', 'icon': FontAwesome5.walking}
+  ];
+  String type = 'Audio Call';
 
   List<TimingModel> timemodel = [
     TimingModel(
@@ -59,7 +67,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
               width: MediaQuery.of(context).size.width,
-              height: 90.0,
+              height: 100.0,
               color: BLUECOLOR,
               child: Column(children: [
                 const SizedBox(
@@ -94,7 +102,9 @@ class _TimeAndDateState extends State<TimeAndDate> {
             Expanded(
               child: Column(
                 children: [
-                  const SizedBox(height: 10.0,),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Row(
@@ -105,10 +115,10 @@ class _TimeAndDateState extends State<TimeAndDate> {
                     height: 15.0,
                   ),
                   index == 'Time and Date'
-                      ? getCalenderYear()
+                      ? getCalenderYear(context)
                       : index == 'Checkout'
-                          ? checkOut()
-                          : Container()
+                          ? checkOut(context)
+                          : getPaymentWidget(context)
                 ],
               ),
             )
@@ -134,6 +144,34 @@ class _TimeAndDateState extends State<TimeAndDate> {
             )),
       );
 
+  Widget _dashTypeList(e) => GestureDetector(
+        onTap: () => setState(() => type = e['title']),
+        child: Container(
+            margin: const EdgeInsets.only(right: 5.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+            decoration: BoxDecoration(
+                color: type == e['title'] ? BLUECOLOR : Colors.transparent,
+                borderRadius: BorderRadius.circular(50.0)),
+            child: Row(
+              children: [
+                Icon(
+                  e['icon'],
+                  color: type == e['title'] ? Colors.white : Colors.black,
+                  size: 14.0,
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  '${e['title']}',
+                  style: getCustomFont(
+                      size: 14.0,
+                      color: type == e['title'] ? Colors.white : Colors.black,
+                      weight: FontWeight.normal),
+                ),
+              ],
+            )),
+      );
+
   Widget circularButton(icon, callBack) => GestureDetector(
         onTap: () => callBack(),
         child: Container(
@@ -154,21 +192,21 @@ class _TimeAndDateState extends State<TimeAndDate> {
       );
 
   //---------------------PAGE 1-----------------------------
-  Widget getTimeItems(TimingModel timingModel, int i) => Container(
-        padding: const EdgeInsets.all(15.0),
+  Widget getTimeItems(TimingModel timingModel, int i, context) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.symmetric(horizontal: 4.0),
-        height: 190,
+        height: 195,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.0),
+            borderRadius: BorderRadius.circular(12.0),
             color: Colors.white,
-             boxShadow: [
-                          BoxShadow(
-                              color: Colors.grey.shade300,
-                              spreadRadius: 1.0,
-                              blurRadius: 10.0,
-                              offset: Offset(0.0, 1.0))
-                        ]),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.shade300,
+                  spreadRadius: 1.0,
+                  blurRadius: 10.0,
+                  offset: Offset(0.0, 1.0))
+            ]),
         child: Column(children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -176,9 +214,12 @@ class _TimeAndDateState extends State<TimeAndDate> {
               Flexible(
                   child: Text(
                 'Timings',
-                style: getCustomFont(size: 16.0, color: Colors.black),
+                style: getCustomFont(size: 14.0, color: Colors.black),
               )),
-              Icon(Icons.timer_outlined, size: 18.0,)
+              Icon(
+                Icons.timer_outlined,
+                size: 18.0,
+              )
             ],
           ),
           Divider(),
@@ -190,7 +231,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                 children: [
                   Text(
                     'From',
-                    style: getCustomFont(size: 16.0, color: Colors.black54),
+                    style: getCustomFont(size: 14.0, color: Colors.black54),
                   ),
                   const SizedBox(
                     height: 3.0,
@@ -205,7 +246,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                       child: Center(
                           child: Text(
                         timingModel.timerFrom,
-                        style: getCustomFont(size: 16.0, color: Colors.black),
+                        style: getCustomFont(size: 14.0, color: Colors.black),
                       )),
                     ),
                   )
@@ -220,7 +261,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                 children: [
                   Text(
                     'To',
-                    style: getCustomFont(size: 16.0, color: Colors.black54),
+                    style: getCustomFont(size: 14.0, color: Colors.black54),
                   ),
                   const SizedBox(
                     height: 3.0,
@@ -235,7 +276,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                       child: Center(
                           child: Text(
                         timingModel.timerTo,
-                        style: getCustomFont(size: 16.0, color: Colors.black),
+                        style: getCustomFont(size: 14.0, color: Colors.black),
                       )),
                     ),
                   )
@@ -246,7 +287,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
         ]),
       );
 
-  Widget getCalenderYear() {
+  Widget getCalenderYear(context) {
     var width = MediaQuery.of(context).size.width;
     return Expanded(
       child: Padding(
@@ -282,7 +323,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                         Text(
                           '${month[currentMonthDate]} ${DateTime.now().year}',
                           style: getCustomFont(
-                              size: 19.0,
+                              size: 15.0,
                               color: Colors.black,
                               weight: FontWeight.w400),
                         ),
@@ -299,42 +340,49 @@ class _TimeAndDateState extends State<TimeAndDate> {
                   const SizedBox(
                     height: 10.0,
                   ),
-                  Row(
-                    children: [
-                      ...DateFormat().dateSymbols.WEEKDAYS.map((e) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Column(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.white,
-                                child: Text('2', style: getCustomFont(color: Colors.black, size: 14.0),),
-                                radius: 18.0,
-                              ),
-                              const SizedBox(
-                                height: 10.0,
-                              ),
-                              Text(
-                                '${e[0]}${e[1]}${e[2]}',
-                                style: getCustomFont(
-                                    size: 14.0, color: Colors.black),
-                              )
-                            ],
-                          ),
-                        );
-                      }),
-                    ],
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: CalendarWeek(
+                      controller: CalendarWeekController(),
+                      height: 100,
+                      showMonth: false,
+                      minDate: DateTime.now().add(
+                        Duration(days: -365),
+                      ),
+                      maxDate: DateTime.now().add(
+                        Duration(days: 365),
+                      ),
+                      onDatePressed: (DateTime datetime) {
+                        // Do something
+                      },
+                    ),
                   ),
-                 
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ...CONSULT_TYPE.map((e) => _dashTypeList(e)).toList()
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
                   Expanded(
                       child: GridView.builder(
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: returnCrossAxis(width),
-                              mainAxisSpacing: 15.0,
-                              mainAxisExtent: 135,
-                              crossAxisSpacing: 8.0),
+                          padding: const EdgeInsets.all(0.0),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: returnCrossAxis(width),
+                                  mainAxisSpacing: 15.0,
+                                  mainAxisExtent: 135,
+                                  crossAxisSpacing: 8.0),
                           itemCount: timemodel.length,
-                          itemBuilder: (ctx, i) => getTimeItems(timemodel[i], i)))
+                          itemBuilder: (ctx, i) =>
+                              getTimeItems(timemodel[i], i, context)))
                 ],
               ),
             ),
@@ -346,6 +394,17 @@ class _TimeAndDateState extends State<TimeAndDate> {
           ],
         ),
       ),
+    );
+  }
+
+  //======================PAYMENT==============================
+  getPaymentWidget(context) {
+    return Column(
+      children: [
+        Text('Payment Information', style: getCustomFont(size: 19.0, color: Colors.black)),
+        const SizedBox(height: 10.0),
+        Container()
+      ],
     );
   }
 
@@ -378,7 +437,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
         ),
       );
   //-----------------------PAGE 2 -----------------------------
-  Widget checkOut() => Expanded(
+  Widget checkOut(context) => Expanded(
         child: Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 15.0),
           child: Column(
@@ -457,8 +516,10 @@ class _TimeAndDateState extends State<TimeAndDate> {
                 height: 5.0,
               ),
               Expanded(
-                  child: Column(
-                children: List.generate(2, (index) => bookSummaryItem()),
+                  child: SingleChildScrollView(
+                child: Column(
+                  children: List.generate(1, (index) => bookSummaryItem(context)),
+                ),
               )),
               getButton(context, () {
                 setState(() {
@@ -470,7 +531,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
         ),
       );
 
-  bookSummaryItem() => Container(
+  bookSummaryItem(context) => Container(
       padding: const EdgeInsets.all(15.0),
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       width: MediaQuery.of(context).size.width,
@@ -550,6 +611,50 @@ class _TimeAndDateState extends State<TimeAndDate> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
+                'Means',
+                style: GoogleFonts.poppins(
+                    color: Colors.black,
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w600),
+              ),
+              Text(
+                'Video call',
+                style: GoogleFonts.poppins(
+                    color: Colors.black45,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w400),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 9.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Patient Country',
+                style: GoogleFonts.poppins(
+                    color: Colors.black,
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w600),
+              ),
+              Text(
+                'Nigeria',
+                style: GoogleFonts.poppins(
+                    color: Colors.black45,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w400),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 9.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
                 'Slot Timing Fees',
                 style: GoogleFonts.poppins(
                     color: Colors.black,
@@ -602,5 +707,90 @@ class _TimeAndDateState extends State<TimeAndDate> {
         ),
       );
 
-  //-----------------------PAGE 3---------------------------
+  //-----------------------BOOKING FORM---------------------------
+  getBookingForm() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'You are booking a visit with Dr. Rajendra Mohanlal Gandhi. Please enter your booking details below.',
+          style: getCustomFont(size: 13.0, color: Colors.black),
+        ),
+        const SizedBox(
+          height: 15.0,
+        ),
+        Text(
+          'Are you booking for yourself?',
+          style: getCustomFont(size: 13.0, color: Colors.black),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(children: [
+              Radio(value: false, groupValue: true, onChanged: (b) {}),
+              Text(
+                'Yes',
+                style: getCustomFont(size: 13.0, color: Colors.black),
+              ),
+            ]),
+            Row(children: [
+              Radio(value: false, groupValue: true, onChanged: (b) {}),
+              Text(
+                'No',
+                style: getCustomFont(size: 13.0, color: Colors.black),
+              ),
+            ])
+          ],
+        ),
+        Text(
+          'Patient Name',
+          style: getCustomFont(size: 13.0, color: Colors.black),
+        ),
+        TextFormField(
+          style: getCustomFont(size: 13.0, color: Colors.black),
+          decoration: InputDecoration(
+            hintText: 'Enter Patient Name',
+            hintStyle: getCustomFont(size: 13.0, color: Colors.black45),
+          ),
+        ),
+        const SizedBox(
+          height: 15.0,
+        ),
+        Text(
+          'Do you have insurance?',
+          style: getCustomFont(size: 13.0, color: Colors.black),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(children: [
+              Radio(value: false, groupValue: true, onChanged: (b) {}),
+              Text(
+                'Yes',
+                style: getCustomFont(size: 13.0, color: Colors.black),
+              ),
+            ]),
+            Row(children: [
+              Radio(value: false, groupValue: true, onChanged: (b) {}),
+              Text(
+                'No',
+                style: getCustomFont(size: 13.0, color: Colors.black),
+              ),
+            ])
+          ],
+        ),
+        TextFormField(
+          style: getCustomFont(size: 13.0, color: Colors.black),
+          maxLines: 10,
+          keyboardType: TextInputType.multiline,
+          decoration: InputDecoration(
+              hintText: 'Enter Patient Name',
+              hintStyle: getCustomFont(size: 13.0, color: Colors.black45),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                  borderSide: BorderSide(width: 1.0, color: Colors.black))),
+        ),
+      ],
+    );
+  }
 }

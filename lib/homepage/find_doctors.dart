@@ -62,7 +62,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                   ]),
                 ),
                  const SizedBox(
-                        height: 150.0,
+                        height: 118.0,
                       ),
                 Expanded(
                     child: SingleChildScrollView(
@@ -235,59 +235,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
         ],
       );
 
-
-
-  Widget firstSlide() => Container(
-    width: 100.0,
-        margin: const EdgeInsets.only(right: 10.0),
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5.0),
-            border: Border.all(width: 1.0, color: Colors.grey.shade300),
-            color: Colors.white),
-        child: Column(children: [
-          const SizedBox(height: 10.0,),
-          Icon(Icons.monitor_heart_outlined, color: Colors.red),
-              const SizedBox(height: 7.0,),
-          Text('Heart Rate', style: getCustomFont(size: 12.0, color: Colors.black),),
-          const SizedBox(height: 7.0,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('12', style: getCustomFont(size: 14.0, color: Colors.black),),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text('bpm', style: getCustomFont(size: 12.0, color: Colors.black),),
-              ),
-            ],
-          ),
-          const SizedBox(height: 7.0,),
-        ],)
-      );
-
-      Widget secondSlide(data) => Container(
-    width: 130.0,
-    height: 139.0,
-        margin: const EdgeInsets.only(right: 10.0),
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(1.0),
-          color:   data['color']),
-        child: Column(children: [
-          const SizedBox(height: 10.0,),
-          Text('${data['title']}', 
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: getCustomFont(size: 14.0, color: Colors.white),),
-          const SizedBox(height: 15.0,),
-          Icon(data['icon'], color: data['iconColor']),
-           const SizedBox(height: 20.0,),
-            Text('${data['date']}', style: getCustomFont(size: 15.0, color: Colors.white),),
-            const SizedBox(height: 2.0,),
-        ],)
-      );
-
-      Widget advert() => Container(
+  Widget advert() => Container(
         width: MediaQuery.of(context).size.width - 90,
         margin: const EdgeInsets.only(right: 8.0),
         decoration: BoxDecoration(
@@ -432,7 +380,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
   Widget findDoctors() => Container(
         width: MediaQuery.of(context).size.width - 29,
         padding: const EdgeInsets.all(15.0),
-        margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+        margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
               color: Colors.black12,

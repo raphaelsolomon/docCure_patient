@@ -57,7 +57,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: Center(
-                        child: Image.asset('assets/imgs/register.png',
+                        child: Image.asset('assets/auth/1.jpeg',
                             repeat: ImageRepeat.noRepeat, fit: BoxFit.contain),
                       ),
                     ),
@@ -281,6 +281,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                       child: Text(
                     'with Email Address',
                     style: GoogleFonts.poppins(
+                      fontSize: 12.0,
                         color: isEmail ? Colors.white : BLUECOLOR),
                   )),
                 ),
@@ -303,7 +304,9 @@ class _AuthRegisterState extends State<AuthRegister> {
                   child: Center(
                       child: Text(
                     'with Mobile Number',
+                    maxLines: 1,
                     style: GoogleFonts.poppins(
+                      fontSize: 12.0,
                         color: !isEmail ? Colors.white : BLUECOLOR),
                   )),
                 ),

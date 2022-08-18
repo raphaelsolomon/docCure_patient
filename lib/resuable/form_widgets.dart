@@ -173,12 +173,12 @@ Widget socialAccount(icon, color, {callBack}) => GestureDetector(
       ),
     );
 
-getButton(context, callBack, {text = 'Sign In'}) => GestureDetector(
+getButton(context, callBack, {text = 'Sign In', color= BLUECOLOR, textcolor = Colors.white}) => GestureDetector(
       onTap: () => callBack(),
       child: Container(
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-            color: BLUECOLOR, borderRadius: BorderRadius.circular(100.0)),
+            color: color, borderRadius: BorderRadius.circular(100.0)),
         child: Padding(
           padding: const EdgeInsets.all(13.0),
           child: Center(
@@ -186,7 +186,7 @@ getButton(context, callBack, {text = 'Sign In'}) => GestureDetector(
               text,
               style: GoogleFonts.poppins(
                   fontSize: 19.0,
-                  color: Colors.white,
+                  color: textcolor,
                   fontWeight: FontWeight.normal),
             ),
           ),
@@ -215,7 +215,7 @@ getOtpForm({ctl, node}) => Container(
     );
 
 navDrawer(BuildContext context, scaffold) => Container(
-      width: (MediaQuery.of(context).size.width / 2) + 50.0,
+      width: (MediaQuery.of(context).size.width / 2) + 78.0,
       height: MediaQuery.of(context).size.height,
       color: Colors.white,
       child: SingleChildScrollView(
@@ -302,13 +302,13 @@ navDrawer(BuildContext context, scaffold) => Container(
               }
               return ExpansionTile(
                   leading: CircleAvatar(
-                        radius: 18.0,
-                        child: Icon(
-                          e.icon,
-                          color: Colors.white,
-                          size: 15.0,
-                        ),
-                      ),
+                    radius: 18.0,
+                    child: Icon(
+                      e.icon,
+                      color: Colors.white,
+                      size: 15.0,
+                    ),
+                  ),
                   title: Text(
                     e.title,
                     style: GoogleFonts.poppins(
@@ -318,16 +318,16 @@ navDrawer(BuildContext context, scaffold) => Container(
                   ),
                   children: e.children
                       .map((e) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 11.0),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: Text(e,
-                          
-                              style: getCustomFont(
-                                  size: 16.0,
-                                  color: Colors.black87.withOpacity(.7))),
-                        ),
-                      ))
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 50.0, vertical: 11.0),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Text(e,
+                                  style: getCustomFont(
+                                      size: 16.0,
+                                      color: Colors.black87.withOpacity(.7))),
+                            ),
+                          ))
                       .toList());
             })
           ],
@@ -357,6 +357,9 @@ setClickListener(e, BuildContext context) {
       break;
     case 6:
       context.read<HomeController>().setPage(6);
+      break;
+    case 10:
+      context.read<HomeController>().setPage(10);
       break;
 
     default:

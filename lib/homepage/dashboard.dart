@@ -5,6 +5,7 @@ import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/homepage/appointment.dart';
 import 'package:doccure_patient/homepage/doctor_profile.dart';
 import 'package:doccure_patient/homepage/find_doctors.dart';
+import 'package:doccure_patient/homepage/home.dart';
 import 'package:doccure_patient/homepage/invoice.dart';
 import 'package:doccure_patient/homepage/patient_profile.dart';
 import 'package:doccure_patient/homepage/search_doctor.dart';
@@ -51,6 +52,7 @@ class _DashBoardState extends State<DashBoard> {
   @override
   Widget build(BuildContext context) {
     final page = context.watch<HomeController>().getPage;
+ 
     return WillPopScope(
       onWillPop: () => context.read<HomeController>().onBackPress(),
       child: PickupLayout(
@@ -61,33 +63,36 @@ class _DashBoardState extends State<DashBoard> {
               backgroundColor: Colors.white,
               body: page == 0
                   ? FindDoctorsPage(scaffold)
-                  : page == 1
-                      ? VitalAndTracks(scaffold)
-                      : page == 4
-                          ? MyAppointment(scaffold)
-                          : page == 5
-                              ? ChatListScreen(scaffold, logController, _client)
-                              : page == 6
-                                  ? MyInvoicePage(scaffold)
-                                  : page == -2
-                                      ? MyProfile(scaffold)
-                                      : page == -4
-                                          ? DoctorProfile(scaffold)
-                                          : page == -3
-                                              ? SearchDoctor(scaffold)
-                                              : page == -1
-                                                  ? TimeAndDate(scaffold)
-                                                  : Container(
-                                                      child: Center(
-                                                        child: Text(
-                                                          'Development Mode..',
-                                                          style: getCustomFont(
-                                                              size: 19.0,
-                                                              color:
-                                                                  Colors.black),
-                                                        ),
-                                                      ),
-                                                    ))),
+                  : page == 10
+                      ? HomePage(scaffold)
+                      : page == 1
+                          ? VitalAndTracks(scaffold)
+                          : page == 4
+                              ? MyAppointment(scaffold)
+                              : page == 5
+                                  ? ChatListScreen(
+                                      scaffold, logController, _client)
+                                  : page == 6
+                                      ? MyInvoicePage(scaffold)
+                                      : page == -2
+                                          ? MyProfile(scaffold)
+                                          : page == -4
+                                              ? DoctorProfile(scaffold)
+                                              : page == -3
+                                                  ? SearchDoctor(scaffold)
+                                                  : page == -1
+                                                      ? TimeAndDate(scaffold)
+                                                      : Container(
+                                                          child: Center(
+                                                            child: Text(
+                                                              'Development Mode..',
+                                                              style: getCustomFont(
+                                                                  size: 19.0,
+                                                                  color: Colors
+                                                                      .black),
+                                                            ),
+                                                          ),
+                                                        ))),
     );
   }
 

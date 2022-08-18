@@ -57,7 +57,7 @@ class _AuthOtpState extends State<AuthOtp> {
             const SizedBox(
               height: 20.0,
             ),
-            Image.asset('assets/imgs/register.png',
+            Image.asset('assets/auth/3.jpeg',
                 repeat: ImageRepeat.noRepeat, fit: BoxFit.contain),
             const SizedBox(
               height: 20.0,

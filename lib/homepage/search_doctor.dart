@@ -35,8 +35,7 @@ class _SearchDoctorState extends State<SearchDoctor> {
         color: Color(0xFFf6f6f6),
         child: Column(children: [
           Container(
-            padding:
-                const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
             width: MediaQuery.of(context).size.width,
             color: BLUECOLOR,
             child: Column(children: [
@@ -71,9 +70,12 @@ class _SearchDoctorState extends State<SearchDoctor> {
                 height: 10.0,
               ),
               getRegisterForm(
-                  ctl: null, hint: 'Search for categories', icon: Icons.search, height: 45.0),
-                   const SizedBox(
-                height: 20.0,
+                  ctl: null,
+                  hint: 'Search for categories',
+                  icon: Icons.search,
+                  height: 49.0),
+              const SizedBox(
+                height: 13.0,
               ),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -81,38 +83,42 @@ class _SearchDoctorState extends State<SearchDoctor> {
                   children: [
                     ...List.generate(
                         catergories.length,
-                        (index) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal :8.0),
-                          child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    selected = '${catergories[index]}';
-                                  });
-                                },
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      '${catergories[index]}',
-                                      style: getCustomFont(
-                                          size: 17.0, color: Colors.white),
-                                    ),
-                                    const SizedBox(
-                                      height: 5.0,
-                                    ),
-                                    Container(
-                                      width: 80.0,
-                                      height: 3.0,
-                                      color: selected == '${catergories[index]}'
-                                          ? Colors.white
-                                          : Colors.transparent,
-                                    )
-                                  ],
-                                ),
-                              ),
-                        ))
+                        (index) => GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selected = '${catergories[index]}';
+                              });
+                            },
+                            child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0, vertical: 9.0),
+                                margin: const EdgeInsets.only(right: 8.0),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    border: Border.all(
+                                        width: 1.0,
+                                        color: selected == catergories[index]
+                                            ? Colors.white
+                                            : Colors.black),
+                                    color: selected == catergories[index]
+                                        ? Colors.lightBlue
+                                        : Colors.white),
+                                child: Text(
+                                  catergories[index],
+                                  maxLines: 1,
+                                  style: getCustomFont(
+                                    color: selected == catergories[index]
+                                        ? Colors.white
+                                        : Colors.black,
+                                    size: 12.0,
+                                  ),
+                                ))))
                   ],
                 ),
-              )
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
             ]),
           ),
           const SizedBox(
@@ -125,11 +131,10 @@ class _SearchDoctorState extends State<SearchDoctor> {
         ]));
   }
 
-
-   Widget findDoctors() => Container(
-        width: MediaQuery.of(context).size.width ,
+  Widget findDoctors() => Container(
+        width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.all(15.0),
-        margin: const EdgeInsets.symmetric(vertical: 7.0, horizontal: 13.0),
+        margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
               color: Colors.black12,
@@ -236,7 +241,7 @@ class _SearchDoctorState extends State<SearchDoctor> {
                                 itemCount: 5,
                                 itemSize: 15.0,
                                 itemPadding:
-                                    EdgeInsets.symmetric(horizontal: 0.0),
+                                    EdgeInsets.symmetric(horizontal: 2.0),
                                 itemBuilder: (context, _) => Icon(
                                   Icons.star,
                                   color: Colors.amber,
@@ -377,7 +382,7 @@ class _SearchDoctorState extends State<SearchDoctor> {
         ),
       );
 
-      Widget getProfileButton(context, callBack, {text = 'View Profile'}) =>
+  Widget getProfileButton(context, callBack, {text = 'View Profile'}) =>
       GestureDetector(
         onTap: () => callBack(),
         child: Container(
@@ -401,19 +406,25 @@ class _SearchDoctorState extends State<SearchDoctor> {
         ),
       );
 
-  Widget getButton(context, callBack, {text = 'Search Now'}) => GestureDetector(
+  Widget getButton(context, callBack,
+          {color = BLUECOLOR, text = 'Search Now'}) =>
+      GestureDetector(
         onTap: () => callBack(),
         child: Container(
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-              color: BLUECOLOR, borderRadius: BorderRadius.circular(8.0)),
+              color: color, borderRadius: BorderRadius.circular(7.0)),
           child: Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 8.0, vertical: 11.0),
             child: Center(
               child: Text(
                 text,
-                style: getCustomFont(
-                    size: 17.0, color: Colors.white, weight: FontWeight.normal),
+                maxLines: 1,
+                style: GoogleFonts.poppins(
+                    fontSize: 13.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal),
               ),
             ),
           ),

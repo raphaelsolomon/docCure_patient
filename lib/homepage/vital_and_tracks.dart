@@ -49,7 +49,7 @@ class _VitalAndTracksState extends State<VitalAndTracks> {
             padding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
             width: MediaQuery.of(context).size.width,
-            height: 90.0,
+            height: 100.0,
             color: BLUECOLOR,
             child: Column(children: [
               const SizedBox(
