@@ -7,9 +7,14 @@ import 'package:phone_form_field/phone_form_field.dart';
 import 'package:provider/provider.dart';
 
 getRegisterForm(
-        {ctl, obscure = false, hint, icon = Icons.email_outlined, cp}) =>
+        {ctl,
+        obscure = false,
+        hint,
+        icon = Icons.email_outlined,
+        cp,
+        height = 54.0}) =>
     Container(
-      height: 54.0,
+      height: height,
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100.0),
@@ -117,7 +122,7 @@ getPhoneNumberForm({ctl}) => Container(
               autovalidateMode: AutovalidateMode.disabled,
               decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(0.0),
-                  hintText: 'Phone Number', // default to null
+                  hintText: 'Mobile Number', // default to null
                   hintStyle: getCustomFont(size: 15.0, color: Colors.black45),
                   border: OutlineInputBorder(
                       borderSide:
@@ -175,7 +180,7 @@ getButton(context, callBack, {text = 'Sign In'}) => GestureDetector(
         decoration: BoxDecoration(
             color: BLUECOLOR, borderRadius: BorderRadius.circular(100.0)),
         child: Padding(
-          padding: const EdgeInsets.all(11.0),
+          padding: const EdgeInsets.all(13.0),
           child: Center(
             child: Text(
               text,
@@ -190,11 +195,11 @@ getButton(context, callBack, {text = 'Sign In'}) => GestureDetector(
     );
 
 getOtpForm({ctl, node}) => Container(
-      width: 50.0,
-      height: 50.0,
+      width: 55.0,
+      height: 45.0,
       decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(color: BLUECOLOR, width: 1.0),
+          border: Border.all(color: Colors.grey, width: 1.0),
           borderRadius: BorderRadius.circular(4.0)),
       child: TextFormField(
         controller: ctl,
@@ -262,7 +267,9 @@ navDrawer(BuildContext context, scaffold) => Container(
             const SizedBox(
               height: 5.0,
             ),
-            ...getNavdraweritem(context).map((e) => InkWell(
+            ...getNavdraweritem_(context).map((e) {
+              if (e.children.isEmpty) {
+                return InkWell(
                   onTap: () {
                     scaffold.currentState!.closeDrawer();
                     setClickListener(e, context);
@@ -270,12 +277,12 @@ navDrawer(BuildContext context, scaffold) => Container(
                   child: Container(
                     height: 45.0,
                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    margin: const EdgeInsets.only(bottom: 15.0),
+                    margin: const EdgeInsets.only(bottom: 10.0),
                     child: Row(children: [
                       CircleAvatar(
                         radius: 18.0,
                         child: Icon(
-                          e['image'],
+                          e.icon,
                           color: Colors.white,
                           size: 15.0,
                         ),
@@ -283,7 +290,7 @@ navDrawer(BuildContext context, scaffold) => Container(
                       const SizedBox(width: 15.0),
                       Flexible(
                           child: Text(
-                        '${e['title']}',
+                        e.title,
                         style: GoogleFonts.poppins(
                             fontSize: 16.0,
                             fontWeight: FontWeight.w500,
@@ -291,14 +298,45 @@ navDrawer(BuildContext context, scaffold) => Container(
                       ))
                     ]),
                   ),
-                ))
+                );
+              }
+              return ExpansionTile(
+                  leading: CircleAvatar(
+                        radius: 18.0,
+                        child: Icon(
+                          e.icon,
+                          color: Colors.white,
+                          size: 15.0,
+                        ),
+                      ),
+                  title: Text(
+                    e.title,
+                    style: GoogleFonts.poppins(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black87.withOpacity(.7)),
+                  ),
+                  children: e.children
+                      .map((e) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 11.0),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(e,
+                          
+                              style: getCustomFont(
+                                  size: 16.0,
+                                  color: Colors.black87.withOpacity(.7))),
+                        ),
+                      ))
+                      .toList());
+            })
           ],
         ),
       ),
     );
 
 setClickListener(e, BuildContext context) {
-  switch (e['index']) {
+  switch (e.index) {
     case 0:
       context.read<HomeController>().jumpToHome();
       break;

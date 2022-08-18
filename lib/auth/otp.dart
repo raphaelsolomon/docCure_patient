@@ -1,3 +1,4 @@
+import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,10 +38,11 @@ class _AuthOtpState extends State<AuthOtp> {
                   child: Icon(
                     Icons.arrow_back_ios,
                     color: Colors.black,
+                    size: 20.0,
                   ),
                 ),
                 Text(
-                  'Verify Your Number',
+                  'Two-Step Verification',
                   style: GoogleFonts.poppins(
                       fontSize: 18.0,
                       color: Colors.black,
@@ -61,7 +63,15 @@ class _AuthOtpState extends State<AuthOtp> {
               height: 20.0,
             ),
             Text(
-              'Enter 4 digit verification code sent on your phone',
+              'Please enter the OTP (one time password) to verify your account. A code has been sent to this ',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                  fontSize: 14.0,
+                  color: Colors.black45,
+                  fontWeight: FontWeight.w400),
+            ),
+            Text(
+              '+1**********179',
               textAlign: TextAlign.center,
               style: GoogleFonts.poppins(
                   fontSize: 14.0,
@@ -74,11 +84,14 @@ class _AuthOtpState extends State<AuthOtp> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   getOtpForm(),
+                  const SizedBox(width: 8.0,),
                   getOtpForm(),
+                   const SizedBox(width: 8.0,),
                   getOtpForm(),
+                   const SizedBox(width: 8.0,),
                   getOtpForm(),
                 ],
               ),
@@ -86,7 +99,7 @@ class _AuthOtpState extends State<AuthOtp> {
             const SizedBox(
               height: 50.0,
             ),
-            getButton(context, () {}, text: 'Proceed'),
+            getButton(context, () {}, text: 'verify'),
             const SizedBox(
               height: 30.0,
             ),
@@ -95,7 +108,7 @@ class _AuthOtpState extends State<AuthOtp> {
               children: [
                 Flexible(
                   child: Text(
-                    'Didn’t receive otp?',
+                    'Not received your code? ',
                     style: GoogleFonts.poppins(
                         fontSize: 15.0,
                         color: Colors.black45,
@@ -107,14 +120,25 @@ class _AuthOtpState extends State<AuthOtp> {
                 ),
                 InkWell(
                   onTap: () {},
-                  child: Text('Resend',
+                  child: Text('Resend code',
                       style: GoogleFonts.poppins(
                           fontSize: 15.0,
-                          color: Color(0xFFE72529),
+                          color: BLUECOLOR,
                           fontWeight: FontWeight.normal)),
                 )
               ],
             ),
+            const SizedBox(
+              height: 30.0,
+            ),
+            InkWell(
+                  onTap: () {},
+                  child: Text('Call me',
+                      style: GoogleFonts.poppins(
+                          fontSize: 15.0,
+                          color: BLUECOLOR,
+                          fontWeight: FontWeight.normal)),
+                ),
             const SizedBox(
               height: 50.0,
             ),

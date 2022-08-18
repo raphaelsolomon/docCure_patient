@@ -3,6 +3,7 @@ import 'package:doccure_patient/callscreens/pickup/pick_layout.dart';
 import 'package:doccure_patient/chat/chat_list.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/homepage/appointment.dart';
+import 'package:doccure_patient/homepage/doctor_profile.dart';
 import 'package:doccure_patient/homepage/find_doctors.dart';
 import 'package:doccure_patient/homepage/invoice.dart';
 import 'package:doccure_patient/homepage/patient_profile.dart';
@@ -70,20 +71,23 @@ class _DashBoardState extends State<DashBoard> {
                                   ? MyInvoicePage(scaffold)
                                   : page == -2
                                       ? MyProfile(scaffold)
-                                      : page == -3
-                                          ? SearchDoctor(scaffold)
-                                          : page == -1
-                                              ? TimeAndDate(scaffold)
-                                              : Container(
-                                                  child: Center(
-                                                    child: Text(
-                                                      'Development Mode..',
-                                                      style: getCustomFont(
-                                                          size: 19.0,
-                                                          color: Colors.black),
-                                                    ),
-                                                  ),
-                                                ))),
+                                      : page == -4
+                                          ? DoctorProfile(scaffold)
+                                          : page == -3
+                                              ? SearchDoctor(scaffold)
+                                              : page == -1
+                                                  ? TimeAndDate(scaffold)
+                                                  : Container(
+                                                      child: Center(
+                                                        child: Text(
+                                                          'Development Mode..',
+                                                          style: getCustomFont(
+                                                              size: 19.0,
+                                                              color:
+                                                                  Colors.black),
+                                                        ),
+                                                      ),
+                                                    ))),
     );
   }
 

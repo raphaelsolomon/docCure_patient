@@ -75,7 +75,7 @@ class _AuthLoginState extends State<AuthLogin> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Sign in your account to continue',
+                    'Sign in to your account to continue',
                     style: GoogleFonts.poppins(
                         fontSize: 13.0, color: Colors.black45),
                   ),
@@ -91,8 +91,7 @@ class _AuthLoginState extends State<AuthLogin> {
               isEmail
                   ? getRegisterForm(
                       ctl: null, obscure: false, hint: 'Email or username')
-                  : getPhoneNumberForm(
-                      ctl: phoneController),
+                  : getPhoneNumberForm(ctl: phoneController),
               const SizedBox(
                 height: 20.0,
               ),
@@ -147,14 +146,16 @@ class _AuthLoginState extends State<AuthLogin> {
                 height: 26.0,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  socialAccount(FontAwesome.facebook, Color(0xFF1777F2),
-                      callBack: () {}),
-                  socialAccount(FontAwesome.linkedin, Color(0xFF0078B5),
-                      callBack: () {}),
-                  socialAccount(FontAwesome.google, Colors.redAccent,
-                      callBack: () {}),
+                 socialAccount(FontAwesome.facebook, Color(0xFF1777F2),
+                            callBack: () {}),
+                            const SizedBox(width: 20.0,),
+                        socialAccount(FontAwesome.linkedin, Color(0xFF0078B5),
+                            callBack: () {}),
+                            const SizedBox(width: 20.0,),
+                        socialAccount(FontAwesome.google, Colors.redAccent,
+                            callBack: () {}),
                 ],
               ),
               const SizedBox(
@@ -177,10 +178,10 @@ class _AuthLoginState extends State<AuthLogin> {
                   ),
                   InkWell(
                     onTap: () => Get.to(() => AuthRegister()),
-                    child: Text('Register',
+                    child: Text('Sign Up',
                         style: GoogleFonts.poppins(
-                            fontSize: 15.0,
-                            color: Color(0xFFE72529),
+                            fontSize: 16.0,
+                            color: BLUECOLOR,
                             fontWeight: FontWeight.normal)),
                   ),
                 ],
@@ -232,7 +233,7 @@ class _AuthLoginState extends State<AuthLogin> {
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                       child: Text(
-                    'with Phone Number',
+                    'with Mobile Number',
                     style: GoogleFonts.poppins(
                         color: !isEmail ? Colors.white : BLUECOLOR),
                   )),

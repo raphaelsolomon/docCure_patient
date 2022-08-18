@@ -77,7 +77,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                       ],
                     ),
                     Text(
-                      'Sign in your account to continue',
+                      'Sign-up to your account to continue',
                       style: GoogleFonts.poppins(
                           fontSize: 13.0, color: Colors.black45),
                     ),
@@ -107,7 +107,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                       height: 15.0,
                     ),
                     GestureDetector(
-                      onTap: () => isEmail ? showBottomSheet() : null,
+                      onTap: () =>  showBottomSheet() ,
                       child: getCountryForm(text: country),
                     ),
                     const SizedBox(
@@ -147,7 +147,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                           style: GoogleFonts.poppins(
                               fontSize: 13.0,
                               color: Color(0xFF838391),
-                              fontWeight: FontWeight.w700),
+                              fontWeight: FontWeight.w400),
                         ),
                         const SizedBox(width: 15.0),
                         Flexible(
@@ -161,12 +161,14 @@ class _AuthRegisterState extends State<AuthRegister> {
                       height: 26.0,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         socialAccount(FontAwesome.facebook, Color(0xFF1777F2),
                             callBack: () {}),
+                            const SizedBox(width: 20.0,),
                         socialAccount(FontAwesome.linkedin, Color(0xFF0078B5),
                             callBack: () {}),
+                            const SizedBox(width: 20.0,),
                         socialAccount(FontAwesome.google, Colors.redAccent,
                             callBack: () {}),
                       ],
@@ -193,8 +195,8 @@ class _AuthRegisterState extends State<AuthRegister> {
                           onTap: () => Get.to(() => AuthLogin()),
                           child: Text('Sign In',
                               style: GoogleFonts.poppins(
-                                  fontSize: 15.0,
-                                  color: Color(0xFFE72529),
+                                  fontSize: 16.0,
+                                  color: BLUECOLOR,
                                   fontWeight: FontWeight.normal)),
                         )
                       ],
@@ -300,7 +302,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                       child: Text(
-                    'with Phone Number',
+                    'with Mobile Number',
                     style: GoogleFonts.poppins(
                         color: !isEmail ? Colors.white : BLUECOLOR),
                   )),

@@ -13,6 +13,7 @@ class AuthForgotPass extends StatefulWidget {
 }
 
 class _AuthForgotPassState extends State<AuthForgotPass> {
+  bool isEmail = true;
   @override
   void dispose() {
     super.dispose();
@@ -39,10 +40,11 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
                     child: Icon(
                       Icons.arrow_back_ios,
                       color: Colors.black,
+                      size: 20.0,
                     ),
                   ),
                   Text(
-                    'Forgot Password',
+                    '',
                     style: GoogleFonts.poppins(
                         fontSize: 18.0,
                         color: Colors.black,
@@ -62,18 +64,40 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
               const SizedBox(
                 height: 20.0,
               ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Forgot Password?',
+                    style: GoogleFonts.poppins(
+                        fontSize: 18.0, color: Colors.black),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  optionButton(context)
+                ],
+              ),
+              const SizedBox(
+                height: 25.0,
+              ),
               Text(
-                'Enter your Registered email address to receive your password reset code',
+                isEmail
+                    ? 'Enter your Registered email address to receive your password reset instruction'
+                    : 'Enter your Registered Mobile Number to receive your password reset instruction',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                     fontSize: 14.0,
-                    color: Colors.black,
+                    color: Colors.black54,
                     fontWeight: FontWeight.w400),
               ),
               const SizedBox(
-                height: 50.0,
+                height: 30.0,
               ),
-              getRegisterForm(ctl: null, obscure: false, hint: 'Email Address'),
+              isEmail
+                  ? getRegisterForm(
+                      ctl: null, obscure: false, hint: 'Email Address')
+                  : getPhoneNumberForm(ctl: null),
               const SizedBox(
                 height: 50.0,
               ),
@@ -100,4 +124,52 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
       )),
     );
   }
+
+  Widget optionButton(context) => Row(
+        children: [
+          Flexible(
+            child: GestureDetector(
+              onTap: () => setState(() => isEmail = true),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    color: isEmail ? BLUECOLOR : Colors.transparent,
+                    borderRadius: BorderRadius.circular(5.0)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                      child: Text(
+                    'with Email Address',
+                    style: GoogleFonts.poppins(
+                        color: isEmail ? Colors.white : BLUECOLOR),
+                  )),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 20.0,
+          ),
+          Flexible(
+            child: GestureDetector(
+              onTap: () => setState(() => isEmail = false),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    color: !isEmail ? BLUECOLOR : Colors.transparent,
+                    borderRadius: BorderRadius.circular(5.0)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                      child: Text(
+                    'with Mobile Number',
+                    style: GoogleFonts.poppins(
+                        color: !isEmail ? Colors.white : BLUECOLOR),
+                  )),
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
 }

@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:doccure_patient/model/nav_drawer.model.dart';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
@@ -32,6 +33,37 @@ List<User> users = [
           'https://www.whatspaper.com/wp-content/uploads/2021/12/hd-itachi-uchiha-wallpaper-whatspaper-21.jpg',
       status: 'Online',
       state: 1),
+];
+
+List secondList = [
+  {
+    'title': 'BMI Status',
+    'icon': Icons.trending_neutral,
+    'date': 'Last upload 6d',
+    'iconColor': Colors.purple,
+    'color': Colors.purple.shade300
+  },
+  {
+    'title': 'Heart Rate Status',
+    'icon': FontAwesome5.chart_line,
+    'iconColor': Colors.red,
+    'date': 'Last upload 2d',
+    'color': Colors.red.shade300
+  },
+  {
+    'title': 'FCB Status',
+    'icon': FontAwesome5.chart_bar,
+    'iconColor': Colors.blueGrey,
+    'date': 'Last upload 5d',
+    'color': Colors.blueGrey.shade300
+  },
+  {
+    'title': 'Weight Status',
+    'icon': Icons.search_off_rounded,
+    'iconColor': Colors.orange,
+    'date': 'Last upload 3d',
+    'color': Colors.orange.shade300
+  },
 ];
 
 const BoxName = 'userBox';
@@ -118,6 +150,97 @@ getNavdraweritem(BuildContext context) {
     {'image': FontAwesome5.calendar, 'title': 'My Appointment', 'index': 4},
     {'image': FontAwesome5.facebook_messenger, 'title': 'message', 'index': 5},
     {'image': FontAwesome5.file_invoice, 'title': 'My Invoices', 'index': 6},
+  ];
+}
+
+List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
+  return [
+    NavDrawerItem(
+        title: 'Home',
+        icon: FontAwesome.home,
+        children: [],
+        isOpen: false,
+        index: 0),
+        NavDrawerItem(
+        title: 'Dashboard',
+        icon: FontAwesome.home,
+        children: [],
+        isOpen: false,
+        index: 10),
+    NavDrawerItem(
+        title: 'My Vitals & Target',
+        icon: FontAwesome.heart,
+        children: [],
+        isOpen: false,
+        index: 1),
+    NavDrawerItem(
+        title: 'E-store',
+        icon: FontAwesome5.store,
+        children: [],
+        isOpen: false,
+        index: 2),
+    NavDrawerItem(
+        title: 'Doctor Booking',
+        icon: FontAwesome5.user_nurse,
+        children: [],
+        isOpen: false,
+        index: 3),
+    NavDrawerItem(
+        title: 'My Appointment',
+        icon: FontAwesome.home,
+        children: [],
+        isOpen: false,
+        index: 4),
+    NavDrawerItem(
+        title: 'Message',
+        icon: FontAwesome5.facebook_messenger,
+        children: [],
+        isOpen: false,
+        index: 5),
+    NavDrawerItem(
+        title: 'My Transaction',
+        icon: FontAwesome5.file_invoice,
+        children: [
+          'My Coupons',
+          'My Offer',
+          'My Invoices',
+          'Payment methods',
+          'Accounts',
+          'Favorites',
+          'Reviews'
+        ],
+        isOpen: false,
+        index: 6),
+    NavDrawerItem(
+        title: 'Company',
+        icon: FontAwesome5.industry,
+        children: [
+          'My invites',
+          'My Referrals',
+          'Contact Us',
+          'Rate Us',
+          'Share App'
+        ],
+        isOpen: false,
+        index: 7),
+    NavDrawerItem(
+        title: 'Settings',
+        icon: Icons.settings,
+        children: [
+          'Language',
+          'Countr',
+          'Currency',
+          'Change Password',
+          'Notifications'
+        ],
+        isOpen: false,
+        index: 8),
+    NavDrawerItem(
+        title: 'Sign Out',
+        icon: FontAwesome5.sign_out_alt,
+        children: [],
+        isOpen: false,
+        index: 9),
   ];
 }
 
