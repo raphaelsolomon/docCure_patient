@@ -1,5 +1,7 @@
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MyAppointment extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffold;
@@ -55,10 +57,15 @@ class _MyAppointmentState extends State<MyAppointment> {
                       ],
                     ),
                   ),
-                  Icon(
-                    Icons.notifications_active,
-                    color: Colors.white,
-                  )
+                  InkWell(
+                          onTap: () {
+                            context.read<HomeController>().setPage(12);
+                          },
+                          child: Icon(
+                            Icons.notifications_active,
+                            color: Colors.white,
+                          ),
+                        )
                 ],
               )
             ]),

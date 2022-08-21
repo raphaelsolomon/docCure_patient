@@ -1,8 +1,10 @@
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class DoctorProfile extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffold;
@@ -58,9 +60,14 @@ class _DoctorProfileState extends State<DoctorProfile> {
                       ],
                     ),
                   ),
-                  Icon(
-                    Icons.notifications_active,
-                    color: Colors.white,
+                  InkWell(
+                    onTap: () {
+                      context.read<HomeController>().setPage(12);
+                    },
+                    child: Icon(
+                      Icons.notifications_active,
+                      color: Colors.white,
+                    ),
                   )
                 ],
               )

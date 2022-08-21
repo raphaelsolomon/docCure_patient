@@ -1,7 +1,11 @@
+import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:provider/provider.dart';
@@ -52,6 +56,48 @@ getRegisterForm(
                   const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
               child: Icon(
                 icon,
+                size: 18.0,
+                color: Color(0xFF838383),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+
+getRegisterPasswordForm({ctl, hint}) => Container(
+      height: 54.0,
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(100.0),
+        border: Border.all(color: const Color(0xFFE8E8E8), width: 1.0),
+        color: Colors.white,
+      ),
+      child: Row(
+        children: [
+          Flexible(
+              child: TextFormField(
+            controller: ctl,
+            obscureText: true,
+            keyboardType: TextInputType.text,
+            style: getCustomFont(size: 15.0, color: Colors.black45),
+            decoration: InputDecoration(
+                hintText: hint,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+                hintStyle: getCustomFont(size: 15.0, color: Colors.black45),
+                border: const OutlineInputBorder(borderSide: BorderSide.none)),
+          )),
+          PhysicalModel(
+            elevation: 10.0,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(100.0),
+            shadowColor: Colors.grey,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+              child: Icon(
+                Icons.lock_outlined,
                 size: 18.0,
                 color: Color(0xFF838383),
               ),
@@ -173,7 +219,9 @@ Widget socialAccount(icon, color, {callBack}) => GestureDetector(
       ),
     );
 
-getButton(context, callBack, {text = 'Sign In', color= BLUECOLOR, textcolor = Colors.white}) => GestureDetector(
+getButton(context, callBack,
+        {text = 'Sign In', color = BLUECOLOR, textcolor = Colors.white}) =>
+    GestureDetector(
       onTap: () => callBack(),
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -316,24 +364,62 @@ navDrawer(BuildContext context, scaffold) => Container(
                         fontWeight: FontWeight.w500,
                         color: Colors.black87.withOpacity(.7)),
                   ),
-                  children: e.children
-                      .map((e) => Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 50.0, vertical: 11.0),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: Text(e,
-                                  style: getCustomFont(
-                                      size: 16.0,
-                                      color: Colors.black87.withOpacity(.7))),
-                            ),
-                          ))
-                      .toList());
+                  children: e.children.map((entries) {
+                    return GestureDetector(
+                      onTap: () => setChildrenClickListener(entries, context),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 50.0, vertical: 11.0),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(entries['title'],
+                              style: getCustomFont(
+                                  size: 16.0,
+                                  color: Colors.black87.withOpacity(.7))),
+                        ),
+                      ),
+                    );
+                  }).toList());
             })
           ],
         ),
       ),
     );
+
+setChildrenClickListener(e, BuildContext context) {
+  switch (e['index']) {
+    case 6:
+      context.read<HomeController>().setPage(6);
+      break;
+    case 8:
+      context.read<HomeController>().setPage(8);
+      break;
+    case 9:
+      context.read<HomeController>().setPage(9);
+      break;
+    case -5:
+      context.read<HomeController>().setPage(-5);
+      break;
+    case -6:
+      context.read<HomeController>().setPage(-6);
+      break;
+    case -7:
+      context.read<HomeController>().setPage(-7);
+      break;
+    case -8:
+      context.read<HomeController>().setPage(-8);
+      break;
+    case -9:
+      context.read<HomeController>().setPage(-9);
+      break;
+    case -12:
+      context.read<HomeController>().setPage(-12);
+      break;
+     case -13:
+     dialogMessage(context, language(context));
+      break;
+  }
+}
 
 setClickListener(e, BuildContext context) {
   switch (e.index) {
@@ -347,7 +433,7 @@ setClickListener(e, BuildContext context) {
       context.read<HomeController>().setPage(2);
       break;
     case 3:
-      context.read<HomeController>().setPage(3);
+      context.read<HomeController>().setPage(-3);
       break;
     case 4:
       context.read<HomeController>().setPage(4);
@@ -355,15 +441,93 @@ setClickListener(e, BuildContext context) {
     case 5:
       context.read<HomeController>().setPage(5);
       break;
-    case 6:
-      context.read<HomeController>().setPage(6);
+    case 7:
+      context.read<HomeController>().setPage(7);
       break;
     case 10:
       context.read<HomeController>().setPage(10);
       break;
+    case -2:
+      context.read<HomeController>().setPage(-2);
+      break;
+     case -10:
+      context.read<HomeController>().setPage(-10);
+      break;
+    case -11:
+      context.read<HomeController>().setPage(-11);
+      break;
+    case 11:
+      Get.offAll(() => AuthLogin());
+      break;    
 
     default:
       context.read<HomeController>().jumpToHome();
       break;
   }
 }
+
+Widget dropDown({list, text, label}) => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '$text',
+            style: getCustomFont(size: 12.0, color: Colors.black),
+          ),
+          const SizedBox(
+            height: 7.0,
+          ),
+          Row(
+            children: [
+              Flexible(
+                child: Container(
+                  height: 45.0,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFFFFFFF),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                  margin: const EdgeInsets.only(top: 5.0),
+                  child: FormBuilderDropdown(
+                    name: 'skill',
+                    icon: const Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Colors.black,
+                    ),
+                    decoration: InputDecoration(
+                      label: Text(
+                        '$label',
+                        style: getCustomFont(size: 12.0, color: Colors.black),
+                      ),
+                      labelStyle:
+                          getCustomFont(size: 12.0, color: Colors.black),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 9.9, vertical: 5.0),
+                      border: OutlineInputBorder(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5.0)),
+                        borderSide: BorderSide(width: 1.0, color: Colors.grey),
+                      ),
+                    ),
+                    // initialValue: 'Male',
+                    items: ['boy', 'girl', 'man', 'woman']
+                        .map((gender) => DropdownMenuItem(
+                              value: gender,
+                              child: Text(
+                                gender,
+                                style: getCustomFont(
+                                    size: 13.0, color: Colors.black),
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 10.0,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );

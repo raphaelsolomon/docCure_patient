@@ -6,6 +6,7 @@ import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -56,24 +57,24 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<HomeController>(create: (_) => HomeController()),
       ],
       child: GetMaterialApp(
-        localizationsDelegates: const [PhoneFieldLocalization.delegate],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          PhoneFieldLocalization.delegate],
+        locale: Locale('en', ''),
         supportedLocales: const [
           Locale('en', ''),
-          Locale('fr', ''),
-          Locale('es', ''),
-          Locale('el', ''),
-          Locale('de', ''),
-          Locale('it', ''),
-          Locale('ru', ''),
-          Locale('sv', ''),
-          Locale('tr', ''),
-          Locale('zh', ''),
+          Locale('ar', ''),
         ],
         title: 'DocCure Patient',
         defaultTransition: Transition.zoom,
         debugShowCheckedModeBanner: true,
         theme:
-            ThemeData(primarySwatch: Colors.blue, primaryColor: Colors.black54),
+            ThemeData(
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              primarySwatch: Colors.blue, 
+              primaryColor: Colors.black54),
         home: box.get('first') == null
             ? const OnBoardingScreen()
             : const AuthLogin(),

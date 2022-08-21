@@ -1,12 +1,25 @@
 import 'package:agora_rtm/agora_rtm.dart';
+import 'package:doccure_patient/auth/change_password.dart';
 import 'package:doccure_patient/callscreens/pickup/pick_layout.dart';
 import 'package:doccure_patient/chat/chat_list.dart';
+import 'package:doccure_patient/company/favourite.dart';
+import 'package:doccure_patient/company/medicalrecord.dart';
+import 'package:doccure_patient/company/myoffer.dart';
+import 'package:doccure_patient/company/myprescription.dart';
+import 'package:doccure_patient/company/myreferral.dart';
+import 'package:doccure_patient/company/notification.dart';
+import 'package:doccure_patient/company/notificationsetting.dart';
+import 'package:doccure_patient/company/rateus.dart';
+import 'package:doccure_patient/company/shareapp.dart';
+import 'package:doccure_patient/company/support.dart';
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/homepage/appointment.dart';
 import 'package:doccure_patient/homepage/doctor_profile.dart';
 import 'package:doccure_patient/homepage/find_doctors.dart';
 import 'package:doccure_patient/homepage/home.dart';
 import 'package:doccure_patient/homepage/invoice.dart';
+import 'package:doccure_patient/homepage/myfamily.dart';
 import 'package:doccure_patient/homepage/patient_profile.dart';
 import 'package:doccure_patient/homepage/search_doctor.dart';
 import 'package:doccure_patient/homepage/time_and_date.dart';
@@ -38,6 +51,7 @@ class _DashBoardState extends State<DashBoard> {
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
+      dialogMessage(context, subscribe(context));
       createClient();
     });
     super.initState();
@@ -52,7 +66,7 @@ class _DashBoardState extends State<DashBoard> {
   @override
   Widget build(BuildContext context) {
     final page = context.watch<HomeController>().getPage;
- 
+
     return WillPopScope(
       onWillPop: () => context.read<HomeController>().onBackPress(),
       child: PickupLayout(
@@ -65,34 +79,54 @@ class _DashBoardState extends State<DashBoard> {
                   ? FindDoctorsPage(scaffold)
                   : page == 10
                       ? HomePage(scaffold)
-                      : page == 1
-                          ? VitalAndTracks(scaffold)
-                          : page == 4
-                              ? MyAppointment(scaffold)
-                              : page == 5
-                                  ? ChatListScreen(
-                                      scaffold, logController, _client)
-                                  : page == 6
-                                      ? MyInvoicePage(scaffold)
-                                      : page == -2
-                                          ? MyProfile(scaffold)
-                                          : page == -4
-                                              ? DoctorProfile(scaffold)
-                                              : page == -3
-                                                  ? SearchDoctor(scaffold)
-                                                  : page == -1
-                                                      ? TimeAndDate(scaffold)
-                                                      : Container(
-                                                          child: Center(
-                                                            child: Text(
-                                                              'Development Mode..',
-                                                              style: getCustomFont(
-                                                                  size: 19.0,
-                                                                  color: Colors
-                                                                      .black),
-                                                            ),
-                                                          ),
-                                                        ))),
+                      : page == 12
+                          ? NotificationPage()
+                          : page == 1
+                              ? VitalAndTracks(scaffold)
+                              : page == 4
+                                  ? MyAppointment(scaffold)
+                                  : page == 5
+                                      ? ChatListScreen(scaffold, logController, _client)
+                                      : page == 6
+                                          ? MyInvoicePage(scaffold)
+                                          : page == 7
+                                              ? MyFamily()
+                                              : page == 8
+                                                  ? MyFavourite(scaffold)
+                                                  : page == 9
+                                                      ? MyReferrals()
+                                                      : page == -2
+                                                          ? MyProfile(scaffold)
+                                                          : page == -4
+                                                              ? DoctorProfile(scaffold)
+                                                              : page == -5
+                                                                  ? NotificationSettingsPage()
+                                                                  : page == -6
+                                                                      ? RateUS()
+                                                                      : page == -7
+                                                                          ? ShareApp()
+                                                                          : page == -8
+                                                                              ? AuthChangePass()
+                                                                              : page == -9
+                                                                                  ? SupportPage()
+                                                                                  : page == -10
+                                                                                      ? MedicalRecords(scaffold)
+                                                                                      : page == -11
+                                                                                          ? Prescriptions(scaffold)
+                                                                                          : page == - 12 
+                                                                                          ? MyOffer()
+                                                                                          :page == -3
+                                                                                              ? SearchDoctor(scaffold)
+                                                                                              : page == -1
+                                                                                                  ? TimeAndDate(scaffold)
+                                                                                                  : Container(
+                                                                                                      child: Center(
+                                                                                                        child: Text(
+                                                                                                          'Development Mode..',
+                                                                                                          style: getCustomFont(size: 19.0, color: Colors.black),
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                    ))),
     );
   }
 

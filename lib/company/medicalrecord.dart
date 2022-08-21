@@ -3,15 +3,10 @@ import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MyInvoicePage extends StatefulWidget {
+class MedicalRecords extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffold;
-  const MyInvoicePage(this.scaffold, {Key? key}) : super(key: key);
+  const MedicalRecords(this.scaffold, {Key? key}) : super(key: key);
 
-  @override
-  State<MyInvoicePage> createState() => _MyInvoicePageState();
-}
-
-class _MyInvoicePageState extends State<MyInvoicePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,15 +30,14 @@ class _MyInvoicePageState extends State<MyInvoicePage> {
                     child: Row(
                       children: [
                         GestureDetector(
-                            onTap: () =>
-                                widget.scaffold.currentState!.openDrawer(),
+                            onTap: () => scaffold.currentState!.openDrawer(),
                             child: Icon(Icons.menu, color: Colors.white)),
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text('Invoices',
+                        Text('My Medical Records',
                             style:
-                                getCustomFont(color: Colors.white, size: 18.0))
+                                getCustomFont(size: 18.0, color: Colors.white))
                       ],
                     ),
                   ),
@@ -60,19 +54,16 @@ class _MyInvoicePageState extends State<MyInvoicePage> {
               )
             ]),
           ),
-          Expanded(
-              child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [...List.generate(6, (index) => invoiceItem())],
-              ),
-            ),
-          ))
+          const SizedBox(height: 10.0,),
+          Expanded(child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+            itemCount: 10,
+            shrinkWrap: true,
+            itemBuilder: ((context, index) => medicalRecordItem(context))))
         ]));
   }
 
-  Widget invoiceItem() {
+    Widget medicalRecordItem(context) {
     return Container(
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
@@ -82,7 +73,6 @@ class _MyInvoicePageState extends State<MyInvoicePage> {
             color: Colors.white,
             boxShadow: SHADOW),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -94,7 +84,7 @@ class _MyInvoicePageState extends State<MyInvoicePage> {
                       size: 15.0, color: Colors.black, weight: FontWeight.w400),
                 )),
                 Text(
-                  'Paid on - 14 Mar 2022',
+                  '14 Mar 2022',
                   style: getCustomFont(
                       size: 15.0,
                       color: Colors.black45,
@@ -116,19 +106,26 @@ class _MyInvoicePageState extends State<MyInvoicePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text(
+                        'Dr. Ruby Perrln',
+                        style: getCustomFont(
+                            color: Colors.black,
+                            size: 19.0,
+                            weight: FontWeight.w400),
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Michelle Fairfax',
+                            'Dental',
                             style: getCustomFont(
-                                color: Colors.black,
-                                size: 19.0,
+                                color: Colors.black54,
+                                size: 14.0,
                                 weight: FontWeight.w400),
                           ),
                           Flexible(
                             child: Text(
-                              '\$450',
+                              'Dental Filling',
                               style: getCustomFont(
                                   color: Colors.black,
                                   size: 13.0,
@@ -138,18 +135,27 @@ class _MyInvoicePageState extends State<MyInvoicePage> {
                         ],
                       ),
                       Text(
-                        '#PT0025',
+                        'Dental-test.pdf',
                         style: getCustomFont(
-                            color: Colors.black45,
+                            color: Colors.black54,
                             size: 14.0,
                             weight: FontWeight.w400),
                       ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: getButton(context, () {}),
-                        ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Row(
+                        children: [
+                          getButton(context, () {},
+                              color: Colors.lightGreen.shade300),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          getButton(context, () {},
+                              icon: Icons.print,
+                              text: 'Print',
+                              color: Colors.grey),
+                        ],
                       )
                     ],
                   ),
@@ -160,22 +166,37 @@ class _MyInvoicePageState extends State<MyInvoicePage> {
         ));
   }
 
-  Widget getButton(context, callBack) => GestureDetector(
+  Widget getButton(context, callBack,
+          {text = 'View',
+          icon = Icons.remove_red_eye,
+          color = Colors.lightBlueAccent}) =>
+      GestureDetector(
         onTap: () => callBack(),
         child: Container(
-          width: 100.0,
           decoration: BoxDecoration(
-              color: Colors.lightBlueAccent,
-              borderRadius: BorderRadius.circular(50.0)),
+              color: color, borderRadius: BorderRadius.circular(50.0)),
           child: Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.0),
-            child: Center(
-              child: Text(
-                'View',
-                style: getCustomFont(
-                    size: 14.0, color: Colors.white, weight: FontWeight.normal),
-              ),
+                const EdgeInsets.symmetric(horizontal: 14.0, vertical: 7.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(
+                  icon,
+                  size: 14.0,
+                  color: Colors.white,
+                ),
+                const SizedBox(
+                  width: 2.0,
+                ),
+                Text(
+                  '$text',
+                  style: getCustomFont(
+                      size: 14.0,
+                      color: Colors.white,
+                      weight: FontWeight.normal),
+                ),
+              ],
             ),
           ),
         ),

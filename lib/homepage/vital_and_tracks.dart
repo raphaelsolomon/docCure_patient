@@ -1,6 +1,9 @@
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/dialog/subscribe.dart';
+import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:provider/provider.dart';
 
 class VitalAndTracks extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffold;
@@ -73,10 +76,15 @@ class _VitalAndTracksState extends State<VitalAndTracks> {
                       ],
                     ),
                   ),
-                  Icon(
-                    Icons.notifications_active,
-                    color: Colors.white,
-                  )
+                  InkWell(
+                          onTap: () {
+                            context.read<HomeController>().setPage(12);
+                          },
+                          child: Icon(
+                            Icons.notifications_active,
+                            color: Colors.white,
+                          ),
+                        )
                 ],
               )
             ]),
@@ -122,59 +130,66 @@ class _VitalAndTracksState extends State<VitalAndTracks> {
   }
 
   getVitalItems(item) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.all(10.0),
-      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.0),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: Colors.white,
-          boxShadow: SHADOW),
-      child: Row(children: [
-        Flexible(
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundColor: item['color'],
-                radius: 24,
-                child: Icon(
-                  item['icon'],
-                  size: 18.0,
-                  color: item['itemColor'],
+    return GestureDetector(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.all(10.0),
+        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.0),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: Colors.white,
+            boxShadow: SHADOW),
+        child: Row(children: [
+          Flexible(
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: item['color'],
+                  radius: 24,
+                  child: Icon(
+                    item['icon'],
+                    size: 18.0,
+                    color: item['itemColor'],
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 10.0,
-              ),
-              Flexible(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${item['title']}',
-                    style: getCustomFont(
-                        size: 16.0,
-                        color: Colors.black,
-                        weight: FontWeight.w400),
-                  ),
-                  const SizedBox(
-                    height: 1.0,
-                  ),
-                  Text(
-                    'View record',
-                    style: getCustomFont(size: 14.0, color: Colors.black45),
-                  )
-                ],
-              )),
-            ],
+                const SizedBox(
+                  width: 10.0,
+                ),
+                Flexible(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${item['title']}',
+                      style: getCustomFont(
+                          size: 16.0,
+                          color: Colors.black,
+                          weight: FontWeight.w400),
+                    ),
+                    const SizedBox(
+                      height: 1.0,
+                    ),
+                    Text(
+                      'View record',
+                      style: getCustomFont(size: 14.0, color: Colors.black45),
+                    )
+                  ],
+                )),
+              ],
+            ),
           ),
-        ),
-        Icon(
-          Icons.add,
-          color: BLUECOLOR,
-          size: 18.0,
-        )
-      ]),
+          InkWell(
+            onTap: (){
+                onclick(item);
+            },
+            child: Icon(
+              Icons.add,
+              color: BLUECOLOR,
+              size: 18.0,
+            ),
+          )
+        ]),
+      ),
     );
   }
 
@@ -195,4 +210,25 @@ class _VitalAndTracksState extends State<VitalAndTracks> {
           ),
         ),
       );
+
+
+  onclick(item) async{
+    switch(item['title']) {
+      case 'Blood Pressure':
+      dialogMessage(context, blood_pressure(context));
+      break; 
+
+      case 'Blood Sugar':
+      dialogMessage(context, blood_sugar(context));
+      break; 
+
+      case 'Cholesterol':
+      dialogMessage(context, cholesterol(context));
+      break; 
+
+      case 'Weight':
+      dialogMessage(context, weight(context));
+      break; 
+    }
+  }
 }

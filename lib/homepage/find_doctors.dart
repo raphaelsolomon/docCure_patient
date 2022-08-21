@@ -53,22 +53,26 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                             ],
                           ),
                         ),
-                        Icon(
-                          Icons.notifications_active,
-                          color: Colors.white,
+                        InkWell(
+                          onTap: () {
+                            context.read<HomeController>().setPage(12);
+                          },
+                          child: Icon(
+                            Icons.notifications_active,
+                            color: Colors.white,
+                          ),
                         )
                       ],
                     )
                   ]),
                 ),
-                 const SizedBox(
-                        height: 118.0,
-                      ),
+                const SizedBox(
+                  height: 118.0,
+                ),
                 Expanded(
                     child: SingleChildScrollView(
                   child: Column(
                     children: [
-                     
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Row(
@@ -166,11 +170,13 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
                           child: Row(
-                            children: [...List.generate(2, (index) => advert())],
+                            children: [
+                              ...List.generate(2, (index) => advert())
+                            ],
                           ),
                         ),
                       ),
-                       const SizedBox(
+                      const SizedBox(
                         height: 20.0,
                       ),
                     ],

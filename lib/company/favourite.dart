@@ -1,42 +1,27 @@
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
-import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class SearchDoctor extends StatefulWidget {
+class MyFavourite extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffold;
-  const SearchDoctor(this.scaffold, {Key? key}) : super(key: key);
-
-  @override
-  State<SearchDoctor> createState() => _SearchDoctorState();
-}
-
-class _SearchDoctorState extends State<SearchDoctor> {
-  List<String> catergories = [
-    'Specialist',
-    'Services',
-    'Treatment',
-    'Hospital/Clinic',
-    'Surgery'
-  ];
-
-  String selected = 'Specialist';
+  const MyFavourite(this.scaffold, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         color: Color(0xFFf6f6f6),
         child: Column(children: [
           Container(
-            padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
             width: MediaQuery.of(context).size.width,
+            height: 90.0,
             color: BLUECOLOR,
             child: Column(children: [
               const SizedBox(
@@ -48,13 +33,13 @@ class _SearchDoctorState extends State<SearchDoctor> {
                     child: Row(
                       children: [
                         GestureDetector(
-                            onTap: () =>
-                                widget.scaffold.currentState!.openDrawer(),
-                            child: Icon(Icons.menu, color: Colors.white)),
+                            onTap: () => scaffold.currentState!.openDrawer(),
+                            child: Icon(Icons.menu,
+                                size: 20.0, color: Colors.white)),
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text('Search by Doctor',
+                        Text('Favourites',
                             style:
                                 getCustomFont(size: 18.0, color: Colors.white))
                       ],
@@ -70,73 +55,21 @@ class _SearchDoctorState extends State<SearchDoctor> {
                     ),
                   )
                 ],
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              getRegisterForm(
-                  ctl: null,
-                  hint: 'Search for categories',
-                  icon: Icons.search,
-                  height: 49.0),
-              const SizedBox(
-                height: 13.0,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    ...List.generate(
-                        catergories.length,
-                        (index) => GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selected = '${catergories[index]}';
-                              });
-                            },
-                            child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0, vertical: 9.0),
-                                margin: const EdgeInsets.only(right: 8.0),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    border: Border.all(
-                                        width: 1.0,
-                                        color: selected == catergories[index]
-                                            ? Colors.white
-                                            : Colors.black),
-                                    color: selected == catergories[index]
-                                        ? Colors.lightBlue
-                                        : Colors.white),
-                                child: Text(
-                                  catergories[index],
-                                  maxLines: 1,
-                                  style: getCustomFont(
-                                    color: selected == catergories[index]
-                                        ? Colors.white
-                                        : Colors.black,
-                                    size: 12.0,
-                                  ),
-                                ))))
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
+              )
             ]),
           ),
           const SizedBox(
-            height: 10.0,
+            height: 15.0,
           ),
-          Expanded(
-              child: ListView.builder(
-                  padding: const EdgeInsets.all(0.0),
-                  itemBuilder: (ctx, i) => findDoctors()))
+          Expanded(child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+            itemCount: 5,
+            shrinkWrap: true,
+            itemBuilder: (ctx, i) => findDoctors(context)))
         ]));
   }
 
-  Widget findDoctors() => Container(
+  Widget findDoctors(context) => Container(
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
@@ -377,9 +310,7 @@ class _SearchDoctorState extends State<SearchDoctor> {
                   width: 15.0,
                 ),
                 Flexible(
-                  child: getButton(context, () {
-                    context.read<HomeController>().setPage(-1);
-                  }, text: 'Book Appointment'),
+                  child: getAppointment(context, (){}),
                 )
               ],
             )
@@ -411,23 +342,22 @@ class _SearchDoctorState extends State<SearchDoctor> {
         ),
       );
 
-  Widget getButton(context, callBack,
-          {color = BLUECOLOR, text = 'Search Now'}) =>
+       Widget getAppointment(context, callBack) =>
       GestureDetector(
         onTap: () => callBack(),
         child: Container(
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-              color: color, borderRadius: BorderRadius.circular(7.0)),
+              color: BLUECOLOR,
+              border: Border.all(width: 1.0, color: BLUECOLOR),
+              borderRadius: BorderRadius.circular(7.0)),
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 8.0, vertical: 11.0),
+            padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                text,
-                maxLines: 1,
+                'Book Appointment',
                 style: GoogleFonts.poppins(
-                    fontSize: 13.0,
+                    fontSize: 15.0,
                     color: Colors.white,
                     fontWeight: FontWeight.normal),
               ),

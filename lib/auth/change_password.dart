@@ -1,5 +1,3 @@
-import 'package:doccure_patient/auth/otp.dart';
-import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -73,28 +71,29 @@ class _AuthChangePassState extends State<AuthChangePass> {
               // const SizedBox(
               //   height: 50.0,
               // ),
-              getRegisterForm(ctl: null, obscure: true, hint: 'Password'),
+                getRegisterPasswordForm(
+                        ctl: null,
+                        hint: 'Old Password',),
               const SizedBox(
-                height: 20.0,
+                height: 10.0,
               ),
-              getRegisterForm(ctl: null, obscure: true, hint: 'Confirm Password'),
+                getRegisterPasswordForm(
+                        ctl: null,
+                        hint: 'New Password',),
+                   const SizedBox(
+                height: 10.0,
+              ),
+                getRegisterPasswordForm(
+                        ctl: null,
+                        hint: 'Confirm Password',),
               const SizedBox(
                 height: 50.0,
               ),
-              getButton(context, () {}, text: 'Change Password'),
+              getButton(context, () {}, text: 'Update Password'),
               const SizedBox(
                 height: 30.0,
               ),
-              GestureDetector(
-                onTap: () => Get.to(() => AuthOtp()),
-                child: Text(
-                  'Back to login',
-                  style: GoogleFonts.poppins(
-                      fontSize: 14.0,
-                      color: BLUECOLOR,
-                      fontWeight: FontWeight.w400),
-                ),
-              ),
+              
               const SizedBox(
                 height: 50.0,
               ),

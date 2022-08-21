@@ -1,8 +1,10 @@
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffold;
@@ -46,9 +48,14 @@ class HomePage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Icon(
-                          Icons.notifications_active,
-                          color: Colors.white,
+                       InkWell(
+                          onTap: () {
+                            context.read<HomeController>().setPage(12);
+                          },
+                          child: Icon(
+                            Icons.notifications_active,
+                            color: Colors.white,
+                          ),
                         )
                       ],
                     )
@@ -85,7 +92,7 @@ class HomePage extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: [
-                              ...List.generate(4, (index) => firstSlide())
+                              ...firstList.map((e) => firstSlide(e)).toList()
                             ],
                           ),
                         ),
@@ -249,8 +256,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget firstSlide() => Container(
-      width: 110.0,
+  Widget firstSlide(e) => Container(
+      width: 125.0,
       margin: const EdgeInsets.only(right: 10.0),
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
       decoration: BoxDecoration(
@@ -262,12 +269,12 @@ class HomePage extends StatelessWidget {
           const SizedBox(
             height: 10.0,
           ),
-          Icon(Icons.monitor_heart_outlined, color: Colors.red),
+          Image.asset('${e['icon']}', width: 50.0, height: 50.0, fit: BoxFit.contain,),
           const SizedBox(
             height: 7.0,
           ),
           Text(
-            'Heart Rate',
+            '${e['title']}',
             style: getCustomFont(size: 12.0, color: Colors.black),
           ),
           const SizedBox(
@@ -276,15 +283,17 @@ class HomePage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                '12',
-                style: getCustomFont(size: 14.0, color: Colors.black),
+              Flexible(
+                child: Text(
+                  '${e['count']}',
+                  style: getCustomFont(size: 14.0, color: Colors.black),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text(
-                  'bpm',
-                  style: getCustomFont(size: 12.0, color: Colors.black),
+                  '${e['unit']}',
+                  style: getCustomFont(size: 11.0, color: Colors.black),
                 ),
               ),
             ],
@@ -297,9 +306,9 @@ class HomePage extends StatelessWidget {
 
   Widget secondSlide(data) => Container(
       width: 130.0,
-      height: 139.0,
+      height: 140.0,
       margin: const EdgeInsets.only(right: 10.0),
-      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 13.0),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(1.0), color: data['color']),
       child: Column(
@@ -316,7 +325,7 @@ class HomePage extends StatelessWidget {
           const SizedBox(
             height: 15.0,
           ),
-          Icon(data['icon'], color: data['iconColor']),
+         Image.asset('${data['icon']}', width: 50.0, height: 40.0, fit: BoxFit.contain,),
           const SizedBox(
             height: 15.0,
           ),

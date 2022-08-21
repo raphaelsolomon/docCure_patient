@@ -35,34 +35,57 @@ List<User> users = [
       state: 1),
 ];
 
+List firstList = [
+  {
+    'title': 'Heart Rate',
+    'icon': 'assets/imgs/heart.png',
+    'count': '12',
+    'unit': 'bmp'
+  },
+  {
+    'title': 'Temperature',
+    'icon': 'assets/imgs/temp.png',
+    'count': '18',
+    'unit': 'c'
+  },
+  {
+    'title': 'Glucose Level',
+    'icon': 'assets/imgs/gas.png',
+    'count': '70 - 90',
+    'unit': ''
+  },
+  {
+    'title': 'Blood Pressure',
+    'icon': 'assets/imgs/pressure.png',
+    'count': '202/90',
+    'unit': 'mg/dl'
+  },
+];
+
 List secondList = [
   {
     'title': 'BMI Status',
-    'icon': Icons.trending_neutral,
+    'icon': 'assets/imgs/trend.png',
     'date': 'Last upload 6d',
-    'iconColor': Colors.purple,
-    'color': Colors.purple.shade300
+    'color': Color(0xFF6A5DEE),
   },
   {
     'title': 'Heart Rate Status',
-    'icon': FontAwesome5.chart_line,
-    'iconColor': Colors.red,
+    'icon': 'assets/imgs/trend2.png',
     'date': 'Last upload 2d',
-    'color': Colors.red.shade300
+    'color': Color(0xFFffa69e)
   },
   {
     'title': 'FCB Status',
-    'icon': FontAwesome5.chart_bar,
-    'iconColor': Colors.blueGrey,
+    'icon': 'assets/imgs/bar.png',
     'date': 'Last upload 5d',
-    'color': Colors.blueGrey.shade300
+    'color': Color(0xFFa9d4ff)
   },
   {
     'title': 'Weight Status',
-    'icon': Icons.search_off_rounded,
-    'iconColor': Colors.orange,
+    'icon': 'assets/imgs/search.png',
     'date': 'Last upload 3d',
-    'color': Colors.orange.shade300
+    'color': Color(0xFFffb88e)
   },
 ];
 
@@ -161,7 +184,7 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         children: [],
         isOpen: false,
         index: 0),
-        NavDrawerItem(
+    NavDrawerItem(
         title: 'Dashboard',
         icon: FontAwesome.home,
         children: [],
@@ -192,55 +215,90 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         isOpen: false,
         index: 4),
     NavDrawerItem(
-        title: 'Message',
+        title: 'My Reminder',
+        icon: Icons.family_restroom,
+        children: [],
+        isOpen: false,
+        index: 8),
+    NavDrawerItem(
+        title: 'My Family',
+        icon: Icons.family_restroom,
+        children: [],
+        isOpen: false,
+        index: 7),
+    NavDrawerItem(
+        title: 'Communication',
         icon: FontAwesome5.facebook_messenger,
         children: [],
         isOpen: false,
         index: 5),
     NavDrawerItem(
+        title: 'My Medical Records',
+        icon: Icons.family_restroom,
+        children: [],
+        isOpen: false,
+        index: -10),
+    NavDrawerItem(
+        title: 'My Prescription',
+        icon: Icons.family_restroom,
+        children: [],
+        isOpen: false,
+        index: -11),
+    NavDrawerItem(
+        title: 'Medical Details',
+        icon: Icons.family_restroom,
+        children: [],
+        isOpen: false,
+        index: -0),
+    NavDrawerItem(
+        title: 'My Profile',
+        icon: Icons.person,
+        children: [],
+        isOpen: false,
+        index: -2),
+    NavDrawerItem(
         title: 'My Transaction',
         icon: FontAwesome5.file_invoice,
         children: [
-          'My Coupons',
-          'My Offer',
-          'My Invoices',
-          'Payment methods',
-          'Accounts',
-          'Favorites',
-          'Reviews'
+          {'index': -12, 'title': 'My Offer'},
+          {'index': 6, 'title': 'My Invoices'},
+          {'index': -0, 'title': 'Payment Methods'},
+          {'index': -0, 'title': 'Account'},
+          {'index': 8, 'title': 'Favourite'},
+          {'index': -0, 'title': 'Reviews'}
         ],
         isOpen: false,
-        index: 6),
+        index: -0),
     NavDrawerItem(
         title: 'Company',
         icon: FontAwesome5.industry,
         children: [
-          'My invites',
-          'My Referrals',
-          'Contact Us',
-          'Rate Us',
-          'Share App'
+          {'index': -0, 'title': 'My Invites'},
+          {'index': 9, 'title': 'My Referrals'},
+          {'index': -9, 'title': 'Contact Us'},
+          {'index': -6, 'title': 'Rate Us'},
+          {'index': -7, 'title': 'Share App'},
         ],
         isOpen: false,
-        index: 7),
+        index: -0),
     NavDrawerItem(
         title: 'Settings',
         icon: Icons.settings,
         children: [
-          'Language',
-          'Countr',
-          'Currency',
-          'Change Password',
-          'Notifications'
+        // {'index': -13, 'title': 'Language'},
+         // {'index': -0, 'title': 'Country'},
+          {'index': -0, 'title': 'Currency'},
+          {'index': -8, 'title': 'Change Password'},
+          {'index': -5, 'title': 'Notification'}
         ],
         isOpen: false,
-        index: 8),
+        index: -0),
     NavDrawerItem(
         title: 'Sign Out',
         icon: FontAwesome5.sign_out_alt,
         children: [],
         isOpen: false,
-        index: 9),
+        index: 11),
   ];
 }
 

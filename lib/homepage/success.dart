@@ -44,11 +44,11 @@ class PaymentSuccess extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(
-                    height: 30.0,
+                    height: 50.0,
                   ),
-                  Image.asset('assets/success.png'),
+                  Image.asset('assets/imgs/success.png', width: 100.0, height: 100.0,),
                   const SizedBox(
-                    height: 30.0,
+                    height: 50.0,
                   ),
                   DottedBorder(
                     borderType: BorderType.RRect,

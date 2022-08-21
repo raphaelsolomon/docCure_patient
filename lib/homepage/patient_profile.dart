@@ -1,6 +1,8 @@
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:provider/provider.dart';
 
 class MyProfile extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffold;
@@ -57,10 +59,15 @@ class _MyProfileState extends State<MyProfile> {
                       ],
                     ),
                   ),
-                  Icon(
-                    Icons.notifications_active,
-                    color: Colors.white,
-                  )
+                 InkWell(
+                          onTap: () {
+                            context.read<HomeController>().setPage(12);
+                          },
+                          child: Icon(
+                            Icons.notifications_active,
+                            color: Colors.white,
+                          ),
+                        )
                 ],
               )
             ]),

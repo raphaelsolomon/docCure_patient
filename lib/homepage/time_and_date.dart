@@ -1,11 +1,15 @@
 // ignore_for_file: must_be_immutable
-import 'package:doccure_patient/constanst/weekcalender.dart';
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constanst/weekcalender.dart';
+import 'package:doccure_patient/homepage/success.dart';
 import 'package:doccure_patient/model/timeing_model.dart';
+import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class TimeAndDate extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffold;
@@ -91,10 +95,15 @@ class _TimeAndDateState extends State<TimeAndDate> {
                         ],
                       ),
                     ),
-                    Icon(
-                      Icons.notifications_active,
-                      color: Colors.white,
-                    )
+                    InkWell(
+                          onTap: () {
+                            context.read<HomeController>().setPage(12);
+                          },
+                          child: Icon(
+                            Icons.notifications_active,
+                            color: Colors.white,
+                          ),
+                        )
                   ],
                 )
               ]),
@@ -399,14 +408,179 @@ class _TimeAndDateState extends State<TimeAndDate> {
 
   //======================PAYMENT==============================
   getPaymentWidget(context) {
-    return Column(
-      children: [
-        Text('Payment Information', style: getCustomFont(size: 19.0, color: Colors.black)),
-        const SizedBox(height: 10.0),
-        Container()
-      ],
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Payment Information',
+                      style: getCustomFont(size: 17.0, color: Colors.black)),
+                  const SizedBox(height: 10.0),
+                  Container(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(9.0),
+                        boxShadow: SHADOW,
+                        color: Colors.white),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Radio(
+                                value: false,
+                                groupValue: false,
+                                onChanged: (b) {}),
+                            Text(
+                              'Paypal',
+                              style: getCustomFont(
+                                  size: 16.0, color: Colors.black45),
+                            )
+                          ],
+                        ),
+                        Icon(FontAwesome5.paypal, size: 24.0),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 15.0),
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(9.0),
+                        boxShadow: SHADOW,
+                        color: Colors.white),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Radio(
+                                      value: false,
+                                      groupValue: false,
+                                      onChanged: (b) {}),
+                                  Text(
+                                    'Card',
+                                    style: getCustomFont(
+                                        size: 16.0, color: Colors.black45),
+                                  )
+                                ],
+                              ),
+                              Icon(FontAwesome5.cc_mastercard, size: 24.0),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 25.0),
+                        getCardForm('Name on card', ''),
+                        const SizedBox(height: 18.0),
+                        getCardForm('Card Number', '5466 1234 5574 4775'),
+                        const SizedBox(height: 18.0),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: getCardForm('Expiry Month', 'MM'),
+                            ),
+                            Flexible(
+                              child: getCardForm('Expiry Year', 'YY'),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 18.0),
+                        getCardForm('CVV', ''),
+                        const SizedBox(height: 20.0),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 30.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Row(
+                      children: [
+                        Text('I have read and accept ',
+                            style:
+                                getCustomFont(size: 15.0, color: Colors.black)),
+                        Text('Terms & Conditions',
+                            style: getCustomFont(size: 15.0, color: BLUECOLOR)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 30.0),
+            getPayButton(context, (){
+              Get.to(() => PaymentSuccess());
+            }),
+            const SizedBox(height: 10.0),
+          ],
+        ),
+      ),
     );
   }
+
+  getCardForm(label, hint, {ctl}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                '$label',
+                style: getCustomFont(size: 13.0, color: Colors.black45),
+              ),
+              Text(
+                '*',
+                style: getCustomFont(color: Colors.red, size: 13.0),
+              )
+            ],
+          ),
+          const SizedBox(height: 5.0),
+          SizedBox(
+            height: 45.0,
+            child: TextField(
+              style: getCustomFont(size: 14.0, color: Colors.black45),
+              maxLines: 1,
+              decoration: InputDecoration(
+                  hintText: hint,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  hintStyle: getCustomFont(size: 14.0, color: Colors.black45),
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                      borderRadius: BorderRadius.circular(8.0))),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+   Widget getPayButton(context, callBack) => GestureDetector(
+        onTap: () => callBack(),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              color: BLUECOLOR, borderRadius: BorderRadius.circular(50.0)),
+          child: Padding(
+            padding: const EdgeInsets.all(13.0),
+            child: Center(
+              child: Text(
+                'Confirm And Pay',
+                style: GoogleFonts.poppins(
+                    fontSize: 17.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal),
+              ),
+            ),
+          ),
+        ),
+      );
 
   int returnCrossAxis(width) {
     return width < 500
@@ -518,7 +692,8 @@ class _TimeAndDateState extends State<TimeAndDate> {
               Expanded(
                   child: SingleChildScrollView(
                 child: Column(
-                  children: List.generate(1, (index) => bookSummaryItem(context)),
+                  children:
+                      List.generate(1, (index) => bookSummaryItem(context)),
                 ),
               )),
               getButton(context, () {
