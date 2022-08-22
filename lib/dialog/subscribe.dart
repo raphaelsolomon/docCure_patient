@@ -45,6 +45,84 @@ Widget language(BuildContext context) {
   );
 }
 
+Widget medicalDetails(BuildContext context) {
+  return Stack(
+    alignment: Alignment.center,
+    children: <Widget>[
+      Container(
+        width: MediaQuery.of(context).size.width,
+        margin:
+            const EdgeInsets.all(50), // to push the box half way below circle
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        padding: const EdgeInsets.only(
+            top: 15, left: 10, right: 10), // spacing inside the box
+        child: Material(
+          color: Colors.transparent,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Add new data',
+                      style: getCustomFont(size: 15.0, color: Colors.black),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.cancel_outlined,
+                        size: 17.0,
+                        color: Colors.black45,
+                      ),
+                    )
+                  ],
+                ),
+                Divider(),
+                const SizedBox(
+                  height: 20.0,
+                ),
+               getMedialDetailsBox('BMI', ''),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                getMedialDetailsBox('Heart Rate', ''),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                getMedialDetailsBox('Weight', ''),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                getMedialDetailsBox('Fbc', ''),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                getMedialDetailsBox('Created Date', ''),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Divider(),
+                getPayButton(context, () {}, 'Submit'),
+                const SizedBox(
+                  height: 20.0,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
 Widget subscribe(BuildContext context) {
   return Stack(
     alignment: Alignment.center,
@@ -726,6 +804,42 @@ getFormBox(text, hint, unit, {ctl}) {
               style: getCustomFont(size: 12.0, color: Colors.black),
             ),
           ],
+        )
+      ],
+    ),
+  );
+}
+
+getMedialDetailsBox(text, hint, {ctl}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '$text',
+          style: getCustomFont(size: 12.0, color: Colors.black),
+        ),
+        const SizedBox(
+          height: 7.0,
+        ),
+        SizedBox(
+          height: 45.0,
+          child: TextField(
+            style: getCustomFont(size: 14.0, color: Colors.black45),
+            maxLines: 1,
+            controller: ctl,
+            decoration: InputDecoration(
+                hintText: hint,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10.0),
+                hintStyle:
+                    getCustomFont(size: 14.0, color: Colors.black45),
+                border: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Colors.grey, width: 1.0),
+                    borderRadius: BorderRadius.circular(8.0))),
+          ),
         )
       ],
     ),

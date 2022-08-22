@@ -415,8 +415,11 @@ setChildrenClickListener(e, BuildContext context) {
     case -12:
       context.read<HomeController>().setPage(-12);
       break;
-     case -13:
-     dialogMessage(context, language(context));
+    case -13:
+      dialogMessage(context, language(context));
+      break;
+    case -14:
+      context.read<HomeController>().setPage(-14);
       break;
   }
 }
@@ -450,7 +453,7 @@ setClickListener(e, BuildContext context) {
     case -2:
       context.read<HomeController>().setPage(-2);
       break;
-     case -10:
+    case -10:
       context.read<HomeController>().setPage(-10);
       break;
     case -11:
@@ -458,7 +461,7 @@ setClickListener(e, BuildContext context) {
       break;
     case 11:
       Get.offAll(() => AuthLogin());
-      break;    
+      break;
 
     default:
       context.read<HomeController>().jumpToHome();

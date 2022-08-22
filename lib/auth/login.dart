@@ -41,7 +41,7 @@ class _AuthLoginState extends State<AuthLogin> {
     return Scaffold(
       backgroundColor: Color(0xFFF6F6F6),
       body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 30.0),
+        margin: const EdgeInsets.symmetric(horizontal: 20.0),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(
@@ -93,7 +93,7 @@ class _AuthLoginState extends State<AuthLogin> {
                       ctl: null, obscure: false, hint: 'Email or username')
                   : getPhoneNumberForm(ctl: phoneController),
               const SizedBox(
-                height: 20.0,
+                height: 10.0,
               ),
               getRegisterForm(
                   ctl: null, obscure: true, hint: 'Password', icon: Icons.lock),

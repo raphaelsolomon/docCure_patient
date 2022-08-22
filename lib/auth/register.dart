@@ -44,7 +44,7 @@ class _AuthRegisterState extends State<AuthRegister> {
     return Scaffold(
         backgroundColor: Color(0xFFF6F6F6),
         body: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 30.0),
+            margin: const EdgeInsets.symmetric(horizontal: 20.0),
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: SingleChildScrollView(
@@ -94,7 +94,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                         icon: Icons.person,
                         hint: 'Full Name'),
                     const SizedBox(
-                      height: 15.0,
+                      height: 10.0,
                     ),
                     isEmail
                         ? getRegisterForm(
@@ -104,14 +104,14 @@ class _AuthRegisterState extends State<AuthRegister> {
                             hint: 'Email Address')
                         : getPhoneNumberForm(ctl: phoneController),
                     const SizedBox(
-                      height: 15.0,
+                      height: 10.0,
                     ),
                     GestureDetector(
                       onTap: () =>  showBottomSheet() ,
                       child: getCountryForm(text: country),
                     ),
                     const SizedBox(
-                      height: 15.0,
+                      height: 10.0,
                     ),
                     getRegisterForm(
                         ctl: null,
@@ -119,14 +119,11 @@ class _AuthRegisterState extends State<AuthRegister> {
                         obscure: true,
                         hint: 'Password'),
                     const SizedBox(
-                      height: 15.0,
+                      height: 10.0,
                     ),
-                    getRegisterForm(
+                    getRegisterPasswordForm(
                         ctl: null,
-                        icon: Icons.lock_outlined,
-                        obscure: true,
-                        hint: 'Confirm Password',
-                        cp: ''),
+                        hint: 'Confirm Password',),
                     const SizedBox(
                       height: 50.0,
                     ),

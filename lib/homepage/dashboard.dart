@@ -9,6 +9,7 @@ import 'package:doccure_patient/company/myprescription.dart';
 import 'package:doccure_patient/company/myreferral.dart';
 import 'package:doccure_patient/company/notification.dart';
 import 'package:doccure_patient/company/notificationsetting.dart';
+import 'package:doccure_patient/company/paymentmethod.dart';
 import 'package:doccure_patient/company/rateus.dart';
 import 'package:doccure_patient/company/shareapp.dart';
 import 'package:doccure_patient/company/support.dart';
@@ -113,20 +114,22 @@ class _DashBoardState extends State<DashBoard> {
                                                                                       ? MedicalRecords(scaffold)
                                                                                       : page == -11
                                                                                           ? Prescriptions(scaffold)
-                                                                                          : page == - 12 
-                                                                                          ? MyOffer()
-                                                                                          :page == -3
-                                                                                              ? SearchDoctor(scaffold)
-                                                                                              : page == -1
-                                                                                                  ? TimeAndDate(scaffold)
-                                                                                                  : Container(
-                                                                                                      child: Center(
-                                                                                                        child: Text(
-                                                                                                          'Development Mode..',
-                                                                                                          style: getCustomFont(size: 19.0, color: Colors.black),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                    ))),
+                                                                                          : page == -12
+                                                                                              ? MyOffer()
+                                                                                              : page == -14
+                                                                                                  ? PaymentMethod()
+                                                                                                  : page == -3
+                                                                                                      ? SearchDoctor(scaffold)
+                                                                                                      : page == -1
+                                                                                                          ? TimeAndDate(scaffold)
+                                                                                                          : Container(
+                                                                                                              child: Center(
+                                                                                                                child: Text(
+                                                                                                                  'Development Mode..',
+                                                                                                                  style: getCustomFont(size: 19.0, color: Colors.black),
+                                                                                                                ),
+                                                                                                              ),
+                                                                                                            ))),
     );
   }
 
