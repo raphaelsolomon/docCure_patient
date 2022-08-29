@@ -74,19 +74,22 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               'Specialities',
                               style: getCustomFont(
-                                  size: 22.0, color: Colors.black),
+                                  size: 19.0, color: Colors.black),
                             ),
-                            Text(
-                              'View All',
-                              style: getCustomFont(
-                                  size: 17.0, color: Colors.black),
+                            InkWell(
+                              onTap: () => null,
+                              child: Text(
+                                'View All',
+                                style: getCustomFont(
+                                    size: 15.0, color: Colors.black),
+                              ),
                             )
                           ],
                         ),
@@ -106,17 +109,17 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                                         horizontal: 8.0),
                                     child: Column(
                                       children: [
-                                        CircleAvatar(
-                                          backgroundColor: Colors.white,
-                                          child: Icon(
-                                            FontAwesome5.heart,
-                                            color: Colors.black54,
-                                            size: 20.0,
+                                        Container(
+                                          width: 68.0,
+                                          height: 68.0,
+                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(100),
+                                          boxShadow: SHADOW
+                                          ,color: Colors.white
                                           ),
-                                          radius: 33.0,
+                                          child: Center(child: Image.asset(e['asset'], width: 40.0, height: 40.0, fit: BoxFit.contain,)),
                                         ),
                                         const SizedBox(
-                                          height: 10.0,
+                                          height: 8.0,
                                         ),
                                         Text(
                                           e['title'],
@@ -141,18 +144,21 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                             Text(
                               'Find Doctors',
                               style: getCustomFont(
-                                  size: 22.0, color: Colors.black),
+                                  size: 19.0, color: Colors.black),
                             ),
-                            Text(
-                              'View All',
-                              style: getCustomFont(
-                                  size: 17.0, color: Colors.black),
+                            InkWell(
+                              onTap: () => context.read<HomeController>().setPage(-1),
+                              child: Text(
+                                'View All',
+                                style: getCustomFont(
+                                    size: 15.0, color: Colors.black),
+                              ),
                             )
                           ],
                         ),
                       ),
                       const SizedBox(
-                        height: 10.0,
+                        height: 3.0,
                       ),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -171,7 +177,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
                           child: Row(
                             children: [
-                              ...List.generate(2, (index) => advert())
+                              ...Advert.map((e) =>  advert(e)).toList()
                             ],
                           ),
                         ),
@@ -237,11 +243,11 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
           ),
           getButton(context, () {
             context.read<HomeController>().setPage(-3);
-          }, color: Colors.red.shade400)
+          }, color: Colors.red)
         ],
       );
 
-  Widget advert() => Container(
+  Widget advert(e) => Container(
         width: MediaQuery.of(context).size.width - 90,
         margin: const EdgeInsets.only(right: 8.0),
         decoration: BoxDecoration(
@@ -260,7 +266,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                       bottomRight: Radius.circular(80.0)),
                   color: BLUECOLOR),
               child: Text(
-                'Upto\n80%',
+                e['title'],
                 style: getCustomFont(
                     color: Colors.white, size: 26.0, weight: FontWeight.bold),
               ),
@@ -271,10 +277,10 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('80% cashback\neveryhour',
+                  Text(e['desc'],
                       style: getCustomFont(
                           color: Colors.black54,
-                          size: 17.0,
+                          size: 16.0,
                           weight: FontWeight.bold)),
                   const SizedBox(
                     height: 10.0,
@@ -287,7 +293,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                         'know more',
                         style: getCustomFont(
                             color: BLUECOLOR,
-                            size: 18.0,
+                            size: 15.0,
                             weight: FontWeight.w500),
                       ),
                     ),
@@ -342,17 +348,21 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
         onTap: () => callBack(),
         child: Container(
           width: MediaQuery.of(context).size.width,
+          height:40.0,
           decoration: BoxDecoration(
               color: color, borderRadius: BorderRadius.circular(7.0)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-              child: Text(
-                text,
-                style: GoogleFonts.poppins(
-                    fontSize: 15.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal),
+              child: FittedBox(
+                child: Text(
+                  text,
+                  maxLines: 1,
+                  style: GoogleFonts.poppins(
+                      fontSize: 13.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal),
+                ),
               ),
             ),
           ),
@@ -364,6 +374,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
         onTap: () => callBack(),
         child: Container(
           width: MediaQuery.of(context).size.width,
+          height: 40.0,
           decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(width: 1.0, color: BLUECOLOR),
@@ -373,8 +384,9 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
             child: Center(
               child: Text(
                 text,
+                maxLines: 1,
                 style: GoogleFonts.poppins(
-                    fontSize: 15.0,
+                    fontSize: 13.0,
                     color: BLUECOLOR,
                     fontWeight: FontWeight.normal),
               ),

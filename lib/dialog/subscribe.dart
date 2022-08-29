@@ -160,7 +160,7 @@ Widget subscribe(BuildContext context) {
                 height: 10.0,
               ),
               Image.asset(
-                'assets/auth/1.jpeg',
+                'assets/imgs/subscribe.jpeg',
                 width: 100.0,
                 height: 100.0,
                 fit: BoxFit.contain,
@@ -170,16 +170,16 @@ Widget subscribe(BuildContext context) {
               ),
               Text('Stay In Touch',
                   style: getCustomFont(
-                      size: 20.0,
+                      size: 17.0,
                       color: Colors.black,
                       weight: FontWeight.bold)),
               const SizedBox(
                 height: 10.0,
               ),
               Text(
-                'Stay connected for future\nupdate and new products',
+                'Stay connected\nfor future update and new products',
                 textAlign: TextAlign.center,
-                style: getCustomFont(size: 16.0, color: Colors.black),
+                style: getCustomFont(size: 13.0, color: Colors.black),
               ),
               const SizedBox(
                 height: 15.0,
@@ -901,16 +901,16 @@ getFormSubscribe({ctl, hint = 'Email Address'}) => Container(
       height: 45.0,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6.0),
-          color: Colors.grey.shade200),
+          color: Colors.grey.shade100),
       child: TextField(
         maxLines: 1,
         controller: ctl,
         keyboardType: TextInputType.emailAddress,
-        style: getCustomFont(size: 16.0, color: Colors.black54),
+        style: getCustomFont(size: 14.0, color: Colors.black54),
         decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
             hintText: hint,
-            hintStyle: getCustomFont(size: 16.0, color: Colors.black54),
+            hintStyle: getCustomFont(size: 14.0, color: Colors.black54),
             border: OutlineInputBorder(borderSide: BorderSide.none)),
       ),
     );
@@ -948,7 +948,7 @@ Widget getButton(context, callBack, text,
             child: Text(
               '$text',
               style: getCustomFont(
-                  size: 18.0, color: textColor, weight: FontWeight.normal),
+                  size: 16.0, color: textColor, weight: FontWeight.normal),
             ),
           ),
         ),
@@ -1046,4 +1046,15 @@ Widget rateUsPop(BuildContext context) {
       ),
     ],
   );
+}
+
+showRequestSheet(BuildContext c, Widget widget, {onClose}) {
+  showModalBottomSheet(
+      context: c,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      isDismissible: true,
+      builder: (BuildContext context) {
+        return widget;
+      }).whenComplete(() => onClose == null ? null : onClose());
 }

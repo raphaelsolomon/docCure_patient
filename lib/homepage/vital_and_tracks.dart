@@ -43,90 +43,112 @@ class _VitalAndTracksState extends State<VitalAndTracks> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        color: Color(0xFFf6f6f6),
-        child: Column(children: [
-          Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+    return Stack(
+      children: [
+        Container(
             width: MediaQuery.of(context).size.width,
-            height: 100.0,
-            color: BLUECOLOR,
+            height: MediaQuery.of(context).size.height,
+            color: Color(0xFFf6f6f6),
             child: Column(children: [
-              const SizedBox(
-                height: 25.0,
-              ),
-              Row(
-                children: [
-                  Flexible(
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                            onTap: () =>
-                                widget.scaffold.currentState!.openDrawer(),
-                            child: Icon(Icons.menu, color: Colors.white)),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Text('Vital & Tracks',
-                            style:
-                                getCustomFont(size: 18.0, color: Colors.white))
-                      ],
-                    ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0, vertical: 20.0),
+                width: MediaQuery.of(context).size.width,
+                height: 100.0,
+                color: BLUECOLOR,
+                child: Column(children: [
+                  const SizedBox(
+                    height: 25.0,
                   ),
-                  InkWell(
-                          onTap: () {
-                            context.read<HomeController>().setPage(12);
-                          },
-                          child: Icon(
-                            Icons.notifications_active,
-                            color: Colors.white,
-                          ),
-                        )
-                ],
-              )
-            ]),
-          ),
-          Expanded(
-              child: SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Row(
+                    children: [
+                      Flexible(
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                                onTap: () =>
+                                    widget.scaffold.currentState!.openDrawer(),
+                                child: Icon(Icons.menu, color: Colors.white)),
+                            const SizedBox(
+                              width: 10.0,
+                            ),
+                            Text('Vital & Tracks',
+                                style: getCustomFont(
+                                    size: 18.0, color: Colors.white))
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          context.read<HomeController>().setPage(12);
+                        },
+                        child: Icon(
+                          Icons.notifications_active,
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  )
+                ]),
+              ),
+              Expanded(
+                  child: SingleChildScrollView(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Text(
+                          'VITALS',
+                          style:
+                              getCustomFont(size: 15.0, color: Colors.black45),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      ...vitalList.map((index) => getVitalItems(index)),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Text(
+                          'TARGETS',
+                          style:
+                              getCustomFont(size: 15.0, color: Colors.black45),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                    ]),
+              )),
+              getButton(context, () {}),
               const SizedBox(
                 height: 10.0,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Text(
-                  'VITALS',
-                  style: getCustomFont(size: 16.0, color: Colors.black45),
-                ),
+            ])),
+        Align(
+          alignment: Alignment.bottomRight,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 80.0),
+            child: FloatingActionButton(
+              tooltip: 'Add note',
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
               ),
-              const SizedBox(
-                height: 5.0,
-              ),
-              ...vitalList.map((index) => getVitalItems(index)),
-              const SizedBox(
-                height: 30.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Text(
-                  'TARGETS',
-                  style: getCustomFont(size: 16.0, color: Colors.black45),
-                ),
-              ),
-              const SizedBox(
-                height: 5.0,
-              ),
-            ]),
-          )),
-          getButton(context, () {}),
-          const SizedBox(
-            height: 10.0,
+              onPressed: () {},
+              backgroundColor: BLUECOLOR,
+            ),
           ),
-        ]));
+        ),
+      ],
+    );
   }
 
   getVitalItems(item) {
@@ -179,8 +201,8 @@ class _VitalAndTracksState extends State<VitalAndTracks> {
             ),
           ),
           InkWell(
-            onTap: (){
-                onclick(item);
+            onTap: () {
+              onclick(item);
             },
             child: Icon(
               Icons.add,
@@ -211,24 +233,23 @@ class _VitalAndTracksState extends State<VitalAndTracks> {
         ),
       );
 
-
-  onclick(item) async{
-    switch(item['title']) {
+  onclick(item) async {
+    switch (item['title']) {
       case 'Blood Pressure':
-      dialogMessage(context, blood_pressure(context));
-      break; 
+        dialogMessage(context, blood_pressure(context));
+        break;
 
       case 'Blood Sugar':
-      dialogMessage(context, blood_sugar(context));
-      break; 
+        dialogMessage(context, blood_sugar(context));
+        break;
 
       case 'Cholesterol':
-      dialogMessage(context, cholesterol(context));
-      break; 
+        dialogMessage(context, cholesterol(context));
+        break;
 
       case 'Weight':
-      dialogMessage(context, weight(context));
-      break; 
+        dialogMessage(context, weight(context));
+        break;
     }
   }
 }

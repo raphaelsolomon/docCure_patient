@@ -106,7 +106,8 @@ class HomePage extends StatelessWidget {
                               ...secondList.map((e) => secondSlide(e)).toList()
                             ],
                           ),
-                        )
+                        ),
+                        const SizedBox(height: 30.0,),
                       ],
                     ),
                   ),
@@ -172,18 +173,20 @@ class HomePage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Flexible(
-                                  child: Text(
-                                    'Blood Group O-',
-                                    style: getCustomFont(
-                                        size: 13.0,
-                                        color: Colors.red,
-                                        weight: FontWeight.w400),
+                                  child: FittedBox(
+                                    child: Text(
+                                      'Blood Group O-',
+                                      style: getCustomFont(
+                                          size: 13.0,
+                                          color: Colors.red,
+                                          weight: FontWeight.w400),
+                                    ),
                                   ),
                                 ),
                                 Text(
                                   '(Lagos, Nigeria)',
                                   style: getCustomFont(
-                                      size: 13.0,
+                                      size: 12.0,
                                       color: Colors.black45,
                                       weight: FontWeight.w400),
                                 ),
@@ -273,9 +276,11 @@ class HomePage extends StatelessWidget {
           const SizedBox(
             height: 7.0,
           ),
-          Text(
-            '${e['title']}',
-            style: getCustomFont(size: 12.0, color: Colors.black),
+          FittedBox(
+            child: Text(
+              '${e['title']}',
+              style: getCustomFont(size: 12.0, color: Colors.black),
+            ),
           ),
           const SizedBox(
             height: 7.0,
@@ -284,9 +289,11 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Flexible(
-                child: Text(
-                  '${e['count']}',
-                  style: getCustomFont(size: 14.0, color: Colors.black),
+                child: FittedBox(
+                  child: Text(
+                    '${e['count']}',
+                    style: getCustomFont(size: 14.0, color: Colors.black),
+                  ),
                 ),
               ),
               Padding(
@@ -306,7 +313,7 @@ class HomePage extends StatelessWidget {
 
   Widget secondSlide(data) => Container(
       width: 130.0,
-      height: 140.0,
+      height: 143.0,
       margin: const EdgeInsets.only(right: 10.0),
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 13.0),
       decoration: BoxDecoration(
@@ -323,7 +330,7 @@ class HomePage extends StatelessWidget {
             style: getCustomFont(size: 14.0, color: Colors.white),
           ),
           const SizedBox(
-            height: 15.0,
+            height: 12.0,
           ),
          Image.asset('${data['icon']}', width: 50.0, height: 40.0, fit: BoxFit.contain,),
           const SizedBox(

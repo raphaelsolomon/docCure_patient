@@ -1,6 +1,7 @@
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/dialog/filterPage.dart';
+import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
-import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
@@ -35,94 +36,126 @@ class _SearchDoctorState extends State<SearchDoctor> {
         color: Color(0xFFf6f6f6),
         child: Column(children: [
           Container(
-            padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
             width: MediaQuery.of(context).size.width,
             color: BLUECOLOR,
-            child: Column(children: [
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const SizedBox(
                 height: 25.0,
               ),
-              Row(
-                children: [
-                  Flexible(
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                            onTap: () =>
-                                widget.scaffold.currentState!.openDrawer(),
-                            child: Icon(Icons.menu, color: Colors.white)),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Text('Search by Doctor',
-                            style:
-                                getCustomFont(size: 18.0, color: Colors.white))
-                      ],
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      context.read<HomeController>().setPage(12);
-                    },
-                    child: Icon(
-                      Icons.notifications_active,
-                      color: Colors.white,
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              getRegisterForm(
-                  ctl: null,
-                  hint: 'Search for categories',
-                  icon: Icons.search,
-                  height: 49.0),
-              const SizedBox(
-                height: 13.0,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
                 child: Row(
                   children: [
-                    ...List.generate(
-                        catergories.length,
-                        (index) => GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selected = '${catergories[index]}';
-                              });
-                            },
-                            child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0, vertical: 9.0),
-                                margin: const EdgeInsets.only(right: 8.0),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    border: Border.all(
-                                        width: 1.0,
-                                        color: selected == catergories[index]
-                                            ? Colors.white
-                                            : Colors.black),
-                                    color: selected == catergories[index]
-                                        ? Colors.lightBlue
-                                        : Colors.white),
-                                child: Text(
-                                  catergories[index],
-                                  maxLines: 1,
-                                  style: getCustomFont(
-                                    color: selected == catergories[index]
-                                        ? Colors.white
-                                        : Colors.black,
-                                    size: 12.0,
-                                  ),
-                                ))))
+                    Flexible(
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                              onTap: () =>
+                                  widget.scaffold.currentState!.openDrawer(),
+                              child: Icon(Icons.menu, color: Colors.white)),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          Text('Search by Doctor',
+                              style: getCustomFont(
+                                  size: 18.0, color: Colors.white))
+                        ],
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        context.read<HomeController>().setPage(12);
+                      },
+                      child: Icon(
+                        Icons.notifications_active,
+                        color: Colors.white,
+                      ),
+                    )
                   ],
                 ),
               ),
               const SizedBox(
                 height: 10.0,
+              ),
+              // getRegisterForm(
+              //     ctl: null,
+              //     hint: 'Search for categories',
+              //     icon: Icons.search,
+              //     height: 49.0),
+              // const SizedBox(
+              //   height: 13.0,
+              // ),
+              Container(
+                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          ...List.generate(
+                              catergories.length,
+                              (index) => GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selected = '${catergories[index]}';
+                                    });
+                                    showRequestSheet(context, FilterPage());
+                                  },
+                                  child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20.0, vertical: 9.0),
+                                      margin: const EdgeInsets.only(right: 8.0),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                          border: Border.all(
+                                              width: 1.0,
+                                              color:
+                                                  selected == catergories[index]
+                                                      ? Colors.white
+                                                      : Colors.black45),
+                                          color: selected == catergories[index]
+                                              ? Colors.lightBlue
+                                              : Colors.white),
+                                      child: Text(
+                                        catergories[index],
+                                        maxLines: 1,
+                                        style: getCustomFont(
+                                          color: selected == catergories[index]
+                                              ? Colors.white
+                                              : Colors.black,
+                                          size: 12.0,
+                                        ),
+                                      ))))
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 12.0,
+                    ),
+                    Text('16525 matches found for :',
+                        style: getCustomFont(
+                          size: 12.0,
+                          color: Colors.black45,
+                        )),
+                    Text('Dental specialist In Bangalore',
+                        style: getCustomFont(
+                          size: 17.0,
+                          color: Colors.black,
+                        )),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                  ],
+                ),
               ),
             ]),
           ),
@@ -392,6 +425,7 @@ class _SearchDoctorState extends State<SearchDoctor> {
         onTap: () => callBack(),
         child: Container(
           width: MediaQuery.of(context).size.width,
+          height: 40.0,
           decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(width: 1.0, color: BLUECOLOR),
@@ -417,19 +451,22 @@ class _SearchDoctorState extends State<SearchDoctor> {
         onTap: () => callBack(),
         child: Container(
           width: MediaQuery.of(context).size.width,
+          height: 40.0,
           decoration: BoxDecoration(
               color: color, borderRadius: BorderRadius.circular(7.0)),
           child: Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 8.0, vertical: 11.0),
             child: Center(
-              child: Text(
-                text,
-                maxLines: 1,
-                style: GoogleFonts.poppins(
-                    fontSize: 13.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal),
+              child: FittedBox(
+                child: Text(
+                  text,
+                  maxLines: 1,
+                  style: GoogleFonts.poppins(
+                      fontSize: 13.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal),
+                ),
               ),
             ),
           ),

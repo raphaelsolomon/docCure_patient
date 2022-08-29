@@ -151,13 +151,14 @@ List<String> month = [
   'December'
 ];
 
+List Advert = [{'title': 'Upto\n10%', 'desc': '10% cashback\neveryhour'}, {'title': 'Upto\n15%', 'desc': '15% cashback\neveryhour'}];
+
 List Specialities = [
-  {'title': 'Urology', 'asset': 'assets/imgs/special/'},
-  {'title': 'Neurology', 'asset': 'assets/imgs/special/'},
-  {'title': 'Cardiology', 'asset': 'assets/imgs/special/'},
-  {'title': 'Dentist', 'asset': 'assets/imgs/special/'},
-  {'title': 'Optician', 'asset': 'assets/imgs/special/'},
-  {'title': 'Gynecology', 'asset': 'assets/imgs/special/'},
+  {'title': 'Urology', 'asset': 'assets/imgs/kidney.png'},
+  {'title': 'Neurology', 'asset': 'assets/imgs/brain.png'},
+  {'title': 'Cardiology', 'asset': 'assets/imgs/heart0.png'},
+  {'title': 'Dentist', 'asset': 'assets/imgs/tooth.png'},
+  {'title': 'Orthopedic', 'asset': 'assets/imgs/bone.png'},
 ];
 
 getCustomFont({size = 14.0, color = Colors.black54, weight = FontWeight.w400}) {
