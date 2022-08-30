@@ -1,5 +1,6 @@
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
@@ -36,7 +37,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
             padding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
             width: MediaQuery.of(context).size.width,
-            height: 100.0,
+            height: 95.0,
             color: BLUECOLOR,
             child: Column(children: [
               const SizedBox(
@@ -86,7 +87,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                     ),
                   ),
                   const SizedBox(
-                    height: 25.0,
+                    height: 15.0,
                   ),
                   index == 'Location'
                       ? Expanded(
@@ -105,7 +106,9 @@ class _DoctorProfileState extends State<DoctorProfile> {
                           : index == 'Reviews'
                               ? Expanded(
                                   child: SingleChildScrollView(
-                                    child: Column(children: []),
+                                    child: Column(
+                                        children: List.generate(
+                                            4, (index) => getReviews())),
                                   ),
                                 )
                               : Expanded(child: patientProfile())
@@ -115,7 +118,9 @@ class _DoctorProfileState extends State<DoctorProfile> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: getButton(context, () {}, text: 'Book Appointment'),
+            child: getButton(context, () {
+               context.read<HomeController>().setPage(-1);
+            }, text: 'Book Appointment'),
           ),
           const SizedBox(
             height: 20.0,
@@ -157,16 +162,19 @@ class _DoctorProfileState extends State<DoctorProfile> {
           children: [
             Text(
               'Smile Cute Dental Care Center',
+              maxLines: 1,
               style: getCustomFont(
-                  color: Colors.black, size: 19.0, weight: FontWeight.w400),
+                  color: Colors.black, size: 17.0, weight: FontWeight.w500),
             ),
             const SizedBox(
               height: 2.0,
             ),
-            Text(
-              'MDS - Periodontology and Oral Implantology',
-              style: getCustomFont(
-                  color: Colors.black54, size: 14.0, weight: FontWeight.w400),
+            FittedBox(
+              child: Text(
+                'MDS - Periodontology and Oral Implantology',
+                style: getCustomFont(
+                    color: Colors.black54, size: 13.0, weight: FontWeight.w400),
+              ),
             ),
             const SizedBox(
               height: 5.0,
@@ -203,21 +211,32 @@ class _DoctorProfileState extends State<DoctorProfile> {
               ],
             ),
             const SizedBox(
-              height: 12.0,
+              height: 5.0,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 40.0,
-                        height: 40.0,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            color: Colors.grey),
-                      )
-                    ],
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ...List.generate(
+                            4,
+                            (index) => Container(
+                                  width: 40.0,
+                                  height: 40.0,
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 2),
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image:
+                                              AssetImage('assets/imgs/1.png')),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      color: Colors.grey),
+                                ))
+                      ],
+                    ),
                   ),
                 ),
                 PhysicalModel(
@@ -228,16 +247,18 @@ class _DoctorProfileState extends State<DoctorProfile> {
                   child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15.0, vertical: 20.0),
-                      child: Text(
-                        '\$250',
-                        maxLines: 1,
-                        style: getCustomFont(size: 12.0, color: Colors.black),
+                      child: FittedBox(
+                        child: Text(
+                          '\$250',
+                          maxLines: 1,
+                          style: getCustomFont(size: 12.0, color: Colors.black),
+                        ),
                       )),
                 )
               ],
             ),
             const SizedBox(
-              height: 12.0,
+              height: 7.0,
             ),
             Row(
               children: [
@@ -251,7 +272,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                     '2286 Sundown Lane, Austin, Texas 78749, USA',
                     style: getCustomFont(
                         color: Colors.black,
-                        size: 14.0,
+                        size: 13.0,
                         weight: FontWeight.w400),
                   ),
                 ),
@@ -263,13 +284,13 @@ class _DoctorProfileState extends State<DoctorProfile> {
             Text(
               'Get Directions',
               style: getCustomFont(
-                  color: BLUECOLOR, size: 16.0, weight: FontWeight.w400),
+                  color: BLUECOLOR, size: 14.0, weight: FontWeight.w400),
             ),
             Divider(),
             Text(
               'Mon - Sat',
               style: getCustomFont(
-                  color: Colors.black, size: 14.0, weight: FontWeight.w400),
+                  color: Colors.black, size: 13.0, weight: FontWeight.w400),
             ),
             const SizedBox(
               height: 5.0,
@@ -284,12 +305,14 @@ class _DoctorProfileState extends State<DoctorProfile> {
                           borderRadius: BorderRadius.circular(20.0),
                           border: Border.all(width: 1.0, color: Colors.black),
                           color: Colors.white),
-                      child: Text(
-                        '10:00 AM - 2:00 PM',
-                        maxLines: 1,
-                        style: getCustomFont(
-                          color: Colors.black,
-                          size: 12.0,
+                      child: FittedBox(
+                        child: Text(
+                          '10:00 AM - 2:00 PM',
+                          maxLines: 1,
+                          style: getCustomFont(
+                            color: Colors.black,
+                            size: 12.0,
+                          ),
                         ),
                       )),
                 ),
@@ -304,12 +327,14 @@ class _DoctorProfileState extends State<DoctorProfile> {
                           borderRadius: BorderRadius.circular(20.0),
                           border: Border.all(width: 1.0, color: Colors.black),
                           color: Colors.white),
-                      child: Text(
-                        '10:00 AM - 2:00 PM',
-                        maxLines: 1,
-                        style: getCustomFont(
-                          color: Colors.black,
-                          size: 12.0,
+                      child: FittedBox(
+                        child: Text(
+                          '10:00 AM - 2:00 PM',
+                          maxLines: 1,
+                          style: getCustomFont(
+                            color: Colors.black,
+                            size: 12.0,
+                          ),
                         ),
                       )),
                 )
@@ -348,10 +373,10 @@ class _DoctorProfileState extends State<DoctorProfile> {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(15.0),
               color: Colors.white,
               boxShadow: SHADOW),
           child:
@@ -407,11 +432,46 @@ class _DoctorProfileState extends State<DoctorProfile> {
         ),
         Container(
           width: MediaQuery.of(context).size.width,
-          height: 300.0,
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
               color: Colors.white,
               boxShadow: SHADOW),
+          child: Column(children: [
+            ...List.generate(7, (index) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.check_circle_outline,
+                      color: Colors.black,
+                      size: 16.0,
+                    ),
+                    const SizedBox(
+                      width: 3.0,
+                    ),
+                    Text(
+                      'Monday',
+                      style: getCustomFont(size: 13.5, color: Colors.black),
+                    )
+                  ],
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(7.0),
+                      color: Colors.transparent),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '07:00 AM - 09:00 PM',
+                      style: getCustomFont(size: 13.0, color: Colors.black45),
+                    ),
+                  ),
+                )
+              ],
+            ))
+          ]),
         )
       ],
     );
@@ -476,7 +536,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                       'Dr. Darren Elder',
                                       style: getCustomFont(
                                           color: Colors.black,
-                                          size: 24.0,
+                                          size: 22.0,
                                           weight: FontWeight.w400),
                                     ),
                                     Row(
@@ -502,7 +562,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                           'Dentist',
                                           style: getCustomFont(
                                               color: Colors.black54,
-                                              size: 14.0,
+                                              size: 12.5,
                                               weight: FontWeight.w400),
                                         ),
                                       ],
@@ -513,14 +573,17 @@ class _DoctorProfileState extends State<DoctorProfile> {
                             ],
                           ),
                           const SizedBox(
-                            height: 20.0,
+                            height: 10.0,
                           ),
-                          Text(
-                            'BDS, MDS - Oral & Maxillofacial Surgery',
-                            style: getCustomFont(
-                                color: Colors.black54,
-                                size: 14.0,
-                                weight: FontWeight.w400),
+                          FittedBox(
+                            child: Text(
+                              'BDS, MDS - Oral & Maxillofacial Surgery',
+                              maxLines: 1,
+                              style: getCustomFont(
+                                  color: Colors.black54,
+                                  size: 12.4,
+                                  weight: FontWeight.w400),
+                            ),
                           ),
                           const SizedBox(
                             height: 6.0,
@@ -532,7 +595,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                 '15+ Exp',
                                 style: getCustomFont(
                                     color: Colors.red,
-                                    size: 14.0,
+                                    size: 12.0,
                                     weight: FontWeight.w400),
                               ),
                               Row(
@@ -546,7 +609,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                     'Florida, USA',
                                     style: getCustomFont(
                                         color: Colors.black54,
-                                        size: 14.0,
+                                        size: 12.0,
                                         weight: FontWeight.w400),
                                   ),
                                 ],
@@ -602,17 +665,17 @@ class _DoctorProfileState extends State<DoctorProfile> {
                               'About Us',
                               style: getCustomFont(
                                   color: Colors.black,
-                                  size: 19.0,
-                                  weight: FontWeight.w400),
+                                  size: 16.0,
+                                  weight: FontWeight.w500),
                             ),
                             const SizedBox(
-                              height: 15.0,
+                              height: 10.0,
                             ),
                             Text(
                               '$DUMMYTEXT',
                               style: getCustomFont(
-                                  color: Colors.black,
-                                  size: 14.0,
+                                  color: Colors.black54,
+                                  size: 13.0,
                                   weight: FontWeight.w400),
                             ),
                           ])),
@@ -663,7 +726,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                               'Education',
                               style: getCustomFont(
                                   color: Colors.black,
-                                  size: 19.0,
+                                  size: 17.0,
                                   weight: FontWeight.w400),
                             ),
                             const SizedBox(
@@ -856,7 +919,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                 child: Text(
                   'American Dental Medical University',
                   style: getCustomFont(
-                      color: Colors.black, size: 15.0, weight: FontWeight.w400),
+                      color: Colors.black, size: 14.0, weight: FontWeight.w400),
                 ),
               ),
             ],
@@ -867,7 +930,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
           Text(
             'BDS',
             style: getCustomFont(
-                color: Colors.black54, size: 15.0, weight: FontWeight.w400),
+                color: Colors.black54, size: 13.0, weight: FontWeight.w400),
           ),
           const SizedBox(
             height: 1.0,
@@ -875,7 +938,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
           Text(
             '1998 - 2003',
             style: getCustomFont(
-                color: Colors.black54, size: 15.0, weight: FontWeight.w400),
+                color: Colors.black54, size: 13.0, weight: FontWeight.w400),
           ),
           const SizedBox(
             height: 15.0,
@@ -927,7 +990,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
               Text(
                 'Tooth cleaning',
                 style: getCustomFont(
-                    color: Colors.black, size: 14.0, weight: FontWeight.w400),
+                    color: Colors.black, size: 13.0, weight: FontWeight.w400),
               ),
             ],
           ),
@@ -949,7 +1012,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
               Text(
                 'Dental Care',
                 style: getCustomFont(
-                    color: Colors.black, size: 14.0, weight: FontWeight.w400),
+                    color: Colors.black, size: 13.0, weight: FontWeight.w400),
               ),
             ],
           ),
@@ -957,5 +1020,207 @@ class _DoctorProfileState extends State<DoctorProfile> {
             height: 8.0,
           ),
         ],
+      );
+
+  Widget getReviews() => Container(
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.all(15.0),
+        margin: const EdgeInsets.only(bottom: 7.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15.0),
+          color: Colors.white,
+          boxShadow: SHADOW,
+        ),
+        child: Column(children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                radius: 30.0,
+                backgroundColor: Colors.grey,
+                backgroundImage: AssetImage('assets/imgs/1.png'),
+              ),
+              const SizedBox(
+                width: 10.0,
+              ),
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Richard Wilson',
+                        style: getCustomFont(
+                          size: 17.0,
+                          color: Colors.black,
+                          weight: FontWeight.w500,
+                        )),
+                    Text('Reviewed 2 days ago',
+                        style: getCustomFont(
+                          size: 13.0,
+                          color: Colors.black54,
+                          weight: FontWeight.normal,
+                        )),
+                    const SizedBox(
+                      height: 3.0,
+                    ),
+                    RatingBar.builder(
+                      initialRating: 3,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemSize: 15.0,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                        size: 15.0,
+                      ),
+                      onRatingUpdate: (rating) {
+                        print(rating);
+                      },
+                    ),
+                    const SizedBox(height: 7.0),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.thumb_up_outlined,
+                          color: Color(0xFF00CC80),
+                          size: 16.0,
+                        ),
+                        const SizedBox(
+                          width: 5.0,
+                        ),
+                        Flexible(
+                          child: Text('I recommend the doctor',
+                              style: getCustomFont(
+                                size: 13.0,
+                                color: Color(0xFF00CC80),
+                                weight: FontWeight.normal,
+                              )),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 7.0),
+                    Text('$DUMMYREVIEW',
+                        style: getCustomFont(
+                          size: 13.0,
+                          color: Colors.black,
+                          weight: FontWeight.normal,
+                        )),
+                    const SizedBox(height: 10.0),
+                    DottedBorder(
+                        color: Colors.black45,
+                        padding: const EdgeInsets.symmetric(horizontal: 1),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                        )),
+                    const SizedBox(height: 10.0),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.reply,
+                          color: Colors.lightBlueAccent,
+                          size: 16.0,
+                        ),
+                        const SizedBox(
+                          width: 5.0,
+                        ),
+                        Flexible(
+                          child: Text('Reply',
+                              style: getCustomFont(
+                                size: 13.0,
+                                color: Colors.lightBlueAccent,
+                                weight: FontWeight.normal,
+                              )),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10.0),
+                    Row(
+                      children: [
+                        Text('Recommend?',
+                            style: getCustomFont(
+                              size: 13.0,
+                              color: Colors.black,
+                              weight: FontWeight.normal,
+                            )),
+                        const SizedBox(
+                          width: 15.0,
+                        ),
+                        DottedBorder(
+                          borderType: BorderType.RRect,
+                          radius: Radius.circular(100.0),
+                          padding: EdgeInsets.all(6),
+                          dashPattern: [8, 4],
+                          strokeCap: StrokeCap.butt,
+                          color: Colors.black,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 5.0, vertical: 0.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.thumb_up_outlined,
+                                  color: Colors.black,
+                                  size: 16.0,
+                                ),
+                                const SizedBox(
+                                  width: 5.0,
+                                ),
+                                Text('Yes',
+                                    style: getCustomFont(
+                                      size: 13.0,
+                                      color: Colors.black,
+                                      weight: FontWeight.normal,
+                                    )),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10.0),
+                        DottedBorder(
+                          borderType: BorderType.RRect,
+                          radius: Radius.circular(100.0),
+                          padding: EdgeInsets.all(6),
+                          dashPattern: [8, 4],
+                          strokeCap: StrokeCap.butt,
+                          color: Colors.black,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 5.0, vertical: 0.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.thumb_down_outlined,
+                                  color: Colors.black,
+                                  size: 16.0,
+                                ),
+                                const SizedBox(
+                                  width: 5.0,
+                                ),
+                                Text('No',
+                                    style: getCustomFont(
+                                      size: 13.0,
+                                      color: Colors.black,
+                                      weight: FontWeight.normal,
+                                    )),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          )
+        ]),
       );
 }

@@ -19,8 +19,7 @@ class _FilterPageState extends State<FilterPage> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 1.5,
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 9.0),
-      margin: const EdgeInsets.only(right: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 9.0),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(

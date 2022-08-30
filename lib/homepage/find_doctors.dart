@@ -505,7 +505,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                                 itemCount: 5,
                                 itemSize: 15.0,
                                 itemPadding:
-                                    EdgeInsets.symmetric(horizontal: 2.0),
+                                    EdgeInsets.symmetric(horizontal: 0.0),
                                 itemBuilder: (context, _) => Icon(
                                   Icons.star,
                                   color: Colors.amber,

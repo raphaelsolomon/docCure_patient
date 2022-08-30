@@ -22,7 +22,8 @@ class _SearchDoctorState extends State<SearchDoctor> {
     'Services',
     'Treatment',
     'Hospital/Clinic',
-    'Surgery'
+    'Diagnosis Test',
+    'Surgery/transplant'
   ];
 
   String selected = 'Specialist';
