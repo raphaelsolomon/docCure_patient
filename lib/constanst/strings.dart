@@ -280,12 +280,12 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         children: [],
         isOpen: false,
         index: 3),
-    NavDrawerItem(
-        title: 'My Appointment',
-        icon: FontAwesome.home,
-        children: [],
-        isOpen: false,
-        index: 4),
+    // NavDrawerItem(
+    //     title: 'My Appointment',
+    //     icon: FontAwesome5.meetup,
+    //     children: [],
+    //     isOpen: false,
+    //     index: 4),
     NavDrawerItem(
         title: 'My Reminder',
         icon: Icons.alarm,
@@ -306,7 +306,7 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         index: 5),
     NavDrawerItem(
         title: 'My Medical Records',
-        icon: Icons.family_restroom,
+        icon: Icons.folder,
         children: [],
         isOpen: false,
         index: -10),

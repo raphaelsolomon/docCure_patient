@@ -229,6 +229,12 @@ class _MyProfileState extends State<MyProfile> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                getButton(context, () {
+                  
+                }),
+                 const SizedBox(
+                  width: 10.0,
+                ),
                 getButton(context, () {},
                     icon: Icons.check,
                     text: 'Confirm',
@@ -236,12 +242,8 @@ class _MyProfileState extends State<MyProfile> {
                 const SizedBox(
                   width: 10.0,
                 ),
-                getButton(context, () {}),
-                const SizedBox(
-                  width: 10.0,
-                ),
                 getButton(context, () {},
-                    icon: Icons.print, text: 'Print', color: Colors.grey),
+                    icon: Icons.print, text: 'Reschedule', color: Colors.orange),
               ],
             )
           ],
