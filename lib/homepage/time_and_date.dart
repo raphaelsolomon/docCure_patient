@@ -21,12 +21,12 @@ class TimeAndDate extends StatefulWidget {
 }
 
 class _TimeAndDateState extends State<TimeAndDate> {
-  List<String> headers = ['Time and Date', 'Checkout', 'Payment'];
+  List<String> headers = ['Time and Date', 'Booking', 'Checkout', 'Payment'];
   List CONSULT_TYPE = [
     {'title': 'Audio Call', 'icon': Icons.spatial_audio},
     {'title': 'Video Call', 'icon': FontAwesome5.video},
     {'title': 'Chat', 'icon': FontAwesome5.facebook_messenger},
-    {'title': 'Visit', 'icon': FontAwesome5.walking}
+    {'title': 'Physical Visit', 'icon': FontAwesome5.walking}
   ];
   String type = 'Audio Call';
 
@@ -117,8 +117,13 @@ class _TimeAndDateState extends State<TimeAndDate> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Row(
-                      children: [...headers.map((e) => _dashList(e)).toList()],
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          ...headers.map((e) => _dashList(e)).toList()
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -128,13 +133,49 @@ class _TimeAndDateState extends State<TimeAndDate> {
                       ? getCalenderYear(context)
                       : index == 'Checkout'
                           ? checkOut(context)
-                          : getPaymentWidget(context)
+                          : index == 'Plan'
+                              ? getPlans(context)
+                              : getPaymentWidget(context)
                 ],
               ),
             )
           ],
         ));
   }
+
+  Widget getPlans(context) => Expanded(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+          width: MediaQuery.of(context).size.width,
+          margin: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      ...CONSULT_TYPE.map((e) => _dashTypeList(e)).toList()
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                getBookingForm(),
+                const SizedBox(
+                  height: 30.0,
+                ),
+                getButton1(context, () {
+                  setState(() {
+                    index = 'Checkout';
+                  });
+                })
+              ],
+            ),
+          ),
+        ),
+      );
 
   Widget _dashList(e) => GestureDetector(
         onTap: () => setState(() => index = e),
@@ -257,7 +298,8 @@ class _TimeAndDateState extends State<TimeAndDate> {
                         child: Text(
                           timingModel.timerFrom,
                           maxLines: 1,
-                          style: getCustomFont(size: 13.0, color: Colors.black45),
+                          style:
+                              getCustomFont(size: 13.0, color: Colors.black45),
                         ),
                       )),
                     ),
@@ -290,7 +332,8 @@ class _TimeAndDateState extends State<TimeAndDate> {
                         child: Text(
                           timingModel.timerTo,
                           maxLines: 1,
-                          style: getCustomFont(size: 14.0, color: Colors.black45),
+                          style:
+                              getCustomFont(size: 14.0, color: Colors.black45),
                         ),
                       )),
                     ),
@@ -374,43 +417,30 @@ class _TimeAndDateState extends State<TimeAndDate> {
                       ),
                     ),
                     const SizedBox(
-                      height: 15.0,
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          ...CONSULT_TYPE.map((e) => _dashTypeList(e)).toList()
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
                       height: 20.0,
                     ),
                     GridView.builder(
                         padding: const EdgeInsets.all(0.0),
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: returnCrossAxis(width),
-                                mainAxisSpacing: 15.0,
-                                mainAxisExtent: 120,
-                                crossAxisSpacing: 8.0),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: returnCrossAxis(width),
+                            mainAxisSpacing: 15.0,
+                            mainAxisExtent: 120,
+                            crossAxisSpacing: 8.0),
                         itemCount: timemodel.length,
                         itemBuilder: (ctx, i) =>
                             getTimeItems(timemodel[i], i, context)),
-
-                            const SizedBox(height: 20.0,),
-                            getBookingForm(),
-                            const SizedBox(height: 30.0,)
+                    const SizedBox(
+                      height: 20.0,
+                    ),
                   ],
                 ),
               ),
             ),
             getButton1(context, () {
               setState(() {
-                index = 'Checkout';
+                index = 'Booking';
               });
             })
           ],
@@ -633,33 +663,30 @@ class _TimeAndDateState extends State<TimeAndDate> {
           border: Border.all(width: 1.0, color: Colors.grey.shade200),
           borderRadius: BorderRadius.circular(8.0)),
       child: FormBuilderDropdown(
-                    name: 'skill',
-                    icon: const Icon(
-                      Icons.keyboard_arrow_down,
-                      color: Colors.black,
-                    ),
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 9.9, vertical: 5.0),
-                      border: OutlineInputBorder(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5.0)),
-                        borderSide:
-                            BorderSide(width: 1.0, color: Colors.grey),
-                      ),
-                    ),
-                     initialValue: 'Aetna',
-                    items: ['Aetna', 'LifeGuard']
-                        .map((gender) => DropdownMenuItem(
-                              value: gender,
-                              child: Text(
-                                gender,
-                                style: getCustomFont(
-                                    size: 13.0, color: Colors.black),
-                              ),
-                            ))
-                        .toList(),
+        name: 'skill',
+        icon: const Icon(
+          Icons.keyboard_arrow_down,
+          color: Colors.black,
+        ),
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 9.9, vertical: 5.0),
+          border: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+            borderSide: BorderSide(width: 1.0, color: Colors.grey),
+          ),
+        ),
+        initialValue: 'Aetna',
+        items: ['Aetna', 'LifeGuard']
+            .map((gender) => DropdownMenuItem(
+                  value: gender,
+                  child: Text(
+                    gender,
+                    style: getCustomFont(size: 13.0, color: Colors.black),
                   ),
+                ))
+            .toList(),
+      ),
     );
   }
 
@@ -740,18 +767,16 @@ class _TimeAndDateState extends State<TimeAndDate> {
         onTap: () => callBack(),
         child: Container(
           width: MediaQuery.of(context).size.width,
+          height: 45.0,
           decoration: BoxDecoration(
               color: BLUECOLOR, borderRadius: BorderRadius.circular(50.0)),
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Center(
-              child: Text(
-                text,
-                style: GoogleFonts.poppins(
-                    fontSize: 17.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal),
-              ),
+          child: Center(
+            child: Text(
+              text,
+              style: GoogleFonts.poppins(
+                  fontSize: 16.0,
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal),
             ),
           ),
         ),
@@ -1125,21 +1150,21 @@ class _TimeAndDateState extends State<TimeAndDate> {
           decoration: BoxDecoration(
               color: BLUECOLOR, borderRadius: BorderRadius.circular(50.0)),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'Total - \$144',
                   style: GoogleFonts.poppins(
-                      fontSize: 13.0,
+                      fontSize: 14.0,
                       color: Colors.white,
                       fontWeight: FontWeight.normal),
                 ),
                 Text(
                   'Continue',
                   style: GoogleFonts.poppins(
-                      fontSize: 13.0,
+                      fontSize: 14.0,
                       color: Colors.white,
                       fontWeight: FontWeight.normal),
                 ),

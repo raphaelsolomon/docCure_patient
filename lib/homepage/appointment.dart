@@ -31,7 +31,7 @@ class _MyAppointmentState extends State<MyAppointment> {
         children: [
           Container(
             padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 17.0),
             width: MediaQuery.of(context).size.width,
             height: 90.0,
             color: BLUECOLOR,
@@ -58,14 +58,14 @@ class _MyAppointmentState extends State<MyAppointment> {
                     ),
                   ),
                   InkWell(
-                          onTap: () {
-                            context.read<HomeController>().setPage(12);
-                          },
-                          child: Icon(
-                            Icons.notifications_active,
-                            color: Colors.white,
-                          ),
-                        )
+                    onTap: () {
+                      context.read<HomeController>().setPage(12);
+                    },
+                    child: Icon(
+                      Icons.notifications_active,
+                      color: Colors.white,
+                    ),
+                  )
                 ],
               )
             ]),
@@ -162,15 +162,20 @@ class _MyAppointmentState extends State<MyAppointment> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
-                    child: Text(
-                  'Booking Date - 16 Mar 2022',
-                  style: getCustomFont(
-                      size: 15.0, color: Colors.black, weight: FontWeight.w400),
+                    child: FittedBox(
+                  child: Text(
+                    'Booking Date - 16 Mar 2022',
+                    maxLines: 1,
+                    style: getCustomFont(
+                        size: 14.0,
+                        color: Colors.black,
+                        weight: FontWeight.w400),
+                  ),
                 )),
                 Text(
                   'dental',
                   style: getCustomFont(
-                      size: 15.0,
+                      size: 14.0,
                       color: Colors.black45,
                       weight: FontWeight.w400),
                 )
@@ -193,8 +198,8 @@ class _MyAppointmentState extends State<MyAppointment> {
                       'Dr. Ruby Perrln',
                       style: getCustomFont(
                           color: Colors.black,
-                          size: 19.0,
-                          weight: FontWeight.w400),
+                          size: 17.0,
+                          weight: FontWeight.w500),
                     ),
                     const SizedBox(
                       height: 2.0,
@@ -203,7 +208,7 @@ class _MyAppointmentState extends State<MyAppointment> {
                       'Appt Date - 22 Mar 2020, 4:30PM',
                       style: getCustomFont(
                           color: Colors.black54,
-                          size: 14.0,
+                          size: 13.0,
                           weight: FontWeight.w400),
                     ),
                     const SizedBox(
@@ -213,7 +218,7 @@ class _MyAppointmentState extends State<MyAppointment> {
                       '\$150.00',
                       style: getCustomFont(
                           color: Colors.black,
-                          size: 14.0,
+                          size: 13.0,
                           weight: FontWeight.w400),
                     ),
                   ],
@@ -226,6 +231,10 @@ class _MyAppointmentState extends State<MyAppointment> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                getButton(context, () {}),
+                const SizedBox(
+                  width: 10.0,
+                ),
                 getButton(context, () {},
                     icon: Icons.check,
                     text: 'Confirm',
@@ -233,12 +242,10 @@ class _MyAppointmentState extends State<MyAppointment> {
                 const SizedBox(
                   width: 10.0,
                 ),
-                getButton(context, () {}),
-                const SizedBox(
-                  width: 10.0,
-                ),
                 getButton(context, () {},
-                    icon: Icons.print, text: 'Print', color: Colors.grey),
+                    icon: Icons.print,
+                    text: 'Reschedule',
+                    color: Colors.orange),
               ],
             )
           ],

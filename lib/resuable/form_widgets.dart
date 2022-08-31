@@ -447,6 +447,9 @@ setClickListener(e, BuildContext context) {
     case 7:
       context.read<HomeController>().setPage(7);
       break;
+    case 8:
+      context.read<HomeController>().setPage(8);
+      break;
     case 10:
       context.read<HomeController>().setPage(10);
       break;
@@ -462,7 +465,6 @@ setClickListener(e, BuildContext context) {
     case 11:
       Get.offAll(() => AuthLogin());
       break;
-
     default:
       context.read<HomeController>().jumpToHome();
       break;

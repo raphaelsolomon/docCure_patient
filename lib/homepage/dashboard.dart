@@ -3,6 +3,7 @@ import 'package:doccure_patient/auth/change_password.dart';
 import 'package:doccure_patient/callscreens/pickup/pick_layout.dart';
 import 'package:doccure_patient/chat/chat_list.dart';
 import 'package:doccure_patient/company/favourite.dart';
+import 'package:doccure_patient/company/invoice_receipt.dart';
 import 'package:doccure_patient/company/medicalrecord.dart';
 import 'package:doccure_patient/company/myoffer.dart';
 import 'package:doccure_patient/company/myprescription.dart';
@@ -22,6 +23,7 @@ import 'package:doccure_patient/homepage/home.dart';
 import 'package:doccure_patient/homepage/invoice.dart';
 import 'package:doccure_patient/homepage/myfamily.dart';
 import 'package:doccure_patient/homepage/patient_profile.dart';
+import 'package:doccure_patient/homepage/reminder.dart';
 import 'package:doccure_patient/homepage/search_doctor.dart';
 import 'package:doccure_patient/homepage/time_and_date.dart';
 import 'package:doccure_patient/homepage/vital_and_tracks.dart';
@@ -84,6 +86,7 @@ class _DashBoardState extends State<DashBoard> {
                           ? NotificationPage()
                           : page == 1
                               ? VitalAndTracks(scaffold)
+                              //? InvoiceReceipt(scaffold)
                               : page == 4
                                   ? MyAppointment(scaffold)
                                   : page == 5
@@ -93,7 +96,7 @@ class _DashBoardState extends State<DashBoard> {
                                           : page == 7
                                               ? MyFamily()
                                               : page == 8
-                                                  ? MyFavourite(scaffold)
+                                                  ? MyReminder()
                                                   : page == 9
                                                       ? MyReferrals()
                                                       : page == -2

@@ -89,7 +89,73 @@ List secondList = [
   },
 ];
 
-const DUMMYREVIEW = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.';
+const PickerData2 = '''
+[
+    [
+        "Non",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thur",
+        "Fri",
+        "Sat",
+        "Sun"
+    ],
+    [
+        "Non",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thur",
+        "Fri",
+        "Sat",
+        "Sun"
+    ],
+    [   
+        "Non",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thur",
+        "Fri",
+        "Sat",
+        "Sun"
+    ],
+    [
+        "Non",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thur",
+        "Fri",
+        "Sat",
+        "Sun"
+    ],
+    [
+        "Non",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thur",
+        "Fri",
+        "Sat",
+        "Sun"
+    ],
+    [
+        "Non",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thur",
+        "Fri",
+        "Sat",
+        "Sun"
+    ]
+]
+    ''';
+
+const DUMMYREVIEW =
+    'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.';
 
 const BoxName = 'userBox';
 
@@ -153,7 +219,10 @@ List<String> month = [
   'December'
 ];
 
-List Advert = [{'title': 'Upto\n10%', 'desc': '10% cashback\neveryhour'}, {'title': 'Upto\n15%', 'desc': '15% cashback\neveryhour'}];
+List Advert = [
+  {'title': 'Upto\n10%', 'desc': '10% cashback\neveryhour'},
+  {'title': 'Upto\n15%', 'desc': '15% cashback\neveryhour'}
+];
 
 List Specialities = [
   {'title': 'Urology', 'asset': 'assets/imgs/kidney.png'},
@@ -189,7 +258,7 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         index: 0),
     NavDrawerItem(
         title: 'Dashboard',
-        icon: FontAwesome.home,
+        icon: FontAwesome5.dashcube,
         children: [],
         isOpen: false,
         index: 10),
@@ -219,7 +288,7 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         index: 4),
     NavDrawerItem(
         title: 'My Reminder',
-        icon: Icons.family_restroom,
+        icon: Icons.alarm,
         children: [],
         isOpen: false,
         index: 8),
@@ -288,8 +357,8 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         title: 'Settings',
         icon: Icons.settings,
         children: [
-        // {'index': -13, 'title': 'Language'},
-         // {'index': -0, 'title': 'Country'},
+          // {'index': -13, 'title': 'Language'},
+          // {'index': -0, 'title': 'Country'},
           {'index': -0, 'title': 'Currency'},
           {'index': -8, 'title': 'Change Password'},
           {'index': -5, 'title': 'Notification'}

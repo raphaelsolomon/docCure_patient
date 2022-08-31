@@ -22,6 +22,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   void initState() {
     _pageController = PageController(initialPage: 0);
+    _pageController!.addListener(() {
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -67,7 +70,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         child: Container(
                             margin: const EdgeInsets.all(30.0),
                             padding: const EdgeInsets.only(
-                                left: 18.0, right: 18.0, top: 20.0, bottom: 10.0),
+                                left: 18.0,
+                                right: 18.0,
+                                top: 20.0,
+                                bottom: 10.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
                               color: Colors.white,
@@ -100,28 +106,30 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               const Spacer(),
                               GestureDetector(
                                 onTap: () {
-                                  if(counter == 4){
-                                    
+                                  if (counter == 4) {
                                     Get.to(() => AuthLogin());
+                                  } else {
+                                    counter = counter + 1;
+                                    _pageController!.animateToPage(counter, duration: Duration(seconds: 1), curve: Curves.linearToEaseOut);
                                   }
                                 },
                                 child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 50,
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 50,
                                     decoration: BoxDecoration(
                                       color: BLUECOLOR,
                                       borderRadius: BorderRadius.circular(8.0),
                                     ),
                                     child: Center(
                                         child: Text(
-                                      counter == 4 ? 'Continue':'Next',
+                                      counter == 4 ? 'Continue' : 'Next',
                                       style: GoogleFonts.poppins(
                                           color: Colors.white,
                                           fontSize: 17.0,
                                           fontWeight: FontWeight.w600),
                                     ))),
                               ),
-                              counter == 4 ? const SizedBox() :const Spacer(),
+                              counter == 4 ? const SizedBox() : const Spacer(),
                               Visibility(
                                 visible: counter < 4,
                                 child: InkWell(
