@@ -29,7 +29,7 @@ class MyOffer extends StatelessWidget {
                   GestureDetector(
                       onTap: () => context.read<HomeController>().onBackPress(),
                       child: Icon(Icons.menu, size: 20.0, color: Colors.white)),
-                  Text('My Offer/Coupons',
+                  Text('My Offers/Coupons',
                       style: getCustomFont(size: 18.0, color: Colors.white)),
                   Icon(
                     null,

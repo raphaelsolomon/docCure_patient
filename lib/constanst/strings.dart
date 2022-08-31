@@ -317,14 +317,8 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         isOpen: false,
         index: -11),
     NavDrawerItem(
-        title: 'Medical Details',
-        icon: Icons.family_restroom,
-        children: [],
-        isOpen: false,
-        index: -0),
-    NavDrawerItem(
-        title: 'My Profile',
-        icon: Icons.person,
+        title: 'Profile',
+        icon: FontAwesome5.user,
         children: [],
         isOpen: false,
         index: -2),
@@ -334,7 +328,6 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         children: [
           {'index': -12, 'title': 'My Offer'},
           {'index': 6, 'title': 'My Invoices'},
-          {'index': -14, 'title': 'Payment Methods'},
           {'index': -0, 'title': 'Account'},
           {'index': 8, 'title': 'Favourite'},
           {'index': -0, 'title': 'Reviews'}

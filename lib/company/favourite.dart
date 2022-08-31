@@ -61,11 +61,13 @@ class MyFavourite extends StatelessWidget {
           const SizedBox(
             height: 15.0,
           ),
-          Expanded(child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-            itemCount: 5,
-            shrinkWrap: true,
-            itemBuilder: (ctx, i) => findDoctors(context)))
+          Expanded(
+              child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 0.0, vertical: 0.0),
+                  itemCount: 5,
+                  shrinkWrap: true,
+                  itemBuilder: (ctx, i) => findDoctors(context)))
         ]));
   }
 
@@ -310,7 +312,10 @@ class MyFavourite extends StatelessWidget {
                   width: 15.0,
                 ),
                 Flexible(
-                  child: getAppointment(context, (){}),
+                  child:
+                      getAppointment(context, () {
+                         context.read<HomeController>().setPage(-1);
+                      }, text: 'Book Appointment'),
                 )
               ],
             )
@@ -323,6 +328,7 @@ class MyFavourite extends StatelessWidget {
         onTap: () => callBack(),
         child: Container(
           width: MediaQuery.of(context).size.width,
+          height: 40.0,
           decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(width: 1.0, color: BLUECOLOR),
@@ -342,24 +348,27 @@ class MyFavourite extends StatelessWidget {
         ),
       );
 
-       Widget getAppointment(context, callBack) =>
+  Widget getAppointment(context, callBack,
+          {color = BLUECOLOR, text = 'Search Now'}) =>
       GestureDetector(
         onTap: () => callBack(),
         child: Container(
           width: MediaQuery.of(context).size.width,
+          height: 40.0,
           decoration: BoxDecoration(
-              color: BLUECOLOR,
-              border: Border.all(width: 1.0, color: BLUECOLOR),
-              borderRadius: BorderRadius.circular(7.0)),
+              color: color, borderRadius: BorderRadius.circular(7.0)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-              child: Text(
-                'Book Appointment',
-                style: GoogleFonts.poppins(
-                    fontSize: 15.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal),
+              child: FittedBox(
+                child: Text(
+                  text,
+                  maxLines: 1,
+                  style: GoogleFonts.poppins(
+                      fontSize: 13.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal),
+                ),
               ),
             ),
           ),

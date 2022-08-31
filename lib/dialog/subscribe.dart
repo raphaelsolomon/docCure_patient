@@ -1,4 +1,5 @@
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/dialog/add_family.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -313,7 +314,7 @@ Widget familyPop(BuildContext context) {
                     style: getCustomFont(size: 14.0, color: Colors.black45),
                   ),
                   Text(
-                    'X',
+                    'x',
                     style: getCustomFont(size: 20.0, color: Colors.black),
                   )
                 ],
@@ -332,9 +333,9 @@ Widget familyPop(BuildContext context) {
               Text('Are you sure you want to create a family',
               textAlign: TextAlign.center,
                   style: getCustomFont(
-                      size: 20.0,
+                      size: 16.0,
                       color: Colors.black,
-                      weight: FontWeight.bold)),
+                      weight: FontWeight.w500)),
               const SizedBox(
                 height: 10.0,
               ),
@@ -352,7 +353,7 @@ Widget familyPop(BuildContext context) {
                         horizontal: 20.0, vertical: 8.0),
                                       child: Text(
                       'Cancel',
-                      style: getCustomFont(size: 15.0, color: Colors.black),
+                      style: getCustomFont(size: 14.0, color: Colors.black),
                                       ),
                                     ),
                     )),
@@ -360,7 +361,7 @@ Widget familyPop(BuildContext context) {
                     child: GestureDetector(
                       onTap: (){
                         Navigator.pop(context);
-                        dialogMessage(context, familyPopStart(context));
+                       showRequestSheet(context, AddFamilyDailog());
                       },
                       child: Container(
                                       decoration: BoxDecoration(
@@ -370,7 +371,7 @@ Widget familyPop(BuildContext context) {
                         horizontal: 20.0, vertical: 10.0),
                                       child: Text(
                       'Continue',
-                      style: getCustomFont(size: 15.0, color: Colors.white),
+                      style: getCustomFont(size: 14.0, color: Colors.white),
                                       ),
                                     ),
                     )),

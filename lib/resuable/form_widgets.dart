@@ -325,7 +325,7 @@ navDrawer(BuildContext context, scaffold) => Container(
                   child: Container(
                     height: 45.0,
                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    margin: const EdgeInsets.only(bottom: 10.0),
+                    margin: const EdgeInsets.only(bottom: 15.0),
                     child: Row(children: [
                       CircleAvatar(
                         radius: 18.0,
@@ -349,6 +349,7 @@ navDrawer(BuildContext context, scaffold) => Container(
                 );
               }
               return ExpansionTile(
+                  tilePadding: const EdgeInsets.only(bottom: 0.0, left: 15.0, right: 15.0, top: 0.0),
                   leading: CircleAvatar(
                     radius: 18.0,
                     child: Icon(
@@ -418,9 +419,6 @@ setChildrenClickListener(e, BuildContext context) {
     case -13:
       dialogMessage(context, language(context));
       break;
-    case -14:
-      context.read<HomeController>().setPage(-14);
-      break;
   }
 }
 
@@ -453,14 +451,14 @@ setClickListener(e, BuildContext context) {
     case 10:
       context.read<HomeController>().setPage(10);
       break;
-    case -2:
-      context.read<HomeController>().setPage(-2);
-      break;
     case -10:
       context.read<HomeController>().setPage(-10);
       break;
     case -11:
       context.read<HomeController>().setPage(-11);
+      break;
+    case -2:
+      context.read<HomeController>().setPage(-2);
       break;
     case 11:
       Get.offAll(() => AuthLogin());

@@ -44,7 +44,7 @@ class NotificationSettingsPage extends StatelessWidget {
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 5.0),
+                        horizontal: 13.0, vertical: 5.0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50.0),
                         color: Colors.white),

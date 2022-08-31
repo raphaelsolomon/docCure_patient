@@ -198,16 +198,27 @@ class _MyReminderState extends State<MyReminder> {
                                   child: Container(
                                     height: 48.0,
                                     margin: const EdgeInsets.only(right: 15.0),
-                                    padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 13.0),
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      color: BLUECOLOR.withOpacity(.3)
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        color: BLUECOLOR.withOpacity(.3)),
+                                    child: Icon(
+                                      Icons.add,
+                                      color: Colors.white,
                                     ),
-                                    child: Icon(Icons.add, color: Colors.white,),
                                   ),
                                 )
                               ],
-                            )
+                            ),
+                             const SizedBox(
+                              height: 40.0,
+                            ),
+                            getPayButton(context, () {}),
+                             const SizedBox(
+                              height: 20.0,
+                            ),
                           ],
                         ))
             ])),
@@ -394,10 +405,10 @@ class _MyReminderState extends State<MyReminder> {
             ),
             Flexible(
                 child: Text(
-                  days.join(', '),
-                  style: getCustomFont(
-                      size: 13.0, color: Colors.black, weight: FontWeight.w500),
-                )),
+              days.join(', '),
+              style: getCustomFont(
+                  size: 13.0, color: Colors.black, weight: FontWeight.w500),
+            )),
           ],
         ),
       ),
@@ -407,7 +418,25 @@ class _MyReminderState extends State<MyReminder> {
   String formatTimeOfDay(TimeOfDay tod) {
     final now = new DateTime.now();
     final dt = DateTime(now.year, now.month, now.day, tod.hour, tod.minute);
-    final format = DateFormat.jm();  //"6:00 AM"
+    final format = DateFormat.jm(); //"6:00 AM"
     return format.format(dt);
   }
+
+  Widget getPayButton(context, callBack) => GestureDetector(
+        onTap: () => callBack(),
+        child: Container(
+          height: 45.0,
+          margin: const EdgeInsets.symmetric(horizontal: 15.0),
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              color: BLUECOLOR, borderRadius: BorderRadius.circular(50.0)),
+          child: Center(
+            child: Text(
+              'Submit',
+              style: getCustomFont(
+                  size: 15.0, color: Colors.white, weight: FontWeight.normal),
+            ),
+          ),
+        ),
+      );
 }

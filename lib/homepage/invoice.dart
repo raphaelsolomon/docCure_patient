@@ -148,7 +148,9 @@ class _MyInvoicePageState extends State<MyInvoicePage> {
                         width: MediaQuery.of(context).size.width,
                         child: Align(
                           alignment: Alignment.centerRight,
-                          child: getButton(context, () {}),
+                          child: getButton(context, () {
+                            context.read<HomeController>().setPage(-14);
+                          }),
                         ),
                       )
                     ],

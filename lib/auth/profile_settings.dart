@@ -33,7 +33,7 @@ class ProfileSettings extends StatelessWidget {
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text('Patient Settings',
+                        Text('Profile',
                             style:
                                 getCustomFont(size: 18.0, color: Colors.white))
                       ],

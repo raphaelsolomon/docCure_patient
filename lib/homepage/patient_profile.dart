@@ -53,21 +53,21 @@ class _MyProfileState extends State<MyProfile> {
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text('Profile',
+                        Text('Medical Record',
                             style:
                                 getCustomFont(size: 18.0, color: Colors.white))
                       ],
                     ),
                   ),
-                 InkWell(
-                          onTap: () {
-                            context.read<HomeController>().setPage(12);
-                          },
-                          child: Icon(
-                            Icons.notifications_active,
-                            color: Colors.white,
-                          ),
-                        )
+                  InkWell(
+                    onTap: () {
+                      context.read<HomeController>().setPage(12);
+                    },
+                    child: Icon(
+                      Icons.notifications_active,
+                      color: Colors.white,
+                    ),
+                  )
                 ],
               )
             ]),
@@ -75,7 +75,7 @@ class _MyProfileState extends State<MyProfile> {
           Expanded(
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
               child: Column(
                 children: [
                   SingleChildScrollView(
@@ -85,7 +85,7 @@ class _MyProfileState extends State<MyProfile> {
                     ),
                   ),
                   const SizedBox(
-                    height: 25.0,
+                    height: 15.0,
                   ),
                   index == 'Appointments'
                       ? Expanded(
@@ -109,9 +109,8 @@ class _MyProfileState extends State<MyProfile> {
                               ? Expanded(
                                   child: SingleChildScrollView(
                                     child: Column(
-                                      children: List.generate(
-                                          5, (index) => medicalRecordItem()),
-                                    ),
+                                      children:[tableInvoice(context)]
+                                      )
                                   ),
                                 )
                               : index == 'Overview'
@@ -818,7 +817,9 @@ class _MyProfileState extends State<MyProfile> {
           Row(
             children: [
               Icon(Icons.check, size: 14.0, color: Colors.black),
-              const SizedBox(width: 3.0,),
+              const SizedBox(
+                width: 3.0,
+              ),
               Text(
                 'Last Booking',
                 style: getCustomFont(
@@ -826,19 +827,238 @@ class _MyProfileState extends State<MyProfile> {
               ),
             ],
           ),
-          const SizedBox(height: 1.0,),
+          const SizedBox(
+            height: 1.0,
+          ),
           Text(
             'Dentist',
             style: getCustomFont(
                 color: Colors.black54, size: 15.0, weight: FontWeight.w400),
           ),
-          const SizedBox(height: 1.0,),
+          const SizedBox(
+            height: 1.0,
+          ),
           Text(
             '15 Nov 2022 4:00 PM',
             style: getCustomFont(
                 color: Colors.black54, size: 15.0, weight: FontWeight.w400),
           ),
-          const SizedBox(height: 15.0,),
+          const SizedBox(
+            height: 15.0,
+          ),
         ],
       );
+
+  Widget tableInvoice(context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          Table(
+            defaultColumnWidth: FixedColumnWidth(120),
+            border: TableBorder.all(
+                color: Colors.grey.shade300,
+                style: BorderStyle.solid,
+                width: 1),
+            children: [
+              TableRow(children: [
+                Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Text('#',
+                        maxLines: 1,
+                        style: getCustomFont(
+                            size: 15.0,
+                            weight: FontWeight.bold,
+                            color: Colors.black)),
+                  )
+                ]),
+                Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Text('Name',
+                        maxLines: 1,
+                        style: getCustomFont(
+                            size: 15.0,
+                            weight: FontWeight.bold,
+                            color: Colors.black)),
+                  )
+                ]),
+                Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Text('BMI',
+                        maxLines: 1,
+                        style: getCustomFont(
+                            size: 15.0,
+                            weight: FontWeight.bold,
+                            color: Colors.black)),
+                  )
+                ]),
+                Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Text('Heart Rate',
+                        maxLines: 1,
+                        style: getCustomFont(
+                            size: 15.0,
+                            weight: FontWeight.bold,
+                            color: Colors.black)),
+                  )
+                ]),
+                Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Text('FBC Status',
+                        maxLines: 1,
+                        style: getCustomFont(
+                            size: 15.0,
+                            weight: FontWeight.bold,
+                            color: Colors.black)),
+                  )
+                ]),
+                Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Text('Weight',
+                        maxLines: 1,
+                        style: getCustomFont(
+                            size: 15.0,
+                            weight: FontWeight.bold,
+                            color: Colors.black)),
+                  )
+                ]),
+                Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Text('Order Date',
+                        maxLines: 1,
+                        style: getCustomFont(
+                            size: 15.0,
+                            weight: FontWeight.bold,
+                            color: Colors.black)),
+                  )
+                ]),
+                Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Text('Action',
+                        maxLines: 1,
+                        style: getCustomFont(
+                            size: 15.0,
+                            weight: FontWeight.bold,
+                            color: Colors.black)),
+                  )
+                ]),
+              ]),
+              TableRow(children: [
+                Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Text('1',
+                        style: getCustomFont(
+                            size: 15.0,
+                            weight: FontWeight.normal,
+                            color: Colors.black45)),
+                  )
+                ]),
+                Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Text('John Doe',
+                        style: getCustomFont(
+                            size: 15.0,
+                            weight: FontWeight.normal,
+                            color: Colors.black45)),
+                  )
+                ]),
+                Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Text('23.7',
+                        maxLines: 1,
+                        style: getCustomFont(
+                            size: 15.0,
+                            weight: FontWeight.normal,
+                            color: Colors.black45)),
+                  )
+                ]),
+                Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Text('92',
+                        maxLines: 1,
+                        style: getCustomFont(
+                            size: 15.0,
+                            weight: FontWeight.normal,
+                            color: Colors.black45)),
+                  )
+                ]),
+                Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Text('140',
+                        maxLines: 1,
+                        style: getCustomFont(
+                            size: 15.0,
+                            weight: FontWeight.normal,
+                            color: Colors.black45)),
+                  )
+                ]),
+                Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Text('14.2kg',
+                        maxLines: 1,
+                        style: getCustomFont(
+                            size: 15.0,
+                            weight: FontWeight.normal,
+                            color: Colors.black45)),
+                  )
+                ]),
+                Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Text('3-Nov-2022',
+                        maxLines: 1,
+                        style: getCustomFont(
+                            size: 15.0,
+                            weight: FontWeight.normal,
+                            color: Colors.black45)),
+                  )
+                ]),
+                Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Text('Action',
+                        maxLines: 1,
+                        style: getCustomFont(
+                            size: 15.0,
+                            weight: FontWeight.normal,
+                            color: Colors.black45)),
+                  )
+                ]),
+              ]),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }
