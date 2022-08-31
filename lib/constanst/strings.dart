@@ -310,12 +310,12 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         children: [],
         isOpen: false,
         index: -10),
-    NavDrawerItem(
-        title: 'My Prescription',
-        icon: Icons.family_restroom,
-        children: [],
-        isOpen: false,
-        index: -11),
+    // NavDrawerItem(
+    //     title: 'My Prescription',
+    //     icon: Icons.family_restroom,
+    //     children: [],
+    //     isOpen: false,
+    //     index: -11),
     NavDrawerItem(
         title: 'Profile',
         icon: FontAwesome5.user,
