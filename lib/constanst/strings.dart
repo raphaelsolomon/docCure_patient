@@ -317,7 +317,7 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
     //     isOpen: false,
     //     index: -11),
     NavDrawerItem(
-        title: 'Profile',
+        title: 'Profile Settings',
         icon: FontAwesome5.user,
         children: [],
         isOpen: false,
