@@ -30,6 +30,7 @@ import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:doccure_patient/resuable/custom_nav.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
+import 'package:doccure_patient/store/index.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -68,8 +69,8 @@ class _DashBoardState extends State<DashBoard> {
   @override
   Widget build(BuildContext context) {
     final page = context.watch<HomeController>().getPage;
-    List removeBottom = [12, -5, 9, -12, -6, -7, -9, 8, -8];
-    List removeBottom1 = [7, 1, 5, -1, -4, -2];
+    List removeBottom = [12, -5, 9, -12, -6, -7, -9, 8, -8, 4];
+    List removeBottom1 = [7, 1, 5, -1, -4, -2, 4];
     return KeyboardVisibilityBuilder(
       builder: (context, isVisible) => WillPopScope(
         onWillPop: () => context.read<HomeController>().onBackPress(),
@@ -89,8 +90,8 @@ class _DashBoardState extends State<DashBoard> {
                                 ? NotificationPage()
                                 : page == 1 //no bottom nav
                                     ? VitalAndTracks(scaffold)
-                                    // : page == 4
-                                    //     ? MyAppointment(scaffold)
+                                    : page == 4
+                                        ? StorePage()
                                         : page == 5
                                             ? ChatListScreen(scaffold, logController, _client)
                                             : page == 6
@@ -135,7 +136,7 @@ class _DashBoardState extends State<DashBoard> {
                                                                                                                       ),
                                                                                                                     ),
                                                                                                                   ),
-                    !isVisible && !removeBottom.contains(page) && !removeBottom1.contains(page)
+                    !isVisible || (!removeBottom.contains(page) && !removeBottom1.contains(page))
                         ? Align(
                             alignment: Alignment.bottomCenter,
                             child: CustomNavBar(context))

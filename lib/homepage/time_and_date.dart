@@ -401,20 +401,20 @@ class _TimeAndDateState extends State<TimeAndDate> {
                     ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
-                      child: CalendarWeek(
-                        controller: CalendarWeekController(),
-                        height: 100,
-                        showMonth: false,
-                        minDate: DateTime.now().add(
-                          Duration(days: -365),
-                        ),
-                        maxDate: DateTime.now().add(
-                          Duration(days: 365),
-                        ),
-                        onDatePressed: (DateTime datetime) {
-                          // Do something
-                        },
-                      ),
+                      // child: CalendarWeek(
+                      //   controller: CalendarWeekController(),
+                      //   height: 100,
+                      //   showMonth: false,
+                      //   minDate: DateTime.now().add(
+                      //     Duration(days: -365),
+                      //   ),
+                      //   maxDate: DateTime.now().add(
+                      //     Duration(days: 365),
+                      //   ),
+                      //   onDatePressed: (DateTime datetime) {
+                      //     // Do something
+                      //   },
+                      // ),
                     ),
                     const SizedBox(
                       height: 20.0,

@@ -3,10 +3,15 @@ import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SocialMedia extends StatelessWidget {
+class SocialMedia extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffold;
   SocialMedia(this.scaffold, {Key? key}) : super(key: key);
 
+  @override
+  State<SocialMedia> createState() => _SocialMediaState();
+}
+
+class _SocialMediaState extends State<SocialMedia> {
   List socials = [
     {'title': 'Facebook', 'image': 'assets/imgs/special/facebook.png'},
     {'title': 'Twitter', 'image': 'assets/imgs/special/twitter.png'},
@@ -38,7 +43,7 @@ class SocialMedia extends StatelessWidget {
                     child: Row(
                       children: [
                         GestureDetector(
-                            onTap: () => scaffold.currentState!.openDrawer(),
+                            onTap: () => widget.scaffold.currentState!.openDrawer(),
                             child: Icon(Icons.menu,
                                 size: 20.0, color: Colors.white)),
                         const SizedBox(

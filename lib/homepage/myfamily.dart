@@ -4,9 +4,14 @@ import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MyFamily extends StatelessWidget {
-  MyFamily({Key? key}) : super(key: key);
+class MyFamily extends StatefulWidget {
+  const MyFamily({Key? key}) : super(key: key);
 
+  @override
+  State<MyFamily> createState() => _MyFamilyState();
+}
+
+class _MyFamilyState extends State<MyFamily> {
   var family = [];
 
   @override

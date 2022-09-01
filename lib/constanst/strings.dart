@@ -273,7 +273,7 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         icon: FontAwesome5.store,
         children: [],
         isOpen: false,
-        index: 2),
+        index: 4),
     NavDrawerItem(
         title: 'Doctor Booking',
         icon: FontAwesome5.user_nurse,
