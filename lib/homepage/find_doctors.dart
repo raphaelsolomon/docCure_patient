@@ -27,7 +27,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
               children: [
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 20.0),
+                      horizontal: 20.0, vertical: 17.0),
                   width: MediaQuery.of(context).size.width,
                   height: 130.0,
                   color: BLUECOLOR,
@@ -183,11 +183,11 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20.0,
+                        height: 90.0,
                       ),
                     ],
                   ),
-                ))
+                )),
               ],
             ),
             Positioned(

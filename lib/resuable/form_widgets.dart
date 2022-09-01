@@ -225,15 +225,16 @@ getButton(context, callBack,
       onTap: () => callBack(),
       child: Container(
         width: MediaQuery.of(context).size.width,
+        height: 45.0,
         decoration: BoxDecoration(
             color: color, borderRadius: BorderRadius.circular(100.0)),
         child: Padding(
-          padding: const EdgeInsets.all(13.0),
+          padding: const EdgeInsets.symmetric(horizontal: 13.0),
           child: Center(
             child: Text(
               text,
               style: GoogleFonts.poppins(
-                  fontSize: 19.0,
+                  fontSize: 17.0,
                   color: textcolor,
                   fontWeight: FontWeight.normal),
             ),

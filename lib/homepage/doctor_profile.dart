@@ -35,9 +35,9 @@ class _DoctorProfileState extends State<DoctorProfile> {
         children: [
           Container(
             padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 16.0),
             width: MediaQuery.of(context).size.width,
-            height: 95.0,
+            height: 86.0,
             color: BLUECOLOR,
             child: Column(children: [
               const SizedBox(
@@ -77,7 +77,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
           Expanded(
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
               child: Column(
                 children: [
                   SingleChildScrollView(
@@ -351,7 +351,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
         child: Container(
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-              color: color, borderRadius: BorderRadius.circular(7.0)),
+              color: color, borderRadius: BorderRadius.circular(50.0)),
           child: Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 8.0, vertical: 11.0),

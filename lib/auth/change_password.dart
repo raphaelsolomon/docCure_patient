@@ -1,7 +1,9 @@
+import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class AuthChangePass extends StatefulWidget {
   const AuthChangePass({Key? key}) : super(key: key);
@@ -33,7 +35,7 @@ class _AuthChangePassState extends State<AuthChangePass> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
-                    onTap: () => Get.back(),
+                    onTap: () => context.read<HomeController>().onBackPress(),
                     child: Icon(
                           Icons.arrow_back_ios,
                           color: Colors.black,
