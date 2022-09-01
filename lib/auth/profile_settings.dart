@@ -16,13 +16,20 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   var selectedDate = DateTime.now();
   String index = 'Basic Info';
   String pricing = 'Free';
+  List education = [];
+  List experience = [];
+  List award = [];
+  List membership = [];
+  List regList = [];
   List<String> headers = [
     'Basic Info',
     'About Me',
     'Clinic Info',
     'Contact Details',
     'Pricing & Services',
-    'Education & Experience'
+    'Education & Experience',
+    'Awards & Memberships',
+    'Registration'
   ];
   @override
   Widget build(BuildContext context) {
@@ -87,7 +94,11 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                               ? addressInfo()
                               : index == 'Pricing & Services'
                                   ? pricingServices()
-                                  : educationExperience())
+                                  : index == 'Education & Experience'
+                                      ? educationExperience()
+                                      : index == 'Awards & Memberships'
+                                          ? awardAndMemberShip()
+                                          : registration())
         ]));
   }
 
@@ -109,20 +120,42 @@ class _ProfileSettingsState extends State<ProfileSettings> {
             )),
       );
 
-  getCardForm(label, hint, {ctl}) {
+  getCardForm(label, hint, {ctl, index, isList = false, items}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          '$label',
-          style: getCustomFont(
-              size: 13.0, color: Colors.black54, weight: FontWeight.normal),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: Text(
+                '$label',
+                style: getCustomFont(
+                    size: 13.0,
+                    color: Colors.black54,
+                    weight: FontWeight.normal),
+              ),
+            ),
+            isList
+                ? GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        items.removeAt(index);
+                      });
+                    },
+                    child: Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                      size: 20.0,
+                    ))
+                : SizedBox(),
+          ],
         ),
         const SizedBox(
           height: 5.0,
         ),
         Container(
-          height: 48.0,
+          height: 45.0,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
               border: Border.all(color: Colors.grey.shade200),
@@ -187,7 +220,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
         ),
         Container(
           width: MediaQuery.of(context).size.width,
-          height: 49.0,
+          height: 45.0,
           decoration: BoxDecoration(
               color: Colors.transparent,
               border: Border.all(color: Colors.grey.shade200),
@@ -250,7 +283,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
             height: 5.0,
           ),
           Container(
-            height: 48.0,
+            height: 45.0,
             padding:
                 const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
             decoration: BoxDecoration(
@@ -578,44 +611,317 @@ class _ProfileSettingsState extends State<ProfileSettings> {
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
         child: SingleChildScrollView(
-          child: Column(children: [
-            SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Text(
-                  'Education',
-                  style: getCustomFont(size: 17.0, color: Colors.black),
-                )),
-            const SizedBox(
-              height: 10.0,
-            ),
-            ListView.builder(
-                padding: const EdgeInsets.all(0.0),
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (ctx, i) => getEducationItem()),
-            const SizedBox(
-              height: 30.0,
-            ),
-            getButton(context, () {}),
-            const SizedBox(
-              height: 10.0,
-            ),
-          ]),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                      'Education',
+                      style: getCustomFont(size: 17.0, color: Colors.black),
+                    )),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                getCardForm('Degree', ''),
+                const SizedBox(
+                  height: 15.0,
+                ),
+                getCardForm('Year of Completion', ''),
+                const SizedBox(
+                  height: 15.0,
+                ),
+                getCardForm('College/Institute', ''),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                ...List.generate(
+                    education.length, (i) => getEducationItem(education[i], i)),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                GestureDetector(
+                    onTap: () => setState(() => education.add({
+                          'degree': TextEditingController(),
+                          'college': TextEditingController(),
+                          'year': TextEditingController()
+                        })),
+                    child: Icon(
+                      Icons.add_circle_outline,
+                      color: BLUECOLOR,
+                    )),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Divider(
+                  color: Colors.black87,
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                      'Experience',
+                      style: getCustomFont(size: 17.0, color: Colors.black),
+                    )),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                getCardForm('Hospital Name', '', ctl: null),
+                const SizedBox(
+                  height: 15.0,
+                ),
+                getCardForm('From', '', ctl: null),
+                const SizedBox(
+                  height: 15.0,
+                ),
+                getCardForm('To', '', ctl: null),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                ...List.generate(experience.length,
+                    (i) => getExperienceItem(experience[i], i)),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                GestureDetector(
+                    onTap: () => setState(() => experience.add({
+                          'name': TextEditingController(),
+                          'from': TextEditingController(),
+                          'to': TextEditingController()
+                        })),
+                    child: Icon(
+                      Icons.add_circle_outline,
+                      color: BLUECOLOR,
+                    )),
+                const SizedBox(
+                  height: 30.0,
+                ),
+                getButton(context, () {}),
+                const SizedBox(
+                  height: 10.0,
+                ),
+              ]),
+        ),
+      );
+
+  Widget awardAndMemberShip() => Container(
+        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
+        child: SingleChildScrollView(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                      'Awards',
+                      style: getCustomFont(size: 17.0, color: Colors.black),
+                    )),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                getCardForm('Award', ''),
+                const SizedBox(
+                  height: 15.0,
+                ),
+                getCardForm('Year', ''),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                ...List.generate(
+                    award.length, (i) => getAwardItem(award[i], i)),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                GestureDetector(
+                    onTap: () => setState(() => award.add({
+                          'award': TextEditingController(),
+                          'year': TextEditingController()
+                        })),
+                    child: Icon(
+                      Icons.add_circle_outline,
+                      color: BLUECOLOR,
+                    )),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Divider(
+                  color: Colors.black87,
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                      'Memberships',
+                      style: getCustomFont(size: 17.0, color: Colors.black),
+                    )),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                getCardForm('Memberships', '', ctl: null),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                ...List.generate(membership.length,
+                    (i) => getExperienceItem(membership[i], i)),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                GestureDetector(
+                    onTap: () => setState(() => membership
+                        .add({'membership': TextEditingController()})),
+                    child: Icon(
+                      Icons.add_circle_outline,
+                      color: BLUECOLOR,
+                    )),
+                const SizedBox(
+                  height: 30.0,
+                ),
+                getButton(context, () {}),
+                const SizedBox(
+                  height: 10.0,
+                ),
+              ]),
+        ),
+      );
+
+  Widget registration() => Container(
+        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
+        child: SingleChildScrollView(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                      'Awards',
+                      style: getCustomFont(size: 17.0, color: Colors.black),
+                    )),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                getCardForm('Registrations', ''),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                getCardForm('Year', ''),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                ...List.generate(
+                    regList.length, (i) => getRegistrationItem(regList[i], i)),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                GestureDetector(
+                    onTap: () => setState(() => regList.add({
+                          'registration': TextEditingController(),
+                          'year': TextEditingController()
+                        })),
+                    child: Icon(
+                      Icons.add_circle_outline,
+                      color: BLUECOLOR,
+                    )),
+                const SizedBox(
+                  height: 30.0,
+                ),
+                getButton(context, () {}),
+                const SizedBox(
+                  height: 10.0,
+                ),
+              ]),
         ),
       );
 
   //====================EducationItem======================
-Widget getEducationItem() => Column(
-  children: [
-    getCardForm('Degree', ''),
-    const SizedBox(
-      height: 15.0,
-    ),
-    getCardForm('Year of Completion', ''),
-    const SizedBox(
-      height: 15.0,
-    ),
-    getCardForm('College/Institute', ''),
-  ],
-);
+  Widget getEducationItem(e, i) => Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          getCardForm('Degree', '',
+              ctl: e['degree'], isList: true, items: education, index: i),
+          const SizedBox(
+            height: 15.0,
+          ),
+          getCardForm('Year of Completion', '', ctl: e['college']),
+          const SizedBox(
+            height: 15.0,
+          ),
+          getCardForm('College/Institute', '', ctl: e['year']),
+          const SizedBox(
+            height: 15.0,
+          ),
+        ],
+      );
+
+  Widget getExperienceItem(e, i) => Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          getCardForm('Hospital Name', '',
+              ctl: e['name'], isList: true, items: experience, index: i),
+          const SizedBox(
+            height: 15.0,
+          ),
+          getCardForm('From', '', ctl: e['from']),
+          const SizedBox(
+            height: 15.0,
+          ),
+          getCardForm('To', '', ctl: e['to']),
+          const SizedBox(
+            height: 15.0,
+          ),
+        ],
+      );
+
+  Widget getAwardItem(e, i) => Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          getCardForm('Award', '',
+              ctl: e['award'], isList: true, items: award, index: i),
+          const SizedBox(
+            height: 15.0,
+          ),
+          getCardForm('Year', '', ctl: e['year']),
+          const SizedBox(
+            height: 15.0,
+          ),
+        ],
+      );
+
+  Widget getMemberShipItem(e, i) => Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          getCardForm('Memberships', '',
+              ctl: e['membership'], isList: true, items: membership, index: i),
+          const SizedBox(
+            height: 15.0,
+          ),
+        ],
+      );
+
+  Widget getRegistrationItem(e, i) => Column(
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      getCardForm('Registrations', '',
+          ctl: e['registration'], isList: true, items: regList, index: i),
+      const SizedBox(
+        height: 15.0,
+      ),
+      getCardForm('Year', '', ctl: e['year']),
+      const SizedBox(
+        height: 15.0,
+      ),
+    ],
+  );
 }
