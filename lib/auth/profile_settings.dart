@@ -60,7 +60,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text('Profile',
+                        Text('Profile Settings',
                             style:
                                 getCustomFont(size: 18.0, color: Colors.white))
                       ],
