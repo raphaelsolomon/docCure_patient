@@ -21,9 +21,9 @@ class _MyInvoicePageState extends State<MyInvoicePage> {
         child: Column(children: [
           Container(
             padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 16.0),
             width: MediaQuery.of(context).size.width,
-            height: 90.0,
+            height: 86.0,
             color: BLUECOLOR,
             child: Column(children: [
               const SizedBox(
@@ -65,7 +65,12 @@ class _MyInvoicePageState extends State<MyInvoicePage> {
             padding: const EdgeInsets.all(10.0),
             child: SingleChildScrollView(
               child: Column(
-                children: [...List.generate(6, (index) => invoiceItem())],
+                children: [
+                  ...List.generate(6, (index) => invoiceItem()),
+                  const SizedBox(
+                    height: 90.0,
+                  ),
+                ],
               ),
             ),
           ))

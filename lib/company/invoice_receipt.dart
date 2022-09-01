@@ -293,6 +293,9 @@ class InvoiceReceipt extends StatelessWidget {
                             color: Colors.black45,
                             size: 13.0,
                             weight: FontWeight.w500)),
+                    const SizedBox(
+                      height: 80.0,
+                    ),
                   ]),
             ),
           )

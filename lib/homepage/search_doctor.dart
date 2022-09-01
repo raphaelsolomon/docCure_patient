@@ -164,9 +164,16 @@ class _SearchDoctorState extends State<SearchDoctor> {
             height: 10.0,
           ),
           Expanded(
-              child: ListView.builder(
-                  padding: const EdgeInsets.all(0.0),
-                  itemBuilder: (ctx, i) => findDoctors()))
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ...List.generate(10, (index) => findDoctors()),
+                    const SizedBox(
+                      height: 75.0,
+                    ),
+                  ],
+                ),
+              )),
         ]));
   }
 

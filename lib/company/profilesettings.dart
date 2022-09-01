@@ -18,9 +18,9 @@ class ProfileSettings extends StatelessWidget {
         child: Column(children: [
           Container(
             padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 16.0),
             width: MediaQuery.of(context).size.width,
-            height: 90.0,
+            height: 86.0,
             color: BLUECOLOR,
             child: Column(children: [
               const SizedBox(

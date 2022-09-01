@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
               children: [
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 20.0),
+                      horizontal: 20.0, vertical: 16.0),
                   width: MediaQuery.of(context).size.width,
                   height: 130.0,
                   color: BLUECOLOR,
@@ -107,7 +107,9 @@ class HomePage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 30.0,),
+                        const SizedBox(
+                          height: 90.0,
+                        ),
                       ],
                     ),
                   ),

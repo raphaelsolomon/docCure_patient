@@ -52,9 +52,9 @@ class _VitalAndTracksState extends State<VitalAndTracks> {
             child: Column(children: [
               Container(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 15.0, vertical: 20.0),
+                    horizontal: 15.0, vertical: 16.0),
                 width: MediaQuery.of(context).size.width,
-                height: 100.0,
+                height: 86.0,
                 color: BLUECOLOR,
                 child: Column(children: [
                   const SizedBox(
@@ -135,7 +135,8 @@ class _VitalAndTracksState extends State<VitalAndTracks> {
         Align(
           alignment: Alignment.bottomRight,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 80.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 80.0),
             child: FloatingActionButton(
               tooltip: 'Add note',
               child: Icon(

@@ -14,7 +14,6 @@ import 'package:doccure_patient/company/shareapp.dart';
 import 'package:doccure_patient/company/support.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
-import 'package:doccure_patient/homepage/appointment.dart';
 import 'package:doccure_patient/homepage/doctor_profile.dart';
 import 'package:doccure_patient/homepage/find_doctors.dart';
 import 'package:doccure_patient/homepage/home.dart';
@@ -29,10 +28,12 @@ import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/msg_log.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
+import 'package:doccure_patient/resuable/custom_nav.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 
@@ -67,70 +68,81 @@ class _DashBoardState extends State<DashBoard> {
   @override
   Widget build(BuildContext context) {
     final page = context.watch<HomeController>().getPage;
-
-    return WillPopScope(
-      onWillPop: () => context.read<HomeController>().onBackPress(),
-      child: PickupLayout(
-          user: box.get('details'),
-          scaffold: Scaffold(
-              key: scaffold,
-              drawer: navDrawer(context, scaffold),
-              backgroundColor: Colors.white,
-              body: page == 0
-                  ? FindDoctorsPage(scaffold)
-                  : page == 10
-                      ? HomePage(scaffold)
-                      : page == 12
-                          ? NotificationPage()
-                          : page == 1
-                              ? VitalAndTracks(scaffold)
-                              //? InvoiceReceipt(scaffold)
-                              : page == 4
-                                  ? MyAppointment(scaffold)
-                                  : page == 5
-                                      ? ChatListScreen(scaffold, logController, _client)
-                                      : page == 6
-                                          ? MyInvoicePage(scaffold)
-                                          : page == 7
-                                              ? MyFamily()
-                                              : page == 8
-                                                  ? MyReminder()
-                                                  : page == 9
-                                                      ? MyReferrals()
-                                                      : page == -4
-                                                          ? DoctorProfile(scaffold)
-                                                          : page == -5
-                                                              ? NotificationSettingsPage()
-                                                              : page == -6
-                                                                  ? RateUS()
-                                                                  : page == -7
-                                                                      ? ShareApp()
-                                                                      : page == -8
-                                                                          ? AuthChangePass()
-                                                                          : page == -9
-                                                                              ? SupportPage()
-                                                                              : page == -10
-                                                                                  ? MyProfile(scaffold)
-                                                                                  : page == -11
-                                                                                      ? Prescriptions(scaffold)
-                                                                                      : page == -12
-                                                                                          ? MyOffer()
-                                                                                          : page == -3
-                                                                                              ? SearchDoctor(scaffold)
-                                                                                              : page == -1
-                                                                                                  ? TimeAndDate(scaffold)
-                                                                                                  : page == -2
-                                                                                                      ? ProfileSettings(scaffold)
-                                                                                                      : page == -14
-                                                                                                          ? InvoiceReceipt(scaffold)
-                                                                                                          : Container(
-                                                                                                              child: Center(
-                                                                                                                child: Text(
-                                                                                                                  'Development Mode..',
-                                                                                                                  style: getCustomFont(size: 19.0, color: Colors.black),
-                                                                                                                ),
-                                                                                                              ),
-                                                                                                            ))),
+    List removeBottom = [12, -5, 9, -12, -6, -7, -9, 8, -8];
+    List removeBottom1 = [7, 1, 5, -1, -4, -2];
+    return KeyboardVisibilityBuilder(
+      builder: (context, isVisible) => WillPopScope(
+        onWillPop: () => context.read<HomeController>().onBackPress(),
+        child: PickupLayout(
+            user: box.get('details'),
+            scaffold: Scaffold(
+                key: scaffold,
+                drawer: !removeBottom.contains(page) ? navDrawer(context, scaffold) : null,
+                backgroundColor: Colors.white,
+                body: Stack(
+                  children: [
+                    page == 0
+                        ? FindDoctorsPage(scaffold)
+                        : page == 10
+                            ? HomePage(scaffold)
+                            : page == 12 //no bottom nav
+                                ? NotificationPage()
+                                : page == 1 //no bottom nav
+                                    ? VitalAndTracks(scaffold)
+                                    // : page == 4
+                                    //     ? MyAppointment(scaffold)
+                                        : page == 5
+                                            ? ChatListScreen(scaffold, logController, _client)
+                                            : page == 6
+                                                ? MyInvoicePage(scaffold)
+                                                : page == 7 //no bottom nav
+                                                    ? MyFamily()
+                                                    : page == 8 //no bottom nav
+                                                        ? MyReminder()
+                                                        : page == 9 //no bottom nav
+                                                            ? MyReferrals()
+                                                            : page == -4 //no bottom nav
+                                                                ? DoctorProfile(scaffold)
+                                                                : page == -5 //no bottom nav
+                                                                    ? NotificationSettingsPage()
+                                                                    : page == -6 //no bottom nav
+                                                                        ? RateUS()
+                                                                        : page == -7 //no bottom nav
+                                                                            ? ShareApp()
+                                                                            : page == -8 //no bottom nav
+                                                                                ? AuthChangePass()
+                                                                                : page == -9 //no bottom nav
+                                                                                    ? SupportPage()
+                                                                                    : page == -10
+                                                                                        ? MyProfile(scaffold)
+                                                                                        : page == -11
+                                                                                            ? Prescriptions(scaffold)
+                                                                                            : page == -12 //no bottom nav
+                                                                                                ? MyOffer()
+                                                                                                : page == -3
+                                                                                                    ? SearchDoctor(scaffold)
+                                                                                                    : page == -1 //no bottom nav
+                                                                                                        ? TimeAndDate(scaffold)
+                                                                                                        : page == -2 //no bottom nav
+                                                                                                            ? ProfileSettings(scaffold)
+                                                                                                            : page == -14
+                                                                                                                ? InvoiceReceipt(scaffold)
+                                                                                                                : Container(
+                                                                                                                    child: Center(
+                                                                                                                      child: Text(
+                                                                                                                        'Development Mode..',
+                                                                                                                        style: getCustomFont(size: 19.0, color: Colors.black),
+                                                                                                                      ),
+                                                                                                                    ),
+                                                                                                                  ),
+                    !isVisible && !removeBottom.contains(page) && !removeBottom1.contains(page)
+                        ? Align(
+                            alignment: Alignment.bottomCenter,
+                            child: CustomNavBar(context))
+                        : SizedBox()
+                  ],
+                ))),
+      ),
     );
   }
 

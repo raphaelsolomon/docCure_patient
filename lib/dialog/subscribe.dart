@@ -151,7 +151,7 @@ Widget subscribe(BuildContext context) {
                       Navigator.pop(context);
                     },
                     child: Text(
-                      'X',
+                      'x',
                       style: getCustomFont(size: 20.0, color: Colors.black),
                     ),
                   )
