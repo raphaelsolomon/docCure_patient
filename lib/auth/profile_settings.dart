@@ -771,7 +771,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                   height: 10.0,
                 ),
                 ...List.generate(membership.length,
-                    (i) => getExperienceItem(membership[i], i)),
+                    (i) => getMemberShipItem(membership[i], i)),
                 const SizedBox(
                   height: 10.0,
                 ),
