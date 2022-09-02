@@ -2,6 +2,7 @@ import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
+import 'package:doccure_patient/store/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
@@ -438,7 +439,7 @@ setClickListener(e, BuildContext context) {
       context.read<HomeController>().setPage(-3);
       break;
     case 4:
-      context.read<HomeController>().setPage(4);
+      Get.to(() => StorePage());
       break;
     case 5:
       context.read<HomeController>().setPage(5);

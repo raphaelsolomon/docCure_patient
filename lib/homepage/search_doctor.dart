@@ -38,141 +38,146 @@ class _SearchDoctorState extends State<SearchDoctor> {
           Container(
             width: MediaQuery.of(context).size.width,
             color: BLUECOLOR,
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const SizedBox(
-                height: 25.0,
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
-                child: Row(
-                  children: [
-                    Flexible(
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                              onTap: () =>
-                                  widget.scaffold.currentState!.openDrawer(),
-                              child: Icon(Icons.menu, color: Colors.white)),
-                          const SizedBox(
-                            width: 10.0,
+            child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 25.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 15.0, right: 15.0, top: 20.0),
+                    child: Row(
+                      children: [
+                        Flexible(
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                  onTap: () => widget.scaffold.currentState!
+                                      .openDrawer(),
+                                  child: Icon(Icons.menu, color: Colors.white)),
+                              const SizedBox(
+                                width: 10.0,
+                              ),
+                              Text('Search by Doctor',
+                                  style: getCustomFont(
+                                      size: 18.0, color: Colors.white))
+                            ],
                           ),
-                          Text('Search by Doctor',
-                              style: getCustomFont(
-                                  size: 18.0, color: Colors.white))
-                        ],
-                      ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            context.read<HomeController>().setPage(12);
+                          },
+                          child: Icon(
+                            Icons.notifications_active,
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
                     ),
-                    InkWell(
-                      onTap: () {
-                        context.read<HomeController>().setPage(12);
-                      },
-                      child: Icon(
-                        Icons.notifications_active,
-                        color: Colors.white,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              // getRegisterForm(
-              //     ctl: null,
-              //     hint: 'Search for categories',
-              //     icon: Icons.search,
-              //     height: 49.0),
-              // const SizedBox(
-              //   height: 13.0,
-              // ),
-              Container(
-                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                color: Colors.white,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          ...List.generate(
-                              catergories.length,
-                              (index) => GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      selected = '${catergories[index]}';
-                                    });
-                                    showRequestSheet(context, FilterPage());
-                                  },
-                                  child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20.0, vertical: 9.0),
-                                      margin: const EdgeInsets.only(right: 8.0),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                          border: Border.all(
-                                              width: 1.0,
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  // getRegisterForm(
+                  //     ctl: null,
+                  //     hint: 'Search for categories',
+                  //     icon: Icons.search,
+                  //     height: 49.0),
+                  // const SizedBox(
+                  //   height: 13.0,
+                  // ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                    color: Colors.white,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              ...List.generate(
+                                  catergories.length,
+                                  (index) => GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          selected = '${catergories[index]}';
+                                        });
+                                        showRequestSheet(context, FilterPage());
+                                      },
+                                      child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20.0, vertical: 9.0),
+                                          margin:
+                                              const EdgeInsets.only(right: 8.0),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              border: Border.all(
+                                                  width: 1.0,
+                                                  color: selected ==
+                                                          catergories[index]
+                                                      ? Colors.white
+                                                      : Colors.black45),
+                                              color:
+                                                  selected == catergories[index]
+                                                      ? Colors.lightBlue
+                                                      : Colors.white),
+                                          child: Text(
+                                            catergories[index],
+                                            maxLines: 1,
+                                            style: getCustomFont(
                                               color:
                                                   selected == catergories[index]
                                                       ? Colors.white
-                                                      : Colors.black45),
-                                          color: selected == catergories[index]
-                                              ? Colors.lightBlue
-                                              : Colors.white),
-                                      child: Text(
-                                        catergories[index],
-                                        maxLines: 1,
-                                        style: getCustomFont(
-                                          color: selected == catergories[index]
-                                              ? Colors.white
-                                              : Colors.black,
-                                          size: 12.0,
-                                        ),
-                                      ))))
-                        ],
-                      ),
+                                                      : Colors.black,
+                                              size: 12.0,
+                                            ),
+                                          ))))
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12.0,
+                        ),
+                        Text('16525 matches found for :',
+                            style: getCustomFont(
+                              size: 12.0,
+                              color: Colors.black45,
+                            )),
+                        Text('Dental specialist In Bangalore',
+                            style: getCustomFont(
+                              size: 17.0,
+                              color: Colors.black,
+                            )),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                      ],
                     ),
-                    const SizedBox(
-                      height: 12.0,
-                    ),
-                    Text('16525 matches found for :',
-                        style: getCustomFont(
-                          size: 12.0,
-                          color: Colors.black45,
-                        )),
-                    Text('Dental specialist In Bangalore',
-                        style: getCustomFont(
-                          size: 17.0,
-                          color: Colors.black,
-                        )),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                  ],
-                ),
-              ),
-            ]),
+                  ),
+                ]),
           ),
           const SizedBox(
             height: 10.0,
           ),
           Expanded(
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ...List.generate(10, (index) => findDoctors()),
-                    const SizedBox(
-                      height: 75.0,
-                    ),
-                  ],
+            child: Column(
+              children: [
+                ...List.generate(10, (index) => findDoctors()),
+                const SizedBox(
+                  height: 75.0,
                 ),
-              )),
+              ],
+            ),
+          )),
         ]));
   }
 
