@@ -67,6 +67,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   shared_preferences: ^2.0.15
+  google_maps_flutter: ^2.2.0
 
 dev_dependencies:
   build_runner:

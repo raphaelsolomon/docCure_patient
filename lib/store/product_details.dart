@@ -1,4 +1,5 @@
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/store/my_cart.dart';
 import 'package:doccure_patient/store/product_review.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,7 +30,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         mainAxisSize: MainAxisSize.max,
         children: [
           const SizedBox(
-            height: 30.0,
+            height: 45.0,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -53,9 +54,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                       color: Colors.white,
                       fontWeight: FontWeight.w500),
                 ),
-                Icon(
-                  Icons.shopping_cart,
-                  color: Colors.white,
+                InkWell(
+                  onTap: () {
+                    Get.to(() => MyCart());
+                  },
+                  child: Icon(
+                    Icons.shopping_cart,
+                    color: Colors.white,
+                  ),
                 ),
               ],
             ),
@@ -168,8 +174,8 @@ class _ProductDetailsState extends State<ProductDetails> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          height: 50.0,
-          width: 50.0,
+          height: 40.0,
+          width: 40.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             color: Colors.blue,

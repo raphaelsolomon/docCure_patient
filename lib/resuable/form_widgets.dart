@@ -3,6 +3,7 @@ import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/store/index.dart';
+import 'package:doccure_patient/store/product_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
@@ -536,3 +537,218 @@ Widget dropDown({list, text, label}) => Padding(
         ],
       ),
     );
+
+Widget createPrescriptionButton(icon, text, {callBack, context}) => Container(
+  width: MediaQuery.of(context).size.width,
+  height: 45.0,
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(100.0),
+    color: Colors.grey.shade300
+  ),
+  child: Row(
+    children: [
+      Icon(icon, size: 19.0, color: Colors.black45,),
+      const SizedBox(width: 10.0,),
+      Text(text, style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),)
+    ],
+  ),
+);
+
+getCouponCode(context, {ctl}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 40.0,
+        decoration: BoxDecoration(
+            border: Border.all(width: 1.0, color: Colors.grey.shade200),
+            borderRadius: BorderRadius.circular(8.0)),
+        child: Row(
+          children: [
+            Flexible(
+              child: TextField(
+                style: getCustomFont(size: 14.0, color: Colors.black45),
+                maxLines: 1,
+                decoration: InputDecoration(
+                    hintText: 'Coupon Code',
+                    contentPadding: const EdgeInsets.only(
+                        left: 10.0, right: 10.0, top: 3.0),
+                    hintStyle: getCustomFont(size: 14.0, color: Colors.black45),
+                    border: OutlineInputBorder(borderSide: BorderSide.none)),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(8.0),
+                    bottomRight: Radius.circular(8.0)),
+                color: BLUECOLOR,
+              ),
+              child: Center(
+                  child: Text(
+                'Apply',
+                style: getCustomFont(size: 15.0, color: Colors.white),
+              )),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+Widget getCardForm(hint, {ctl}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 0.0),
+      child: Container(
+        height: 48.0,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            color: Colors.grey.shade200),
+        child: Row(
+          children: [
+            const SizedBox(
+              width: 10.0,
+            ),
+            Icon(
+              Icons.search,
+              color: Colors.black87,
+            ),
+            const SizedBox(
+              width: 5.0,
+            ),
+            Flexible(
+              child: TextField(
+                style: getCustomFont(size: 14.0, color: Colors.black45),
+                maxLines: 1,
+                decoration: InputDecoration(
+                    hintText: hint,
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 10.0),
+                    hintStyle: getCustomFont(size: 14.0, color: Colors.black45),
+                    border: OutlineInputBorder(borderSide: BorderSide.none)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget firstScroll() => Container(
+        width: 150,
+        height: 200,
+        padding: const EdgeInsets.all(15.0),
+        margin: const EdgeInsets.only(right: 10.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: Colors.white,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'OTC\nMEDICINES',
+              style: getCustomFont(size: 15.0, color: Colors.white),
+            )
+          ],
+        ),
+      );
+
+  Widget secondScroll(context) => Container(
+        width: MediaQuery.of(context).size.width / 1.4,
+        height: 110,
+        padding: const EdgeInsets.all(15.0),
+        margin: const EdgeInsets.only(right: 10.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: Colors.white,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'OTC\nMEDICINES',
+              style: getCustomFont(size: 15.0, color: Colors.white),
+            )
+          ],
+        ),
+      );
+
+  Widget thirdScroll(context) => GestureDetector(
+        onTap: () => Get.to(() => ProductList()),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: 50.0,
+              width: 50.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(
+              width: 10.0,
+            ),
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FittedBox(
+                      child: Text(
+                    'Well Life Store',
+                    style: getCustomFont(
+                        color: Colors.black,
+                        size: 14.0,
+                        weight: FontWeight.w500),
+                  )),
+                  const SizedBox(
+                    height: 1.0,
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.location_on,
+                        color: Colors.black45,
+                        size: 12.0,
+                      ),
+                      const SizedBox(
+                        width: 5.0,
+                      ),
+                      Flexible(
+                          child: FittedBox(
+                              child: Text(
+                        'Willington Bridge',
+                        style: getCustomFont(
+                            color: Colors.black45,
+                            size: 12.0,
+                            weight: FontWeight.normal),
+                      ))),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+
+  int returnCrossAxis(width) {
+    return width < 500
+        ? 2
+        : width > 500 && width < 100
+            ? 2
+            : 3;
+  }
+
+Widget createPrescriptionNote(text) => Row(
+  children: [
+    Icon(Icons.radio_button_checked, size: 19.0, color: BLUECOLOR,),
+    const SizedBox(width: 10.0,),
+    Flexible(child: FittedBox(child: Text(text, style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),)))
+  ],
+);

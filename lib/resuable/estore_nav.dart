@@ -1,18 +1,16 @@
 import 'package:doccure_patient/constanst/strings.dart';
-import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 
 class StoreNav extends StatelessWidget {
   final BuildContext c;
-  const StoreNav(this.c, {Key? key}) : super(key: key);
+  final Function callBack;
+  final int counter;
+  const StoreNav(this.c, this.callBack, this.counter, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var counter = context.watch<HomeController>().index;
-    var readExec = context.watch<HomeController>();
     return Container(
       height: 65.0,
       width: MediaQuery.of(context).size.width,
@@ -25,21 +23,11 @@ class StoreNav extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            getNavItems(FontAwesome5.pills, 'Medicine', () {
-              readExec.setPage(0);
-            }, counter.last == 0),
-            getNavItems(FontAwesome5.user_nurse, 'Doctors', () {
-              readExec.setPage(0);
-            }, counter.last == 4),
-            getNavItems(Icons.add_location_alt, 'Hospitals', () {
-              readExec.setPage(0);
-            }, counter.last == 1),
-            getNavItems(Icons.calendar_month_rounded, 'Appts', () {
-              readExec.setPage(0);
-            }, counter.last == 3),
-            getNavItems(Icons.person_outline, 'More', () {
-              readExec.setPage(0);
-            }, counter.last == 2),
+            getNavItems(FontAwesome5.pills, 'E-Stores', () =>  callBack(0), counter == 0),
+            getNavItems(FontAwesome5.user_nurse, 'Doctors', () => callBack(1), counter == 1),
+            getNavItems(Icons.add_location_alt, 'Hospitals', () => callBack(2), counter == 2),
+            getNavItems(Icons.shopping_basket_outlined, 'Pharmacy', () => callBack(3), counter == 3),
+            getNavItems(Icons.person_outline, 'Profile', () => callBack(4), counter == 4),
           ],
         ),
       ),

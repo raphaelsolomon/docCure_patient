@@ -4,8 +4,10 @@ import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-dialogMessage(BuildContext context, widget) {
-  showDialog(context: context, builder: (BuildContext context) => widget);
+dialogMessage(BuildContext context, widget, {barrierDismiss = true}) {
+  showDialog(context: context,
+  barrierDismissible: barrierDismiss,
+   builder: (BuildContext context) => widget);
 }
 
 Widget language(BuildContext context) {
@@ -191,6 +193,70 @@ Widget subscribe(BuildContext context) {
               ),
               getButton(context, () {}, 'Subscribe Now'),
               const SizedBox(
+                height: 25.0,
+              ),
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget prescriptionRequire(BuildContext context, {callBack}) {
+  return Stack(
+    alignment: Alignment.center,
+    children: [
+      Container(
+        width: MediaQuery.of(context).size.width,
+        margin: const EdgeInsets.all(25), // to push the box half way below circle
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        padding: const EdgeInsets.only(top: 15, left: 20, right: 20), // spacing inside the box
+        child: Material(
+          color: Colors.transparent,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                'assets/imgs/subscribe.jpeg',
+                width: 100.0,
+                height: 100.0,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Text('Prescription Require',
+                  style: getCustomFont(
+                      size: 17.0,
+                      color: BLUECOLOR.withOpacity(.8),
+                      weight: FontWeight.bold)),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                'Your Order contains\n${2} items which required\ndoctor\'s prescription',
+                textAlign: TextAlign.center,
+                style: getCustomFont(size: 13.0, color: Colors.black),
+              ),
+              const SizedBox(
+                height: 15.0,
+              ),
+              getButton(context, () {
+                callBack();
+              }, 'Upload  Prescription'),
+              const SizedBox(
+                height: 25.0,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Cancel', style: getCustomFont(size: 13.0, color: BLUECOLOR.withOpacity(.8), weight: FontWeight.bold),)),
+               const SizedBox(
                 height: 25.0,
               ),
             ],
