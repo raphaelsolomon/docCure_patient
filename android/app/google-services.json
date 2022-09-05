@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:723118428060:android:fe8654f33befa6eb3e4259",
+        "mobilesdk_app_id": "1:723118428060:android:a45f65c7d6ad42b33e4259",
         "android_client_info": {
-          "package_name": "com.example.doccure_patient"
+          "package_name": "com.gettheskydoctors.doccurePatient"
         }
       },
       "oauth_client": [
@@ -29,6 +29,13 @@
             {
               "client_id": "723118428060-ov8qoem3lcfov02ev9b1u6a2lhpk8h1a.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "723118428060-b2d88vfif87djjfo8mvmeuq05q0925bl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.doccurePatient"
+              }
             }
           ]
         }

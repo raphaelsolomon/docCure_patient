@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>723118428060-b2d88vfif87djjfo8mvmeuq05q0925bl.apps.googleusercontent.com</string>
+	<string>723118428060-l45a61o0dthmo54kp18udcdi194fcde4.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.723118428060-b2d88vfif87djjfo8mvmeuq05q0925bl</string>
+	<string>com.googleusercontent.apps.723118428060-l45a61o0dthmo54kp18udcdi194fcde4</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDgqS7ie0me4NpTEXJFc3iLdJh7XtP9mlc</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.doccurePatient</string>
+	<string>com.gettheskydoctors.doccurePatient</string>
 	<key>PROJECT_ID</key>
 	<string>docure-94430</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:723118428060:ios:17235530d3fe12ff3e4259</string>
+	<string>1:723118428060:ios:c62ed4100bed33363e4259</string>
 </dict>
 </plist>
