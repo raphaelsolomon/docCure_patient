@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 import 'package:doccure_patient/constanst/strings.dart';
-import 'package:doccure_patient/constanst/weekcalender.dart';
 import 'package:doccure_patient/model/timeing_model.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -69,15 +68,15 @@ class _TimeAndDateState extends State<TimeAndDate> {
         child: Column(
           children: [
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
-              width: MediaQuery.of(context).size.width,
-              height: 93.0,
-              color: BLUECOLOR,
-              child: Column(children: [
-                const SizedBox(
-                  height: 25.0,
-                ),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0, vertical: 0.0),
+                width: MediaQuery.of(context).size.width,
+                height: 89.0,
+                color: BLUECOLOR,
+                child: Column(children: [
+                  const SizedBox(
+                    height: 50.0,
+                  ),
                 Row(
                   children: [
                     Flexible(
@@ -92,7 +91,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                           ),
                           Text('Time and Date',
                               style: GoogleFonts.poppins(
-                                  color: Colors.white, fontSize: 18.0))
+                                  color: Colors.white, fontSize: 17.0))
                         ],
                       ),
                     ),
@@ -133,7 +132,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                       ? getCalenderYear(context)
                       : index == 'Checkout'
                           ? checkOut(context)
-                          : index == 'Plan'
+                          : index == 'Booking'
                               ? getPlans(context)
                               : getPaymentWidget(context)
                 ],

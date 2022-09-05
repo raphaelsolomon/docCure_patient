@@ -1,8 +1,10 @@
+import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/dialog/add_family.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
 
 dialogMessage(BuildContext context, widget, {barrierDismiss = true}) {
   showDialog(context: context,
@@ -209,7 +211,8 @@ Widget prescriptionRequire(BuildContext context, {callBack}) {
     children: [
       Container(
         width: MediaQuery.of(context).size.width,
-        margin: const EdgeInsets.all(25), // to push the box half way below circle
+        height: MediaQuery.of(context).size.height/ 1.8,
+        margin: const EdgeInsets.all(45), // to push the box half way below circle
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
@@ -226,27 +229,22 @@ Widget prescriptionRequire(BuildContext context, {callBack}) {
                 height: 100.0,
                 fit: BoxFit.contain,
               ),
-              const SizedBox(
-                height: 10.0,
-              ),
+              const Spacer(),
               Text('Prescription Require',
                   style: getCustomFont(
-                      size: 17.0,
+                      size: 19.0,
                       color: BLUECOLOR.withOpacity(.8),
                       weight: FontWeight.bold)),
-              const SizedBox(
-                height: 10.0,
-              ),
+              const Spacer(),
               Text(
                 'Your Order contains\n${2} items which required\ndoctor\'s prescription',
                 textAlign: TextAlign.center,
-                style: getCustomFont(size: 13.0, color: Colors.black),
+                style: getCustomFont(size: 14.0, color: Colors.black),
               ),
-              const SizedBox(
-                height: 15.0,
-              ),
+              const Spacer(),
               getButton(context, () {
                 callBack();
+                Navigator.pop(context);
               }, 'Upload  Prescription'),
               const SizedBox(
                 height: 25.0,
@@ -441,6 +439,66 @@ Widget familyPop(BuildContext context) {
                                       ),
                                     ),
                     )),
+              ]),
+              const SizedBox(
+                height: 25.0,
+              ),
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget logoutPop(BuildContext context) {
+  return Stack(
+    alignment: Alignment.center,
+    children: <Widget>[
+      Container(
+        width: MediaQuery.of(context).size.width,
+        margin:
+            const EdgeInsets.all(40), // to push the box half way below circle
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        padding: const EdgeInsets.only(
+            top: 15, left: 20, right: 20), // spacing inside the box
+        child: Material(
+          color: Colors.transparent,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Are you sure you want to logout?',
+              textAlign: TextAlign.center,
+                  style: getCustomFont(
+                      size: 16.0,
+                      color: Colors.black,
+                      weight: FontWeight.w500)),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                GestureDetector(
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                  'No',
+                  style: getCustomFont(size: 14.0, color: Colors.black),
+                  ),
+                ),
+                const SizedBox(width: 20.0,),
+                GestureDetector(
+                  onTap: (){
+                     Get.offAll(() => AuthLogin());
+                  },
+                  child: Text(
+                  'Yes',
+                  style: getCustomFont(size: 14.0, color: Colors.white),
+                  ),
+                ),
               ]),
               const SizedBox(
                 height: 25.0,

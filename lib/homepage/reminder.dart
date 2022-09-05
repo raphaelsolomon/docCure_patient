@@ -30,13 +30,13 @@ class _MyReminderState extends State<MyReminder> {
             child: Column(children: [
               Container(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 15.0, vertical: 17.0),
+                    horizontal: 15.0, vertical: 0.0),
                 width: MediaQuery.of(context).size.width,
                 height: 89.0,
                 color: BLUECOLOR,
                 child: Column(children: [
                   const SizedBox(
-                    height: 25.0,
+                    height: 50.0,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

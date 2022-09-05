@@ -1,4 +1,3 @@
-import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
@@ -440,7 +439,8 @@ setClickListener(e, BuildContext context) {
       context.read<HomeController>().setPage(-3);
       break;
     case 4:
-      Get.to(() => StorePage());
+      context.read<HomeController>().isEstore(true);
+      Get.to(() => StorePage(0));
       break;
     case 5:
       context.read<HomeController>().setPage(5);
@@ -464,7 +464,7 @@ setClickListener(e, BuildContext context) {
       context.read<HomeController>().setPage(-2);
       break;
     case 11:
-      Get.offAll(() => AuthLogin());
+      logoutPop(context);
       break;
     default:
       context.read<HomeController>().jumpToHome();
@@ -538,17 +538,18 @@ Widget dropDown({list, text, label}) => Padding(
       ),
     );
 
-Widget createPrescriptionButton(icon, text, {callBack, context}) => Container(
+Widget createPrescriptionButton(BuildContext context, icon, text, {callBack}) => Container(
   width: MediaQuery.of(context).size.width,
   height: 45.0,
+  padding: const EdgeInsets.symmetric(horizontal: 20.0),
   decoration: BoxDecoration(
     borderRadius: BorderRadius.circular(100.0),
-    color: Colors.grey.shade300
+    color: Colors.grey.shade200
   ),
   child: Row(
     children: [
       Icon(icon, size: 19.0, color: Colors.black45,),
-      const SizedBox(width: 10.0,),
+      const SizedBox(width: 18.0,),
       Text(text, style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),)
     ],
   ),
@@ -749,6 +750,6 @@ Widget createPrescriptionNote(text) => Row(
   children: [
     Icon(Icons.radio_button_checked, size: 19.0, color: BLUECOLOR,),
     const SizedBox(width: 10.0,),
-    Flexible(child: FittedBox(child: Text(text, style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),)))
+    Flexible(child: FittedBox(child: Text(text, style: getCustomFont(size: 14.0, color: Colors.black, weight: FontWeight.w500),)))
   ],
 );

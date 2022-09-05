@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class HomeController with ChangeNotifier {
   List<int> index = [0];
+  bool isEstoreClicked = false;
 
   setPage(value) {
     this.index.add(value);
@@ -25,4 +26,8 @@ class HomeController with ChangeNotifier {
   }
 
   int get getPage => index.last;
+
+  void isEstore(bool bool) {
+    isEstoreClicked = bool;
+  }
 }

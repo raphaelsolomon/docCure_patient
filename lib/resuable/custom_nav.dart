@@ -1,12 +1,16 @@
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
+import 'package:doccure_patient/store/index.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class CustomNavBar extends StatelessWidget {
   final BuildContext c;
-  const CustomNavBar(this.c, {Key? key}) : super(key: key);
+  final int pageIndex = 0;
+  const CustomNavBar(this.c, {pageIndex, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +29,30 @@ class CustomNavBar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             getNavItems(Icons.house_outlined, 'Home', () {
-              readExec.setPage(0);
+              readExec.jumpToHome();
+              if(readExec.isEstoreClicked){
+                readExec.isEstore(false);
+                Navigator.pop(context);
+              }
             }, counter.last == 0),
-            getNavItems(Icons.store_outlined, 'Mall', () {
-              readExec.setPage(0);
-            }, counter.last == 4),
-            getNavItems(Icons.qr_code_scanner_outlined, 'Scan', () {
-              readExec.setPage(0);
-            }, counter.last == 1),
-            getNavItems(Icons.receipt_long_outlined, 'Orders', () {
-              readExec.setPage(0);
+            getNavItems(FontAwesome5.user_nurse, 'Doctors', () {
+              readExec.setPage(3);
+               if(readExec.isEstoreClicked){
+                readExec.isEstore(false);
+                Navigator.pop(context);
+              }
             }, counter.last == 3),
-            getNavItems(Icons.person_outline, 'Account', () {
-              readExec.setPage(0);
+            getNavItems(Icons.store, 'E-Stores', () {
+               if(readExec.isEstoreClicked) {
+                return;
+              }
+              Get.to(() => StorePage(0));
+            }, readExec.isEstoreClicked && pageIndex == 0),
+            getNavItems(Icons.receipt_long_outlined, 'Hospitals', () {
+              Get.to(() => StorePage(2));
+            }, readExec.isEstoreClicked && pageIndex == 2),
+            getNavItems(Icons.more, 'More', () {
+              
             }, counter.last == 2),
           ],
         ),

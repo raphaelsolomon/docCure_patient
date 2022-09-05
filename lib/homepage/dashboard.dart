@@ -70,7 +70,7 @@ class _DashBoardState extends State<DashBoard> {
   Widget build(BuildContext context) {
     final page = context.watch<HomeController>().getPage;
     List removeBottom = [12, -5, 9, -12, -6, -7, -9, 8, -8, 4];
-    List removeBottom1 = [7, 1, 5, -1, -4, -2, 4];
+    List removeBottom1 = [7, 1, 5, -1, -4, -2, 4, 8, ];
     return KeyboardVisibilityBuilder(
       builder: (context, isVisible) => WillPopScope(
         onWillPop: () => context.read<HomeController>().onBackPress(),
@@ -90,11 +90,9 @@ class _DashBoardState extends State<DashBoard> {
                                 ? NotificationPage()
                                 : page == 1 //no bottom nav
                                     ? VitalAndTracks(scaffold)
-                                    : page == 4
-                                        ? StorePage()
-                                        : page == 5
-                                            ? ChatListScreen(scaffold, logController, _client)
-                                            : page == 6
+                                    : page == 5
+                                          ? ChatListScreen(scaffold, logController, _client)
+                                          : page == 6
                                                 ? MyInvoicePage(scaffold)
                                                 : page == 7 //no bottom nav
                                                     ? MyFamily()
@@ -136,10 +134,10 @@ class _DashBoardState extends State<DashBoard> {
                                                                                                                       ),
                                                                                                                     ),
                                                                                                                   ),
-                    !isVisible || (!removeBottom.contains(page) && !removeBottom1.contains(page))
+                    !isVisible && (!removeBottom.contains(page) && !removeBottom1.contains(page))
                         ? Align(
                             alignment: Alignment.bottomCenter,
-                            child: CustomNavBar(context))
+                            child: CustomNavBar(context, pageIndex: 0,))
                         : SizedBox()
                   ],
                 ))),

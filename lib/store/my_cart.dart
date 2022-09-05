@@ -26,7 +26,7 @@ class _MyCartState extends State<MyCart> {
           context,
           prescriptionRequire(context, callBack: () {
             setState(() {
-              page = page - 1;
+              page = 1;
             });
           }),
           barrierDismiss: false);
@@ -65,140 +65,192 @@ class _MyCartState extends State<MyCart> {
     return true;
   }
 
-  getPaymentWidget(context) {
+  getPaymentWidget(BuildContext context) {
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 11.0),
-                decoration: BoxDecoration(
-                    color: BLUECOLOR, borderRadius: BorderRadius.circular(8.0)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+              width: MediaQuery.of(context).size.width,
+              height: 89.0,
+              color: BLUECOLOR,
+              child: Column(children: [
+                const SizedBox(
+                  height: 50.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Amount to pay ',
-                        style: getCustomFont(color: Colors.white, size: 13.0)),
-                    Text('\$31.0 ',
-                        style: getCustomFont(
-                            color: Colors.white,
-                            size: 15.0,
-                            weight: FontWeight.w700)),
+                    GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            page =0;
+                          });
+                        },
+                        child: Icon(
+                          Icons.arrow_back_ios,
+                          color: Colors.white,
+                          size: 20.0,
+                        )),
+                    Text('Payment Method',
+                        style: getCustomFont(size: 18.0, color: Colors.white)),
+                    Icon(
+                      null,
+                      color: Colors.white,
+                    )
                   ],
-                ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              DottedBorder(
-                borderType: BorderType.RRect,
-                radius: Radius.circular(12),
-                padding: EdgeInsets.all(6),
-                dashPattern: [8, 4],
-                strokeCap: StrokeCap.butt,
-                color: Colors.black,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 5.0),
-                  decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(8.0)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        child: Row(
-                          children: [
-                            Icon(Icons.wallet_giftcard,
-                                color: Colors.lightBlue),
-                            const SizedBox(
-                              width: 10.0,
-                            ),
-                            Text('Wallet ',
-                                style: getCustomFont(
-                                    color: Colors.black,
-                                    size: 16.0,
-                                    weight: FontWeight.w700)),
-                          ],
-                        ),
-                      ),
-                      Text('\$314.50 ',
-                          style: getCustomFont(
-                              color: Colors.black,
-                              size: 15.0,
-                              weight: FontWeight.w700)),
-                    ],
+                )
+              ]),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 10.0,
                   ),
-                ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 11.0),
+                    decoration: BoxDecoration(
+                        color: BLUECOLOR,
+                        borderRadius: BorderRadius.circular(8.0)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Amount to pay ',
+                            style:
+                                getCustomFont(color: Colors.white, size: 13.0)),
+                        Text('\$31.0 ',
+                            style: getCustomFont(
+                                color: Colors.white,
+                                size: 15.0,
+                                weight: FontWeight.w700)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  DottedBorder(
+                    borderType: BorderType.RRect,
+                    radius: Radius.circular(12),
+                    padding: EdgeInsets.all(6),
+                    dashPattern: [8, 4],
+                    strokeCap: StrokeCap.butt,
+                    color: Colors.black,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 5.0),
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(8.0)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: Row(
+                              children: [
+                                Icon(Icons.wallet_giftcard,
+                                    color: Colors.lightBlue),
+                                const SizedBox(
+                                  width: 10.0,
+                                ),
+                                Text('Wallet ',
+                                    style: getCustomFont(
+                                        color: Colors.black,
+                                        size: 16.0,
+                                        weight: FontWeight.w700)),
+                              ],
+                            ),
+                          ),
+                          Text('\$314.50 ',
+                              style: getCustomFont(
+                                  color: Colors.black,
+                                  size: 15.0,
+                                  weight: FontWeight.w700)),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  Text(
+                    'Cards',
+                    style: getCustomFont(
+                        weight: FontWeight.bold,
+                        size: 20.0,
+                        color: Colors.black45),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  // items(Icons.credit_card, 'Debit Card'),
+                  // Divider(),
+                  items(FontAwesome5.credit_card, 'Credit Card'),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  Text(
+                    'Cash',
+                    style: getCustomFont(
+                        weight: FontWeight.bold,
+                        size: 20.0,
+                        color: Colors.black45),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  items(Icons.money, 'Cash on Delivery'),
+                  Divider(),
+                  items(FontAwesome5.cash_register, 'Pay cash on spot'),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  Text(
+                    'Bank',
+                    style: getCustomFont(
+                        weight: FontWeight.bold,
+                        size: 20.0,
+                        color: Colors.black45),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  items(Icons.money, 'USSD'),
+                  Divider(),
+                  items(FontAwesome5.cash_register, 'Cheque Payment'),
+                  Divider(),
+                  items(Icons.money, 'Bank Transfer'),
+                  Divider(),
+                  items(FontAwesome5.cash_register, 'Net Banking'),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  Text(
+                    'Others',
+                    style: getCustomFont(
+                        weight: FontWeight.bold,
+                        size: 20.0,
+                        color: Colors.black45),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  items(FontAwesome5.amazon_pay, 'Paystack'),
+                  Divider(),
+                  items(FontAwesome5.amazon_pay, 'Razor Pay'),
+                ],
               ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              Text(
-                'Cards',
-                style: getCustomFont(
-                    weight: FontWeight.bold, size: 20.0, color: Colors.black45),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              // items(Icons.credit_card, 'Debit Card'),
-              // Divider(),
-              items(FontAwesome5.credit_card, 'Credit Card'),
-              const SizedBox(
-                height: 20.0,
-              ),
-              Text(
-                'Cash',
-                style: getCustomFont(
-                    weight: FontWeight.bold, size: 20.0, color: Colors.black45),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              items(Icons.money, 'Cash on Delivery'),
-              Divider(),
-              items(FontAwesome5.cash_register, 'Pay cash on spot'),
-              const SizedBox(
-                height: 20.0,
-              ),
-              Text(
-                'Bank',
-                style: getCustomFont(
-                    weight: FontWeight.bold, size: 20.0, color: Colors.black45),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              items(Icons.money, 'USSD'),
-              Divider(),
-              items(FontAwesome5.cash_register, 'Cheque Payment'),
-              Divider(),
-              items(Icons.money, 'Bank Transfer'),
-              Divider(),
-              items(FontAwesome5.cash_register, 'Net Banking'),
-              const SizedBox(
-                height: 20.0,
-              ),
-              Text(
-                'Others',
-                style: getCustomFont(
-                    weight: FontWeight.bold, size: 20.0, color: Colors.black45),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              items(FontAwesome5.amazon_pay, 'Paystack'),
-              Divider(),
-              items(FontAwesome5.amazon_pay, 'Razor Pay'),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -273,193 +325,217 @@ class _MyCartState extends State<MyCart> {
               ]),
         ),
         const SizedBox(
-          height: 10.0,
+          height: 5.0,
         ),
         Expanded(
             child: ListView.builder(
                 itemCount: 5,
-                shrinkWrap: true,
                 padding: const EdgeInsets.all(0.0),
+                shrinkWrap: true,
                 itemBuilder: (ctx, i) => Container(
+                      width: MediaQuery.of(context).size.width,
                       padding: const EdgeInsets.all(15.0),
-                      margin: const EdgeInsets.symmetric(vertical: 6.0),
+                      color: Colors.white,
+                      margin: const EdgeInsets.symmetric(vertical: 5.0),
                       child: Row(
                         children: [
                           CircleAvatar(
-                            radius: 25.0,
+                            radius: 20.0,
                             backgroundImage: AssetImage('assets/imgs/1.png'),
                           ),
                           const SizedBox(
                             width: 10.0,
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Silispor 100mg Tablet',
-                                style: getCustomFont(
-                                    size: 15.0,
-                                    color: Colors.black,
-                                    weight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 1.0,
-                              ),
-                              Text(
-                                'pack of 500mg',
-                                style: getCustomFont(
-                                    size: 13.0,
-                                    color: Colors.black45,
-                                    weight: FontWeight.w400),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Flexible(
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          FontAwesome5.minus,
-                                          color: Colors.black,
-                                        ),
-                                        const SizedBox(
-                                          width: 5.0,
-                                        ),
-                                        Text(
-                                          '1',
-                                          style: getCustomFont(
-                                              size: 15.0,
-                                              color: Colors.black,
-                                              weight: FontWeight.w400),
-                                        ),
-                                        const SizedBox(
-                                          width: 5.0,
-                                        ),
-                                        Icon(
-                                          FontAwesome5.plus,
-                                          color: Colors.black,
-                                        ),
-                                      ],
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Silispor 100mg Tablet',
+                                  style: getCustomFont(
+                                      size: 14.0,
+                                      color: Colors.black,
+                                      weight: FontWeight.w500),
+                                ),
+                               
+                                Text(
+                                  'pack of 500mg',
+                                  style: getCustomFont(
+                                      size: 13.0,
+                                      color: Colors.black45,
+                                      weight: FontWeight.w400),
+                                ),
+                                const SizedBox(height: 2.0,),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Flexible(
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            FontAwesome5.minus,
+                                            color: Colors.black,
+                                            size: 14.0,
+                                          ),
+                                          const SizedBox(
+                                            width: 8.0,
+                                          ),
+                                          Text(
+                                            '1',
+                                            style: getCustomFont(
+                                                size: 15.0,
+                                                color: Colors.black,
+                                                weight: FontWeight.w400),
+                                          ),
+                                          const SizedBox(
+                                            width: 8.0,
+                                          ),
+                                          Icon(
+                                            FontAwesome5.plus,
+                                            color: Colors.black,
+                                            size: 14.0,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    '\$3.50',
-                                    style: getCustomFont(
-                                        size: 15.0,
-                                        color: Colors.black,
-                                        weight: FontWeight.bold),
-                                  ),
-                                ],
-                              )
-                            ],
+                                    Text(
+                                      '\$3.50',
+                                      style: getCustomFont(
+                                          size: 15.0,
+                                          color: Colors.black,
+                                          weight: FontWeight.bold),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
                           )
                         ],
                       ),
                     ))),
         const SizedBox(height: 8.0),
         Container(
+          color: Colors.white,
           child: Column(children: [
-            const SizedBox(
-              height: 15.0,
-            ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  isCoupon = true;
-                });
-              },
-              child: Text(
-                'Apply a coupon code',
-                style: getCustomFont(
-                    color: Colors.lightBlueAccent,
-                    size: 14.0,
-                    weight: FontWeight.w400),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isCoupon = true;
+                      });
+                    },
+                    child: Text(
+                      'Apply a coupon code',
+                      style: getCustomFont(
+                          color: Colors.lightBlueAccent,
+                          size: 14.0,
+                          weight: FontWeight.w400),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  isCoupon ? getCouponCode(context) : SizedBox(),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Sub Total',
+                        style: getCustomFont(
+                            color: Colors.black,
+                            size: 13.5,
+                            weight: FontWeight.w400),
+                      ),
+                      Text(
+                        '\$16.0',
+                        style: getCustomFont(
+                            color: Colors.black45,
+                            size: 13.5,
+                            weight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Promo Code Applied',
+                        style: getCustomFont(
+                            color: Colors.black,
+                            size: 13.5,
+                            weight: FontWeight.w400),
+                      ),
+                      Text(
+                        '-\$16.0',
+                        style: getCustomFont(
+                            color: Colors.black45,
+                            size: 13.5,
+                            weight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Service Charge',
+                        style: getCustomFont(
+                            color: Colors.black,
+                            size: 13.5,
+                            weight: FontWeight.w400),
+                      ),
+                      Text(
+                        '\$4.0',
+                        style: getCustomFont(
+                            color: Colors.black45,
+                            size: 13.5,
+                            weight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Amount to pay',
+                        style: getCustomFont(
+                            color: Colors.black,
+                            size: 15.0,
+                            weight: FontWeight.bold),
+                      ),
+                      Text(
+                        '\$22.0',
+                        style: getCustomFont(
+                            color: Colors.black45,
+                            size: 14.0,
+                            weight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(
-              height: 15.0,
-            ),
-            isCoupon ? getCouponCode(context) : SizedBox(),
-            const SizedBox(
-              height: 15.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Sub Total',
-                  style: getCustomFont(
-                      color: Colors.black, size: 15.0, weight: FontWeight.w500),
-                ),
-                Text(
-                  '\$16.0',
-                  style: getCustomFont(
-                      color: Colors.black45,
-                      size: 14.0,
-                      weight: FontWeight.w400),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 15.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Promo Code Applied',
-                  style: getCustomFont(
-                      color: Colors.black, size: 15.0, weight: FontWeight.w500),
-                ),
-                Text(
-                  '-\$16.0',
-                  style: getCustomFont(
-                      color: Colors.black45,
-                      size: 14.0,
-                      weight: FontWeight.w400),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 15.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Service Charge',
-                  style: getCustomFont(
-                      color: Colors.black, size: 15.0, weight: FontWeight.w500),
-                ),
-                Text(
-                  '\$4.0',
-                  style: getCustomFont(
-                      color: Colors.black45,
-                      size: 14.0,
-                      weight: FontWeight.w400),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 15.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Amount to pay',
-                  style: getCustomFont(
-                      color: Colors.black, size: 15.0, weight: FontWeight.bold),
-                ),
-                Text(
-                  '\$22.0',
-                  style: getCustomFont(
-                      color: Colors.black45,
-                      size: 14.0,
-                      weight: FontWeight.bold),
-                ),
-              ],
             ),
             GestureDetector(
               onTap: () {
@@ -471,9 +547,11 @@ class _MyCartState extends State<MyCart> {
                 width: MediaQuery.of(context).size.width,
                 height: 45.0,
                 color: BLUECOLOR,
-                child: Text(
-                  'Checkout',
-                  style: getCustomFont(size: 14.0, color: Colors.white),
+                child: Center(
+                  child: Text(
+                    'Checkout',
+                    style: getCustomFont(size: 14.0, color: Colors.white),
+                  ),
                 ),
               ),
             )
