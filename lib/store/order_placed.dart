@@ -1,4 +1,5 @@
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/store/recent_order.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -69,7 +70,9 @@ class OrderPlaced extends StatelessWidget {
                   ],
                 )),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(() => RecentOrder());
+                  },
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: 45.0,

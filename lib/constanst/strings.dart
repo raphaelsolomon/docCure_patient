@@ -658,3 +658,147 @@ List countryList = [
   {"name": "Zambia", "dial_code": "+260", "code": "ZM"},
   {"name": "Zimbabwe", "dial_code": "+263", "code": "ZW"}
 ];
+
+List<String> SpecialitiesFilter = [
+  'Audiologist',
+  'Bariatric Surgeon (Obesity)',
+  'Behavioral Therapist',
+  'Cardiologist (Heart)',
+  'Chiropractor (Alternative Medicine)',
+  'Clinical Physiologist',
+  'Cupping Therapist (Alternative Medicine)',
+  'Dental Hygienist',
+  'Dermatologist (Skin)',
+  'Dietitian (Nutrition)',
+  'Educational Psychologist',
+  'Emergency Medicine',
+  'Endocrinologist (Hormones)',
+  'Endodontic',
+  'E.N.T. (Ear, Nose &amp; Throat)',
+  'Family Medicine',
+  'Gastroenterologist (Stomach)',
+  'General Dentist',
+  'General Practitioner (GP)',
+  'General Surgeon',
+  'Geriatrician (Elderly)',
+  'Gynecologist',
+  'Hand Surgeon',
+  'Internal Medicine',
+  'IVF (In Vitro Fertilizer)',
+  'Matron',
+  'Medical Aesthetician (Cosmetic)',
+  'Nephrologist (Kidney)',
+  'Neurologist (Brain)',
+  'Neuromuscular Therapist',
+  'Neurosurgeon (Brain)',
+  'Nutritionist',
+  'Nurse',
+  'Pedodonist (Pediatric Dentist)',
+  'Periodontics',
+  'Physiatrist',
+  'Physiotherapist',
+  'Plastic Surgeon',
+  'Prosthodontics',
+  'Psychiatrist (Mental Health)',
+  'Public Health',
+  'Pulmonologist (Lungs)',
+  'Radiologist',
+  'Reproductive Medicine (Fertility)',
+  'Restorative Dentist',
+  'Rheumatologist (Joint)',
+  'Spine Surgeon',
+  'Surgeon',
+  'Traditional African Medicine',
+  'Traditional Chinese Medicine',
+  'Traditional Indian Medicine',
+  'Urologist',
+  'Vascular Surgeon'
+];
+
+List<String> treatmentList = [
+  'Allergist',
+  'Cardiologist',
+  'Coordinating healthcare',
+  'Dermatologist',
+  'Diagnosis and treatment',
+  'Family practice',
+  'Endocrinologist',
+  'Gastroenterologist',
+  'General practice',
+  'Geneticist',
+  'Geriatric specialists',
+  'Gynecologist',
+  'Information and advice',
+  'Internist',
+  'Health check-ups',
+  'Hematologist',
+  'Medical tests',
+  'Nephrologist',
+  'Neurologist',
+  'Nutrition advice',
+  'Ophthalmologist',
+  'Otolaryngologist',
+  "Primary care",
+  'Pediatrician',
+  'Prescription',
+  'Plastic surgeons',
+  'Podiatrist',
+  'Pulmonologist',
+  'Psychiatrists',
+  'Oncologist',
+  'Osteopath',
+  'Radiologists'
+];
+
+List<String> doctorsExperience = [
+  '1-3 Years',
+  '4–6 Years',
+  '7–9 Years',
+  '10–12 Years',
+  '13-Years Above'
+];
+
+List<String> doctorPrice = [
+  '0 – 2500',
+  '2501 – 5000',
+  '5001 – 7500',
+  '7501 – 10,000',
+  '10,001 – 15,000',
+  '15,000 – Above'
+];
+
+List<String> bookClass = [
+  'Standard',
+  'Future',
+  'Urgent',
+  'Private',
+  'VIP',
+  'VVIP'
+];
+
+List<String> consultationShift = [
+  'Early Morning',
+  'Morning',
+  'Noon',
+  'Evening',
+  'Night',
+  'Mid Night',
+  'Rounds'
+];
+
+List<String> HospitalClinic = [
+  'First Consultants Medical Centre',
+  'Lagoon Hospital',
+  'Tranquil &amp; Quest',
+  'Duchess International Hospital',
+  '2Premier Specialist Medical Centre',
+  'Saint Francois Medical Center',
+  'St. Nicholas Hospital',
+  'TAAL Specialist Hospital',
+  'The Pennisula Hospital',
+  'Adequate Medcare',
+  'Cedar Group Hospital',
+  'Citizen Medical Centre',
+  'Dako Dako Medical Centre',
+  'El-Dunamis Medical Center'
+];

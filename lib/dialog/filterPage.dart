@@ -1,9 +1,12 @@
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:intl/intl.dart';
 
 class FilterPage extends StatefulWidget {
-  const FilterPage({Key? key}) : super(key: key);
+  final String filterType;
+  const FilterPage(this.filterType, {Key? key}) : super(key: key);
 
   @override
   State<FilterPage> createState() => _FilterPageState();
@@ -13,13 +16,22 @@ class _FilterPageState extends State<FilterPage> {
   var selectedDate = DateTime.now();
   String gender = 'male';
   List<String> specialist = [];
+  List CONSULT_TYPE = [
+    {'title': 'Audio Call', 'icon': Icons.spatial_audio},
+    {'title': 'Video Call', 'icon': FontAwesome5.video},
+    {'title': 'Chat', 'icon': FontAwesome5.facebook_messenger},
+    {'title': 'Physical Visit', 'icon': FontAwesome5.walking}
+  ];
+  String type = 'Audio Call';
+  String shift = 'Morning';
+  String bookingClass = 'Standard';
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 1.5,
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 9.0),
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 9.0),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -67,115 +79,259 @@ class _FilterPageState extends State<FilterPage> {
           const SizedBox(
             height: 30.0,
           ),
-          Expanded(child: SingleChildScrollView(
+          Expanded(
+              child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Text(
-                'Date',
-                style: getCustomFont(
-                    size: 15.0, color: Colors.black, weight: FontWeight.w500),
-              ),
-            ),
-            const SizedBox(
-              height: 5.0,
-            ),
-            getDateForm(DateFormat('yyyy-MM-dd').format(selectedDate), () async {
-              final DateTime? picked = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2015, 8),
-                  lastDate: DateTime(2101));
-              if (picked != null && picked != selectedDate) {
-                setState(() {
-                  selectedDate = picked;
-                });
-              }
-            }),
-            const SizedBox(
-              height: 15.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Text(
-                'Gender',
-                style: getCustomFont(
-                    size: 15.0, color: Colors.black, weight: FontWeight.w500),
-              ),
-            ),
-            const SizedBox(
-              height: 5.0,
-            ),
-            Row(
-              children: [
-                Flexible(
-                  child: getGenderForm('assets/imgs/male.png', 'Male'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Text(
+                    'Date',
+                    style: getCustomFont(
+                        size: 15.0,
+                        color: Colors.black,
+                        weight: FontWeight.w500),
+                  ),
                 ),
                 const SizedBox(
-                  width: 10.0,
+                  height: 5.0,
                 ),
-                Flexible(
-                  child: getGenderForm('assets/imgs/female.png', 'Female'),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 15.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Text(
-                'Select Specialist',
-                style: getCustomFont(
-                    size: 15.0, color: Colors.black, weight: FontWeight.w500),
-              ),
-            ),
-            const SizedBox(
-              height: 5.0,
-            ),
-            Row(
-              children: [
-                Flexible(child: getSpecialistForm('Urologist')),
+                getDateForm(DateFormat('yyyy-MM-dd').format(selectedDate),
+                    () async {
+                  final DateTime? picked = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2015, 8),
+                      lastDate: DateTime(2101));
+                  if (picked != null && picked != selectedDate) {
+                    setState(() {
+                      selectedDate = picked;
+                    });
+                  }
+                }),
                 const SizedBox(
-                  width: 10.0,
+                  height: 15.0,
                 ),
-                Flexible(child: getSpecialistForm('Cardiologist')),
-              ],
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            Row(
-              children: [
-                Flexible(child: getSpecialistForm('Dentist')),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Text(
+                    'Gender',
+                    style: getCustomFont(
+                        size: 15.0,
+                        color: Colors.black,
+                        weight: FontWeight.w500),
+                  ),
+                ),
                 const SizedBox(
-                  width: 10.0,
+                  height: 5.0,
                 ),
-                Flexible(child: getSpecialistForm('Neurologist')),
-              ],
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            Row(
-              children: [
-                Flexible(child: getSpecialistForm('Orthologist')),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      getGenderForm('assets/imgs/male.png', 'Male'),
+                      const SizedBox(
+                        width: 20.0,
+                      ),
+                      getGenderForm('assets/imgs/female.png', 'Female'),
+                      const SizedBox(
+                        width: 20.0,
+                      ),
+                      getGenderForm('assets/imgs/female.png', 'Not Say'),
+                    ],
+                  ),
+                ),
                 const SizedBox(
-                  width: 10.0,
+                  height: 20.0,
                 ),
-                Flexible(child: getSpecialistForm('Gynecologist')),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Text(
+                    'Booking Type',
+                    style: getCustomFont(
+                        size: 15.0,
+                        color: Colors.black,
+                        weight: FontWeight.w500),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [...CONSULT_TYPE.map((e) => _dashTypeList(e))],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Text(
+                    'Consultation Shift',
+                    style: getCustomFont(
+                        size: 15.0,
+                        color: Colors.black,
+                        weight: FontWeight.w500),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      ...consultationShift.map((e) => GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                shift = e;
+                              });
+                            },
+                            child: Container(
+                              width: 100.0,
+                              margin: const EdgeInsets.only(
+                                  right: 15.0, left: 10.0),
+                              decoration: BoxDecoration(
+                                  color: shift == e ? BLUECOLOR : Colors.white,
+                                  border: Border.all(
+                                      color:
+                                          shift == e ? BLUECOLOR : Colors.black,
+                                      width: 1.0),
+                                  borderRadius: BorderRadius.circular(50.0)),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Center(
+                                  child: Text(
+                                    '$e',
+                                    style: getCustomFont(
+                                        size: 12.0,
+                                        color: shift == e
+                                            ? Colors.white
+                                            : BLUECOLOR),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ))
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Text(
+                    'Booking Class',
+                    style: getCustomFont(
+                        size: 15.0,
+                        color: Colors.black,
+                        weight: FontWeight.w500),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      ...bookClass.map((e) => GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                bookingClass = e;
+                              });
+                            },
+                            child: Container(
+                              width: 100.0,
+                              margin: const EdgeInsets.only(
+                                  right: 15.0, left: 10.0),
+                              decoration: BoxDecoration(
+                                  color: bookingClass == e
+                                      ? BLUECOLOR
+                                      : Colors.white,
+                                  border: Border.all(
+                                      color: bookingClass == e
+                                          ? BLUECOLOR
+                                          : Colors.black,
+                                      width: 1.0),
+                                  borderRadius: BorderRadius.circular(50.0)),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Center(
+                                  child: Text(
+                                    '$e',
+                                    style: getCustomFont(
+                                        size: 12.0,
+                                        color: bookingClass == e
+                                            ? Colors.white
+                                            : BLUECOLOR),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ))
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                widget.filterType == 'Specialization'
+                    ? filterSpecilizationType()
+                    : widget.filterType == 'Treatment'
+                        ? filterTreatmentType()
+                        : widget.filterType == 'Hospital/Clinic'
+                            ? filterHospitalType()
+                            : Container(),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Text(
+                    'Select Doctor Experience',
+                    style: getCustomFont(
+                        size: 15.0,
+                        color: Colors.black,
+                        weight: FontWeight.w500),
+                  ),
+                ),
+                const SizedBox(
+                  height: 9.0,
+                ),
+                getDropDownAssurance(doctorPrice, '0 – 2500'),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Text(
+                    'Select Doctor Price',
+                    style: getCustomFont(
+                        size: 15.0,
+                        color: Colors.black,
+                        weight: FontWeight.w500),
+                  ),
+                ),
+                const SizedBox(
+                  height: 9.0,
+                ),
+                getDropDownAssurance(doctorsExperience, '1-3 Years'),
+                const SizedBox(
+                  height: 30.0,
+                ),
+                getButton(context, () {}),
+                const SizedBox(
+                  height: 20.0,
+                ),
               ],
             ),
-             const SizedBox(
-              height: 30.0,
-            ),
-            getButton(context, (){}),
-             const SizedBox(
-              height: 20.0,
-            ),
-            ],),
           ))
         ],
       ),
@@ -205,7 +361,7 @@ class _FilterPageState extends State<FilterPage> {
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100.0),
-          border: Border.all(color: const Color(0xFFE8E8E8), width: 1.0),
+          border: Border.all(color: Colors.black, width: 1.0),
           color: Colors.white,
         ),
         child: Row(
@@ -241,10 +397,11 @@ class _FilterPageState extends State<FilterPage> {
 
   getGenderForm(asset, text) => Container(
         height: 54.0,
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+        width: 165.0,
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100.0),
-          border: Border.all(color: const Color(0xFFE8E8E8), width: 1.0),
+          border: Border.all(color: Colors.black, width: 1.0),
           color: Colors.white,
         ),
         child: Row(
@@ -257,15 +414,15 @@ class _FilterPageState extends State<FilterPage> {
                 children: [
                   Image.asset(
                     '$asset',
-                    width: 30.0,
-                    height: 30.0,
+                    width: 25.0,
+                    height: 25.0,
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(
                     width: 5.0,
                   ),
                   Text('$text',
-                      style: getCustomFont(size: 13.0, color: Colors.black45)),
+                      style: getCustomFont(size: 13.0, color: BLUECOLOR)),
                 ],
               ),
             )),
@@ -278,8 +435,71 @@ class _FilterPageState extends State<FilterPage> {
         ),
       );
 
+  getDropDownAssurance(List<String> list, text) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+      height: 49.0,
+      decoration: BoxDecoration(
+          color: BLUECOLOR.withOpacity(.05),
+          borderRadius: BorderRadius.circular(5.0)),
+      child: FormBuilderDropdown(
+        name: 'specialization',
+        icon: const Icon(
+          Icons.keyboard_arrow_down,
+          color: Colors.black,
+        ),
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 9.9, vertical: 5.0),
+          border: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+              borderSide: BorderSide.none),
+        ),
+        initialValue: '$text',
+        items: list
+            .map((gender) => DropdownMenuItem(
+                  value: gender,
+                  child: Text(
+                    gender,
+                    style: getCustomFont(size: 13.0, color: Colors.black45),
+                  ),
+                ))
+            .toList(),
+      ),
+    );
+  }
+
+  Widget _dashTypeList(e) => GestureDetector(
+        onTap: () => setState(() => type = e['title']),
+        child: Container(
+            margin: const EdgeInsets.only(right: 5.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 9.0),
+            decoration: BoxDecoration(
+                color: type == e['title'] ? BLUECOLOR : Colors.transparent,
+                borderRadius: BorderRadius.circular(50.0)),
+            child: Row(
+              children: [
+                Icon(
+                  e['icon'],
+                  color: type == e['title'] ? Colors.white : Colors.black,
+                  size: 14.0,
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  '${e['title']}',
+                  style: getCustomFont(
+                      size: 14.0,
+                      color: type == e['title'] ? Colors.white : Colors.black,
+                      weight: FontWeight.normal),
+                ),
+              ],
+            )),
+      );
+
   getSpecialistForm(text) => Container(
-        height: 54.0,
+        height: 45.0,
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100.0),
@@ -301,11 +521,61 @@ class _FilterPageState extends State<FilterPage> {
                   }
                   setState(() {});
                 }),
-           
             Flexible(
                 child: Text('$text',
                     style: getCustomFont(size: 13.0, color: Colors.black45))),
           ],
         ),
+      );
+
+  Widget filterSpecilizationType() => Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Text(
+              'Select Specialist',
+              style: getCustomFont(
+                  size: 15.0, color: Colors.black, weight: FontWeight.w500),
+            ),
+          ),
+          const SizedBox(
+            height: 9.0,
+          ),
+          getDropDownAssurance(SpecialitiesFilter, 'Audiologist'),
+        ],
+      );
+
+  Widget filterTreatmentType() => Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Text(
+              'Select Treatment',
+              style: getCustomFont(
+                  size: 15.0, color: Colors.black, weight: FontWeight.w500),
+            ),
+          ),
+          const SizedBox(
+            height: 9.0,
+          ),
+          getDropDownAssurance(treatmentList, 'Allergist'),
+        ],
+      );
+
+  Widget filterHospitalType() => Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Text(
+              'Select Hospital/Clinics',
+              style: getCustomFont(
+                  size: 15.0, color: Colors.black, weight: FontWeight.w500),
+            ),
+          ),
+          const SizedBox(
+            height: 9.0,
+          ),
+          getDropDownAssurance(HospitalClinic, 'First Consultants Medical Centre'),
+        ],
       );
 }

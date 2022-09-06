@@ -1,6 +1,5 @@
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/resuable/custom_nav.dart';
-import 'package:doccure_patient/store/categories_and_sub.dart';
 import 'package:doccure_patient/store/store_dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -60,7 +59,7 @@ class _StorePageState extends State<StorePage> {
                     : index == 2
                         ? getHospital(context)
                         : index == 3
-                            ? CategoriesAndSub()
+                            ? getPharmacy(context)
                             : getProfile(page, context, () {}, headers,
                                 dash: (e) {
                                 setState(() {

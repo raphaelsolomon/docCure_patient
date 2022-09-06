@@ -203,11 +203,9 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                 height: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(5.0), bottomLeft: Radius.circular(5.0)
-                  ),
+                  borderRadius: BorderRadius.circular(5.0),
                   border: Border.all(color: const Color(0xFFE8E8E8), width: 1.0),
-                  color: Colors.grey.shade400,
+                  color: Colors.grey.shade300,
                 ),
                 child: Center(child: Text('Choose File', style: getCustomFont(size: 13.0, color: Colors.black),)),
               ),

@@ -23,7 +23,7 @@ class RecentOrder extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(
-                          height: 25.0,
+                          height: 15.0,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -62,6 +62,8 @@ class RecentOrder extends StatelessWidget {
                         itemCount: 5,
                         shrinkWrap: true,
                         itemBuilder: (ctx, i) => Container(
+                          color: Colors.white,
+                          margin: const EdgeInsets.symmetric(vertical: 5.0),
                           padding: const EdgeInsets.all(12.0),
                           child: thirdScroll(context),
                         )))
@@ -71,7 +73,7 @@ class RecentOrder extends StatelessWidget {
 
   Widget thirdScroll(context) => GestureDetector(
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
@@ -79,7 +81,7 @@ class RecentOrder extends StatelessWidget {
               width: 40.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
-                color: Colors.blue,
+                image: DecorationImage(image: AssetImage('assets/imgs/1.png'), fit: BoxFit.cover)
               ),
             ),
             const SizedBox(
@@ -113,7 +115,7 @@ class RecentOrder extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(
-                    height: 1.0,
+                    height: 0.0,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,15 +126,15 @@ class RecentOrder extends StatelessWidget {
                           '13 june 11:20 am',
                           style: getCustomFont(
                               color: Colors.black45,
-                              size: 12.5,
+                              size: 12.0,
                               weight: FontWeight.w400),
                         )),
                       ),
                       Text(
-                        '\$18.00|Card',
+                        '\$18.00 | Card',
                         style: getCustomFont(
                             color: Colors.black45,
-                            size: 12.5,
+                            size: 11.0,
                             weight: FontWeight.w400),
                       )
                     ],
@@ -153,7 +155,7 @@ class RecentOrder extends StatelessWidget {
                               'Non Drosy lantin Tablet',
                               style: getCustomFont(
                                   color: Colors.black,
-                                  size: 13.0,
+                                  size: 11.5,
                                   weight: FontWeight.w400),
                             )),
                           ),
@@ -163,12 +165,12 @@ class RecentOrder extends StatelessWidget {
                             direction: Axis.horizontal,
                             allowHalfRating: true,
                             itemCount: 5,
-                            itemSize: 15.0,
+                            itemSize: 14.0,
                             itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
                             itemBuilder: (context, _) => Icon(
                               Icons.star,
                               color: Colors.amber,
-                              size: 15.0,
+                              size: 14.0,
                             ),
                             onRatingUpdate: (rating) {
                               print(rating);

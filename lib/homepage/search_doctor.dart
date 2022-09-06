@@ -18,7 +18,7 @@ class SearchDoctor extends StatefulWidget {
 
 class _SearchDoctorState extends State<SearchDoctor> {
   List<String> catergories = [
-    'Specialist',
+    'Specialization',
     'Services',
     'Treatment',
     'Hospital/Clinic',
@@ -26,7 +26,7 @@ class _SearchDoctorState extends State<SearchDoctor> {
     'Surgery/transplant'
   ];
 
-  String selected = 'Specialist';
+  String selected = 'Specialization';
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +109,7 @@ class _SearchDoctorState extends State<SearchDoctor> {
                                         setState(() {
                                           selected = '${catergories[index]}';
                                         });
-                                        showRequestSheet(context, FilterPage());
+                                        showRequestSheet(context, FilterPage('${catergories[index]}'));
                                       },
                                       child: Container(
                                           padding: const EdgeInsets.symmetric(
@@ -127,7 +127,7 @@ class _SearchDoctorState extends State<SearchDoctor> {
                                                       : Colors.black45),
                                               color:
                                                   selected == catergories[index]
-                                                      ? Colors.lightBlue
+                                                      ? BLUECOLOR
                                                       : Colors.white),
                                           child: Text(
                                             catergories[index],

@@ -1,6 +1,8 @@
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/store/index.dart';
+import 'package:doccure_patient/store/recent_order.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -30,7 +32,8 @@ class _CustomNavBarState extends State<CustomNavBar> {
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 6.0),
       decoration: BoxDecoration(
           boxShadow: SHADOW,
-          color: Colors.white, borderRadius: BorderRadius.circular(100.0)),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(100.0)),
       child: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,12 +66,64 @@ class _CustomNavBarState extends State<CustomNavBar> {
                 readExec.setStoreIndex(2);
                 return;
               }
+              readExec.isEstore(true);
               Get.to(() => StorePage(2));
             }, readExec.isEstoreClicked && readExec.storeIndex == 2),
             getNavItems(Icons.more, 'More', () {
-              setState(() {
-                isMore = true;
-              });
+              dialogMessage(
+                  context,
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: 16.0, right: 16.0, left: 16.0, bottom: 10.0),
+                      child: Material(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100.0)),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top: 16.0, right: 16.0, left: 16.0, bottom: 16.0),
+                          child: SizedBox(
+                            width: 35.0,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                getNavItems(
+                                    Icons.local_pharmacy_outlined, 'Pharmacy',
+                                    () {
+                                  if (readExec.isEstoreClicked) {
+                                    readExec.setStoreIndex(3);
+                                    Navigator.pop(context);
+                                    return;
+                                  }
+                                  readExec.isEstore(true);
+                                  Navigator.pop(context);
+                                  Get.to(() => StorePage(3));
+                                },
+                                    readExec.isEstoreClicked &&
+                                        readExec.storeIndex == 3),
+                                Divider(),
+                                getNavItems(Icons.receipt_rounded, 'Order', () {
+                                  Navigator.pop(context);
+                                  Get.to(() => RecentOrder());
+                                }, false),
+                                Divider(),
+                                getNavItems(Icons.person, 'profile', () {
+                                  readExec.setPage(-10);
+                                   Navigator.pop(context);
+                                  if (readExec.isEstoreClicked) {
+                                    readExec.isEstore(false);
+                                    Get.back();
+                                  }
+                                }, counter.last == -10 && !readExec.isEstoreClicked)
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ));
             }, counter.last == 2),
           ],
         ),
@@ -89,19 +144,23 @@ class _CustomNavBarState extends State<CustomNavBar> {
           const SizedBox(
             height: 2.0,
           ),
-          Text(
-            '$text',
-            style:
-                getCustomFont(size: 10.0, color: b ? BLUECOLOR : Colors.black),
+          FittedBox(
+            child: Text(
+              '$text',
+              style: getCustomFont(
+                  size: 10.0, color: b ? BLUECOLOR : Colors.black),
+            ),
           ),
           const SizedBox(
             height: 4.0,
           ),
-          Icon(
-            Icons.circle,
-            size: 8.0,
-            color: b ? BLUECOLOR : Colors.transparent,
-          )
+          b
+              ? Icon(
+                  Icons.circle,
+                  size: 8.0,
+                  color: b ? BLUECOLOR : Colors.transparent,
+                )
+              : const SizedBox()
         ],
       ),
     );

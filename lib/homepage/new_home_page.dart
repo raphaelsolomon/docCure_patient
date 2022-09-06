@@ -102,7 +102,7 @@ class AllHomePage extends StatelessWidget {
   }
 
   Widget horizontalItem() => Container(
-        width: 150,
+        width: 185.0,
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.only(right: 10.0),
         decoration: BoxDecoration(
@@ -122,16 +122,19 @@ class AllHomePage extends StatelessWidget {
               'Find a medical center',
               textAlign: TextAlign.center,
               style: getCustomFont(
-                  size: 17.0, color: Colors.black, weight: FontWeight.w500),
+                  size: 15.0, color: Colors.black, weight: FontWeight.w600),
             ),
              const SizedBox(
-              height: 6.0,
+              height: 9.0,
             ),
              Text(
               'Find hosiptals, pharmacies, laboratories and clinics',
               textAlign: TextAlign.center,
               style: getCustomFont(
                   size: 12.0, color: Colors.black45, weight: FontWeight.w400),
+            ),
+            const SizedBox(
+              height: 5.0,
             ),
           ],
         ),

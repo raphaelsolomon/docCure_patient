@@ -48,7 +48,7 @@ class _MyFamilyState extends State<MyFamily> {
                             ),
                             Text('My Family',
                                 style:
-                                    getCustomFont(size: 18.0, color: Colors.white))
+                                    getCustomFont(size: 16.0, color: Colors.white))
                           ],
                         ),
                       ),
@@ -171,7 +171,7 @@ class _MyFamilyState extends State<MyFamily> {
                     borderRadius: BorderRadius.circular(10.0),
                     color: BLUECOLOR),
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 28.0, vertical: 13.0),
+                    horizontal: 28.0, vertical: 11.0),
                 child: Text(
                   'Create a family',
                   style: getCustomFont(size: 15.0, color: Colors.white),

@@ -51,9 +51,44 @@ Widget language(BuildContext context) {
   );
 }
 
-Widget medicalDetails(BuildContext context) {
+Widget moreNavBar(BuildContext context) {
   return Stack(
     alignment: Alignment.center,
+    children: <Widget>[
+      Container(
+        width: MediaQuery.of(context).size.width,
+        margin:const EdgeInsets.all(40), // to push the box half way below circle
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        padding: const EdgeInsets.all(20.0), // spacing inside the box
+        child: Material(
+          color: Colors.transparent,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(children: [
+                Icon(Icons.local_pharmacy_outlined, size: 20.0, color: Colors.black),
+                SizedBox(width: 10.0,),
+                Text('Pharmacy', style: getCustomFont(size: 15.0, color: Colors.black),)
+              ],),
+              const SizedBox(height: 20.0,),
+               Row(children: [
+                Icon(Icons.local_pharmacy_outlined, size: 20.0, color: Colors.black),
+                SizedBox(width: 10.0,),
+                Text('Pharmacy', style: getCustomFont(size: 15.0, color: Colors.black),)
+              ],),
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget medicalDetails(BuildContext context) {
+  return Stack(
     children: <Widget>[
       Container(
         width: MediaQuery.of(context).size.width,
@@ -65,62 +100,65 @@ Widget medicalDetails(BuildContext context) {
         ),
         padding: const EdgeInsets.only(
             top: 15, left: 10, right: 10), // spacing inside the box
-        child: Material(
-          color: Colors.transparent,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Add new data',
-                      style: getCustomFont(size: 15.0, color: Colors.black),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.cancel_outlined,
-                        size: 17.0,
-                        color: Colors.black45,
+        child: Align(
+          alignment: Alignment.bottomRight,
+          child: Material(
+            color: Colors.transparent,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Add new data',
+                        style: getCustomFont(size: 15.0, color: Colors.black),
                       ),
-                    )
-                  ],
-                ),
-                Divider(),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                getMedialDetailsBox('BMI', ''),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                getMedialDetailsBox('Heart Rate', ''),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                getMedialDetailsBox('Weight', ''),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                getMedialDetailsBox('Fbc', ''),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                getMedialDetailsBox('Created Date', ''),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                Divider(),
-                getPayButton(context, () {}, 'Submit'),
-                const SizedBox(
-                  height: 20.0,
-                ),
-              ],
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.cancel_outlined,
+                          size: 17.0,
+                          color: Colors.black45,
+                        ),
+                      )
+                    ],
+                  ),
+                  Divider(),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  getMedialDetailsBox('BMI', ''),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  getMedialDetailsBox('Heart Rate', ''),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  getMedialDetailsBox('Weight', ''),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  getMedialDetailsBox('Fbc', ''),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  getMedialDetailsBox('Created Date', ''),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  Divider(),
+                  getPayButton(context, () {}, 'Submit'),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

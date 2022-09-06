@@ -75,7 +75,7 @@ class _MyProfileState extends State<MyProfile> {
           Expanded(
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.0),
               child: Column(
                 children: [
                   SingleChildScrollView(
@@ -108,10 +108,8 @@ class _MyProfileState extends State<MyProfile> {
                           : index == 'Medical Records'
                               ? Expanded(
                                   child: SingleChildScrollView(
-                                    child: Column(
-                                      children:[tableInvoice(context)]
-                                      )
-                                  ),
+                                      child: Column(
+                                          children: [tableInvoice(context)])),
                                 )
                               : index == 'Overview'
                                   ? Expanded(child: patientProfile())
@@ -137,14 +135,14 @@ class _MyProfileState extends State<MyProfile> {
         child: Container(
             margin: const EdgeInsets.only(right: 3.0),
             padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
             decoration: BoxDecoration(
                 color: index == e ? BLUECOLOR : Colors.transparent,
                 borderRadius: BorderRadius.circular(50.0)),
             child: Text(
               '$e',
               style: getCustomFont(
-                  size: 15.0,
+                  size: 13.0,
                   color: index == e ? Colors.white : Colors.black,
                   weight: FontWeight.normal),
             )),
@@ -165,15 +163,19 @@ class _MyProfileState extends State<MyProfile> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
-                    child: Text(
-                  'Booking Date - 16 Mar 2022',
-                  style: getCustomFont(
-                      size: 15.0, color: Colors.black, weight: FontWeight.w400),
+                    child: FittedBox(
+                  child: Text(
+                    'Booking Date - 16 Mar 2022',
+                    style: getCustomFont(
+                        size: 13.0,
+                        color: Colors.black,
+                        weight: FontWeight.w400),
+                  ),
                 )),
                 Text(
                   'dental',
                   style: getCustomFont(
-                      size: 15.0,
+                      size: 13.0,
                       color: Colors.black45,
                       weight: FontWeight.w400),
                 )
@@ -181,45 +183,50 @@ class _MyProfileState extends State<MyProfile> {
             ),
             Divider(),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
-                  radius: 30.0,
+                  radius: 27.0,
                   backgroundImage: AssetImage('assets/imgs/1.png'),
                 ),
                 const SizedBox(
                   width: 15.0,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Dr. Ruby Perrln',
-                      style: getCustomFont(
-                          color: Colors.black,
-                          size: 19.0,
-                          weight: FontWeight.w400),
-                    ),
-                    const SizedBox(
-                      height: 2.0,
-                    ),
-                    Text(
-                      'Appt Date - 22 Mar 2020, 4:30PM',
-                      style: getCustomFont(
-                          color: Colors.black54,
-                          size: 14.0,
-                          weight: FontWeight.w400),
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      '\$150.00',
-                      style: getCustomFont(
-                          color: Colors.black,
-                          size: 14.0,
-                          weight: FontWeight.w400),
-                    ),
-                  ],
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      FittedBox(
+                        child: Text(
+                          'Dr. Ruby Perrln',
+                          style: getCustomFont(
+                              color: Colors.black,
+                              size: 16.0,
+                              weight: FontWeight.w500),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 2.0,
+                      ),
+                      Text(
+                        'Appt Date - 22 Mar 2020, 4:30PM',
+                        style: getCustomFont(
+                            color: Colors.black54,
+                            size: 13.0,
+                            weight: FontWeight.w400),
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Text(
+                        '\$150.00',
+                        style: getCustomFont(
+                            color: Colors.black,
+                            size: 13.0,
+                            weight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
@@ -229,10 +236,8 @@ class _MyProfileState extends State<MyProfile> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                getButton(context, () {
-                  
-                }),
-                 const SizedBox(
+                getButton(context, () {}),
+                const SizedBox(
                   width: 10.0,
                 ),
                 getButton(context, () {},
@@ -243,7 +248,9 @@ class _MyProfileState extends State<MyProfile> {
                   width: 10.0,
                 ),
                 getButton(context, () {},
-                    icon: Icons.print, text: 'Reschedule', color: Colors.orange),
+                    icon: Icons.print,
+                    text: 'Reschedule',
+                    color: Colors.orange),
               ],
             )
           ],
@@ -276,7 +283,7 @@ class _MyProfileState extends State<MyProfile> {
                 Text(
                   '$text',
                   style: getCustomFont(
-                      size: 14.0,
+                      size: 13.0,
                       color: Colors.white,
                       weight: FontWeight.normal),
                 ),
@@ -301,15 +308,17 @@ class _MyProfileState extends State<MyProfile> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
-                    child: Text(
-                  'Prescription 1',
-                  style: getCustomFont(
-                      size: 15.0, color: Colors.black, weight: FontWeight.w400),
-                )),
+                    child: FittedBox(
+                      child: Text(
+                                      'Prescription 1',
+                                      style: getCustomFont(
+                        size: 14.0, color: Colors.black, weight: FontWeight.w400),
+                                    ),
+                    )),
                 Text(
                   '14 Mar 2022',
                   style: getCustomFont(
-                      size: 15.0,
+                      size: 14.0,
                       color: Colors.black45,
                       weight: FontWeight.w400),
                 )
@@ -317,48 +326,51 @@ class _MyProfileState extends State<MyProfile> {
             ),
             Divider(),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
-                  radius: 30.0,
+                  radius: 27.0,
                   backgroundImage: AssetImage('assets/imgs/1.png'),
                 ),
                 const SizedBox(
                   width: 15.0,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Dr. Ruby Perrln',
-                      style: getCustomFont(
-                          color: Colors.black,
-                          size: 19.0,
-                          weight: FontWeight.w400),
-                    ),
-                    Text(
-                      'Dental',
-                      style: getCustomFont(
-                          color: Colors.black54,
-                          size: 14.0,
-                          weight: FontWeight.w400),
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    Row(
-                      children: [
-                        getButton(context, () {},
-                            color: Colors.lightGreen.shade300),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        getButton(context, () {},
-                            icon: Icons.print,
-                            text: 'Print',
-                            color: Colors.grey),
-                      ],
-                    )
-                  ],
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Dr. Ruby Perrln',
+                        style: getCustomFont(
+                            color: Colors.black,
+                            size: 17.0,
+                            weight: FontWeight.w400),
+                      ),
+                      Text(
+                        'Dental',
+                        style: getCustomFont(
+                            color: Colors.black54,
+                            size: 13.0,
+                            weight: FontWeight.w400),
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Row(
+                        children: [
+                          getButton(context, () {},
+                              color: Colors.lightGreen.shade300),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          getButton(context, () {},
+                              icon: Icons.print,
+                              text: 'Print',
+                              color: Colors.grey),
+                        ],
+                      )
+                    ],
+                  ),
                 )
               ],
             ),
@@ -487,22 +499,25 @@ class _MyProfileState extends State<MyProfile> {
                     child: Text(
                   '#MR-0010',
                   style: getCustomFont(
-                      size: 15.0, color: Colors.black, weight: FontWeight.w400),
+                      size: 14.0, color: Colors.black, weight: FontWeight.w400),
                 )),
-                Text(
-                  'Paid on - 14 Mar 2022',
-                  style: getCustomFont(
-                      size: 15.0,
-                      color: Colors.black45,
-                      weight: FontWeight.w400),
+                Flexible(
+                  child: Text(
+                    'Paid on - 14 Mar 2022',
+                    style: getCustomFont(
+                        size: 14.0,
+                        color: Colors.black45,
+                        weight: FontWeight.w400),
+                  ),
                 )
               ],
             ),
             Divider(),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
-                  radius: 30.0,
+                  radius: 27.0,
                   backgroundImage: AssetImage('assets/imgs/1.png'),
                 ),
                 const SizedBox(
@@ -516,7 +531,7 @@ class _MyProfileState extends State<MyProfile> {
                         'Dr. Ruby Perrln',
                         style: getCustomFont(
                             color: Colors.black,
-                            size: 19.0,
+                            size: 17.0,
                             weight: FontWeight.w400),
                       ),
                       Row(
@@ -526,7 +541,7 @@ class _MyProfileState extends State<MyProfile> {
                             'Dental',
                             style: getCustomFont(
                                 color: Colors.black54,
-                                size: 14.0,
+                                size: 13.0,
                                 weight: FontWeight.w400),
                           ),
                           Flexible(
@@ -544,7 +559,7 @@ class _MyProfileState extends State<MyProfile> {
                         'Dental-test.pdf',
                         style: getCustomFont(
                             color: Colors.black54,
-                            size: 14.0,
+                            size: 13.0,
                             weight: FontWeight.w400),
                       ),
                       const SizedBox(
@@ -611,9 +626,10 @@ class _MyProfileState extends State<MyProfile> {
                     child: Column(
                       children: [
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CircleAvatar(
-                              radius: 30.0,
+                              radius: 27.0,
                               backgroundImage: AssetImage('assets/imgs/1.png'),
                             ),
                             const SizedBox(
@@ -627,21 +643,21 @@ class _MyProfileState extends State<MyProfile> {
                                     'Michelle Fairfax',
                                     style: getCustomFont(
                                         color: Colors.black,
-                                        size: 24.0,
+                                        size: 17.0,
                                         weight: FontWeight.w400),
                                   ),
                                   Text(
                                     'Patient ID - PT0025',
                                     style: getCustomFont(
                                         color: Colors.black54,
-                                        size: 14.0,
+                                        size: 13.0,
                                         weight: FontWeight.w400),
                                   ),
                                   Text(
                                     'Blood Group - O+',
                                     style: getCustomFont(
                                         color: Colors.black54,
-                                        size: 14.0,
+                                        size: 13.0,
                                         weight: FontWeight.w400),
                                   ),
                                 ],
@@ -655,37 +671,41 @@ class _MyProfileState extends State<MyProfile> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                Icon(Icons.phone,
-                                    size: 15.0, color: Colors.black),
-                                const SizedBox(
-                                  width: 5.0,
-                                ),
-                                Text(
-                                  '+1 504 368 6874',
-                                  style: getCustomFont(
-                                      color: Colors.black54,
-                                      size: 14.0,
-                                      weight: FontWeight.w400),
-                                ),
-                              ],
+                            Flexible(
+                              child: Row(
+                                children: [
+                                  Icon(Icons.phone,
+                                      size: 15.0, color: Colors.black),
+                                  const SizedBox(
+                                    width: 5.0,
+                                  ),
+                                  Text(
+                                    '+1 504 368 6874',
+                                    style: getCustomFont(
+                                        color: Colors.black54,
+                                        size: 13.0,
+                                        weight: FontWeight.w400),
+                                  ),
+                                ],
+                              ),
                             ),
-                            Row(
-                              children: [
-                                Icon(Icons.location_on,
-                                    size: 15.0, color: Colors.black),
-                                const SizedBox(
-                                  width: 5.0,
-                                ),
-                                Text(
-                                  'Florida, USA',
-                                  style: getCustomFont(
-                                      color: Colors.black54,
-                                      size: 14.0,
-                                      weight: FontWeight.w400),
-                                ),
-                              ],
+                            Flexible(
+                              child: Row(
+                                children: [
+                                  Icon(Icons.location_on,
+                                      size: 15.0, color: Colors.black),
+                                  const SizedBox(
+                                    width: 5.0,
+                                  ),
+                                  Text(
+                                    'Florida, USA',
+                                    style: getCustomFont(
+                                        color: Colors.black54,
+                                        size: 13.0,
+                                        weight: FontWeight.w400),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -738,17 +758,17 @@ class _MyProfileState extends State<MyProfile> {
                             'About Me',
                             style: getCustomFont(
                                 color: Colors.black,
-                                size: 19.0,
+                                size: 17.0,
                                 weight: FontWeight.w400),
                           ),
                           const SizedBox(
-                            height: 15.0,
+                            height: 10.0,
                           ),
                           Text(
                             '$DUMMYTEXT',
                             style: getCustomFont(
-                                color: Colors.black,
-                                size: 14.0,
+                                color: Colors.black54,
+                                size: 13.0,
                                 weight: FontWeight.w400),
                           ),
                         ])),
@@ -799,11 +819,11 @@ class _MyProfileState extends State<MyProfile> {
                             'Last Booking',
                             style: getCustomFont(
                                 color: Colors.black,
-                                size: 19.0,
+                                size: 17.0,
                                 weight: FontWeight.w400),
                           ),
                           const SizedBox(
-                            height: 15.0,
+                            height: 10.0,
                           ),
                           ...List.generate(2, (index) => lastBooking())
                         ])),
@@ -825,7 +845,7 @@ class _MyProfileState extends State<MyProfile> {
               Text(
                 'Last Booking',
                 style: getCustomFont(
-                    color: Colors.black, size: 19.0, weight: FontWeight.w400),
+                    color: Colors.black, size: 15.0, weight: FontWeight.w400),
               ),
             ],
           ),
@@ -835,7 +855,7 @@ class _MyProfileState extends State<MyProfile> {
           Text(
             'Dentist',
             style: getCustomFont(
-                color: Colors.black54, size: 15.0, weight: FontWeight.w400),
+                color: Colors.black54, size: 13.0, weight: FontWeight.w400),
           ),
           const SizedBox(
             height: 1.0,
@@ -843,7 +863,7 @@ class _MyProfileState extends State<MyProfile> {
           Text(
             '15 Nov 2022 4:00 PM',
             style: getCustomFont(
-                color: Colors.black54, size: 15.0, weight: FontWeight.w400),
+                color: Colors.black54, size: 13.0, weight: FontWeight.w400),
           ),
           const SizedBox(
             height: 15.0,
