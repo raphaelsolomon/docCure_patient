@@ -7,10 +7,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-class CustomNavBar extends StatelessWidget {
+class CustomNavBar extends StatefulWidget {
   final BuildContext c;
   final int pageIndex = 0;
   const CustomNavBar(this.c, {pageIndex, Key? key}) : super(key: key);
+
+  @override
+  State<CustomNavBar> createState() => _CustomNavBarState();
+}
+
+class _CustomNavBarState extends State<CustomNavBar> {
+  bool isMore = false;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +29,7 @@ class CustomNavBar extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 6.0),
       decoration: BoxDecoration(
+          boxShadow: SHADOW,
           color: Colors.white, borderRadius: BorderRadius.circular(100.0)),
       child: Center(
         child: Row(
@@ -30,29 +38,37 @@ class CustomNavBar extends StatelessWidget {
           children: [
             getNavItems(Icons.house_outlined, 'Home', () {
               readExec.jumpToHome();
-              if(readExec.isEstoreClicked){
+              if (readExec.isEstoreClicked) {
                 readExec.isEstore(false);
                 Navigator.pop(context);
               }
-            }, counter.last == 0),
+            }, counter.last == 0 && !readExec.isEstoreClicked),
             getNavItems(FontAwesome5.user_nurse, 'Doctors', () {
-              readExec.setPage(3);
-               if(readExec.isEstoreClicked){
+              readExec.setPage(-3);
+              if (readExec.isEstoreClicked) {
                 readExec.isEstore(false);
                 Navigator.pop(context);
               }
-            }, counter.last == 3),
+            }, counter.last == -3 && !readExec.isEstoreClicked),
             getNavItems(Icons.store, 'E-Stores', () {
-               if(readExec.isEstoreClicked) {
+              if (readExec.isEstoreClicked) {
+                readExec.setStoreIndex(0);
                 return;
               }
+              readExec.isEstore(true);
               Get.to(() => StorePage(0));
-            }, readExec.isEstoreClicked && pageIndex == 0),
+            }, readExec.isEstoreClicked && readExec.storeIndex == 0),
             getNavItems(Icons.receipt_long_outlined, 'Hospitals', () {
+              if (readExec.isEstoreClicked) {
+                readExec.setStoreIndex(2);
+                return;
+              }
               Get.to(() => StorePage(2));
-            }, readExec.isEstoreClicked && pageIndex == 2),
+            }, readExec.isEstoreClicked && readExec.storeIndex == 2),
             getNavItems(Icons.more, 'More', () {
-              
+              setState(() {
+                isMore = true;
+              });
             }, counter.last == 2),
           ],
         ),
@@ -68,7 +84,7 @@ class CustomNavBar extends StatelessWidget {
           FaIcon(
             icon,
             size: 21.0,
-            color: b? BLUECOLOR : Colors.black,
+            color: b ? BLUECOLOR : Colors.black,
           ),
           const SizedBox(
             height: 2.0,

@@ -96,30 +96,34 @@ class _MyReminderState extends State<MyReminder> {
                                   const SizedBox(
                                     width: 10.0,
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Diabetes Pills',
-                                          style: getCustomFont(
-                                              size: 15.0,
-                                              weight: FontWeight.w500,
-                                              color: Colors.black)),
-                                      const SizedBox(
-                                        height: 2.0,
-                                      ),
-                                      Text('Mon, Tue, Wed, Thurs, Sat, Sun',
-                                          style: getCustomFont(
-                                              size: 13.0,
-                                              weight: FontWeight.normal,
-                                              color: Colors.black45)),
-                                      Text(
-                                          '08: 00 am, 12:00 pm, 03:30 pm, 06:00 pm',
-                                          style: getCustomFont(
-                                              size: 12.0,
-                                              weight: FontWeight.w500,
-                                              color: Colors.black54))
-                                    ],
+                                  Flexible(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text('Diabetes Pills',
+                                            style: getCustomFont(
+                                                size: 15.0,
+                                                weight: FontWeight.w500,
+                                                color: Colors.black)),
+                                        const SizedBox(
+                                          height: 4.0,
+                                        ),
+                                        Text('Mon, Tue, Wed, Thurs, Sat, Sun',
+                                            style: getCustomFont(
+                                                size: 13.0,
+                                                weight: FontWeight.normal,
+                                                color: Colors.black45)),
+                                                const SizedBox(
+                                          height: 3.0,
+                                        ),
+                                        Text(
+                                            '08: 00 am, 12:00 pm, 03:30 pm, 06:00 pm',
+                                            style: getCustomFont(
+                                                size: 12.0,
+                                                weight: FontWeight.w500,
+                                                color: Colors.black54))
+                                      ],
+                                    ),
                                   )
                                 ],
                               ),

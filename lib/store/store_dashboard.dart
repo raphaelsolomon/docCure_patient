@@ -312,130 +312,7 @@ Widget getHospital(context) => Padding(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: 8,
-                        itemBuilder: (ctx, i) => GestureDetector(
-                              onTap: () {
-                                Get.to(() => HospitalDetails());
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(15.0),
-                                color: Colors.white,
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Flexible(
-                                            flex: 2,
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  'Apple Hospital',
-                                                  style: getCustomFont(
-                                                      size: 15.0,
-                                                      color: Colors.black,
-                                                      weight: FontWeight.w500),
-                                                ),
-                                                const SizedBox(
-                                                  height: 2.0,
-                                                ),
-                                                Text(
-                                                  'General Hospital',
-                                                  style: getCustomFont(
-                                                      size: 12.0,
-                                                      color: Colors.black45,
-                                                      weight: FontWeight.w400),
-                                                )
-                                              ],
-                                            )),
-                                        SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Row(
-                                            children: [
-                                              ...List.generate(
-                                                  3,
-                                                  (i) => Container(
-                                                        height: 40.0,
-                                                        width: 80.0,
-                                                        margin: const EdgeInsets
-                                                                .symmetric(
-                                                            horizontal: 4.0),
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10.0),
-                                                            image: DecorationImage(
-                                                                image: AssetImage(
-                                                                    'assets/imgs/2.png'),
-                                                                fit: BoxFit
-                                                                    .cover)),
-                                                      ))
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 5.0,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Flexible(
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.location_on,
-                                                color: Colors.black45,
-                                                size: 16.0,
-                                              ),
-                                              const SizedBox(
-                                                width: 5.0,
-                                              ),
-                                              Flexible(
-                                                  child: FittedBox(
-                                                      child: Text(
-                                                'Walter street, Wallington, New York.',
-                                                style: getCustomFont(
-                                                    size: 13.0,
-                                                    color: Colors.black45,
-                                                    weight: FontWeight.w500),
-                                              ))),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 15.0,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.call,
-                                              color: BLUECOLOR,
-                                              size: 16.0,
-                                            ),
-                                            const SizedBox(
-                                              width: 5.0,
-                                            ),
-                                            Text(
-                                              'Call Now',
-                                              style: getCustomFont(
-                                                  size: 12.0,
-                                                  color: Colors.black45,
-                                                  weight: FontWeight.w400),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )),
+                        itemBuilder: (ctx, i) => hospitalItem(context)),
                     const SizedBox(
                       height: 85.0,
                     ),
@@ -446,7 +323,127 @@ Widget getHospital(context) => Padding(
           ]),
     );
 
-    Widget getPharmacy(context) => Padding(
+Widget hospitalItem(context) => GestureDetector(
+      onTap: () {
+        Get.to(() => HospitalDetails());
+      },
+      child: Container(
+        padding: const EdgeInsets.all(15.0),
+        color: Colors.white,
+        margin: const EdgeInsets.symmetric(vertical: 5.0),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Apple Hospital',
+                          style: getCustomFont(
+                              size: 15.0,
+                              color: Colors.black,
+                              weight: FontWeight.w500),
+                        ),
+                        const SizedBox(
+                          height: 2.0,
+                        ),
+                        Text(
+                          'General Hospital',
+                          style: getCustomFont(
+                              size: 12.0,
+                              color: Colors.black45,
+                              weight: FontWeight.w400),
+                        )
+                      ],
+                    )),
+                Flexible(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ...List.generate(
+                            3,
+                            (i) => Container(
+                                  height: 40.0,
+                                  width: 80.0,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 4.0),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      image: DecorationImage(
+                                          image:
+                                              AssetImage('assets/imgs/2.png'),
+                                          fit: BoxFit.cover)),
+                                ))
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            Row(
+              children: [
+                Flexible(
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.location_on,
+                        color: Colors.black45,
+                        size: 16.0,
+                      ),
+                      const SizedBox(
+                        width: 5.0,
+                      ),
+                      Flexible(
+                          child: FittedBox(
+                              child: Text(
+                        'Walter street, Wallington, New York.',
+                        style: getCustomFont(
+                            size: 13.0,
+                            color: Colors.black45,
+                            weight: FontWeight.w500),
+                      ))),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  width: 15.0,
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.call,
+                      color: BLUECOLOR,
+                      size: 16.0,
+                    ),
+                    const SizedBox(
+                      width: 5.0,
+                    ),
+                    Text(
+                      'Call Now',
+                      style: getCustomFont(
+                          size: 12.0,
+                          color: Colors.black45,
+                          weight: FontWeight.w400),
+                    ),
+                  ],
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+
+Widget getPharmacy(context) => Padding(
       padding: const EdgeInsets.only(top: 28.0),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -579,130 +576,7 @@ Widget getHospital(context) => Padding(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: 8,
-                        itemBuilder: (ctx, i) => GestureDetector(
-                              onTap: () {
-                                Get.to(() => HospitalDetails());
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(15.0),
-                                color: Colors.white,
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Flexible(
-                                            flex: 2,
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  'Apple Pharmacy',
-                                                  style: getCustomFont(
-                                                      size: 15.0,
-                                                      color: Colors.black,
-                                                      weight: FontWeight.w500),
-                                                ),
-                                                const SizedBox(
-                                                  height: 2.0,
-                                                ),
-                                                Text(
-                                                  'General Pharmacy',
-                                                  style: getCustomFont(
-                                                      size: 12.0,
-                                                      color: Colors.black45,
-                                                      weight: FontWeight.w400),
-                                                )
-                                              ],
-                                            )),
-                                        SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Row(
-                                            children: [
-                                              ...List.generate(
-                                                  3,
-                                                  (i) => Container(
-                                                        height: 40.0,
-                                                        width: 80.0,
-                                                        margin: const EdgeInsets
-                                                                .symmetric(
-                                                            horizontal: 4.0),
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10.0),
-                                                            image: DecorationImage(
-                                                                image: AssetImage(
-                                                                    'assets/imgs/2.png'),
-                                                                fit: BoxFit
-                                                                    .cover)),
-                                                      ))
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 5.0,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Flexible(
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.location_on,
-                                                color: Colors.black45,
-                                                size: 16.0,
-                                              ),
-                                              const SizedBox(
-                                                width: 5.0,
-                                              ),
-                                              Flexible(
-                                                  child: FittedBox(
-                                                      child: Text(
-                                                'Walter street, Wallington, New York.',
-                                                style: getCustomFont(
-                                                    size: 13.0,
-                                                    color: Colors.black45,
-                                                    weight: FontWeight.w500),
-                                              ))),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 15.0,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.call,
-                                              color: BLUECOLOR,
-                                              size: 16.0,
-                                            ),
-                                            const SizedBox(
-                                              width: 5.0,
-                                            ),
-                                            Text(
-                                              'Call Now',
-                                              style: getCustomFont(
-                                                  size: 12.0,
-                                                  color: Colors.black45,
-                                                  weight: FontWeight.w400),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )),
+                        itemBuilder: (ctx, i) => hospitalItem(context)),
                     const SizedBox(
                       height: 85.0,
                     ),

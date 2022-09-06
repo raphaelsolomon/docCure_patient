@@ -7,9 +7,10 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 
 dialogMessage(BuildContext context, widget, {barrierDismiss = true}) {
-  showDialog(context: context,
-  barrierDismissible: barrierDismiss,
-   builder: (BuildContext context) => widget);
+  showDialog(
+      context: context,
+      barrierDismissible: barrierDismiss,
+      builder: (BuildContext context) => widget);
 }
 
 Widget language(BuildContext context) {
@@ -37,9 +38,9 @@ Widget language(BuildContext context) {
                 color: BLUECOLOR,
                 child: Center(
                   child: Text(
-                        'Choose Language',
-                        style: getCustomFont(size: 20.0, color: Colors.black),
-                      ),
+                    'Choose Language',
+                    style: getCustomFont(size: 20.0, color: Colors.black),
+                  ),
                 ),
               )
             ],
@@ -94,7 +95,7 @@ Widget medicalDetails(BuildContext context) {
                 const SizedBox(
                   height: 20.0,
                 ),
-               getMedialDetailsBox('BMI', ''),
+                getMedialDetailsBox('BMI', ''),
                 const SizedBox(
                   height: 10.0,
                 ),
@@ -133,7 +134,7 @@ Widget subscribe(BuildContext context) {
     alignment: Alignment.center,
     children: <Widget>[
       Container(
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery.of(context).size.width / 1.3,
         margin:
             const EdgeInsets.all(40), // to push the box half way below circle
         decoration: BoxDecoration(
@@ -151,7 +152,7 @@ Widget subscribe(BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.pop(context);
                     },
                     child: Text(
@@ -211,13 +212,15 @@ Widget prescriptionRequire(BuildContext context, {callBack}) {
     children: [
       Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height/ 1.8,
-        margin: const EdgeInsets.all(45), // to push the box half way below circle
+        height: MediaQuery.of(context).size.height / 1.8,
+        margin:
+            const EdgeInsets.all(45), // to push the box half way below circle
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
         ),
-        padding: const EdgeInsets.only(top: 15, left: 20, right: 20), // spacing inside the box
+        padding: const EdgeInsets.only(
+            top: 15, left: 20, right: 20), // spacing inside the box
         child: Material(
           color: Colors.transparent,
           child: Column(
@@ -250,11 +253,17 @@ Widget prescriptionRequire(BuildContext context, {callBack}) {
                 height: 25.0,
               ),
               GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Text('Cancel', style: getCustomFont(size: 13.0, color: BLUECOLOR.withOpacity(.8), weight: FontWeight.bold),)),
-               const SizedBox(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Cancel',
+                    style: getCustomFont(
+                        size: 13.0,
+                        color: BLUECOLOR.withOpacity(.8),
+                        weight: FontWeight.bold),
+                  )),
+              const SizedBox(
                 height: 25.0,
               ),
             ],
@@ -395,7 +404,7 @@ Widget familyPop(BuildContext context) {
                 height: 10.0,
               ),
               Text('Are you sure you want to create a family',
-              textAlign: TextAlign.center,
+                  textAlign: TextAlign.center,
                   style: getCustomFont(
                       size: 16.0,
                       color: Colors.black,
@@ -406,39 +415,39 @@ Widget familyPop(BuildContext context) {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Flexible(
                     child: GestureDetector(
-                      onTap: (){
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                                      decoration: BoxDecoration(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         color: Colors.grey.shade200),
-                                      padding: const EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 8.0),
-                                      child: Text(
+                    child: Text(
                       'Cancel',
                       style: getCustomFont(size: 14.0, color: Colors.black),
-                                      ),
-                                    ),
-                    )),
+                    ),
+                  ),
+                )),
                 Flexible(
                     child: GestureDetector(
-                      onTap: (){
-                        Navigator.pop(context);
-                       showRequestSheet(context, AddFamilyDailog());
-                      },
-                      child: Container(
-                                      decoration: BoxDecoration(
+                  onTap: () {
+                    Navigator.pop(context);
+                    showRequestSheet(context, AddFamilyDailog());
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         color: BLUECOLOR),
-                                      padding: const EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10.0),
-                                      child: Text(
+                    child: Text(
                       'Continue',
                       style: getCustomFont(size: 14.0, color: Colors.white),
-                                      ),
-                                    ),
-                    )),
+                    ),
+                  ),
+                )),
               ]),
               const SizedBox(
                 height: 25.0,
@@ -471,7 +480,7 @@ Widget logoutPop(BuildContext context) {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text('Are you sure you want to logout?',
-              textAlign: TextAlign.center,
+                  textAlign: TextAlign.center,
                   style: getCustomFont(
                       size: 16.0,
                       color: Colors.black,
@@ -481,22 +490,24 @@ Widget logoutPop(BuildContext context) {
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.pop(context);
                   },
                   child: Text(
-                  'No',
-                  style: getCustomFont(size: 14.0, color: Colors.black),
+                    'No',
+                    style: getCustomFont(size: 14.0, color: Colors.black),
                   ),
                 ),
-                const SizedBox(width: 20.0,),
+                const SizedBox(
+                  width: 20.0,
+                ),
                 GestureDetector(
-                  onTap: (){
-                     Get.offAll(() => AuthLogin());
+                  onTap: () {
+                    Get.offAll(() => AuthLogin());
                   },
                   child: Text(
-                  'Yes',
-                  style: getCustomFont(size: 14.0, color: Colors.white),
+                    'Yes',
+                    style: getCustomFont(size: 14.0, color: Colors.white),
                   ),
                 ),
               ]),
@@ -956,13 +967,10 @@ getMedialDetailsBox(text, hint, {ctl}) {
             controller: ctl,
             decoration: InputDecoration(
                 hintText: hint,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 10.0),
-                hintStyle:
-                    getCustomFont(size: 14.0, color: Colors.black45),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
+                hintStyle: getCustomFont(size: 14.0, color: Colors.black45),
                 border: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Colors.grey, width: 1.0),
+                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
                     borderRadius: BorderRadius.circular(8.0))),
           ),
         )
@@ -1010,7 +1018,8 @@ getFamilyFormBox({ctl}) {
                       hintText: 'Email',
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 10.0),
-                      hintStyle: getCustomFont(size: 14.0, color: Colors.black45),
+                      hintStyle:
+                          getCustomFont(size: 14.0, color: Colors.black45),
                       border: OutlineInputBorder(borderSide: BorderSide.none)),
                 ),
               ),

@@ -3,6 +3,7 @@ import 'package:doccure_patient/resuable/custom_nav.dart';
 import 'package:doccure_patient/store/categories_and_sub.dart';
 import 'package:doccure_patient/store/store_dashboard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 
 class StorePage extends StatefulWidget {
@@ -14,11 +15,10 @@ class StorePage extends StatefulWidget {
 }
 
 class _StorePageState extends State<StorePage> {
-  int index = 0;
   String page = 'Overview';
   List<String> headers = [
-    'Overview',
-    'Appointments',
+    'Overview'
+        'Appointments',
     'Prescriptions',
     'Medical Records',
     'Billing'
@@ -26,22 +26,25 @@ class _StorePageState extends State<StorePage> {
 
   @override
   void initState() {
-    index = widget.i;
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      context.read<HomeController>().setStoreIndex(widget.i);
+    });
     super.initState();
   }
 
   Future<bool> onBackPress() async {
-    if(page == 0){
+    if (context.read<HomeController>().storeIndex == 0) {
       context.read<HomeController>().isEstore(false);
       return true;
     }
-    index = 0;
+    context.read<HomeController>().setStoreIndex(0);
     return false;
   }
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
+    var index = context.watch<HomeController>().storeIndex;
     return WillPopScope(
       onWillPop: onBackPress,
       child: Scaffold(

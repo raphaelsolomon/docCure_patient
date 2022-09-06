@@ -23,15 +23,15 @@ class _MyFamilyState extends State<MyFamily> {
             height: MediaQuery.of(context).size.height,
             color: Color(0xFFf6f6f6),
             child: Column(children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 17.0),
+               Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0, vertical: 0.0),
                 width: MediaQuery.of(context).size.width,
-                height: 86.0,
+                height: 89.0,
                 color: BLUECOLOR,
                 child: Column(children: [
                   const SizedBox(
-                    height: 25.0,
+                    height: 50.0,
                   ),
                   Row(
                     children: [

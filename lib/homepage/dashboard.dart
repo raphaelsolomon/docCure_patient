@@ -19,6 +19,7 @@ import 'package:doccure_patient/homepage/find_doctors.dart';
 import 'package:doccure_patient/homepage/home.dart';
 import 'package:doccure_patient/homepage/invoice.dart';
 import 'package:doccure_patient/homepage/myfamily.dart';
+import 'package:doccure_patient/homepage/new_home_page.dart';
 import 'package:doccure_patient/homepage/patient_profile.dart';
 import 'package:doccure_patient/homepage/reminder.dart';
 import 'package:doccure_patient/homepage/search_doctor.dart';
@@ -83,7 +84,7 @@ class _DashBoardState extends State<DashBoard> {
                 body: Stack(
                   children: [
                     page == 0
-                        ? FindDoctorsPage(scaffold)
+                        ? AllHomePage()
                         : page == 10
                             ? HomePage(scaffold)
                             : page == 12 //no bottom nav

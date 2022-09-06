@@ -639,19 +639,19 @@ Widget getCardForm(hint, {ctl}) {
 
   Widget firstScroll() => Container(
         width: 150,
-        height: 200,
+        height: 190,
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.only(right: 10.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          color: Colors.white,
+          color: Colors.amber
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'OTC\nMEDICINES',
-              style: getCustomFont(size: 15.0, color: Colors.white),
+              style: getCustomFont(size: 15.0, color: Colors.white, weight: FontWeight.bold),
             )
           ],
         ),
@@ -664,15 +664,12 @@ Widget getCardForm(hint, {ctl}) {
         margin: const EdgeInsets.only(right: 10.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          color: Colors.white,
+          color: Colors.amber,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'OTC\nMEDICINES',
-              style: getCustomFont(size: 15.0, color: Colors.white),
-            )
+           
           ],
         ),
       );
@@ -688,7 +685,7 @@ Widget getCardForm(hint, {ctl}) {
               width: 50.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
-                color: Colors.white,
+                image: DecorationImage(image: AssetImage('assets/imgs/1.png'), fit: BoxFit.cover)
               ),
             ),
             const SizedBox(

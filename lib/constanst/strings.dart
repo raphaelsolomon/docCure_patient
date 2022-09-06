@@ -269,6 +269,12 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         isOpen: false,
         index: 1),
     NavDrawerItem(
+        title: 'My Medical Records',
+        icon: Icons.folder,
+        children: [],
+        isOpen: false,
+        index: -10),
+    NavDrawerItem(
         title: 'E-store',
         icon: FontAwesome5.store,
         children: [],
@@ -304,12 +310,6 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         children: [],
         isOpen: false,
         index: 5),
-    NavDrawerItem(
-        title: 'My Medical Records',
-        icon: Icons.folder,
-        children: [],
-        isOpen: false,
-        index: -10),
     // NavDrawerItem(
     //     title: 'My Prescription',
     //     icon: Icons.family_restroom,

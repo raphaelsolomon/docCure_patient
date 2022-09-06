@@ -3,6 +3,13 @@ import 'package:flutter/material.dart';
 class HomeController with ChangeNotifier {
   List<int> index = [0];
   bool isEstoreClicked = false;
+  int storeIndex = 0;
+
+
+  setStoreIndex(i){
+    this.storeIndex = i;
+    notifyListeners();
+  }
 
   setPage(value) {
     this.index.add(value);
