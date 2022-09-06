@@ -289,6 +289,23 @@ class _FilterPageState extends State<FilterPage> {
                         : widget.filterType == 'Hospital/Clinic'
                             ? filterHospitalType()
                             : Container(),
+                            const SizedBox(
+                  height: 20.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Text(
+                    'Select Doctor Services',
+                    style: getCustomFont(
+                        size: 15.0,
+                        color: Colors.black,
+                        weight: FontWeight.w500),
+                  ),
+                ),
+                const SizedBox(
+                  height: 9.0,
+                ),
+                getDropDownAssurance(['N/A', 'N/A'], 'N/A'),
                 const SizedBox(
                   height: 20.0,
                 ),
