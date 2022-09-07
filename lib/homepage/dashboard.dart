@@ -15,6 +15,7 @@ import 'package:doccure_patient/company/support.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/homepage/doctor_profile.dart';
+import 'package:doccure_patient/homepage/find_doctors.dart';
 import 'package:doccure_patient/homepage/home.dart';
 import 'package:doccure_patient/homepage/invoice.dart';
 import 'package:doccure_patient/homepage/myfamily.dart';
@@ -125,7 +126,7 @@ class _DashBoardState extends State<DashBoard> {
                                                                                                             ? ProfileSettings(scaffold)
                                                                                                             : page == -14
                                                                                                                 ? InvoiceReceipt(scaffold)
-                                                                                                                : Container(
+                                                                                                                : page == -16? FindDoctorsPage(scaffold) : Container(
                                                                                                                     child: Center(
                                                                                                                       child: Text(
                                                                                                                         'Development Mode..',

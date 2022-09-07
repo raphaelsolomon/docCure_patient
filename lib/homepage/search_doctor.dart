@@ -26,7 +26,7 @@ class _SearchDoctorState extends State<SearchDoctor> {
     'Surgery/transplant'
   ];
 
-  String selected = 'Specialization';
+  String selected = '';
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +148,7 @@ class _SearchDoctorState extends State<SearchDoctor> {
                         ),
                         Text('16525 matches found for :',
                             style: getCustomFont(
-                              size: 12.0,
+                              size: 12.5,
                               color: Colors.black45,
                             )),
                         Text('Dental specialist In Bangalore',

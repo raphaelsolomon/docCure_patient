@@ -13,11 +13,11 @@ class SocialMedia extends StatefulWidget {
 
 class _SocialMediaState extends State<SocialMedia> {
   List socials = [
-    {'title': 'Facebook', 'image': 'assets/imgs/special/facebook.png'},
-    {'title': 'Twitter', 'image': 'assets/imgs/special/twitter.png'},
-    {'title': 'Google Plus', 'image': 'assets/imgs/special/google-plus.png'},
-    {'title': 'LinkedIn', 'image': 'assets/imgs/special/linkedin.png'},
-    {'title': 'Instagram', 'image': 'assets/imgs/special/instagram.png'}
+    {'title': 'Facebook', 'image': 'assets/imgs/facebook.png'},
+    {'title': 'Twitter', 'image': 'assets/imgs/twitter.png'},
+    {'title': 'Google Plus', 'image': 'assets/imgs/google-plus.png'},
+    {'title': 'LinkedIn', 'image': 'assets/imgs/linkedin.png'},
+    {'title': 'Instagram', 'image': 'assets/imgs/instagram.png'}
   ];
 
   @override
@@ -29,13 +29,13 @@ class _SocialMediaState extends State<SocialMedia> {
         child: Column(children: [
           Container(
             padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 16.0),
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
             width: MediaQuery.of(context).size.width,
             height: 86.0,
             color: BLUECOLOR,
             child: Column(children: [
               const SizedBox(
-                height: 25.0,
+                height: 50.0,
               ),
               Row(
                 children: [
@@ -78,7 +78,7 @@ class _SocialMediaState extends State<SocialMedia> {
                   itemBuilder: (ctx, i) => Container(
                         decoration: BoxDecoration(
                             boxShadow: SHADOW,
-                            borderRadius: BorderRadius.circular(15.0),
+                            borderRadius: BorderRadius.circular(13.0),
                             color: Colors.white),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10.0, vertical: 10.0),
@@ -92,7 +92,7 @@ class _SocialMediaState extends State<SocialMedia> {
                                 CircleAvatar(
                                   radius: 25.0,
                                   backgroundImage:
-                                      AssetImage('${socials[i]['image']}'),
+                                      AssetImage(socials[i]['image']),
                                 ),
                                 const SizedBox(
                                   width: 10.0,
@@ -107,6 +107,7 @@ class _SocialMediaState extends State<SocialMedia> {
                             Icon(
                               Icons.arrow_forward_ios,
                               color: Colors.black,
+                              size: 19.0,
                             )
                           ],
                         ),

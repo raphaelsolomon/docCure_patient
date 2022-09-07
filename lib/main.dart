@@ -1,6 +1,6 @@
 import 'package:doccure_patient/auth/login.dart';
+import 'package:doccure_patient/auth/onboarding.dart';
 import 'package:doccure_patient/constanst/strings.dart';
-import 'package:doccure_patient/homepage/dashboard.dart';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.blue, 
               primaryColor: Colors.black54),
         home: box.get('first') == null
-            ? const DashBoard()
+            ? const OnBoardingScreen()
             : const AuthLogin(),
       ),
     );

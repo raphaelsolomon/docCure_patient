@@ -47,12 +47,12 @@ class _CustomNavBarState extends State<CustomNavBar> {
               }
             }, counter.last == 0 && !readExec.isEstoreClicked),
             getNavItems(FontAwesome5.user_nurse, 'Doctors', () {
-              readExec.setPage(-3);
+              readExec.setPage(-16);
               if (readExec.isEstoreClicked) {
                 readExec.isEstore(false);
                 Navigator.pop(context);
               }
-            }, counter.last == -3 && !readExec.isEstoreClicked),
+            }, counter.last == -16 && !readExec.isEstoreClicked),
             getNavItems(Icons.store, 'E-Stores', () {
               if (readExec.isEstoreClicked) {
                 readExec.setStoreIndex(0);

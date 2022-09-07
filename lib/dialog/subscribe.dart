@@ -3,6 +3,7 @@ import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/dialog/add_family.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 
@@ -57,7 +58,8 @@ Widget moreNavBar(BuildContext context) {
     children: <Widget>[
       Container(
         width: MediaQuery.of(context).size.width,
-        margin:const EdgeInsets.all(40), // to push the box half way below circle
+        margin:
+            const EdgeInsets.all(40), // to push the box half way below circle
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
@@ -68,17 +70,35 @@ Widget moreNavBar(BuildContext context) {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(children: [
-                Icon(Icons.local_pharmacy_outlined, size: 20.0, color: Colors.black),
-                SizedBox(width: 10.0,),
-                Text('Pharmacy', style: getCustomFont(size: 15.0, color: Colors.black),)
-              ],),
-              const SizedBox(height: 20.0,),
-               Row(children: [
-                Icon(Icons.local_pharmacy_outlined, size: 20.0, color: Colors.black),
-                SizedBox(width: 10.0,),
-                Text('Pharmacy', style: getCustomFont(size: 15.0, color: Colors.black),)
-              ],),
+              Row(
+                children: [
+                  Icon(Icons.local_pharmacy_outlined,
+                      size: 20.0, color: Colors.black),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(
+                    'Pharmacy',
+                    style: getCustomFont(size: 15.0, color: Colors.black),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              Row(
+                children: [
+                  Icon(Icons.local_pharmacy_outlined,
+                      size: 20.0, color: Colors.black),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(
+                    'Pharmacy',
+                    style: getCustomFont(size: 15.0, color: Colors.black),
+                  )
+                ],
+              ),
             ],
           ),
         ),
@@ -189,13 +209,14 @@ Widget subscribe(BuildContext context) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  GestureDetector(
+                   GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Text(
-                      'x',
-                      style: getCustomFont(size: 20.0, color: Colors.black),
+                    child: Icon(
+                      Icons.cancel_outlined,
+                      size: 19.0,
+                      color: Colors.black,
                     ),
                   )
                 ],
@@ -235,6 +256,92 @@ Widget subscribe(BuildContext context) {
               getButton(context, () {}, 'Subscribe Now'),
               const SizedBox(
                 height: 25.0,
+              ),
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget walletTop(BuildContext context) {
+  return Stack(
+    alignment: Alignment.center,
+    children: <Widget>[
+      Container(
+        width: MediaQuery.of(context).size.width / 1.3,
+        margin:
+            const EdgeInsets.all(40), // to push the box half way below circle
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        padding: const EdgeInsets.only(
+            top: 15, left: 20, right: 20), // spacing inside the box
+        child: Material(
+          color: Colors.transparent,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'TOP-UP',
+                    style: getCustomFont(size: 14.0, color: Colors.black38),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.cancel_outlined,
+                      size: 19.0,
+                      color: Colors.black,
+                    ),
+                  )
+                ],
+              ),
+              Divider(),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Text('Amount', style: getCustomFont(size: 13.0, color: Colors.black54),),
+               const SizedBox(
+                height: 5.0,
+              ),
+              getWalletFormBox('Amount', ctl: null),
+               const SizedBox(
+                height: 10.0,
+              ),
+              Text('Select your payment method', style: getCustomFont(size: 13.0, color: Colors.black54),),
+              const SizedBox(
+                height: 5.0,
+              ),
+              getWalletDropDown(['1', '2', '3'], '2'),
+               const SizedBox(
+                height: 20.0,
+              ),
+
+              Row(
+                children: [
+                  Flexible(
+                      child: getButton(context, () {}, 'Cancel',
+                          bgColor: Colors.grey.shade200,
+                          textColor: Colors.black)),
+                  const SizedBox(
+                    width: 20.0,
+                  ),
+                  Flexible(
+                      child: getButton(context, () {}, 'Continue',
+                          bgColor: Colors.grey.shade200,
+                          textColor: Colors.black)),
+                ],
+              ),
+               const SizedBox(
+                height: 20.0,
               ),
             ],
           ),
@@ -983,6 +1090,64 @@ getFormBox(text, hint, unit, {ctl}) {
     ),
   );
 }
+
+getWalletFormBox(hint, {ctl}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 0.0),
+    child: SizedBox(
+          height: 40.0,
+          child: TextField(
+            style: getCustomFont(size: 14.0, color: Colors.black45),
+            maxLines: 1,
+            controller: ctl,
+            decoration: InputDecoration(
+                hintText: hint,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 15.0),
+                hintStyle:
+                    getCustomFont(size: 14.0, color: Colors.black45),
+                border: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Colors.grey, width: 1.0),
+                    borderRadius: BorderRadius.circular(8.0))),
+          ),
+        ),
+  );
+}
+
+getWalletDropDown(List<String>list, text) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 0.0),
+    child: SizedBox(
+          height: 40.0,
+          child: FormBuilderDropdown(
+        name: 'payment',
+        icon: const Icon(
+          Icons.keyboard_arrow_down,
+          color: Colors.black,
+        ),
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 9.9, vertical: 5.0),
+         border: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Colors.grey, width: 1.0),
+                    borderRadius: BorderRadius.circular(8.0))),
+        initialValue: '$text',
+        items: list
+            .map((gender) => DropdownMenuItem(
+                  value: gender,
+                  child: Text(
+                    gender,
+                    style: getCustomFont(size: 13.0, color: Colors.black45),
+                  ),
+                ))
+            .toList(),
+      ),
+        ),
+  );
+}
+
 
 getMedialDetailsBox(text, hint, {ctl}) {
   return Padding(

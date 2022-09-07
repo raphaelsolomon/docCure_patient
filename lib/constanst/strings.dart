@@ -330,7 +330,7 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
           {'index': 6, 'title': 'My Invoices'},
           {'index': -0, 'title': 'Account'},
           {'index': 8, 'title': 'Favourite'},
-          {'index': -0, 'title': 'Reviews'}
+          //{'index': -0, 'title': 'Reviews'}
         ],
         isOpen: false,
         index: -0),
@@ -801,4 +801,11 @@ List<String> HospitalClinic = [
   'Citizen Medical Centre',
   'Dako Dako Medical Centre',
   'El-Dunamis Medical Center'
+];
+
+List<String> doctorServices = [
+  'None',
+  'None',
+  'None',
+  'None'
 ];

@@ -157,12 +157,11 @@ class AllHomePage extends StatelessWidget {
 
        Widget mailAlert(context) => Container(
         width: MediaQuery.of(context).size.width,
-       
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 25.0),
         margin: const EdgeInsets.only(right: 20.0, left: 20.0),
         decoration: BoxDecoration(
             boxShadow: SHADOW,
-            color: Colors.red.withOpacity(.5), borderRadius: BorderRadius.circular(10.0)),
+            color: Colors.red.withOpacity(.3), borderRadius: BorderRadius.circular(10.0)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,

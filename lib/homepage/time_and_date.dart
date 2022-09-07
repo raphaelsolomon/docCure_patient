@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/model/timeing_model.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -491,7 +492,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20.0, vertical: 5.0),
                   decoration: BoxDecoration(
-                      color: Colors.transparent,
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(8.0)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -512,11 +513,16 @@ class _TimeAndDateState extends State<TimeAndDate> {
                           ],
                         ),
                       ),
-                      Text('\$314.50 ',
-                          style: getCustomFont(
-                              color: Colors.black,
-                              size: 15.0,
-                              weight: FontWeight.w700)),
+                      GestureDetector(
+                        onTap: (){
+                          dialogMessage(context, walletTop(context));
+                        },
+                        child: Text('\$314.50 ',
+                            style: getCustomFont(
+                                color: Colors.black,
+                                size: 15.0,
+                                weight: FontWeight.w700)),
+                      ),
                     ],
                   ),
                 ),

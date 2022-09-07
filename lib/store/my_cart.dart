@@ -66,192 +66,195 @@ class _MyCartState extends State<MyCart> {
   }
 
   getPaymentWidget(BuildContext context) {
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
-              width: MediaQuery.of(context).size.width,
-              height: 89.0,
-              color: BLUECOLOR,
-              child: Column(children: [
-                const SizedBox(
-                  height: 50.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            page =0;
-                          });
-                        },
-                        child: Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
-                          size: 20.0,
-                        )),
-                    Text('Payment Method',
-                        style: getCustomFont(size: 18.0, color: Colors.white)),
-                    Icon(
-                      null,
-                      color: Colors.white,
-                    )
-                  ],
-                )
-              ]),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+            width: MediaQuery.of(context).size.width,
+            height: 89.0,
+            color: BLUECOLOR,
+            child: Column(children: [
+              const SizedBox(
+                height: 50.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(
-                    height: 10.0,
+                  GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          page =0;
+                        });
+                      },
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                        size: 20.0,
+                      )),
+                  Text('Payment Method',
+                      style: getCustomFont(size: 18.0, color: Colors.white)),
+                  Icon(
+                    null,
+                    color: Colors.white,
+                  )
+                ],
+              )
+            ]),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 10.0,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 11.0),
+                  decoration: BoxDecoration(
+                      color: BLUECOLOR,
+                      borderRadius: BorderRadius.circular(8.0)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Amount to pay ',
+                          style:
+                              getCustomFont(color: Colors.white, size: 13.0)),
+                      Text('\$31.0 ',
+                          style: getCustomFont(
+                              color: Colors.white,
+                              size: 15.0,
+                              weight: FontWeight.w700)),
+                    ],
                   ),
-                  Container(
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                DottedBorder(
+                  borderType: BorderType.RRect,
+                  radius: Radius.circular(12),
+                  padding: EdgeInsets.all(6),
+                  dashPattern: [8, 4],
+                  strokeCap: StrokeCap.butt,
+                  color: Colors.black,
+                  child: Container(
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 11.0),
+                        horizontal: 20.0, vertical: 5.0),
                     decoration: BoxDecoration(
-                        color: BLUECOLOR,
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(8.0)),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Amount to pay ',
-                            style:
-                                getCustomFont(color: Colors.white, size: 13.0)),
-                        Text('\$31.0 ',
-                            style: getCustomFont(
-                                color: Colors.white,
-                                size: 15.0,
-                                weight: FontWeight.w700)),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  DottedBorder(
-                    borderType: BorderType.RRect,
-                    radius: Radius.circular(12),
-                    padding: EdgeInsets.all(6),
-                    dashPattern: [8, 4],
-                    strokeCap: StrokeCap.butt,
-                    color: Colors.black,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 5.0),
-                      decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(8.0)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: Row(
-                              children: [
-                                Icon(Icons.wallet_giftcard,
-                                    color: Colors.lightBlue),
-                                const SizedBox(
-                                  width: 10.0,
-                                ),
-                                Text('Wallet ',
-                                    style: getCustomFont(
-                                        color: Colors.black,
-                                        size: 16.0,
-                                        weight: FontWeight.w700)),
-                              ],
-                            ),
+                        Flexible(
+                          child: Row(
+                            children: [
+                              Icon(Icons.wallet_giftcard,
+                                  color: Colors.lightBlue),
+                              const SizedBox(
+                                width: 10.0,
+                              ),
+                              Text('Wallet ',
+                                  style: getCustomFont(
+                                      color: Colors.black,
+                                      size: 16.0,
+                                      weight: FontWeight.w700)),
+                            ],
                           ),
-                          Text('\$314.50 ',
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            dialogMessage(context, walletTop(context));
+                          },
+                          child: Text('\$314.50 ',
                               style: getCustomFont(
                                   color: Colors.black,
                                   size: 15.0,
                                   weight: FontWeight.w700)),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Text(
-                    'Cards',
-                    style: getCustomFont(
-                        weight: FontWeight.bold,
-                        size: 20.0,
-                        color: Colors.black45),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  // items(Icons.credit_card, 'Debit Card'),
-                  // Divider(),
-                  items(FontAwesome5.credit_card, 'Credit Card'),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Text(
-                    'Cash',
-                    style: getCustomFont(
-                        weight: FontWeight.bold,
-                        size: 20.0,
-                        color: Colors.black45),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  items(Icons.money, 'Cash on Delivery'),
-                  Divider(),
-                  items(FontAwesome5.cash_register, 'Pay cash on spot'),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Text(
-                    'Bank',
-                    style: getCustomFont(
-                        weight: FontWeight.bold,
-                        size: 20.0,
-                        color: Colors.black45),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  items(Icons.money, 'USSD'),
-                  Divider(),
-                  items(FontAwesome5.cash_register, 'Cheque Payment'),
-                  Divider(),
-                  items(Icons.money, 'Bank Transfer'),
-                  Divider(),
-                  items(FontAwesome5.cash_register, 'Net Banking'),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Text(
-                    'Others',
-                    style: getCustomFont(
-                        weight: FontWeight.bold,
-                        size: 20.0,
-                        color: Colors.black45),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  items(FontAwesome5.amazon_pay, 'Paystack'),
-                  Divider(),
-                  items(FontAwesome5.amazon_pay, 'Razor Pay'),
-                ],
-              ),
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Text(
+                  'Cards',
+                  style: getCustomFont(
+                      weight: FontWeight.bold,
+                      size: 20.0,
+                      color: Colors.black45),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                // items(Icons.credit_card, 'Debit Card'),
+                // Divider(),
+                items(FontAwesome5.credit_card, 'Credit Card'),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Text(
+                  'Cash',
+                  style: getCustomFont(
+                      weight: FontWeight.bold,
+                      size: 20.0,
+                      color: Colors.black45),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                items(Icons.money, 'Cash on Delivery'),
+                Divider(),
+                items(FontAwesome5.cash_register, 'Pay cash on spot'),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Text(
+                  'Bank',
+                  style: getCustomFont(
+                      weight: FontWeight.bold,
+                      size: 20.0,
+                      color: Colors.black45),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                items(Icons.money, 'USSD'),
+                Divider(),
+                items(FontAwesome5.cash_register, 'Cheque Payment'),
+                Divider(),
+                items(Icons.money, 'Bank Transfer'),
+                Divider(),
+                items(FontAwesome5.cash_register, 'Net Banking'),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Text(
+                  'Others',
+                  style: getCustomFont(
+                      weight: FontWeight.bold,
+                      size: 20.0,
+                      color: Colors.black45),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                items(FontAwesome5.amazon_pay, 'Paystack'),
+                Divider(),
+                items(FontAwesome5.amazon_pay, 'Razor Pay'),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -305,7 +305,7 @@ class _FilterPageState extends State<FilterPage> {
                 const SizedBox(
                   height: 9.0,
                 ),
-                getDropDownAssurance(['N/A', 'N/A'], 'N/A'),
+                getDropDownAssurance(['None0', 'None1', 'None2'], 'None0'),
                 const SizedBox(
                   height: 20.0,
                 ),
@@ -546,6 +546,7 @@ class _FilterPageState extends State<FilterPage> {
       );
 
   Widget filterSpecilizationType() => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -563,6 +564,7 @@ class _FilterPageState extends State<FilterPage> {
       );
 
   Widget filterTreatmentType() => Column(
+     crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -580,6 +582,7 @@ class _FilterPageState extends State<FilterPage> {
       );
 
   Widget filterHospitalType() => Column(
+     crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
