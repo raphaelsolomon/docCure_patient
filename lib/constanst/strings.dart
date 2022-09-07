@@ -9,10 +9,23 @@ import 'package:google_fonts/google_fonts.dart';
 
 const String CALL_COLLECTION = "call";
 const String APP_ID = "696c822eb6044bdda1120f3a7ae97fc2";
+const String FIREBASE_WEB_TOKEN = "AAAAqF03j5w:APA91bFWo0NcDfGQSWBlMOXw5S7_PoxTzn8ysxuB2CVVUEJXYujYJxxxw6Yl_qTI4bUgICzdTtx66o1QhKfJAcCd_wsqqrcEyItKJRXhIo5xAsV8mVGrmq07QiBorF-J4_HEIic7aR8W";
 //const String TOKEN = "006ee267e6dae9e4c66bf1946fb905646abIABNQv9e6lg/MtUKvQqYkDmT0aH4d1kc/LnMGrln4Am4xVgUM64AAAAAEACGukDPGADwYgEAAQAXAPBi";
 const String CALL_STATUS_DIALLED = "dialled";
 const String CALL_STATUS_RECEIVED = "received";
 const String CALL_STATUS_MISSED = "missed";
+
+List removeBottom = [12, -5, 9, -12, -6, -7, -9, 8, -8, 4];
+List removeBottom1 = [
+  7,
+  1,
+  5,
+  -1,
+  -4,
+  -2,
+  4,
+  8,
+];
 
 List<User> users = [
   // User(
@@ -803,9 +816,4 @@ List<String> HospitalClinic = [
   'El-Dunamis Medical Center'
 ];
 
-List<String> doctorServices = [
-  'None',
-  'None',
-  'None',
-  'None'
-];
+List<String> doctorServices = ['None', 'None', 'None', 'None'];

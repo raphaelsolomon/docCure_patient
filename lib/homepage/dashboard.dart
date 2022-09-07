@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:agora_rtm/agora_rtm.dart';
 import 'package:doccure_patient/auth/change_password.dart';
 import 'package:doccure_patient/auth/profile_settings.dart';
@@ -31,6 +33,7 @@ import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:doccure_patient/resuable/custom_nav.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -50,12 +53,17 @@ class _DashBoardState extends State<DashBoard> {
   LogController logController = LogController();
   final scaffold = GlobalKey<ScaffoldState>();
   final box = Hive.box<User>(BoxName);
+  late final FirebaseMessaging _messaging;
 
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       dialogMessage(context, subscribe(context));
       createClient();
+      requestAndRegisterNotification();
+      FirebaseMessaging.instance.onTokenRefresh
+          .listen((String token) => print(token));
+      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {});
     });
     super.initState();
   }
@@ -66,11 +74,27 @@ class _DashBoardState extends State<DashBoard> {
     _client!.logout();
   }
 
+  void requestAndRegisterNotification() async {
+    // 2. Instantiate Firebase Messaging
+    _messaging = FirebaseMessaging.instance;
+    String? token = await _messaging.getToken();
+
+    // 3. On iOS, this helps to take the user permissions
+    if (Platform.isIOS) {
+      NotificationSettings settings = await _messaging.requestPermission(
+        alert: true,
+        badge: true,
+        provisional: false,
+        sound: true,
+      );
+    }
+    print(token);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final page = context.watch<HomeController>().getPage;
-    List removeBottom = [12, -5, 9, -12, -6, -7, -9, 8, -8, 4];
-    List removeBottom1 = [7, 1, 5, -1, -4, -2, 4, 8, ];
     return KeyboardVisibilityBuilder(
       builder: (context, isVisible) => WillPopScope(
         onWillPop: () => context.read<HomeController>().onBackPress(),
@@ -78,7 +102,9 @@ class _DashBoardState extends State<DashBoard> {
             user: box.get('details'),
             scaffold: Scaffold(
                 key: scaffold,
-                drawer: !removeBottom.contains(page) ? navDrawer(context, scaffold) : null,
+                drawer: !removeBottom.contains(page)
+                    ? navDrawer(context, scaffold)
+                    : null,
                 backgroundColor: Colors.white,
                 body: Stack(
                   children: [
@@ -91,42 +117,51 @@ class _DashBoardState extends State<DashBoard> {
                                 : page == 1 //no bottom nav
                                     ? VitalAndTracks(scaffold)
                                     : page == 5
-                                          ? ChatListScreen(scaffold, logController, _client)
-                                          : page == 6
-                                                ? MyInvoicePage(scaffold)
-                                                : page == 7 //no bottom nav
-                                                    ? MyFamily()
-                                                    : page == 8 //no bottom nav
-                                                        ? MyReminder()
-                                                        : page == 9 //no bottom nav
-                                                            ? MyReferrals()
-                                                            : page == -4 //no bottom nav
-                                                                ? DoctorProfile(scaffold)
-                                                                : page == -5 //no bottom nav
-                                                                    ? NotificationSettingsPage()
-                                                                    : page == -6 //no bottom nav
-                                                                        ? RateUS()
-                                                                        : page == -7 //no bottom nav
-                                                                            ? ShareApp()
-                                                                            : page == -8 //no bottom nav
-                                                                                ? AuthChangePass()
-                                                                                : page == -9 //no bottom nav
-                                                                                    ? SupportPage()
-                                                                                    : page == -10
-                                                                                        ? MyProfile(scaffold)
-                                                                                        : page == -11
-                                                                                            ? Prescriptions(scaffold)
-                                                                                            : page == -12 //no bottom nav
-                                                                                                ? MyOffer()
-                                                                                                : page == -3
-                                                                                                    ? SearchDoctor(scaffold)
-                                                                                                    : page == -1 //no bottom nav
-                                                                                                        ? TimeAndDate(scaffold)
-                                                                                                        : page == -2 //no bottom nav
-                                                                                                            ? ProfileSettings(scaffold)
-                                                                                                            : page == -14
-                                                                                                                ? InvoiceReceipt(scaffold)
-                                                                                                                : page == -16? FindDoctorsPage(scaffold) : Container(
+                                        ? ChatListScreen(
+                                            scaffold, logController, _client)
+                                        : page == 6
+                                            ? MyInvoicePage(scaffold)
+                                            : page == 7 //no bottom nav
+                                                ? MyFamily()
+                                                : page == 8 //no bottom nav
+                                                    ? MyReminder()
+                                                    : page == 9 //no bottom nav
+                                                        ? MyReferrals()
+                                                        : page ==
+                                                                -4 //no bottom nav
+                                                            ? DoctorProfile(
+                                                                scaffold)
+                                                            : page ==
+                                                                    5 //no bottom nav
+                                                                ? NotificationSettingsPage()
+                                                                : page ==
+                                                                        -6 //no bottom nav
+                                                                    ? RateUS()
+                                                                    : page ==
+                                                                            -7 //no bottom nav
+                                                                        ? ShareApp()
+                                                                        : page ==
+                                                                                -8 //no bottom nav
+                                                                            ? AuthChangePass()
+                                                                            : page == -9 //no bottom nav
+                                                                                ? SupportPage()
+                                                                                : page == -10
+                                                                                    ? MyProfile(scaffold)
+                                                                                    : page == -11
+                                                                                        ? Prescriptions(scaffold)
+                                                                                        : page == -12 //no bottom nav
+                                                                                            ? MyOffer()
+                                                                                            : page == -3
+                                                                                                ? SearchDoctor(scaffold)
+                                                                                                : page == -1 //no bottom nav
+                                                                                                    ? TimeAndDate(scaffold)
+                                                                                                    : page == -2 //no bottom nav
+                                                                                                        ? ProfileSettings(scaffold)
+                                                                                                        : page == -14
+                                                                                                            ? InvoiceReceipt(scaffold)
+                                                                                                            : page == -16
+                                                                                                                ? FindDoctorsPage(scaffold)
+                                                                                                                : Container(
                                                                                                                     child: Center(
                                                                                                                       child: Text(
                                                                                                                         'Development Mode..',
@@ -134,10 +169,15 @@ class _DashBoardState extends State<DashBoard> {
                                                                                                                       ),
                                                                                                                     ),
                                                                                                                   ),
-                    !isVisible && (!removeBottom.contains(page) && !removeBottom1.contains(page))
+                    !isVisible &&
+                            (!removeBottom.contains(page) &&
+                                !removeBottom1.contains(page))
                         ? Align(
                             alignment: Alignment.bottomCenter,
-                            child: CustomNavBar(context, pageIndex: 0,))
+                            child: CustomNavBar(
+                              context,
+                              pageIndex: 0,
+                            ))
                         : SizedBox()
                   ],
                 ))),

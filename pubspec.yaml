@@ -51,6 +51,8 @@ dependencies:
   font_awesome_flutter: ^10.1.0
   get: ^4.6.5
   intl:
+  wakelock: ^0.5.6
+  flutter_ringtone_player: ^3.0.0
   flutter_keyboard_visibility: ^5.2.0
   fluttericon: ^2.0.0
   flutter_svg: ^1.1.3
@@ -68,6 +70,9 @@ dependencies:
     sdk: flutter
   shared_preferences: ^2.0.15
   google_maps_flutter: ^2.2.0
+  firebase_messaging: ^13.0.0
+  date_picker_timeline: ^1.2.3
+  file_picker: ^5.0.1
 
 dev_dependencies:
   build_runner:

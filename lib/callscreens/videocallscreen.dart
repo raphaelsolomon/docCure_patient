@@ -7,6 +7,7 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtclocalview;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtcremoteview;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doccure_patient/callscreens/time_view.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/model/call.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
@@ -15,6 +16,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
+import 'package:wakelock/wakelock.dart';
 
 class VideoCallScreen extends StatefulWidget {
   final Call call;
@@ -34,15 +36,19 @@ class VideoCallScreenState extends State<VideoCallScreen> {
   UserProvider? userProvider;
   StreamSubscription? callStreamSubscription;
   late RtcEngine _engine;
-
+  final GlobalKey<TimerViewState> _timerKey = GlobalKey();
   static final _users = <int>[];
   final _infoStrings = <String>[];
   bool muted = false;
+  bool _mutedVideo = false;
   int? remoteID;
+  bool _reConnectingRemoteView = false;
+  bool _isFront = false;
 
   @override
   void initState() {
     super.initState();
+    Wakelock.enable(); // Turn on wakelock feature till call is running
     addPostFrameCallback();
     initializeAgora();
   }
@@ -60,6 +66,10 @@ class VideoCallScreenState extends State<VideoCallScreen> {
 
     await _initRtcEngine();
     await _engine.enableWebSdkInteroperability(true);
+    var configuration = VideoEncoderConfiguration();
+    configuration.dimensions = VideoDimensions(width: 1920, height: 1080);
+    configuration.orientationMode = VideoOutputOrientationMode.Adaptative;
+    await _engine.setVideoEncoderConfiguration(configuration);
     // VideoEncoderConfiguration config = VideoEncoderConfiguration();
     // config.dimensions = const VideoDimensions(width: 1800, height: 1800);
     // config.frameRate = VideoFrameRate.Fps15;
@@ -73,13 +83,13 @@ class VideoCallScreenState extends State<VideoCallScreen> {
   addPostFrameCallback() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       userProvider = Provider.of<UserProvider>(context, listen: false);
-
       callStreamSubscription = callMethods
           .callStream(uid: userProvider!.getUser.uid!)
           .listen((DocumentSnapshot ds) {
         // defining the logic
         switch (ds.data()) {
           case null:
+            // snapshot is null which means that call is hanged and documents are deleted
             Navigator.pop(context);
             break;
 
@@ -124,11 +134,16 @@ class VideoCallScreenState extends State<VideoCallScreen> {
         final info = 'onRejoinChannelSuccess: $string';
         _infoStrings.add(info);
       });
-    }, userOffline: (int a, b) {
+    }, userOffline: (uid, elapsed) async {
+      if (elapsed == UserOfflineReason.Dropped) {
+        Wakelock.disable();
+      }
       callMethods.endCall(call: widget.call);
       setState(() {
-        final info = 'onUserOffline: a: ${a.toString()}, b: ${b.toString()}';
+        final info = 'onUserOffline: a: ${uid}, b: ${elapsed}';
         _infoStrings.add(info);
+        remoteID = null;
+        _timerKey.currentState?.cancelTimer();
       });
     }, localUserRegistered: (int i, String s) {
       setState(() {
@@ -150,6 +165,26 @@ class VideoCallScreenState extends State<VideoCallScreen> {
         final info = 'firstRemoteVideo: $uid ${width}x $height';
         _infoStrings.add(info);
       });
+    }, remoteVideoStats: (remoteVideoStats) {
+      if (remoteVideoStats.receivedBitrate == 0) {
+        setState(() {
+          _reConnectingRemoteView = true;
+        });
+      } else {
+        setState(() {
+          _reConnectingRemoteView = false;
+        });
+      }
+    }, connectionStateChanged: (type, reason) async {
+      if (type == ConnectionStateType.Connected) {
+        setState(() {
+          _reConnectingRemoteView = false;
+        });
+      } else if (type == ConnectionStateType.Reconnecting) {
+        setState(() {
+          _reConnectingRemoteView = true;
+        });
+      }
     }));
   }
 
@@ -252,6 +287,18 @@ class VideoCallScreenState extends State<VideoCallScreen> {
               ),
             ),
             _expandedVideoRow([views[1]]),
+            _reConnectingRemoteView
+                ? Container(
+                    color: Colors.black.withAlpha(200),
+                    child: Center(
+                        child: Text(
+                      "Reconnecting",
+                      style: getCustomFont(
+                          color: Colors.white,
+                          size: 15.0,
+                          weight: FontWeight.w500),
+                    )))
+                : SizedBox()
           ],
         );
       case 3:
@@ -280,8 +327,17 @@ class VideoCallScreenState extends State<VideoCallScreen> {
     _engine.muteLocalAudioStream(muted);
   }
 
-  void _onSwitchCamera() {
-    _engine.switchCamera();
+  // void _onToggleMuteVideo() {
+  //   setState(() {
+  //     _mutedVideo = !_mutedVideo;
+  //   });
+  //   _engine.muteLocalVideoStream(_mutedVideo);
+  // }
+
+  void _onSwitchCamera() async {
+    await _engine.switchCamera().then((value) => setState(() {
+      _isFront = !_isFront;
+    })).catchError((err) {});
   }
 
   /// Toolbar layout
@@ -343,19 +399,36 @@ class VideoCallScreenState extends State<VideoCallScreen> {
     _engine.leaveChannel();
     _engine.destroy();
     callStreamSubscription!.cancel();
+    Wakelock.disable(); // Turn off wakelock feature after call end
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          _viewRows(),
-          _toolbar(),
-        ],
+    return WillPopScope(
+      onWillPop: () => _onBackPressed(context),
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Stack(
+          children: [
+            Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 40.0),
+                  child: TimerView(
+                    () {},
+                    key: _timerKey,
+                  ),
+                )),
+            _viewRows(),
+            _toolbar(),
+          ],
+        ),
       ),
     );
+  }
+
+  Future<bool> _onBackPressed(BuildContext context) async {
+    return await callMethods.endCall(call: widget.call);
   }
 }

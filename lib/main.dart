@@ -5,20 +5,38 @@ import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:phone_form_field/l10n/generated/phone_field_localization.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print('A bg message just showed up : ${message.messageId}');
+  print('A bg message just showed up : ${message.messageType}');
+  print('A bg message just showed up : ${message.data}');
+}
+
+//key ID W3GQWWTG35
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(alert: true, badge: true, sound: true);
+  await [Permission.microphone, Permission.camera].request();
   ErrorWidget.builder = ((details) => Material(
         child: Container(
           color: Colors.green,
@@ -61,7 +79,8 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
-          PhoneFieldLocalization.delegate],
+          PhoneFieldLocalization.delegate
+        ],
         locale: Locale('en', ''),
         supportedLocales: const [
           Locale('en', ''),
@@ -70,11 +89,10 @@ class MyApp extends StatelessWidget {
         title: 'DocCure Patient',
         defaultTransition: Transition.zoom,
         debugShowCheckedModeBanner: true,
-        theme:
-            ThemeData(
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-              primarySwatch: Colors.blue, 
-              primaryColor: Colors.black54),
+        theme: ThemeData(
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+            primarySwatch: Colors.blue,
+            primaryColor: Colors.black54),
         home: box.get('first') == null
             ? const OnBoardingScreen()
             : const AuthLogin(),
