@@ -30,21 +30,23 @@ class AllHomePage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(
-                  'Welcome, Mr. John Doe',
-                  style: getCustomFont(
-                      size: 26.0, color: Colors.black, weight: FontWeight.w500),
+                child: FittedBox(
+                  child: Text(
+                    'Welcome, Mr. John Doe',
+                    style: getCustomFont(
+                        size: 26.0, color: Colors.black, weight: FontWeight.w500),
+                  ),
                 ),
               ),
               const SizedBox(
-                height: 6.0,
+                height: 3.0,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
                   'What would you like to do today?',
                   style: getCustomFont(
-                      size: 15.0, color: Colors.black, weight: FontWeight.w400),
+                      size: 13.0, color: Colors.black, weight: FontWeight.w400),
                 ),
               ),
                const SizedBox(
@@ -157,25 +159,27 @@ class AllHomePage extends StatelessWidget {
 
        Widget mailAlert(context) => Container(
         width: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 25.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 14.0),
         margin: const EdgeInsets.only(right: 20.0, left: 20.0),
         decoration: BoxDecoration(
-            boxShadow: SHADOW,
-            color: Colors.red.withOpacity(.3), borderRadius: BorderRadius.circular(10.0)),
+            color: Colors.red.withOpacity(.2), borderRadius: BorderRadius.circular(10.0)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Image.asset('assets/imgs/message.png', width: 50.0, height: 50.0, fit: BoxFit.contain),
+            const SizedBox(width: 15.0,),
             Flexible(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                 Text('E-mail Verification Pending', style: getCustomFont(size: 18.0, color: Colors.black, weight: FontWeight.bold),),
-                 const SizedBox(height: 5.0),
-                 Text('verify your email to link your account', style: getCustomFont(size: 14.0, color: Colors.black54, weight: FontWeight.w400),),
+                 FittedBox(child: Text('E-mail Verification Pending', style: getCustomFont(size: 18.0, color: Colors.black, weight: FontWeight.bold),)),
+                 const SizedBox(height: 1.0),
+                 FittedBox(child: Text('verify your email to link your account', style: getCustomFont(size: 14.0, color: Colors.black54, weight: FontWeight.w400),)),
                 ],
               ),
             ),
+             const SizedBox(width: 30.0,),
             Icon(Icons.warning, color: Colors.red, size: 19.0,)
           ],
         ),

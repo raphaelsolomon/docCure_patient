@@ -1,4 +1,4 @@
-package com.gettheskydoctors.doccurePatient
+package com.gettheskydoctors.patient
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -73,6 +73,7 @@ dependencies:
   firebase_messaging: ^13.0.0
   date_picker_timeline: ^1.2.3
   file_picker: ^5.0.1
+  flutter_local_notifications: ^9.9.1
 
 dev_dependencies:
   build_runner:

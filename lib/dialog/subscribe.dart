@@ -1,9 +1,12 @@
 import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/dialog/add_family.dart';
+import 'package:doccure_patient/main.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 
@@ -1394,4 +1397,24 @@ showRequestSheet(BuildContext c, Widget widget, {onClose}) {
       builder: (BuildContext context) {
         return widget;
       }).whenComplete(() => onClose == null ? null : onClose());
+}
+
+void showFlutterNotification(RemoteMessage message, flutterLocalNotificationsPlugin) {
+  RemoteNotification? notification = message.notification;
+  AndroidNotification? android = message.notification?.android;
+  if (notification != null && android != null) {
+    flutterLocalNotificationsPlugin.show(
+      notification.hashCode,
+      notification.title,
+      notification.body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          channel.id,
+          channel.name,
+          channelDescription: channel.description,
+          icon: 'launch_background',
+        ),
+      ),
+    );
+  }
 }

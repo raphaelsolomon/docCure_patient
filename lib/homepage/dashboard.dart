@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:agora_rtm/agora_rtm.dart';
 import 'package:doccure_patient/auth/change_password.dart';
@@ -53,17 +52,21 @@ class _DashBoardState extends State<DashBoard> {
   LogController logController = LogController();
   final scaffold = GlobalKey<ScaffoldState>();
   final box = Hive.box<User>(BoxName);
-  late final FirebaseMessaging _messaging;
 
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
+      FirebaseMessaging.onMessage.listen((RemoteMessage msg) {
+        print('Got a message whilst in the foreground!');
+        print('Message data: ${msg.data}');
+
+        if (msg.notification != null) {
+          print('Message also contained a notification: ${msg.notification}');
+        }
+      });
+      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {});
       dialogMessage(context, subscribe(context));
       createClient();
-      requestAndRegisterNotification();
-      FirebaseMessaging.instance.onTokenRefresh
-          .listen((String token) => print(token));
-      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {});
     });
     super.initState();
   }
@@ -72,24 +75,6 @@ class _DashBoardState extends State<DashBoard> {
   void dispose() {
     super.dispose();
     _client!.logout();
-  }
-
-  void requestAndRegisterNotification() async {
-    // 2. Instantiate Firebase Messaging
-    _messaging = FirebaseMessaging.instance;
-    String? token = await _messaging.getToken();
-
-    // 3. On iOS, this helps to take the user permissions
-    if (Platform.isIOS) {
-      NotificationSettings settings = await _messaging.requestPermission(
-        alert: true,
-        badge: true,
-        provisional: false,
-        sound: true,
-      );
-    }
-    print(token);
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {});
   }
 
   @override
@@ -117,8 +102,7 @@ class _DashBoardState extends State<DashBoard> {
                                 : page == 1 //no bottom nav
                                     ? VitalAndTracks(scaffold)
                                     : page == 5
-                                        ? ChatListScreen(
-                                            scaffold, logController, _client)
+                                        ? ChatListScreen(scaffold, logController, _client)
                                         : page == 6
                                             ? MyInvoicePage(scaffold)
                                             : page == 7 //no bottom nav
@@ -127,21 +111,16 @@ class _DashBoardState extends State<DashBoard> {
                                                     ? MyReminder()
                                                     : page == 9 //no bottom nav
                                                         ? MyReferrals()
-                                                        : page ==
-                                                                -4 //no bottom nav
+                                                        : page == -4 //no bottom nav
                                                             ? DoctorProfile(
                                                                 scaffold)
-                                                            : page ==
-                                                                    5 //no bottom nav
+                                                            : page == 5 //no bottom nav
                                                                 ? NotificationSettingsPage()
-                                                                : page ==
-                                                                        -6 //no bottom nav
+                                                                : page == -6 //no bottom nav
                                                                     ? RateUS()
-                                                                    : page ==
-                                                                            -7 //no bottom nav
+                                                                    : page == -7 //no bottom nav
                                                                         ? ShareApp()
-                                                                        : page ==
-                                                                                -8 //no bottom nav
+                                                                        : page == -8 //no bottom nav
                                                                             ? AuthChangePass()
                                                                             : page == -9 //no bottom nav
                                                                                 ? SupportPage()
