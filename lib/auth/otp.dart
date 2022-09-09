@@ -13,7 +13,8 @@ import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
 
 class AuthOtp extends StatefulWidget {
   final String body;
-  const AuthOtp(this.body, {Key? key}) : super(key: key);
+  bool isLoggedIn = false;
+  AuthOtp(this.body, this.isLoggedIn, {Key? key}) : super(key: key);
 
   @override
   State<AuthOtp> createState() => _AuthOtpState();
@@ -256,6 +257,10 @@ class _AuthOtpState extends State<AuthOtp> {
             context,
             popupMessage.serviceMessage(context, parsed['message'],
                 status: true, cB: () {
+              if (widget.isLoggedIn) {
+                Get.back();
+                return;
+              }
               Get.to(() => AuthLogin());
             }),
             barrierDismiss: false);

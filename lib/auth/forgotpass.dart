@@ -120,7 +120,7 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
               GestureDetector(
                 onTap: () => Get.to(() => AuthOtp(isEmail
                     ? email.text.trim()
-                    : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}')),
+                    : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}', false)),
                 child: Text(
                   'Back to login',
                   style: GoogleFonts.poppins(

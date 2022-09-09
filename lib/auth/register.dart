@@ -308,7 +308,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                 status: true, cB: () {
               Get.to(() => AuthOtp(isEmail
                   ? email.text.trim()
-                  : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}'));
+                  : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}', false));
             }), barrierDismiss: false);
       } else {
         final parsed = jsonDecode(res.body);
