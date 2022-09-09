@@ -1,4 +1,3 @@
-
 import 'package:agora_rtm/agora_rtm.dart';
 import 'package:doccure_patient/auth/change_password.dart';
 import 'package:doccure_patient/auth/profile_settings.dart';
@@ -29,7 +28,6 @@ import 'package:doccure_patient/homepage/vital_and_tracks.dart';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/msg_log.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
-import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:doccure_patient/resuable/custom_nav.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -112,8 +110,7 @@ class _DashBoardState extends State<DashBoard> {
                                                     : page == 9 //no bottom nav
                                                         ? MyReferrals()
                                                         : page == -4 //no bottom nav
-                                                            ? DoctorProfile(
-                                                                scaffold)
+                                                            ? DoctorProfile(scaffold)
                                                             : page == 5 //no bottom nav
                                                                 ? NotificationSettingsPage()
                                                                 : page == -6 //no bottom nav
@@ -166,7 +163,7 @@ class _DashBoardState extends State<DashBoard> {
 
   void createClient() async {
     _client = await AgoraRtmClient.createInstance(APP_ID);
-    context.read<UserProvider>().refreshUser(_client);
+    _client!.login(null, box.get(USERPATH)!.uid!);
     _client!.onMessageReceived = (AgoraRtmMessage message, String peerId) {
       logController.addLog("Private Message from $peerId: ${message.text}");
     };
