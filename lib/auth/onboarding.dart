@@ -1,7 +1,6 @@
 import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/auth/register.dart';
 import 'package:doccure_patient/constanst/strings.dart';
-import 'package:doccure_patient/model/person/user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,7 +15,7 @@ class OnBoardingScreen extends StatefulWidget {
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   PageController? _pageController;
-  final box = Hive.box<User>(BoxName);
+  final box = Hive.box('Initialization');
   int counter = 0;
 
   @override
@@ -107,10 +106,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               GestureDetector(
                                 onTap: () {
                                   if (counter == 4) {
+                                    box.put('isFirst', false);
                                     Get.to(() => AuthLogin());
                                   } else {
                                     counter = counter + 1;
-                                    _pageController!.animateToPage(counter, duration: Duration(seconds: 1), curve: Curves.linearToEaseOut);
+                                    _pageController!.animateToPage(counter,
+                                        duration: Duration(seconds: 1),
+                                        curve: Curves.linearToEaseOut);
                                   }
                                 },
                                 child: Container(
@@ -133,7 +135,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               Visibility(
                                 visible: counter < 4,
                                 child: InkWell(
-                                  onTap: () => Get.to(() => AuthRegister()),
+                                  onTap: () {
+                                    box.put('isFirst', false);
+                                    Get.to(() => AuthRegister());
+                                  },
                                   child: Text(
                                     'Skip for now',
                                     style: GoogleFonts.poppins(

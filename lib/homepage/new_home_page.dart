@@ -1,8 +1,33 @@
+import 'package:doccure_patient/auth/otp.dart';
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/model/person/user.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 
-class AllHomePage extends StatelessWidget {
+class AllHomePage extends StatefulWidget {
   const AllHomePage({super.key});
+
+  @override
+  State<AllHomePage> createState() => _AllHomePageState();
+}
+
+class _AllHomePageState extends State<AllHomePage> {
+  final box = Hive.box<User>(BoxName);
+  User? user;
+  bool isImage = true;
+
+  @override
+  void initState() {
+    user = box.get(USERPATH);
+    isImage = user!.profilePhoto == null ? false : true;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +42,16 @@ class AllHomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 10.0,),
+              const SizedBox(
+                height: 10.0,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: CircleAvatar(
-                  backgroundImage: AssetImage('assets/imgs/2.png'),
+                  backgroundImage: isImage
+                      ? NetworkImage(user!.profilePhoto!)
+                      : NetworkImage(
+                          'https://img.freepik.com/free-vector/flat-hand-drawn-patient-taking-medical-examination-illustration_23-2148859982.jpg?w=2000'),
                   radius: 20.0,
                 ),
               ),
@@ -29,12 +59,18 @@ class AllHomePage extends StatelessWidget {
                 height: 15.0,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.only(left: 20.0, right: 50.0),
                 child: FittedBox(
                   child: Text(
-                    'Welcome, Mr. John Doe',
+                    user!.gender == null
+                        ? 'Welcome, ${user!.name}'
+                        : user!.gender!.toLowerCase() == 'male'
+                            ? 'Welcome, Mr. ${user!.name}'
+                            : 'Welcome, Mrs. ${user!.name}',
                     style: getCustomFont(
-                        size: 26.0, color: Colors.black, weight: FontWeight.w500),
+                        size: 26.0,
+                        color: Colors.black,
+                        weight: FontWeight.w500),
                   ),
                 ),
               ),
@@ -49,17 +85,21 @@ class AllHomePage extends StatelessWidget {
                       size: 13.0, color: Colors.black, weight: FontWeight.w400),
                 ),
               ),
-               const SizedBox(
+              const SizedBox(
                 height: 20.0,
               ),
-              mailAlert(context),
+              user!.verified!
+                  ? const SizedBox()
+                  : GestureDetector(
+                      onTap: () => Get.to(() => AuthOtp(user!.email!)),
+                      child: mailAlert(context)),
               const SizedBox(
                 height: 29.0,
               ),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal:20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(
                     children: [
                       ...List.generate(10, (index) => horizontalItem())
@@ -67,13 +107,13 @@ class AllHomePage extends StatelessWidget {
                   ),
                 ),
               ),
-               const SizedBox(
+              const SizedBox(
                 height: 15.0,
               ),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal:20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(
                     children: [
                       ...List.generate(10, (index) => horizontalItem())
@@ -81,21 +121,24 @@ class AllHomePage extends StatelessWidget {
                   ),
                 ),
               ),
-               const SizedBox(
+              const SizedBox(
                 height: 25.0,
               ),
-               SingleChildScrollView(
+              SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal:20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(
                     children: [
-                      ...List.generate(4, (index) => horizontalSecondItem(context))
+                      ...List.generate(
+                          4, (index) => horizontalSecondItem(context))
                     ],
                   ),
                 ),
-                ),
-                const SizedBox(height: 80.0,)
+              ),
+              const SizedBox(
+                height: 80.0,
+              )
             ],
           ),
         ),
@@ -126,10 +169,10 @@ class AllHomePage extends StatelessWidget {
               style: getCustomFont(
                   size: 15.0, color: Colors.black, weight: FontWeight.w600),
             ),
-             const SizedBox(
+            const SizedBox(
               height: 9.0,
             ),
-             Text(
+            Text(
               'Find hosiptals, pharmacies, laboratories and clinics',
               textAlign: TextAlign.center,
               style: getCustomFont(
@@ -142,45 +185,67 @@ class AllHomePage extends StatelessWidget {
         ),
       );
 
-      
-     Widget horizontalSecondItem(context) => Container(
-        width: MediaQuery.of(context).size.width/1.4,
+  Widget horizontalSecondItem(context) => Container(
+        width: MediaQuery.of(context).size.width / 1.4,
         height: 100.0,
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.only(right: 20.0),
         decoration: BoxDecoration(
-            color: BLUECOLOR.withOpacity(.5), borderRadius: BorderRadius.circular(10.0)),
+            color: BLUECOLOR.withOpacity(.5),
+            borderRadius: BorderRadius.circular(10.0)),
         child: Column(
-          children: [
-           
-          ],
+          children: [],
         ),
       );
 
-       Widget mailAlert(context) => Container(
+  Widget mailAlert(context) => Container(
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 14.0),
         margin: const EdgeInsets.only(right: 20.0, left: 20.0),
         decoration: BoxDecoration(
-            color: Colors.red.withOpacity(.2), borderRadius: BorderRadius.circular(10.0)),
+            color: Colors.red.withOpacity(.2),
+            borderRadius: BorderRadius.circular(10.0)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset('assets/imgs/message.png', width: 50.0, height: 50.0, fit: BoxFit.contain),
-            const SizedBox(width: 15.0,),
+            Image.asset('assets/imgs/message.png',
+                width: 50.0, height: 50.0, fit: BoxFit.contain),
+            const SizedBox(
+              width: 15.0,
+            ),
             Flexible(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                 FittedBox(child: Text('E-mail Verification Pending', style: getCustomFont(size: 18.0, color: Colors.black, weight: FontWeight.bold),)),
-                 const SizedBox(height: 1.0),
-                 FittedBox(child: Text('verify your email to link your account', style: getCustomFont(size: 14.0, color: Colors.black54, weight: FontWeight.w400),)),
+                  FittedBox(
+                      child: Text(
+                    'E-mail Verification Pending',
+                    style: getCustomFont(
+                        size: 18.0,
+                        color: Colors.black,
+                        weight: FontWeight.bold),
+                  )),
+                  const SizedBox(height: 1.0),
+                  FittedBox(
+                      child: Text(
+                    'verify your email to link your account',
+                    style: getCustomFont(
+                        size: 14.0,
+                        color: Colors.black54,
+                        weight: FontWeight.w400),
+                  )),
                 ],
               ),
             ),
-             const SizedBox(width: 30.0,),
-            Icon(Icons.warning, color: Colors.red, size: 19.0,)
+            const SizedBox(
+              width: 30.0,
+            ),
+            Icon(
+              Icons.warning,
+              color: Colors.red,
+              size: 19.0,
+            )
           ],
         ),
       );

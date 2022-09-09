@@ -4,6 +4,7 @@ import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:phone_form_field/phone_form_field.dart';
 
 class AuthForgotPass extends StatefulWidget {
   const AuthForgotPass({Key? key}) : super(key: key);
@@ -14,8 +15,19 @@ class AuthForgotPass extends StatefulWidget {
 
 class _AuthForgotPassState extends State<AuthForgotPass> {
   bool isEmail = true;
+  late PhoneController phoneController;
+  final email = TextEditingController();
+
+  @override
+  void initState() {
+    phoneController = PhoneController(null);
+    super.initState();
+  }
+
   @override
   void dispose() {
+    phoneController.dispose();
+    email.dispose();
     super.dispose();
   }
 
@@ -96,8 +108,8 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
               ),
               isEmail
                   ? getRegisterForm(
-                      ctl: null, obscure: false, hint: 'Email Address')
-                  : getPhoneNumberForm(ctl: null),
+                      ctl: email, obscure: false, hint: 'Email Address')
+                  : getPhoneNumberForm(ctl: phoneController),
               const SizedBox(
                 height: 50.0,
               ),
@@ -106,7 +118,9 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
                 height: 30.0,
               ),
               GestureDetector(
-                onTap: () => Get.to(() => AuthOtp({})),
+                onTap: () => Get.to(() => AuthOtp(isEmail
+                    ? email.text.trim()
+                    : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}')),
                 child: Text(
                   'Back to login',
                   style: GoogleFonts.poppins(
@@ -141,7 +155,7 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
                       child: Text(
                     'with Email Address',
                     style: GoogleFonts.poppins(
-                      fontSize: 12.0,
+                        fontSize: 12.0,
                         color: isEmail ? Colors.white : BLUECOLOR),
                   )),
                 ),
@@ -166,7 +180,7 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
                     'with Mobile Number',
                     maxLines: 1,
                     style: GoogleFonts.poppins(
-                      fontSize: 12.0,
+                        fontSize: 12.0,
                         color: !isEmail ? Colors.white : BLUECOLOR),
                   )),
                 ),

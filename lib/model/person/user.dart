@@ -10,33 +10,68 @@ class User {
   @HiveField(2)
   String? email;
   @HiveField(3)
-  String? username;
+  bool? verified;
   @HiveField(4)
-  String? status;
+  String? phone;
   @HiveField(5)
-  int? state;
+  String? country;
   @HiveField(6)
   String? profilePhoto;
+  @HiveField(7)
+  String? token;
+  @HiveField(8)
+  String? gender;
+  @HiveField(9)
+  String? marital_status;
+  @HiveField(10)
+  String? dob;
+  @HiveField(11)
+  String? weight;
+  @HiveField(12)
+  String? height;
+  @HiveField(13)
+  String? age;
+  @HiveField(14)
+  String? cat;
+  @HiveField(15)
+  String? status;
 
-  User({
-    this.uid,
-    this.name,
-    this.email,
-    this.username,
-    this.status,
-    this.state,
-    this.profilePhoto,
-  });
+  User(
+      {this.uid,
+      this.name,
+      this.email,
+      this.verified,
+      this.phone,
+      this.country,
+      this.profilePhoto,
+      this.token,
+      this.gender,
+      this.marital_status,
+      this.age,
+      this.dob,
+      this.status,
+      this.cat,
+      this.height,
+      this.weight});
 
   Map toMap(User user) {
     var data = <String, dynamic>{};
     data['uid'] = user.uid;
     data['name'] = user.name;
     data['email'] = user.email;
-    data['username'] = user.username;
-    data["status"] = user.status;
-    data["state"] = user.state;
+    data['verified'] = user.verified;
+    data["phone"] = user.phone;
+    data["country"] = user.country;
     data["profile_photo"] = user.profilePhoto;
+    data["token"] = user.token;
+    data["gender"] = user.gender;
+    data["marital_status"] = user.marital_status;
+    data["dob"] = user.dob;
+    data["weight"] = user.weight;
+    data["height"] = user.height;
+    data["age"] = user.age;
+    data["cat"] = user.cat;
+    data["status"] = user.status;
     return data;
   }
 
@@ -45,11 +80,18 @@ class User {
     uid = mapData['uid'];
     name = mapData['name'];
     email = mapData['email'];
-    username = mapData['username'];
-    status = mapData['status'];
-    state = mapData['state'];
+    verified = mapData['verified'];
+    phone = mapData['phone'];
+    country = mapData['country'];
     profilePhoto = mapData['profile_photo'];
+    token = mapData['token'];
+    gender = mapData['gender'];
+    marital_status = mapData['marital_status'];
+    age = mapData['age'];
+    dob = mapData['dob'];
+    status = mapData['status'];
+    cat = mapData['cat'];
+    height = mapData['height'];
+    weight = mapData['weight'];
   }
 }
-
-

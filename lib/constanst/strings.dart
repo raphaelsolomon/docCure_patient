@@ -15,7 +15,7 @@ const String FIREBASE_WEB_TOKEN =
 const String CALL_STATUS_DIALLED = "dialled";
 const String CALL_STATUS_RECEIVED = "received";
 const String CALL_STATUS_MISSED = "missed";
-
+const USERPATH = 'details';
 List removeBottom = [12, -5, 9, -12, -6, -7, -9, 8, -8, 4];
 List removeBottom1 = [
   7,
@@ -42,11 +42,11 @@ List<User> users = [
       email: 'phoenixk545@gmail.com',
       name: 'Uchiha Madara',
       uid: 'phoenixk5weufuhieh',
-      username: 'phoenixk545',
+      verified: true,
       profilePhoto:
           'https://www.whatspaper.com/wp-content/uploads/2021/12/hd-itachi-uchiha-wallpaper-whatspaper-21.jpg',
-      status: 'Online',
-      state: 1),
+      phone: '09067618740',
+      country: 'Nigeria'),
 ];
 
 List firstList = [

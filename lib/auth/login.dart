@@ -5,6 +5,7 @@ import 'package:doccure_patient/auth/forgotpass.dart';
 import 'package:doccure_patient/auth/register.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/homepage/dashboard.dart';
+import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:doccure_patient/services/request.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:http/http.dart' as http;
 import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
@@ -29,6 +31,7 @@ class _AuthLoginState extends State<AuthLogin> {
   late final phoneController;
   final email = TextEditingController();
   final password = TextEditingController();
+  final box = Hive.box<User>(BoxName);
 
   @override
   void initState() {
@@ -134,7 +137,7 @@ class _AuthLoginState extends State<AuthLogin> {
                         child: CircularProgressIndicator(color: BLUECOLOR),
                       ),
                     )
-                  : getButton(context, () => Get.to(() => DashBoard())),
+                  : getButton(context, () => validDate()),
               const SizedBox(
                 height: 26.0,
               ),
@@ -301,9 +304,6 @@ class _AuthLoginState extends State<AuthLogin> {
 
     try {
       final res = await http.post(Uri.parse('${ROOTAPI}/api/user/login'),
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: isEmail
               ? {
                   'email': email.text.trim(),
@@ -316,25 +316,58 @@ class _AuthLoginState extends State<AuthLogin> {
                 });
       if (res.statusCode == 200) {
         final parsed = jsonDecode(res.body);
-        final token = parsed['data']['access_token'];
-        Get.to(() => DashBoard());
+        getUserProfile(
+            parsed['data']['access_token'], parsed['data']['redirect_url']);
       } else {
+        setState(() {
+          isLoading = false;
+        });
         final parsed = jsonDecode(res.body);
         popupMessage.dialogMessage(
             context,
             popupMessage.serviceMessage(context, parsed['message'],
-                status: true));
+                status: false));
       }
     } on SocketException {
+      setState(() {
+        isLoading = false;
+      });
       popupMessage.dialogMessage(
           context,
           popupMessage.serviceMessage(
               context, 'Plase check internect connection',
-              status: true));
-    } finally {
+              status: false));
+    }
+  }
+
+  getUserProfile(token, newURL) async {
+    final res = await http.get(Uri.parse('${ROOTAPI}/api/user/profile'),
+        headers: {'Authorization': 'Bearer ${token}'});
+    if (res.statusCode == 200) {
       setState(() {
-        isLoading = true;
+        isLoading = false;
       });
+      User user = User(
+          uid: '${jsonDecode(res.body)['data']['id']}',
+          name: jsonDecode(res.body)['data']['name'],
+          email: jsonDecode(res.body)['data']['email'],
+          phone: jsonDecode(res.body)['data']['phone'],
+          verified: jsonDecode(res.body)['data']['phone_email_verified'] == '0'
+              ? false
+              : true,
+          country: jsonDecode(res.body)['data']['country_id'],
+          token: 'Bearer ${token}',
+          profilePhoto: jsonDecode(res.body)['data']['profile_image'],
+          gender: jsonDecode(res.body)['data']['gender'],
+          status: jsonDecode(res.body)['data']['status'],
+          dob: jsonDecode(res.body)['data']['dob'],
+          weight: jsonDecode(res.body)['data']['weight'],
+          height: jsonDecode(res.body)['data']['height'],
+          age: jsonDecode(res.body)['data']['age'],
+          marital_status: jsonDecode(res.body)['data']['marital_status'],
+          cat: jsonDecode(res.body)['data']['cat']);
+
+      box.put(USERPATH, user).then((value) => Get.offAll(() => DashBoard()));
     }
   }
 }

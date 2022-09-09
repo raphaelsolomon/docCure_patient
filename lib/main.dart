@@ -2,6 +2,7 @@ import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/auth/onboarding.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/firebase_options.dart';
+import 'package:doccure_patient/homepage/dashboard.dart';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
@@ -27,7 +28,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('A bg message just showed up : ${message.messageId}');
 }
 
-Future<void>setupFlutterNotifications() async {
+Future<void> setupFlutterNotifications() async {
   if (isFlutterLocalNotificationsInitialized) {
     return;
   }
@@ -35,11 +36,13 @@ Future<void>setupFlutterNotifications() async {
   channel = const AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title
-    description: 'This channel is used for important notifications.', // description
+    description:
+        'This channel is used for important notifications.', // description
     importance: Importance.high,
   );
 
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
   /// Create an Android Notification Channel.
   ///
   /// We use this channel in the `AndroidManifest.xml` file to override the
@@ -67,12 +70,12 @@ Future<void> main() async {
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await setupFlutterNotifications();
-  
+
   var directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);
   Hive.registerAdapter(UserAdapter());
   await Hive.openBox<User>(BoxName);
-  
+  await Hive.openBox('Initialization');
   runApp(const MyApp());
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -103,7 +106,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final Box<User> box = Hive.box<User>(BoxName);
+    final box = Hive.box('Initialization');
+    final Box<User> user = Hive.box<User>(BoxName);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
@@ -128,9 +132,11 @@ class MyApp extends StatelessWidget {
             visualDensity: VisualDensity.adaptivePlatformDensity,
             primarySwatch: Colors.blue,
             primaryColor: Colors.black54),
-        home: box.get('first') == null
+        home: box.get('isFirst') == null
             ? const OnBoardingScreen()
-            : const AuthLogin(),
+            : user.get(USERPATH) == null
+                ? const AuthLogin()
+                : DashBoard(),
       ),
     );
   }

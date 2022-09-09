@@ -4,6 +4,7 @@ import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/store/index.dart';
 import 'package:doccure_patient/store/product_lists.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:get/get.dart';
@@ -244,7 +245,7 @@ getButton(context, callBack,
       ),
     );
 
-getOtpForm({ctl, node}) => Container(
+getOtpForm({ctl, node, onChange}) => Container(
       width: 55.0,
       height: 45.0,
       decoration: BoxDecoration(
@@ -253,6 +254,10 @@ getOtpForm({ctl, node}) => Container(
           borderRadius: BorderRadius.circular(4.0)),
       child: TextFormField(
         controller: ctl,
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(1),
+        ],
+        onChanged: (s) => onChange(s),
         textAlign: TextAlign.center,
         keyboardType: TextInputType.numberWithOptions(decimal: false),
         maxLines: 1,

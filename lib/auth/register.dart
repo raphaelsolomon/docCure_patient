@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:doccure_patient/auth/otp.dart';
 import 'package:http/http.dart' as http;
 import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
 import 'package:doccure_patient/auth/login.dart';
@@ -283,9 +284,6 @@ class _AuthRegisterState extends State<AuthRegister> {
 
     try {
       final res = await http.post(Uri.parse('${ROOTAPI}/api/user/register'),
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: isEmail
               ? {
                   'email': email.text.trim(),
@@ -295,7 +293,8 @@ class _AuthRegisterState extends State<AuthRegister> {
                   'country_id': '$country_id'
                 }
               : {
-                  'phone': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+                  'phone':
+                      '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
                   'name': fullname.text.trim(),
                   'category_id': '3',
                   'password': password.text.trim(),
@@ -306,23 +305,27 @@ class _AuthRegisterState extends State<AuthRegister> {
         popupMessage.dialogMessage(
             context,
             popupMessage.serviceMessage(context, parsed['message'],
-                status: true));
+                status: true, cB: () {
+              Get.to(() => AuthOtp(isEmail
+                  ? email.text.trim()
+                  : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}'));
+            }), barrierDismiss: false);
       } else {
         final parsed = jsonDecode(res.body);
         popupMessage.dialogMessage(
             context,
             popupMessage.serviceMessage(context, parsed['message'],
-                status: true));
+                status: false));
       }
     } on SocketException {
       popupMessage.dialogMessage(
           context,
           popupMessage.serviceMessage(
               context, 'Plase check internect connection',
-              status: true));
+              status: false));
     } finally {
       setState(() {
-        isLoading = true;
+        isLoading = false;
       });
     }
   }

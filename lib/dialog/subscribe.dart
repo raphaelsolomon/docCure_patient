@@ -1,5 +1,4 @@
 import 'package:doccure_patient/auth/login.dart';
-import 'package:doccure_patient/auth/otp.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/dialog/add_family.dart';
 import 'package:doccure_patient/main.dart';
@@ -56,12 +55,12 @@ Widget language(BuildContext context) {
   );
 }
 
-Widget serviceMessage(BuildContext context, message, {status = false, body}) {
+Widget serviceMessage(BuildContext context, m, {status = false, cB}) {
   return Stack(
     alignment: Alignment.center,
     children: <Widget>[
       Container(
-        width: MediaQuery.of(context).size.width,
+        width: 400.0,
         margin:
             const EdgeInsets.all(40), // to push the box half way below circle
         decoration: BoxDecoration(
@@ -74,7 +73,10 @@ Widget serviceMessage(BuildContext context, message, {status = false, body}) {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              status
+              const SizedBox(
+                height: 10.0,
+              ),
+              status == true
                   ? Image.asset('assets/imgs/success.png',
                       width: 100.0, height: 100.0, fit: BoxFit.contain)
                   : Icon(
@@ -86,7 +88,8 @@ Widget serviceMessage(BuildContext context, message, {status = false, body}) {
                 height: 20.0,
               ),
               Text(
-                '$message',
+                '$m',
+                textAlign: TextAlign.center,
                 style: getCustomFont(size: 14.0, color: Colors.black),
               ),
               const SizedBox(
@@ -95,7 +98,7 @@ Widget serviceMessage(BuildContext context, message, {status = false, body}) {
               getButton(context, () {
                 if (status == true) {
                   Navigator.pop(context);
-                  Get.to(() => AuthOtp(body));
+                  cB();
                   return;
                 }
                 Navigator.pop(context);
