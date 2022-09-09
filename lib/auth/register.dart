@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
 import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
+import 'package:doccure_patient/services/request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
@@ -19,6 +24,12 @@ class _AuthRegisterState extends State<AuthRegister> {
   late PhoneController phoneController;
   bool isEmail = true;
   String country = 'Nigeria';
+  String country_id = '161';
+  bool isLoading = false;
+  final fullname = TextEditingController();
+  final email = TextEditingController();
+  final password = TextEditingController();
+  final confirmPassword = TextEditingController();
 
   @override
   void initState() {
@@ -26,7 +37,8 @@ class _AuthRegisterState extends State<AuthRegister> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       phoneController.addListener(() => setState(() {
             var i = countryList.indexWhere((element) =>
-                element['code'] == '${phoneController.value!.isoCode.name}');
+                '+${element['code']}' ==
+                '${phoneController.value!.isoCode.name}');
             country = countryList.elementAt(i)['name'];
           }));
     });
@@ -89,7 +101,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                       height: 15.0,
                     ),
                     getRegisterForm(
-                        ctl: null,
+                        ctl: fullname,
                         obscure: false,
                         icon: Icons.person,
                         hint: 'Full Name'),
@@ -98,7 +110,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                     ),
                     isEmail
                         ? getRegisterForm(
-                            ctl: null,
+                            ctl: email,
                             icon: Icons.email_outlined,
                             obscure: false,
                             hint: 'Email Address')
@@ -107,14 +119,14 @@ class _AuthRegisterState extends State<AuthRegister> {
                       height: 10.0,
                     ),
                     GestureDetector(
-                      onTap: () =>  showBottomSheet() ,
+                      onTap: () => showBottomSheet(),
                       child: getCountryForm(text: country),
                     ),
                     const SizedBox(
                       height: 10.0,
                     ),
                     getRegisterForm(
-                        ctl: null,
+                        ctl: password,
                         icon: Icons.lock_outlined,
                         obscure: true,
                         hint: 'Password'),
@@ -122,12 +134,23 @@ class _AuthRegisterState extends State<AuthRegister> {
                       height: 10.0,
                     ),
                     getRegisterPasswordForm(
-                        ctl: null,
-                        hint: 'Confirm Password',),
+                      ctl: confirmPassword,
+                      hint: 'Confirm Password',
+                    ),
                     const SizedBox(
                       height: 50.0,
                     ),
-                    getButton(context, () {}, text: 'Register'),
+                    isLoading
+                        ? SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: Center(
+                              child:
+                                  CircularProgressIndicator(color: BLUECOLOR),
+                            ),
+                          )
+                        : getButton(context, () {
+                            validDate();
+                          }, text: 'Register'),
                     const SizedBox(
                       height: 26.0,
                     ),
@@ -162,10 +185,14 @@ class _AuthRegisterState extends State<AuthRegister> {
                       children: [
                         socialAccount(FontAwesome.facebook, Color(0xFF1777F2),
                             callBack: () {}),
-                            const SizedBox(width: 20.0,),
+                        const SizedBox(
+                          width: 20.0,
+                        ),
                         socialAccount(FontAwesome.linkedin, Color(0xFF0078B5),
                             callBack: () {}),
-                            const SizedBox(width: 20.0,),
+                        const SizedBox(
+                          width: 20.0,
+                        ),
                         socialAccount(FontAwesome.google, Colors.redAccent,
                             callBack: () {}),
                       ],
@@ -205,6 +232,101 @@ class _AuthRegisterState extends State<AuthRegister> {
             )));
   }
 
+  void validDate() async {
+    if (fullname.text.trim().isEmpty) {
+      popupMessage.dialogMessage(
+          context, popupMessage.serviceMessage(context, 'Fullname required'));
+      return;
+    }
+
+    if (password.text.trim().isEmpty) {
+      popupMessage.dialogMessage(
+          context, popupMessage.serviceMessage(context, 'password required'));
+      return;
+    }
+
+    if (confirmPassword.text.trim().isEmpty) {
+      popupMessage.dialogMessage(context,
+          popupMessage.serviceMessage(context, 'comfirm password required'));
+      return;
+    }
+
+    if (confirmPassword.text.trim() != password.text.trim()) {
+      popupMessage.dialogMessage(
+          context,
+          popupMessage.serviceMessage(
+              context, 'confirm password does not match'));
+      return;
+    }
+
+    if (isEmail && email.text.trim().isEmpty) {
+      popupMessage.dialogMessage(
+          context, popupMessage.serviceMessage(context, 'E-mail is required'));
+      return;
+    }
+
+    if (isEmail && !email.text.trim().isEmail) {
+      popupMessage.dialogMessage(
+          context, popupMessage.serviceMessage(context, 'E-mail is not valid'));
+      return;
+    }
+
+    if (!isEmail && phoneController.value == null) {
+      popupMessage.dialogMessage(context,
+          popupMessage.serviceMessage(context, 'Phone Nuber is required'));
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final res = await http.post(Uri.parse('${ROOTAPI}/api/user/register'),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: isEmail
+              ? {
+                  'email': email.text.trim(),
+                  'name': fullname.text.trim(),
+                  'category_id': '3',
+                  'password': password.text.trim(),
+                  'country_id': '$country_id'
+                }
+              : {
+                  'phone': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+                  'name': fullname.text.trim(),
+                  'category_id': '3',
+                  'password': password.text.trim(),
+                  'country_id': '$country_id'
+                });
+      if (res.statusCode == 200) {
+        final parsed = jsonDecode(res.body);
+        popupMessage.dialogMessage(
+            context,
+            popupMessage.serviceMessage(context, parsed['message'],
+                status: true));
+      } else {
+        final parsed = jsonDecode(res.body);
+        popupMessage.dialogMessage(
+            context,
+            popupMessage.serviceMessage(context, parsed['message'],
+                status: true));
+      }
+    } on SocketException {
+      popupMessage.dialogMessage(
+          context,
+          popupMessage.serviceMessage(
+              context, 'Plase check internect connection',
+              status: true));
+    } finally {
+      setState(() {
+        isLoading = true;
+      });
+    }
+  }
+
   void showBottomSheet() {
     showModalBottomSheet(
       context: context,
@@ -237,7 +359,10 @@ class _AuthRegisterState extends State<AuthRegister> {
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        country = '${countryList[index]['name']}';
+                                        country =
+                                            '${countryList[index]['name']}';
+                                        country_id =
+                                            '${countryList[index]['id']}';
                                       });
                                       Navigator.pop(context);
                                     },
@@ -278,7 +403,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                       child: Text(
                     'with Email Address',
                     style: GoogleFonts.poppins(
-                      fontSize: 12.0,
+                        fontSize: 12.0,
                         color: isEmail ? Colors.white : BLUECOLOR),
                   )),
                 ),
@@ -303,7 +428,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                     'with Mobile Number',
                     maxLines: 1,
                     style: GoogleFonts.poppins(
-                      fontSize: 12.0,
+                        fontSize: 12.0,
                         color: !isEmail ? Colors.white : BLUECOLOR),
                   )),
                 ),

@@ -5,17 +5,18 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AuthOtp extends StatefulWidget {
-  const AuthOtp({Key? key}) : super(key: key);
+  final Map body;
+  const AuthOtp(this.body, {Key? key}) : super(key: key);
 
   @override
   State<AuthOtp> createState() => _AuthOtpState();
 }
 
 class _AuthOtpState extends State<AuthOtp> {
+  bool isLoading = false;
 
   @override
   void dispose() {
-    
     super.dispose();
   }
 
@@ -87,11 +88,17 @@ class _AuthOtpState extends State<AuthOtp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   getOtpForm(),
-                  const SizedBox(width: 8.0,),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
                   getOtpForm(),
-                   const SizedBox(width: 8.0,),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
                   getOtpForm(),
-                   const SizedBox(width: 8.0,),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
                   getOtpForm(),
                 ],
               ),
@@ -99,7 +106,14 @@ class _AuthOtpState extends State<AuthOtp> {
             const SizedBox(
               height: 50.0,
             ),
-            getButton(context, () {}, text: 'verify'),
+            isLoading
+                ? SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(
+                      child: CircularProgressIndicator(color: BLUECOLOR),
+                    ),
+                  )
+                : getButton(context, () {}, text: 'verify'),
             const SizedBox(
               height: 30.0,
             ),
@@ -132,17 +146,24 @@ class _AuthOtpState extends State<AuthOtp> {
               height: 30.0,
             ),
             InkWell(
-                  onTap: () {},
-                  child: Text('Call me',
-                      style: GoogleFonts.poppins(
-                          fontSize: 15.0,
-                          color: BLUECOLOR,
-                          fontWeight: FontWeight.normal)),
-                ),
+              onTap: () {},
+              child: Text('Call me',
+                  style: GoogleFonts.poppins(
+                      fontSize: 15.0,
+                      color: BLUECOLOR,
+                      fontWeight: FontWeight.normal)),
+            ),
             const SizedBox(
               height: 50.0,
             ),
           ]),
         )));
+  }
+  String replaceValue(String mail) {
+    return mail.replaceAll(new RegExp('(?<=.)[^@](?=[^@]*?[^@]@)'), '*');
+  }
+
+  String replacePhone(String phoneNumber) {
+    return  "(" + phoneNumber.substring(0, 3) + ")" + phoneNumber.substring(3).replaceRange(1, phoneNumber.substring(3).length-2, '****');
   }
 }

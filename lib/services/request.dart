@@ -1,10 +1,14 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:http/http.dart' as http;
 
+
+const String ROOTAPI = 'https://api.gettheskydoctors.com';
+
+
 class ResquestApiServices {
-  String ROOTAPI = 'http://localhost:8080/resquest';
+  
   String GOOGLEAPI = 'https://fcm.googleapis.com/fcm/send';
 
   void sendNotification(token) async {
@@ -19,15 +23,6 @@ class ResquestApiServices {
         'body': 'Notification body',
       })
     });
-    if (res.statusCode == 200) {}
-  }
-
-  void loginRequest(Map<String, String> body) async {
-    final res = await http.post(Uri.parse(ROOTAPI),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: body);
     if (res.statusCode == 200) {}
   }
 }

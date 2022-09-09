@@ -1,4 +1,5 @@
 import 'package:doccure_patient/auth/login.dart';
+import 'package:doccure_patient/auth/otp.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/dialog/add_family.dart';
 import 'package:doccure_patient/main.dart';
@@ -47,6 +48,58 @@ Widget language(BuildContext context) {
                   ),
                 ),
               )
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget serviceMessage(BuildContext context, message, {status = false, body}) {
+  return Stack(
+    alignment: Alignment.center,
+    children: <Widget>[
+      Container(
+        width: MediaQuery.of(context).size.width,
+        margin:
+            const EdgeInsets.all(40), // to push the box half way below circle
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        padding: const EdgeInsets.all(20.0), // spacing inside the box
+        child: Material(
+          color: Colors.transparent,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              status
+                  ? Image.asset('assets/imgs/success.png',
+                      width: 100.0, height: 100.0, fit: BoxFit.contain)
+                  : Icon(
+                      Icons.cancel_outlined,
+                      size: 100.0,
+                      color: Colors.redAccent,
+                    ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              Text(
+                '$message',
+                style: getCustomFont(size: 14.0, color: Colors.black),
+              ),
+              const SizedBox(
+                height: 40.0,
+              ),
+              getButton(context, () {
+                if (status == true) {
+                  Navigator.pop(context);
+                  Get.to(() => AuthOtp(body));
+                  return;
+                }
+                Navigator.pop(context);
+              }, 'Continue', textColor: Colors.white, bgColor: BLUECOLOR)
             ],
           ),
         ),
@@ -212,7 +265,7 @@ Widget subscribe(BuildContext context) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                   GestureDetector(
+                  GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -311,23 +364,28 @@ Widget walletTop(BuildContext context) {
               const SizedBox(
                 height: 10.0,
               ),
-              Text('Amount', style: getCustomFont(size: 13.0, color: Colors.black54),),
-               const SizedBox(
+              Text(
+                'Amount',
+                style: getCustomFont(size: 13.0, color: Colors.black54),
+              ),
+              const SizedBox(
                 height: 5.0,
               ),
               getWalletFormBox('Amount', ctl: null),
-               const SizedBox(
+              const SizedBox(
                 height: 10.0,
               ),
-              Text('Select your payment method', style: getCustomFont(size: 13.0, color: Colors.black54),),
+              Text(
+                'Select your payment method',
+                style: getCustomFont(size: 13.0, color: Colors.black54),
+              ),
               const SizedBox(
                 height: 5.0,
               ),
               getWalletDropDown(['1', '2', '3'], '2'),
-               const SizedBox(
+              const SizedBox(
                 height: 20.0,
               ),
-
               Row(
                 children: [
                   Flexible(
@@ -343,7 +401,7 @@ Widget walletTop(BuildContext context) {
                           textColor: Colors.black)),
                 ],
               ),
-               const SizedBox(
+              const SizedBox(
                 height: 20.0,
               ),
             ],
@@ -1098,44 +1156,40 @@ getWalletFormBox(hint, {ctl}) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 0.0),
     child: SizedBox(
-          height: 40.0,
-          child: TextField(
-            style: getCustomFont(size: 14.0, color: Colors.black45),
-            maxLines: 1,
-            controller: ctl,
-            decoration: InputDecoration(
-                hintText: hint,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 15.0),
-                hintStyle:
-                    getCustomFont(size: 14.0, color: Colors.black45),
-                border: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Colors.grey, width: 1.0),
-                    borderRadius: BorderRadius.circular(8.0))),
-          ),
-        ),
+      height: 40.0,
+      child: TextField(
+        style: getCustomFont(size: 14.0, color: Colors.black45),
+        maxLines: 1,
+        controller: ctl,
+        decoration: InputDecoration(
+            hintText: hint,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
+            hintStyle: getCustomFont(size: 14.0, color: Colors.black45),
+            border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                borderRadius: BorderRadius.circular(8.0))),
+      ),
+    ),
   );
 }
 
-getWalletDropDown(List<String>list, text) {
+getWalletDropDown(List<String> list, text) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 0.0),
     child: SizedBox(
-          height: 40.0,
-          child: FormBuilderDropdown(
+      height: 40.0,
+      child: FormBuilderDropdown(
         name: 'payment',
         icon: const Icon(
           Icons.keyboard_arrow_down,
           color: Colors.black,
         ),
         decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 9.9, vertical: 5.0),
-         border: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Colors.grey, width: 1.0),
-                    borderRadius: BorderRadius.circular(8.0))),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 9.9, vertical: 5.0),
+            border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                borderRadius: BorderRadius.circular(8.0))),
         initialValue: '$text',
         items: list
             .map((gender) => DropdownMenuItem(
@@ -1147,10 +1201,9 @@ getWalletDropDown(List<String>list, text) {
                 ))
             .toList(),
       ),
-        ),
+    ),
   );
 }
-
 
 getMedialDetailsBox(text, hint, {ctl}) {
   return Padding(
@@ -1399,7 +1452,8 @@ showRequestSheet(BuildContext c, Widget widget, {onClose}) {
       }).whenComplete(() => onClose == null ? null : onClose());
 }
 
-void showFlutterNotification(RemoteMessage message, flutterLocalNotificationsPlugin) {
+void showFlutterNotification(
+    RemoteMessage message, flutterLocalNotificationsPlugin) {
   RemoteNotification? notification = message.notification;
   AndroidNotification? android = message.notification?.android;
   if (notification != null && android != null) {

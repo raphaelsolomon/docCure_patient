@@ -59,8 +59,8 @@ Future<void>setupFlutterNotifications() async {
   isFlutterLocalNotificationsInitialized = true;
 }
 
-//key ID W3GQWWTG35
-//4M5F6CFH72
+// key ID W3GQWWTG35
+// 4M5F6CFH72
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
