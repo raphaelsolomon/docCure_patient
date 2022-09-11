@@ -17,44 +17,6 @@ dialogMessage(BuildContext context, widget, {barrierDismiss = true}) {
       builder: (BuildContext context) => widget);
 }
 
-Widget language(BuildContext context) {
-  return Stack(
-    alignment: Alignment.center,
-    children: <Widget>[
-      Container(
-        width: MediaQuery.of(context).size.width,
-        margin:
-            const EdgeInsets.all(40), // to push the box half way below circle
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        padding: const EdgeInsets.only(
-            top: 15, left: 20, right: 20), // spacing inside the box
-        child: Material(
-          color: Colors.transparent,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(9.0),
-                width: MediaQuery.of(context).size.width,
-                color: BLUECOLOR,
-                child: Center(
-                  child: Text(
-                    'Choose Language',
-                    style: getCustomFont(size: 20.0, color: Colors.black),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    ],
-  );
-}
-
 Widget serviceMessage(BuildContext context, m, {status = false, cB}) {
   return Stack(
     alignment: Alignment.center,
@@ -251,7 +213,7 @@ Widget subscribe(BuildContext context) {
     alignment: Alignment.center,
     children: <Widget>[
       Container(
-        width: MediaQuery.of(context).size.width / 1.3,
+        width: 400.0,
         margin:
             const EdgeInsets.all(40), // to push the box half way below circle
         decoration: BoxDecoration(
@@ -329,7 +291,7 @@ Widget walletTop(BuildContext context) {
     alignment: Alignment.center,
     children: <Widget>[
       Container(
-        width: MediaQuery.of(context).size.width / 1.3,
+        width: 400.0 / 1.3,
         margin:
             const EdgeInsets.all(40), // to push the box half way below circle
         decoration: BoxDecoration(
@@ -697,29 +659,32 @@ Widget logoutPop(BuildContext context) {
               const SizedBox(
                 height: 10.0,
               ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'No',
-                    style: getCustomFont(size: 14.0, color: Colors.black),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      'No',
+                      style: getCustomFont(size: 14.0, color: Colors.black),
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 20.0,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Get.offAll(() => AuthLogin());
-                  },
-                  child: Text(
-                    'Yes',
-                    style: getCustomFont(size: 14.0, color: Colors.white),
+                  const SizedBox(
+                    width: 20.0,
                   ),
-                ),
-              ]),
+                  GestureDetector(
+                    onTap: () {
+                      Get.offAll(() => AuthLogin());
+                    },
+                    child: Text(
+                      'Yes',
+                      style: getCustomFont(size: 14.0, color: Colors.black),
+                    ),
+                  ),
+                ]),
+              ),
               const SizedBox(
                 height: 25.0,
               ),

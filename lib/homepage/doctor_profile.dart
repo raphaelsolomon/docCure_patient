@@ -481,426 +481,522 @@ class _DoctorProfileState extends State<DoctorProfile> {
   Widget patientProfile() => SingleChildScrollView(
         child: Column(
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: PhysicalModel(
-                    elevation: 10.0,
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(100.0),
-                    shadowColor: Colors.grey,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 10.0),
-                      child: Icon(
-                        FontAwesome5.info,
-                        size: 15.0,
-                        color: Color(0xFF838383),
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 35.0,
+                    child: Stack(children: [
+                      Padding(
+                      padding: const EdgeInsets.only(top: 0.0),
+                      child: PhysicalModel(
+                        elevation: 10.0,
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(100.0),
+                        shadowColor: Colors.grey,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 10.0),
+                          child: Icon(
+                            FontAwesome5.info,
+                            size: 15.0,
+                            color: Color(0xFF838383),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 15.0,
-                ),
-                Flexible(
-                  child: Container(
-                      padding: const EdgeInsets.all(15.0),
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 5.0),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
-                          color: Colors.white,
-                          boxShadow: SHADOW),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 30.0,
-                                backgroundImage:
-                                    AssetImage('assets/imgs/1.png'),
-                              ),
-                              const SizedBox(
-                                width: 15.0,
-                              ),
-                              Flexible(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Dr. Darren Elder',
-                                      style: getCustomFont(
-                                          color: Colors.black,
-                                          size: 22.0,
-                                          weight: FontWeight.w400),
-                                    ),
-                                    Row(
-                                      children: [
-                                        PhysicalModel(
-                                          elevation: 10.0,
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(100.0),
-                                          shadowColor: Colors.grey,
-                                          child: SizedBox(
-                                            width: 25.0,
-                                            height: 25.0,
-                                            child: Icon(
-                                              FontAwesome5.teeth,
-                                              size: 11.0,
-                                              color: Color(0xFF838383),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10.0),
-                                        Text(
-                                          'Dentist',
-                                          style: getCustomFont(
-                                              color: Colors.black54,
-                                              size: 12.5,
-                                              weight: FontWeight.w400),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 35.0),
+                          child: VerticalDivider(
+                            color: Colors.black45,
+                            thickness: 2,
                           ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          FittedBox(
-                            child: Text(
-                              'BDS, MDS - Oral & Maxillofacial Surgery',
-                              maxLines: 1,
-                              style: getCustomFont(
-                                  color: Colors.black54,
-                                  size: 12.4,
-                                  weight: FontWeight.w400),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 6.0,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '15+ Exp',
-                                style: getCustomFont(
-                                    color: Colors.red,
-                                    size: 12.0,
-                                    weight: FontWeight.w400),
-                              ),
-                              Row(
-                                children: [
-                                  Icon(Icons.location_on,
-                                      size: 15.0, color: Colors.black),
-                                  const SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Text(
-                                    'Florida, USA',
-                                    style: getCustomFont(
-                                        color: Colors.black54,
-                                        size: 12.0,
-                                        weight: FontWeight.w400),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      )),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 15.0,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: PhysicalModel(
-                    elevation: 10.0,
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(100.0),
-                    shadowColor: Colors.grey,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 10.0),
-                      child: Icon(
-                        FontAwesome5.user,
-                        size: 15.0,
-                        color: Color(0xFF838383),
+                        ),
                       ),
-                    ),
+                    ]),
                   ),
-                ),
-                const SizedBox(
-                  width: 15.0,
-                ),
-                Flexible(
-                  child: Container(
-                      padding: const EdgeInsets.all(15.0),
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 5.0),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
-                          color: Colors.white,
-                          boxShadow: SHADOW),
-                      child: Column(
+                  const SizedBox(
+                    width: 15.0,
+                  ),
+                  Flexible(
+                    child: Container(
+                        padding: const EdgeInsets.all(15.0),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 5.0),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                            color: Colors.white,
+                            boxShadow: SHADOW),
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'About Us',
-                              style: getCustomFont(
-                                  color: Colors.black,
-                                  size: 16.0,
-                                  weight: FontWeight.w500),
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 30.0,
+                                  backgroundImage:
+                                      AssetImage('assets/imgs/1.png'),
+                                ),
+                                const SizedBox(
+                                  width: 15.0,
+                                ),
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Dr. Darren Elder',
+                                        style: getCustomFont(
+                                            color: Colors.black,
+                                            size: 22.0,
+                                            weight: FontWeight.w400),
+                                      ),
+                                      Row(
+                                        children: [
+                                          PhysicalModel(
+                                            elevation: 10.0,
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(100.0),
+                                            shadowColor: Colors.grey,
+                                            child: SizedBox(
+                                              width: 25.0,
+                                              height: 25.0,
+                                              child: Icon(
+                                                FontAwesome5.teeth,
+                                                size: 11.0,
+                                                color: Color(0xFF838383),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10.0),
+                                          Text(
+                                            'Dentist',
+                                            style: getCustomFont(
+                                                color: Colors.black54,
+                                                size: 12.5,
+                                                weight: FontWeight.w400),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
                             ),
                             const SizedBox(
                               height: 10.0,
                             ),
-                            Text(
-                              '$DUMMYTEXT',
-                              style: getCustomFont(
-                                  color: Colors.black54,
-                                  size: 13.0,
-                                  weight: FontWeight.w400),
+                            FittedBox(
+                              child: Text(
+                                'BDS, MDS - Oral & Maxillofacial Surgery',
+                                maxLines: 1,
+                                style: getCustomFont(
+                                    color: Colors.black54,
+                                    size: 12.4,
+                                    weight: FontWeight.w400),
+                              ),
                             ),
-                          ])),
-                )
-              ],
+                            const SizedBox(
+                              height: 6.0,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '15+ Exp',
+                                  style: getCustomFont(
+                                      color: Colors.red,
+                                      size: 12.0,
+                                      weight: FontWeight.w400),
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(Icons.location_on,
+                                        size: 15.0, color: Colors.black),
+                                    const SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Text(
+                                      'Florida, USA',
+                                      style: getCustomFont(
+                                          color: Colors.black54,
+                                          size: 12.0,
+                                          weight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        )),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 0.0,
+            ),
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                 Container(
+                  width: 35.0,
+                  child: Stack(children: [
+                    Padding(
+                    padding: const EdgeInsets.only(top: 0.0),
+                    child: PhysicalModel(
+                      elevation: 10.0,
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(100.0),
+                      shadowColor: Colors.grey,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 10.0),
+                        child: Icon(
+                          FontAwesome5.user,
+                          size: 15.0,
+                          color: Color(0xFF838383),
+                        ),
+                      ),
+                    ),
+                  ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 35.0),
+                        child: VerticalDivider(
+                          color: Colors.black45,
+                          thickness: 2,
+                        ),
+                      ),
+                    ),
+                  ]),
+                ),
+                  const SizedBox(
+                    width: 15.0,
+                  ),
+                  Flexible(
+                    child: Container(
+                        padding: const EdgeInsets.all(15.0),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 5.0),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                            color: Colors.white,
+                            boxShadow: SHADOW),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'About Us',
+                                style: getCustomFont(
+                                    color: Colors.black,
+                                    size: 16.0,
+                                    weight: FontWeight.w500),
+                              ),
+                              const SizedBox(
+                                height: 10.0,
+                              ),
+                              Text(
+                                '$DUMMYTEXT',
+                                style: getCustomFont(
+                                    color: Colors.black54,
+                                    size: 13.0,
+                                    weight: FontWeight.w400),
+                              ),
+                            ])),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 0.0,
+            ),
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                 Container(
+                  width: 35.0,
+                  child: Stack(children: [
+                    Padding(
+                    padding: const EdgeInsets.only(top: 0.0),
+                    child: PhysicalModel(
+                      elevation: 10.0,
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(100.0),
+                      shadowColor: Colors.grey,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 10.0),
+                        child: Icon(
+                          FontAwesome5.medkit,
+                          size: 15.0,
+                          color: Color(0xFF838383),
+                        ),
+                      ),
+                    ),
+                  ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 35.0),
+                        child: VerticalDivider(
+                          color: Colors.black45,
+                          thickness: 2,
+                        ),
+                      ),
+                    ),
+                  ]),
+                ),
+                  const SizedBox(
+                    width: 15.0,
+                  ),
+                  Flexible(
+                    child: Container(
+                        padding: const EdgeInsets.all(15.0),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 5.0),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                            color: Colors.white,
+                            boxShadow: SHADOW),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Education',
+                                style: getCustomFont(
+                                    color: Colors.black,
+                                    size: 17.0,
+                                    weight: FontWeight.w400),
+                              ),
+                              const SizedBox(
+                                height: 15.0,
+                              ),
+                              ...List.generate(1, (index) => EducationItem())
+                            ])),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 0.0,
+            ),
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                  width: 35.0,
+                  child: Stack(children: [
+                    Padding(
+                    padding: const EdgeInsets.only(top: 0.0),
+                    child: PhysicalModel(
+                      elevation: 10.0,
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(100.0),
+                      shadowColor: Colors.grey,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 10.0),
+                        child: Icon(
+                          FontAwesome5.school,
+                          size: 15.0,
+                          color: Color(0xFF838383),
+                        ),
+                      ),
+                    ),
+                  ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 35.0),
+                        child: VerticalDivider(
+                          color: Colors.black45,
+                          thickness: 2,
+                        ),
+                      ),
+                    ),
+                  ]),
+                ),
+                  const SizedBox(
+                    width: 15.0,
+                  ),
+                  Flexible(
+                    child: Container(
+                        padding: const EdgeInsets.all(15.0),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 5.0),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                            color: Colors.white,
+                            boxShadow: SHADOW),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Work & Experience',
+                                style: getCustomFont(
+                                    color: Colors.black,
+                                    size: 19.0,
+                                    weight: FontWeight.w400),
+                              ),
+                              const SizedBox(
+                                height: 15.0,
+                              ),
+                              ...List.generate(2, (index) => workExperience())
+                            ])),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 0.0,
+            ),
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      width: 35.0,
+                      child: Stack(children: [
+                        Padding(
+                        padding: const EdgeInsets.only(top: 0.0),
+                        child: PhysicalModel(
+                          elevation: 10.0,
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(100.0),
+                          shadowColor: Colors.grey,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 10.0),
+                            child: Icon(
+                              FontAwesome5.servicestack,
+                              size: 15.0,
+                              color: Color(0xFF838383),
+                            ),
+                          ),
+                        ),
+                      ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 35.0),
+                            child: VerticalDivider(
+                              color: Colors.black45,
+                              thickness: 2,
+                            ),
+                          ),
+                        ),
+                      ]),
+                    ),
+                  const SizedBox(
+                    width: 15.0,
+                  ),
+                  Flexible(
+                    child: Container(
+                        padding: const EdgeInsets.all(15.0),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 5.0),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                            color: Colors.white,
+                            boxShadow: SHADOW),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Services',
+                                style: getCustomFont(
+                                    color: Colors.black,
+                                    size: 19.0,
+                                    weight: FontWeight.w400),
+                              ),
+                              const SizedBox(
+                                height: 15.0,
+                              ),
+                              ...List.generate(2, (index) => serviceItem())
+                            ])),
+                  )
+                ],
+              ),
             ),
             const SizedBox(
               height: 15.0,
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: PhysicalModel(
-                    elevation: 10.0,
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(100.0),
-                    shadowColor: Colors.grey,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 10.0),
-                      child: Icon(
-                        FontAwesome5.medkit,
-                        size: 15.0,
-                        color: Color(0xFF838383),
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 35.0,
+                    child: Stack(children: [
+                      Padding(
+                      padding: const EdgeInsets.only(top: 0.0),
+                      child: PhysicalModel(
+                        elevation: 10.0,
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(100.0),
+                        shadowColor: Colors.grey,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 10.0),
+                          child: Icon(
+                            FontAwesome5.tools,
+                            size: 15.0,
+                            color: Color(0xFF838383),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 15.0,
-                ),
-                Flexible(
-                  child: Container(
-                      padding: const EdgeInsets.all(15.0),
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 5.0),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
-                          color: Colors.white,
-                          boxShadow: SHADOW),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Education',
-                              style: getCustomFont(
-                                  color: Colors.black,
-                                  size: 17.0,
-                                  weight: FontWeight.w400),
-                            ),
-                            const SizedBox(
-                              height: 15.0,
-                            ),
-                            ...List.generate(1, (index) => EducationItem())
-                          ])),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 15.0,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: PhysicalModel(
-                    elevation: 10.0,
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(100.0),
-                    shadowColor: Colors.grey,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 10.0),
-                      child: Icon(
-                        FontAwesome5.school,
-                        size: 15.0,
-                        color: Color(0xFF838383),
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 35.0),
+                          child: VerticalDivider(
+                            color: Colors.transparent,
+                            thickness: 2,
+                          ),
+                        ),
                       ),
-                    ),
+                    ]),
                   ),
-                ),
-                const SizedBox(
-                  width: 15.0,
-                ),
-                Flexible(
-                  child: Container(
-                      padding: const EdgeInsets.all(15.0),
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 5.0),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
-                          color: Colors.white,
-                          boxShadow: SHADOW),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Work & Experience',
-                              style: getCustomFont(
-                                  color: Colors.black,
-                                  size: 19.0,
-                                  weight: FontWeight.w400),
-                            ),
-                            const SizedBox(
-                              height: 15.0,
-                            ),
-                            ...List.generate(2, (index) => workExperience())
-                          ])),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 15.0,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: PhysicalModel(
-                    elevation: 10.0,
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(100.0),
-                    shadowColor: Colors.grey,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 10.0),
-                      child: Icon(
-                        FontAwesome5.servicestack,
-                        size: 15.0,
-                        color: Color(0xFF838383),
-                      ),
-                    ),
+                  const SizedBox(
+                    width: 15.0,
                   ),
-                ),
-                const SizedBox(
-                  width: 15.0,
-                ),
-                Flexible(
-                  child: Container(
-                      padding: const EdgeInsets.all(15.0),
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 5.0),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
-                          color: Colors.white,
-                          boxShadow: SHADOW),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Services',
-                              style: getCustomFont(
-                                  color: Colors.black,
-                                  size: 19.0,
-                                  weight: FontWeight.w400),
-                            ),
-                            const SizedBox(
-                              height: 15.0,
-                            ),
-                            ...List.generate(2, (index) => serviceItem())
-                          ])),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 15.0,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: PhysicalModel(
-                    elevation: 10.0,
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(100.0),
-                    shadowColor: Colors.grey,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 10.0),
-                      child: Icon(
-                        FontAwesome5.tools,
-                        size: 15.0,
-                        color: Color(0xFF838383),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 15.0,
-                ),
-                Flexible(
-                  child: Container(
-                      padding: const EdgeInsets.all(15.0),
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 5.0),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
-                          color: Colors.white,
-                          boxShadow: SHADOW),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Specialization',
-                              style: getCustomFont(
-                                  color: Colors.black,
-                                  size: 19.0,
-                                  weight: FontWeight.w400),
-                            ),
-                            const SizedBox(
-                              height: 15.0,
-                            ),
-                            ...List.generate(2, (index) => specializationItem())
-                          ])),
-                )
-              ],
+                  Flexible(
+                    child: Container(
+                        padding: const EdgeInsets.all(15.0),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 5.0),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                            color: Colors.white,
+                            boxShadow: SHADOW),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Specialization',
+                                style: getCustomFont(
+                                    color: Colors.black,
+                                    size: 19.0,
+                                    weight: FontWeight.w400),
+                              ),
+                              const SizedBox(
+                                height: 15.0,
+                              ),
+                              ...List.generate(2, (index) => specializationItem())
+                            ])),
+                  )
+                ],
+              ),
             )
           ],
         ),

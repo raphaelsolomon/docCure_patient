@@ -179,7 +179,7 @@ Widget getDashboard(context, width) => Padding(
           ]),
     );
 
-Widget getHospital(context) => Padding(
+Widget getHospital(context, Function brand, {onBack}) => Padding(
       padding: const EdgeInsets.only(top: 28.0),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,8 +193,16 @@ Widget getHospital(context) => Padding(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset('assets/imgs/logo.png',
-                      width: 150.0, fit: BoxFit.contain),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () =>  onBack(),
+                        child: Icon(Icons.arrow_back_ios, size: 19.0, color: Colors.black)),
+                      const SizedBox(width: 10.0),
+                      Image.asset('assets/imgs/logo.png',
+                          width: 150.0, fit: BoxFit.contain),
+                    ],
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(right: 20.0),
                     child: Icon(
@@ -222,7 +230,7 @@ Widget getHospital(context) => Padding(
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
               child: Text(
-                'Find your medicines',
+                'Find Hospital Near You',
                 style: getCustomFont(
                     size: 19.0, color: Colors.black, weight: FontWeight.w500),
               ),
@@ -237,7 +245,7 @@ Widget getHospital(context) => Padding(
                       height: 10.0,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 20.0, left: 20.0),
+                      padding: const EdgeInsets.only(right: 15.0, left: 15.0),
                       child: getCardForm('Search medicines'),
                     ),
                     const SizedBox(
@@ -255,12 +263,15 @@ Widget getHospital(context) => Padding(
                                     size: 14.0, color: Colors.black45),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 20.0),
-                              child: Text(
-                                'view all',
-                                style: getCustomFont(
-                                    size: 14.0, color: Colors.greenAccent),
+                            GestureDetector(
+                              onTap: () => brand(),
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 20.0),
+                                child: Text(
+                                  'view all',
+                                  style:
+                                      getCustomFont(size: 14.0, color: BLUECOLOR),
+                                ),
                               ),
                             ),
                           ]),
@@ -298,8 +309,8 @@ Widget getHospital(context) => Padding(
                               padding: const EdgeInsets.only(right: 20.0),
                               child: Text(
                                 'view all',
-                                style: getCustomFont(
-                                    size: 14.0, color: Colors.greenAccent),
+                                style:
+                                    getCustomFont(size: 14.0, color: BLUECOLOR),
                               ),
                             ),
                           ]),
@@ -312,7 +323,8 @@ Widget getHospital(context) => Padding(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: 8,
-                        itemBuilder: (ctx, i) => hospitalItem(context)),
+                        itemBuilder: (ctx, i) =>
+                            hospitalItem(context, 'Hospital')),
                     const SizedBox(
                       height: 85.0,
                     ),
@@ -323,7 +335,7 @@ Widget getHospital(context) => Padding(
           ]),
     );
 
-Widget hospitalItem(context) => GestureDetector(
+Widget hospitalItem(context, type) => GestureDetector(
       onTap: () {
         Get.to(() => HospitalDetails());
       },
@@ -343,7 +355,7 @@ Widget hospitalItem(context) => GestureDetector(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Apple Hospital',
+                          'Apple ${type}',
                           style: getCustomFont(
                               size: 15.0,
                               color: Colors.black,
@@ -353,7 +365,7 @@ Widget hospitalItem(context) => GestureDetector(
                           height: 2.0,
                         ),
                         Text(
-                          'General Hospital',
+                          'General ${type}',
                           style: getCustomFont(
                               size: 12.0,
                               color: Colors.black45,
@@ -443,7 +455,7 @@ Widget hospitalItem(context) => GestureDetector(
       ),
     );
 
-Widget getPharmacy(context) => Padding(
+Widget getPharmacy(context, Function brand, {onBack}) => Padding(
       padding: const EdgeInsets.only(top: 28.0),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -457,8 +469,16 @@ Widget getPharmacy(context) => Padding(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset('assets/imgs/logo.png',
-                      width: 150.0, fit: BoxFit.contain),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => onBack(),
+                        child: Icon(Icons.arrow_back_ios, size: 19.0, color: Colors.black)),
+                      const SizedBox(width: 10.0),
+                      Image.asset('assets/imgs/logo.png',
+                          width: 150.0, fit: BoxFit.contain),
+                    ],
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(right: 20.0),
                     child: Icon(
@@ -486,7 +506,7 @@ Widget getPharmacy(context) => Padding(
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
               child: Text(
-                'Find your medicines',
+                'Order Medicine By Pharmacy',
                 style: getCustomFont(
                     size: 19.0, color: Colors.black, weight: FontWeight.w500),
               ),
@@ -501,30 +521,33 @@ Widget getPharmacy(context) => Padding(
                       height: 10.0,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 20.0, left: 20.0),
+                      padding: const EdgeInsets.only(right: 15.0, left: 15.0),
                       child: getCardForm('Search medicines'),
                     ),
                     const SizedBox(
                       height: 20.0,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
+                      padding: const EdgeInsets.only(left: 15.0),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Flexible(
                               child: Text(
-                                'Shop by categories',
+                                'Shop By Brand',
                                 style: getCustomFont(
                                     size: 14.0, color: Colors.black45),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 20.0),
-                              child: Text(
-                                'view all',
-                                style: getCustomFont(
-                                    size: 14.0, color: Colors.greenAccent),
+                            GestureDetector(
+                              onTap: () => brand(),
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 20.0),
+                                child: Text(
+                                  'view all',
+                                  style: getCustomFont(
+                                      size: 14.0, color: BLUECOLOR),
+                                ),
                               ),
                             ),
                           ]),
@@ -563,7 +586,7 @@ Widget getPharmacy(context) => Padding(
                               child: Text(
                                 'view all',
                                 style: getCustomFont(
-                                    size: 14.0, color: Colors.greenAccent),
+                                    size: 14.0, color: BLUECOLOR),
                               ),
                             ),
                           ]),
@@ -576,7 +599,8 @@ Widget getPharmacy(context) => Padding(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: 8,
-                        itemBuilder: (ctx, i) => hospitalItem(context)),
+                        itemBuilder: (ctx, i) =>
+                            hospitalItem(context, 'Pharmacy')),
                     const SizedBox(
                       height: 85.0,
                     ),

@@ -90,12 +90,17 @@ class _AllHomePageState extends State<AllHomePage> {
               ),
               user!.verified!
                   ? const SizedBox()
-                  : GestureDetector(
-                      onTap: () => Get.to(() => AuthOtp(user!.email!, true)),
-                      child: mailAlert(context)),
-              const SizedBox(
-                height: 29.0,
-              ),
+                  : Column(
+                      children: [
+                        GestureDetector(
+                            onTap: () =>
+                                Get.to(() => AuthOtp(user!.email!, true)),
+                            child: mailAlert(context)),
+                        const SizedBox(
+                          height: 29.0,
+                        ),
+                      ],
+                    ),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Padding(

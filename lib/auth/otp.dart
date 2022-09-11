@@ -3,11 +3,13 @@ import 'dart:io';
 
 import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:doccure_patient/services/request.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:http/http.dart' as http;
 import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
 
@@ -23,7 +25,7 @@ class AuthOtp extends StatefulWidget {
 class _AuthOtpState extends State<AuthOtp> {
   bool isLoading = false;
   bool isResending = false;
-  var listOTp = [];
+  var listOTp = {};
   final otp1 = TextEditingController();
   final node1 = FocusNode();
   final otp2 = TextEditingController();
@@ -32,6 +34,8 @@ class _AuthOtpState extends State<AuthOtp> {
   final node3 = FocusNode();
   final otp4 = TextEditingController();
   final node4 = FocusNode();
+
+  final box  = Hive.box<User>(BoxName);
 
   @override
   void initState() {
@@ -132,8 +136,17 @@ class _AuthOtpState extends State<AuthOtp> {
                             ctl: otp1,
                             node: node1,
                             onChange: (s) {
-                              listOTp[0] = s;
-                              node2.requestFocus();
+                              if (listOTp.containsKey('1')) {
+                                if (s.isEmpty) {
+                                  listOTp.remove('1');
+                                } else {
+                                  listOTp['1'] = s;
+                                  node2.requestFocus();
+                                }
+                              } else {
+                                listOTp.putIfAbsent('1', () => s);
+                                node2.requestFocus();
+                              }
                             }),
                         const SizedBox(
                           width: 8.0,
@@ -142,8 +155,17 @@ class _AuthOtpState extends State<AuthOtp> {
                             ctl: otp2,
                             node: node2,
                             onChange: (s) {
-                              listOTp[1] = s;
-                              node3.requestFocus();
+                              if (listOTp.containsKey('2')) {
+                                if (s.isEmpty) {
+                                  listOTp.remove('2');
+                                } else {
+                                  listOTp['2'] = s;
+                                  node3.requestFocus();
+                                }
+                              } else {
+                                listOTp.putIfAbsent('2', () => s);
+                                node3.requestFocus();
+                              }
                             }),
                         const SizedBox(
                           width: 8.0,
@@ -152,8 +174,17 @@ class _AuthOtpState extends State<AuthOtp> {
                             ctl: otp3,
                             node: node3,
                             onChange: (s) {
-                              listOTp[2] = s;
-                              node4.requestFocus();
+                              if (listOTp.containsKey('3')) {
+                                if (s.isEmpty) {
+                                  listOTp.remove('3');
+                                } else {
+                                  listOTp['3'] = s;
+                                  node4.requestFocus();
+                                }
+                              } else {
+                                listOTp.putIfAbsent('3', () => s);
+                                node4.requestFocus();
+                              }
                             }),
                         const SizedBox(
                           width: 8.0,
@@ -161,8 +192,15 @@ class _AuthOtpState extends State<AuthOtp> {
                         getOtpForm(
                             ctl: otp4,
                             node: node4,
-                            onChange: (s) {
-                              listOTp[3] = s;
+                            onChange: (String s) {
+                              if (listOTp.containsKey('4')) {
+                                if (s.isEmpty)
+                                  listOTp.remove('4');
+                                else
+                                  listOTp['4'] = s;
+                              } else {
+                                listOTp.putIfAbsent('4', () => s);
+                              }
                             }),
                       ],
                     ),
@@ -238,6 +276,7 @@ class _AuthOtpState extends State<AuthOtp> {
   }
 
   void validDate() async {
+    print(listOTp);
     if (listOTp.length < 4) {
       popupMessage.dialogMessage(
           context, popupMessage.serviceMessage(context, 'Input not valid'));
@@ -249,8 +288,11 @@ class _AuthOtpState extends State<AuthOtp> {
     });
 
     try {
-      final res = await http.post(Uri.parse('${ROOTAPI}/api/user/email/verify'),
-          body: {'email': widget.body.trim(), 'otp': listOTp.join('')});
+      final res =
+          await http.post(Uri.parse('${ROOTAPI}/api/user/email/verify'), body: {
+        'email': widget.body.trim(),
+        'otp': '${listOTp['1']}${listOTp['2']}${listOTp['3']}${listOTp['4']}'
+      });
       if (res.statusCode == 200) {
         final parsed = jsonDecode(res.body);
         popupMessage.dialogMessage(
@@ -258,7 +300,9 @@ class _AuthOtpState extends State<AuthOtp> {
             popupMessage.serviceMessage(context, parsed['message'],
                 status: true, cB: () {
               if (widget.isLoggedIn) {
-                Get.back();
+                User user = box.get(USERPATH)!;
+                user.verified = true;
+                box.put(USERPATH, user).then((value) => Get.back());
                 return;
               }
               Get.to(() => AuthLogin());
@@ -280,6 +324,10 @@ class _AuthOtpState extends State<AuthOtp> {
     } finally {
       setState(() {
         isLoading = false;
+        otp1.clear();
+        otp2.clear();
+        otp3.clear();
+        otp4.clear();
       });
     }
   }

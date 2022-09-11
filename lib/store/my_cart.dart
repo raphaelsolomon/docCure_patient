@@ -1,5 +1,6 @@
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
+import 'package:doccure_patient/model/cart_model.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:doccure_patient/store/prescription_upload.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -18,6 +19,35 @@ class MyCart extends StatefulWidget {
 class _MyCartState extends State<MyCart> {
   int page = 0;
   bool isCoupon = false;
+  List<CartModel> cartModel = [
+    CartModel(
+        itemName: 'Silispor 100mg Tablet',
+        price: 3.50,
+        desc: 'pack of 100mg',
+        quantity: 1),
+    CartModel(
+        itemName: 'Silispor 200mg Tablet',
+        price: 3.50,
+        desc: 'pack of 200mg',
+        quantity: 1),
+    CartModel(
+        itemName: 'Silispor 300mg Tablet',
+        price: 3.50,
+        desc: 'pack of 300mg',
+        quantity: 1),
+    CartModel(
+        itemName: 'Silispor 400mg Tablet',
+        price: 3.50,
+        desc: 'pack of 400mg',
+        quantity: 1),
+    CartModel(
+        itemName: 'Silispor 500mg Tablet',
+        price: 3.50,
+        desc: 'pack of 500mg',
+        quantity: 1),
+  ];
+
+  double total = 0.0;
 
   @override
   void initState() {
@@ -86,7 +116,7 @@ class _MyCartState extends State<MyCart> {
                   GestureDetector(
                       onTap: () {
                         setState(() {
-                          page =0;
+                          page = 0;
                         });
                       },
                       child: Icon(
@@ -332,91 +362,15 @@ class _MyCartState extends State<MyCart> {
         ),
         Expanded(
             child: ListView.builder(
-                itemCount: 5,
+                itemCount: cartModel.length,
                 padding: const EdgeInsets.all(0.0),
                 shrinkWrap: true,
-                itemBuilder: (ctx, i) => Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.all(15.0),
-                      color: Colors.white,
-                      margin: const EdgeInsets.symmetric(vertical: 5.0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 20.0,
-                            backgroundImage: AssetImage('assets/imgs/1.png'),
-                          ),
-                          const SizedBox(
-                            width: 10.0,
-                          ),
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Silispor 100mg Tablet',
-                                  style: getCustomFont(
-                                      size: 14.0,
-                                      color: Colors.black,
-                                      weight: FontWeight.w500),
-                                ),
-                               
-                                Text(
-                                  'pack of 500mg',
-                                  style: getCustomFont(
-                                      size: 13.0,
-                                      color: Colors.black45,
-                                      weight: FontWeight.w400),
-                                ),
-                                const SizedBox(height: 2.0,),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            FontAwesome5.minus,
-                                            color: Colors.black,
-                                            size: 14.0,
-                                          ),
-                                          const SizedBox(
-                                            width: 8.0,
-                                          ),
-                                          Text(
-                                            '1',
-                                            style: getCustomFont(
-                                                size: 15.0,
-                                                color: Colors.black,
-                                                weight: FontWeight.w400),
-                                          ),
-                                          const SizedBox(
-                                            width: 8.0,
-                                          ),
-                                          Icon(
-                                            FontAwesome5.plus,
-                                            color: Colors.black,
-                                            size: 14.0,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Text(
-                                      '\$3.50',
-                                      style: getCustomFont(
-                                          size: 15.0,
-                                          color: Colors.black,
-                                          weight: FontWeight.bold),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ))),
+                itemBuilder: (ctx, i) {
+                  cartModel.forEach((element) {
+                    total += element.total;
+                  });
+                  return getCartItem(cartModel[i]);
+                })),
         const SizedBox(height: 8.0),
         Container(
           color: Colors.white,
@@ -526,9 +480,9 @@ class _MyCartState extends State<MyCart> {
                             weight: FontWeight.bold),
                       ),
                       Text(
-                        '\$22.0',
+                        '\$${total}',
                         style: getCustomFont(
-                            color: Colors.black45,
+                            color: BLUECOLOR,
                             size: 14.0,
                             weight: FontWeight.bold),
                       ),
@@ -561,4 +515,94 @@ class _MyCartState extends State<MyCart> {
           ]),
         )
       ]);
+
+  Widget getCartItem(CartModel cartModel) => Container(
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.all(15.0),
+      color: Colors.white,
+      margin: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 20.0,
+            backgroundImage: AssetImage('assets/imgs/1.png'),
+          ),
+          const SizedBox(
+            width: 10.0,
+          ),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  cartModel.itemName!,
+                  style: getCustomFont(
+                      size: 14.0, color: Colors.black, weight: FontWeight.w500),
+                ),
+                Text(
+                  cartModel.desc!,
+                  style: getCustomFont(
+                      size: 13.0,
+                      color: Colors.black45,
+                      weight: FontWeight.w400),
+                ),
+                const SizedBox(
+                  height: 2.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () => setState(() {
+                              cartModel.reduceQuantity();
+                            }),
+                            child: Icon(
+                              FontAwesome5.minus,
+                              color: BLUECOLOR,
+                              size: 12.0,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 8.0,
+                          ),
+                          Text(
+                            '${cartModel.quantity}',
+                            style: getCustomFont(
+                                size: 14.0,
+                                color: Colors.black,
+                                weight: FontWeight.w400),
+                          ),
+                          const SizedBox(
+                            width: 8.0,
+                          ),
+                          GestureDetector(
+                            onTap: () => setState(() {
+                              cartModel.addQuantity();
+                            }),
+                            child: Icon(
+                              FontAwesome5.plus,
+                              color: BLUECOLOR,
+                              size: 12.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      '\$3.50',
+                      style: getCustomFont(
+                          size: 14.0,
+                          color: BLUECOLOR,
+                          weight: FontWeight.bold),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
+      ));
 }

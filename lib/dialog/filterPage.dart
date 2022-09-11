@@ -40,41 +40,26 @@ class _FilterPageState extends State<FilterPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(
-            height: 20.0,
+            height: 10.0,
           ),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Flexible(
+              child: Text(
+                'Filter',
+                style: getCustomFont(size: 18.0, color: Colors.black54),
+              ),
+            ),
+            GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Icon(
+                  Icons.cancel_outlined,
+                  size: 20.0,
+                  color: Colors.black,
+                ))
+          ]),
           Divider(),
           const SizedBox(
             height: 10.0,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100.0), color: BLUECOLOR),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: Text(
-                      'Filter',
-                      style: getCustomFont(size: 18.0, color: Colors.white),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(50.0)),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 5.0),
-                      child: Text(
-                        'Clear',
-                        style: getCustomFont(size: 13.0, color: Colors.white),
-                      ),
-                    ),
-                  )
-                ]),
           ),
           const SizedBox(
             height: 30.0,
@@ -282,20 +267,10 @@ class _FilterPageState extends State<FilterPage> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                widget.filterType == 'Specialization'
-                    ? filterSpecilizationType()
-                    : widget.filterType == 'Treatment'
-                        ? filterTreatmentType()
-                        : widget.filterType == 'Hospital/Clinic'
-                            ? filterHospitalType()
-                            : Container(),
-                            const SizedBox(
-                  height: 20.0,
-                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
-                    'Select Doctor Services',
+                    'Select Doctor Country',
                     style: getCustomFont(
                         size: 15.0,
                         color: Colors.black,
@@ -305,14 +280,23 @@ class _FilterPageState extends State<FilterPage> {
                 const SizedBox(
                   height: 9.0,
                 ),
-                getDropDownAssurance(['None0', 'None1', 'None2'], 'None0'),
+                getDropDownCountry((s) {
+                  print(s);
+                }),
+                widget.filterType == 'Specialization'
+                    ? filterSpecilizationType()
+                    : widget.filterType == 'Treatment'
+                        ? filterTreatmentType()
+                        : widget.filterType == 'Hospital/Clinic'
+                            ? filterHospitalType()
+                            : Container(),
                 const SizedBox(
                   height: 20.0,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
-                    'Select Doctor Experience',
+                    'Select Doctor Price',
                     style: getCustomFont(
                         size: 15.0,
                         color: Colors.black,
@@ -329,7 +313,7 @@ class _FilterPageState extends State<FilterPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
-                    'Select Doctor Price',
+                    'Select Doctor Experience',
                     style: getCustomFont(
                         size: 15.0,
                         color: Colors.black,
@@ -487,6 +471,41 @@ class _FilterPageState extends State<FilterPage> {
     );
   }
 
+  getDropDownCountry(onChange) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+      height: 49.0,
+      decoration: BoxDecoration(
+          color: BLUECOLOR.withOpacity(.05),
+          borderRadius: BorderRadius.circular(5.0)),
+      child: FormBuilderDropdown(
+        name: 'specialization',
+        icon: const Icon(
+          Icons.keyboard_arrow_down,
+          color: Colors.black,
+        ),
+        onChanged: (s) => onChange(s),
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 9.9, vertical: 5.0),
+          border: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+              borderSide: BorderSide.none),
+        ),
+        items: countryListDrop
+            .map((e) => DropdownMenuItem<Map<String, dynamic>>(
+                  value: e,
+                  child: Text(
+                    e['name'],
+                    style: getCustomFont(size: 13.0, color: Colors.black45),
+                  ),
+                ))
+            .toList(),
+      ),
+    );
+  }
+
   Widget _dashTypeList(e) => GestureDetector(
         onTap: () => setState(() => type = e['title']),
         child: Container(
@@ -546,8 +565,11 @@ class _FilterPageState extends State<FilterPage> {
       );
 
   Widget filterSpecilizationType() => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(
+            height: 20.0,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Text(
@@ -564,8 +586,11 @@ class _FilterPageState extends State<FilterPage> {
       );
 
   Widget filterTreatmentType() => Column(
-     crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(
+            height: 20.0,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Text(
@@ -582,8 +607,11 @@ class _FilterPageState extends State<FilterPage> {
       );
 
   Widget filterHospitalType() => Column(
-     crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(
+            height: 20.0,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Text(
@@ -595,7 +623,8 @@ class _FilterPageState extends State<FilterPage> {
           const SizedBox(
             height: 9.0,
           ),
-          getDropDownAssurance(HospitalClinic, 'First Consultants Medical Centre'),
+          getDropDownAssurance(
+              HospitalClinic, 'First Consultants Medical Centre'),
         ],
       );
 }

@@ -334,6 +334,11 @@ class _SearchDoctorState extends State<SearchDoctor> {
                     )
                   ],
                 ))
+                ,Icon(
+                  Icons.bookmark_outline,
+                  size: 18.0,
+                  color: BLUECOLOR,
+                )
               ],
             ),
             const SizedBox(

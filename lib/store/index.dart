@@ -1,8 +1,11 @@
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/resuable/custom_nav.dart';
+import 'package:doccure_patient/store/by_brand.dart';
+import 'package:doccure_patient/store/categories_and_sub.dart';
 import 'package:doccure_patient/store/store_dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class StorePage extends StatefulWidget {
@@ -17,7 +20,7 @@ class _StorePageState extends State<StorePage> {
   String page = 'Overview';
   List<String> headers = [
     'Overview'
-    'Appointments',
+        'Appointments',
     'Prescriptions',
     'Medical Records',
     'Billing'
@@ -57,15 +60,21 @@ class _StorePageState extends State<StorePage> {
                 child: index == 0
                     ? getDashboard(context, width)
                     : index == 2
-                        ? getHospital(context)
+                        ? getHospital(context, 
+                        () => Get.to(() => CategoriesAndSub()),
+                        onBack: () =>  context.read<HomeController>().setStoreIndex(0))
                         : index == 3
-                            ? getPharmacy(context)
-                            : getProfile(page, context, () {}, headers,
-                                dash: (e) {
-                                setState(() {
-                                  page = e;
-                                });
-                              })),
+                            ? getPharmacy(
+                                context, () =>  context.read<HomeController>().setStoreIndex(4),
+                                onBack: () =>  context.read<HomeController>().setOnStoreBack())
+                            : index == 4
+                                ? ByBrand(() => context.read<HomeController>().setOnStoreBack())
+                                : getProfile(page, context, () {}, headers,
+                                    dash: (e) {
+                                    setState(() {
+                                      page = e;
+                                    });
+                                  })),
             Align(
                 alignment: Alignment.bottomCenter,
                 child: CustomNavBar(context, pageIndex: widget.i))
@@ -74,5 +83,4 @@ class _StorePageState extends State<StorePage> {
       ),
     );
   }
-  
 }

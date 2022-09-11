@@ -69,15 +69,15 @@ class _TimeAndDateState extends State<TimeAndDate> {
         child: Column(
           children: [
             Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 15.0, vertical: 0.0),
-                width: MediaQuery.of(context).size.width,
-                height: 89.0,
-                color: BLUECOLOR,
-                child: Column(children: [
-                  const SizedBox(
-                    height: 50.0,
-                  ),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+              width: MediaQuery.of(context).size.width,
+              height: 89.0,
+              color: BLUECOLOR,
+              child: Column(children: [
+                const SizedBox(
+                  height: 50.0,
+                ),
                 Row(
                   children: [
                     Flexible(
@@ -514,7 +514,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           dialogMessage(context, walletTop(context));
                         },
                         child: Text('\$314.50 ',
@@ -1182,77 +1182,86 @@ class _TimeAndDateState extends State<TimeAndDate> {
   //-----------------------BOOKING FORM---------------------------
   getBookingForm() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'You are booking a visit with Dr. Rajendra Mohanlal Gandhi. Please enter your booking details below.',
-          style: getCustomFont(size: 13.0, color: Colors.black),
-        ),
-        const SizedBox(
-          height: 15.0,
-        ),
-        Text(
-          'Are you booking for yourself?',
-          style: getCustomFont(size: 13.0, color: Colors.black),
-        ),
-        Row(
-          children: [
-            Row(children: [
-              Radio(value: false, groupValue: true, onChanged: (b) {}),
-              Text(
-                'Yes',
-                style: getCustomFont(size: 13.0, color: Colors.black),
-              ),
-            ]),
-            Row(children: [
-              Radio(value: false, groupValue: true, onChanged: (b) {}),
-              Text(
-                'No',
-                style: getCustomFont(size: 13.0, color: Colors.black),
-              ),
-            ])
-          ],
-        ),
-        Text(
-          'Patient Name',
-          style: getCustomFont(size: 13.0, color: Colors.black),
-        ),
-        TextFormField(
-          style: getCustomFont(size: 13.0, color: Colors.black),
-          decoration: InputDecoration(
-            hintText: 'Enter Patient Name',
-            hintStyle: getCustomFont(size: 13.0, color: Colors.black45),
-          ),
-        ),
-        const SizedBox(
-          height: 15.0,
-        ),
-        Text(
-          'Do you have insurance?',
-          style: getCustomFont(size: 13.0, color: Colors.black),
-        ),
-        Row(
-          children: [
-            Row(children: [
-              Radio(value: false, groupValue: true, onChanged: (b) {}),
-              Text(
-                'Yes',
-                style: getCustomFont(size: 13.0, color: Colors.black),
-              ),
-            ]),
-            Row(children: [
-              Radio(value: false, groupValue: true, onChanged: (b) {}),
-              Text(
-                'No',
-                style: getCustomFont(size: 13.0, color: Colors.black),
-              ),
-            ])
-          ],
-        ),
-        const SizedBox(
-          height: 5.0,
-        ),
-        getDropDownAssurance(),
+        Container(
+            padding: const EdgeInsets.all(13.0),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.0),
+                border: Border.all(width: 1.0, color: Colors.black45)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'You are booking a visit with Dr. Rajendra Mohanlal Gandhi. Please enter your booking details below.',
+                  style: getCustomFont(size: 13.0, color: Colors.black),
+                ),
+                const SizedBox(
+                  height: 15.0,
+                ),
+                Text(
+                  'Are you booking for yourself?',
+                  style: getCustomFont(size: 13.0, color: Colors.black),
+                ),
+                Row(
+                  children: [
+                    Row(children: [
+                      Radio(value: false, groupValue: true, onChanged: (b) {}),
+                      Text(
+                        'Yes',
+                        style: getCustomFont(size: 13.0, color: Colors.black),
+                      ),
+                    ]),
+                    Row(children: [
+                      Radio(value: false, groupValue: true, onChanged: (b) {}),
+                      Text(
+                        'No',
+                        style: getCustomFont(size: 13.0, color: Colors.black),
+                      ),
+                    ])
+                  ],
+                ),
+                Text(
+                  'Patient Name',
+                  style: getCustomFont(size: 13.0, color: Colors.black),
+                ),
+                TextFormField(
+                  style: getCustomFont(size: 13.0, color: Colors.black),
+                  decoration: InputDecoration(
+                    hintText: 'Enter Patient Name',
+                    hintStyle: getCustomFont(size: 13.0, color: Colors.black45),
+                  ),
+                ),
+                const SizedBox(
+                  height: 15.0,
+                ),
+                Text(
+                  'Do you have insurance?',
+                  style: getCustomFont(size: 13.0, color: Colors.black),
+                ),
+                Row(
+                  children: [
+                    Row(children: [
+                      Radio(value: false, groupValue: true, onChanged: (b) {}),
+                      Text(
+                        'Yes',
+                        style: getCustomFont(size: 13.0, color: Colors.black),
+                      ),
+                    ]),
+                    Row(children: [
+                      Radio(value: false, groupValue: true, onChanged: (b) {}),
+                      Text(
+                        'No',
+                        style: getCustomFont(size: 13.0, color: Colors.black),
+                      ),
+                    ])
+                  ],
+                ),
+                const SizedBox(
+                  height: 5.0,
+                ),
+                getDropDownAssurance(),
+              ],
+            )),
         const SizedBox(
           height: 10.0,
         ),

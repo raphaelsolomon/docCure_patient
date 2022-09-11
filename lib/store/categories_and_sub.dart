@@ -1,5 +1,6 @@
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CategoriesAndSub extends StatelessWidget {
   const CategoriesAndSub({super.key});
@@ -29,13 +30,13 @@ class CategoriesAndSub extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             GestureDetector(
-                             
+                                onTap: () => Get.back(),
                                 child: Icon(
-                                  null,
+                                  Icons.arrow_back_ios,
                                   color: Colors.white,
                                   size: 19.0,
                                 )),
-                            Text('Categories',
+                            Text('Shop By Category',
                                 style: getCustomFont(
                                     size: 17.0, color: Colors.white)),
                             Icon(
@@ -54,33 +55,57 @@ class CategoriesAndSub extends StatelessWidget {
                 height: 10.0,
               ),
               Expanded(
-                  child: GridView.builder(
-                      padding: const EdgeInsets.only(right: 15.0, left: 15.0),
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: returnCrossAxis(
-                              MediaQuery.of(context).size.width),
-                          mainAxisSpacing: 15.0,
-                          mainAxisExtent: 90.0,
-                          crossAxisSpacing: 20.0),
-                      itemCount: 8,
-                      itemBuilder: (ctx, i) => Container(
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(13.0),
-                                image: DecorationImage(
-                                    image: AssetImage('assets/imgs/4.png'),
-                                    fit: BoxFit.cover)),
-                            child: Center(
-                              child: Text(
-                                'Antibiotics',
-                                style: getCustomFont(
-                                    color: Colors.white,
-                                    weight: FontWeight.w500),
-                              ),
-                            ),
-                          )))
+                  child: Row(
+                children: [
+                  const SizedBox(
+                    width: 15.0,
+                  ),
+                  Flexible(
+                      child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ...List.generate(
+                            7,
+                            (index) => Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 140.0,
+                                  margin: const EdgeInsets.only(bottom: 8.0),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(13.0),
+                                      image: DecorationImage(
+                                          image:
+                                              AssetImage('assets/imgs/4.png'),
+                                          fit: BoxFit.cover)),
+                                  child: Center(
+                                    child: Text(
+                                      'Antibiotics',
+                                      style: getCustomFont(
+                                          color: Colors.white,
+                                          weight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ))
+                      ],
+                    ),
+                  )),
+                  SizedBox(
+                    width: 13.0,
+                  ),
+                  Flexible(
+                      flex: 3,
+                      child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+                          margin: const EdgeInsets.only(bottom: 8.0),
+                          decoration: BoxDecoration(
+                              boxShadow: SHADOW,
+                              borderRadius: BorderRadius.circular(13.0),
+                              color: Colors.white))),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                ],
+              ))
             ])));
   }
 

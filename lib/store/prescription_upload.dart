@@ -2,10 +2,20 @@ import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:image_picker/image_picker.dart';
 
-class PrescriptionUpload extends StatelessWidget {
+class PrescriptionUpload extends StatefulWidget {
   final Function onBackPress;
-  const PrescriptionUpload(this.onBackPress, {super.key});
+  PrescriptionUpload(this.onBackPress, {super.key});
+
+  @override
+  State<PrescriptionUpload> createState() => _PrescriptionUploadState();
+}
+
+class _PrescriptionUploadState extends State<PrescriptionUpload> {
+  final ImagePicker _picker = ImagePicker();
+
+  XFile? photo;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +37,7 @@ class PrescriptionUpload extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                        onTap: () => onBackPress(),
+                        onTap: () => widget.onBackPress(),
                         child: Icon(
                           Icons.arrow_back_ios,
                           color: Colors.white,
@@ -50,28 +60,60 @@ class PrescriptionUpload extends StatelessWidget {
       const SizedBox(
         height: 30.0,
       ),
-      Expanded(child: Padding(
+      Expanded(
+          child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
-         children: [
-            createPrescriptionButton(context, FontAwesome5.camera, 'Camera'),
-            const SizedBox(height: 15.0,),
-             createPrescriptionButton(context, FontAwesome5.file_import, 'From Gallery'),
-            const SizedBox(height: 15.0,),
-             createPrescriptionButton(context, Icons.file_copy, 'My Prescriptions'),
-            const SizedBox(height: 30.0,),
+          children: [
+            GestureDetector(
+                onTap: () async {
+                  photo = await _picker.pickImage(source: ImageSource.camera);
+                },
+                child: createPrescriptionButton(
+                    context, FontAwesome5.camera, 'Camera')),
+            const SizedBox(
+              height: 15.0,
+            ),
+            GestureDetector(
+                onTap: () async {
+                  photo = await _picker.pickImage(source: ImageSource.camera);
+                },
+                child: createPrescriptionButton(
+                    context, FontAwesome5.file_import, 'From Gallery')),
+            const SizedBox(
+              height: 15.0,
+            ),
+            createPrescriptionButton(
+                context, Icons.file_copy, 'My Prescriptions'),
+            const SizedBox(
+              height: 30.0,
+            ),
             Text('Prescription Guide',
-                          style: getCustomFont(size: 17.0, color: Colors.black, weight: FontWeight.w500)),
-            const SizedBox(height: 20.0,),
-            createPrescriptionNote('Do not crop out any part of the prescription'),
-            const SizedBox(height: 15.0,),
+                style: getCustomFont(
+                    size: 17.0, color: Colors.black, weight: FontWeight.w500)),
+            const SizedBox(
+              height: 20.0,
+            ),
+            GestureDetector(
+                onTap: () {},
+                child: createPrescriptionNote(
+                    'Do not crop out any part of the prescription')),
+            const SizedBox(
+              height: 15.0,
+            ),
             createPrescriptionNote('Avoid blurred images'),
-            const SizedBox(height: 15.0,),
+            const SizedBox(
+              height: 15.0,
+            ),
             createPrescriptionNote('Include details of doctor & patient'),
-            const SizedBox(height: 15.0,),
+            const SizedBox(
+              height: 15.0,
+            ),
             createPrescriptionNote('medicine will deliver as per prescription'),
-            const SizedBox(height: 15.0,),
-         ],
+            const SizedBox(
+              height: 15.0,
+            ),
+          ],
         ),
       ))
     ]);

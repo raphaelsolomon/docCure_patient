@@ -1,13 +1,24 @@
+import 'dart:io';
+
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class ProfileSettings extends StatelessWidget {
+class ProfileSettings extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffold;
   const ProfileSettings(this.scaffold, {Key? key}) : super(key: key);
+
+  @override
+  State<ProfileSettings> createState() => _ProfileSettingsState();
+}
+
+class _ProfileSettingsState extends State<ProfileSettings> {
+  ImagePicker _picker = ImagePicker();
+  File image = File('');
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +29,13 @@ class ProfileSettings extends StatelessWidget {
         child: Column(children: [
           Container(
             padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 16.0),
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
             width: MediaQuery.of(context).size.width,
             height: 86.0,
             color: BLUECOLOR,
             child: Column(children: [
               const SizedBox(
-                height: 25.0,
+                height: 50.0,
               ),
               Row(
                 children: [
@@ -32,7 +43,8 @@ class ProfileSettings extends StatelessWidget {
                     child: Row(
                       children: [
                         GestureDetector(
-                            onTap: () => scaffold.currentState!.openDrawer(),
+                            onTap: () =>
+                                widget.scaffold.currentState!.openDrawer(),
                             child: Icon(Icons.menu,
                                 size: 20.0, color: Colors.white)),
                         const SizedBox(
@@ -63,12 +75,13 @@ class ProfileSettings extends StatelessWidget {
           Expanded(
               child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 0.0),
               child: Column(
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 10.0),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10.0)),
@@ -85,14 +98,29 @@ class ProfileSettings extends StatelessWidget {
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: Center(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100.0),
-                              child: Image.asset(
-                                'assets/imgs/1.png',
-                                width: 120.0,
-                                height: 120.0,
-                                fit: BoxFit.contain,
-                              ),
+                            child: GestureDetector(
+                              onTap: () async {
+                                var img = await _picker.pickImage(
+                                    source: ImageSource.gallery);
+                                setState(() {
+                                  image = File(img!.path);
+                                });
+                              },
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100.0),
+                                  child: image.path == ''
+                                      ? Image.asset(
+                                          'assets/imgs/1.png',
+                                          width: 100.0,
+                                          height: 100.0,
+                                          fit: BoxFit.contain,
+                                        )
+                                      : Image.file(
+                                          image,
+                                          width: 100.0,
+                                          height: 100.0,
+                                          fit: BoxFit.contain,
+                                        )),
                             ),
                           ),
                         ),
@@ -173,8 +201,9 @@ class ProfileSettings extends StatelessWidget {
           Container(
             height: 45.0,
             decoration: BoxDecoration(
-              border: Border.all(width: 1.0, color: Colors.black54),
-              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(width: 0.6, color: Colors.black45),
+              color: Colors.grey.shade100,
             ),
             child: Row(
               children: [
@@ -219,9 +248,9 @@ class ProfileSettings extends StatelessWidget {
                 Flexible(
                   child: Container(
                     height: 45.0,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFFFFFFF),
-                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     ),
                     margin: const EdgeInsets.only(top: 5.0),
                     child: FormBuilderDropdown(
@@ -235,9 +264,9 @@ class ProfileSettings extends StatelessWidget {
                             horizontal: 9.9, vertical: 5.0),
                         border: OutlineInputBorder(
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(5.0)),
+                              const BorderRadius.all(Radius.circular(10.0)),
                           borderSide:
-                              BorderSide(width: 1.0, color: Colors.grey),
+                              BorderSide(width: 0.6, color: Colors.grey),
                         ),
                       ),
                       // initialValue: 'Male',

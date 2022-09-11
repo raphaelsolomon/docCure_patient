@@ -589,246 +589,291 @@ class _MyProfileState extends State<MyProfile> {
 
   Widget patientProfile() => Column(
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: PhysicalModel(
-                  elevation: 10.0,
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100.0),
-                  shadowColor: Colors.grey,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 10.0),
-                    child: Icon(
-                      FontAwesome5.info,
-                      size: 15.0,
-                      color: Color(0xFF838383),
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 35.0,
+                  child: Stack(children: [
+                    Padding(
+                    padding: const EdgeInsets.only(top: 0.0),
+                    child: PhysicalModel(
+                      elevation: 10.0,
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(100.0),
+                      shadowColor: Colors.grey,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 10.0),
+                        child: Icon(
+                          FontAwesome5.info,
+                          size: 15.0,
+                          color: Color(0xFF838383),
+                        ),
+                      ),
                     ),
                   ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 35.0),
+                        child: VerticalDivider(
+                          color: Colors.black45,
+                          thickness: 2,
+                        ),
+                      ),
+                    ),
+                  ]),
                 ),
-              ),
-              const SizedBox(
-                width: 15.0,
-              ),
-              Flexible(
-                child: Container(
-                    padding: const EdgeInsets.all(15.0),
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 5.0),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.0),
-                        color: Colors.white,
-                        boxShadow: SHADOW),
-                    child: Column(
-                      children: [
-                        Row(
+                const SizedBox(
+                  width: 15.0,
+                ),
+                Flexible(
+                  child: Container(
+                      padding: const EdgeInsets.all(15.0),
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 5.0),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.0),
+                          color: Colors.white,
+                          boxShadow: SHADOW),
+                      child: Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                radius: 27.0,
+                                backgroundImage: AssetImage('assets/imgs/1.png'),
+                              ),
+                              const SizedBox(
+                                width: 15.0,
+                              ),
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Michelle Fairfax',
+                                      style: getCustomFont(
+                                          color: Colors.black,
+                                          size: 17.0,
+                                          weight: FontWeight.w400),
+                                    ),
+                                    Text(
+                                      'Patient ID - PT0025',
+                                      style: getCustomFont(
+                                          color: Colors.black54,
+                                          size: 13.0,
+                                          weight: FontWeight.w400),
+                                    ),
+                                    Text(
+                                      'Blood Group - O+',
+                                      style: getCustomFont(
+                                          color: Colors.black54,
+                                          size: 13.0,
+                                          weight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 20.0,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.phone,
+                                        size: 15.0, color: Colors.black),
+                                    const SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Text(
+                                      '+1 504 368 6874',
+                                      style: getCustomFont(
+                                          color: Colors.black54,
+                                          size: 13.0,
+                                          weight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Flexible(
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.location_on,
+                                        size: 15.0, color: Colors.black),
+                                    const SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Text(
+                                      'Florida, USA',
+                                      style: getCustomFont(
+                                          color: Colors.black54,
+                                          size: 13.0,
+                                          weight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )),
+                )
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 0.0,
+          ),
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+               Container(
+                  width: 35.0,
+                  child: Stack(children: [
+                    Padding(
+                    padding: const EdgeInsets.only(top: 0.0),
+                    child: PhysicalModel(
+                      elevation: 10.0,
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(100.0),
+                      shadowColor: Colors.grey,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 10.0),
+                        child: Icon(
+                          FontAwesome5.user,
+                          size: 15.0,
+                          color: Color(0xFF838383),
+                        ),
+                      ),
+                    ),
+                  ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 35.0),
+                        child: VerticalDivider(
+                          color: Colors.black45,
+                          thickness: 2,
+                        ),
+                      ),
+                    ),
+                  ]),
+                ),
+                const SizedBox(
+                  width: 15.0,
+                ),
+                Flexible(
+                  child: Container(
+                      padding: const EdgeInsets.all(15.0),
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 5.0),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.0),
+                          color: Colors.white,
+                          boxShadow: SHADOW),
+                      child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CircleAvatar(
-                              radius: 27.0,
-                              backgroundImage: AssetImage('assets/imgs/1.png'),
+                            Text(
+                              'About Me',
+                              style: getCustomFont(
+                                  color: Colors.black,
+                                  size: 17.0,
+                                  weight: FontWeight.w400),
                             ),
                             const SizedBox(
-                              width: 15.0,
+                              height: 10.0,
                             ),
-                            Flexible(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Michelle Fairfax',
-                                    style: getCustomFont(
-                                        color: Colors.black,
-                                        size: 17.0,
-                                        weight: FontWeight.w400),
-                                  ),
-                                  Text(
-                                    'Patient ID - PT0025',
-                                    style: getCustomFont(
-                                        color: Colors.black54,
-                                        size: 13.0,
-                                        weight: FontWeight.w400),
-                                  ),
-                                  Text(
-                                    'Blood Group - O+',
-                                    style: getCustomFont(
-                                        color: Colors.black54,
-                                        size: 13.0,
-                                        weight: FontWeight.w400),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
+                            Text(
+                              '$DUMMYTEXT',
+                              style: getCustomFont(
+                                  color: Colors.black54,
+                                  size: 13.0,
+                                  weight: FontWeight.w400),
+                            ),
+                          ])),
+                )
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 0.0,
+          ),
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 35.0,
+                  child: Stack(children: [
+                    PhysicalModel(
+                      elevation: 10.0,
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(100.0),
+                      shadowColor: Colors.grey,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 10.0),
+                        child: Icon(
+                          FontAwesome5.medkit,
+                          size: 15.0,
+                          color: Color(0xFF838383),
                         ),
-                        const SizedBox(
-                          height: 20.0,
+                      ),
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 35.0),
+                        child: VerticalDivider(
+                          color: Colors.transparent,
+                          thickness: 2,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      ),
+                    ),
+                  ]),
+                ),
+                const SizedBox(
+                  width: 15.0,
+                ),
+                Flexible(
+                  child: Container(
+                      padding: const EdgeInsets.all(15.0),
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 5.0),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.0),
+                          color: Colors.white,
+                          boxShadow: SHADOW),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Flexible(
-                              child: Row(
-                                children: [
-                                  Icon(Icons.phone,
-                                      size: 15.0, color: Colors.black),
-                                  const SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Text(
-                                    '+1 504 368 6874',
-                                    style: getCustomFont(
-                                        color: Colors.black54,
-                                        size: 13.0,
-                                        weight: FontWeight.w400),
-                                  ),
-                                ],
-                              ),
+                            Text(
+                              'Last Booking',
+                              style: getCustomFont(
+                                  color: Colors.black,
+                                  size: 17.0,
+                                  weight: FontWeight.w400),
                             ),
-                            Flexible(
-                              child: Row(
-                                children: [
-                                  Icon(Icons.location_on,
-                                      size: 15.0, color: Colors.black),
-                                  const SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Text(
-                                    'Florida, USA',
-                                    style: getCustomFont(
-                                        color: Colors.black54,
-                                        size: 13.0,
-                                        weight: FontWeight.w400),
-                                  ),
-                                ],
-                              ),
+                            const SizedBox(
+                              height: 10.0,
                             ),
-                          ],
-                        ),
-                      ],
-                    )),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: PhysicalModel(
-                  elevation: 10.0,
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100.0),
-                  shadowColor: Colors.grey,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 10.0),
-                    child: Icon(
-                      FontAwesome5.user,
-                      size: 15.0,
-                      color: Color(0xFF838383),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 15.0,
-              ),
-              Flexible(
-                child: Container(
-                    padding: const EdgeInsets.all(15.0),
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 5.0),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.0),
-                        color: Colors.white,
-                        boxShadow: SHADOW),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'About Me',
-                            style: getCustomFont(
-                                color: Colors.black,
-                                size: 17.0,
-                                weight: FontWeight.w400),
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          Text(
-                            '$DUMMYTEXT',
-                            style: getCustomFont(
-                                color: Colors.black54,
-                                size: 13.0,
-                                weight: FontWeight.w400),
-                          ),
-                        ])),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: PhysicalModel(
-                  elevation: 10.0,
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100.0),
-                  shadowColor: Colors.grey,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 10.0),
-                    child: Icon(
-                      FontAwesome5.medkit,
-                      size: 15.0,
-                      color: Color(0xFF838383),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 15.0,
-              ),
-              Flexible(
-                child: Container(
-                    padding: const EdgeInsets.all(15.0),
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 5.0),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.0),
-                        color: Colors.white,
-                        boxShadow: SHADOW),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Last Booking',
-                            style: getCustomFont(
-                                color: Colors.black,
-                                size: 17.0,
-                                weight: FontWeight.w400),
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          ...List.generate(2, (index) => lastBooking())
-                        ])),
-              )
-            ],
+                            ...List.generate(2, (index) => lastBooking())
+                          ])),
+                )
+              ],
+            ),
           )
         ],
       );

@@ -112,11 +112,18 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                                         Container(
                                           width: 68.0,
                                           height: 68.0,
-                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(100),
-                                          boxShadow: SHADOW
-                                          ,color: Colors.white
-                                          ),
-                                          child: Center(child: Image.asset(e['asset'], width: 40.0, height: 40.0, fit: BoxFit.contain,)),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(100),
+                                              boxShadow: SHADOW,
+                                              color: Colors.white),
+                                          child: Center(
+                                              child: Image.asset(
+                                            e['asset'],
+                                            width: 40.0,
+                                            height: 40.0,
+                                            fit: BoxFit.contain,
+                                          )),
                                         ),
                                         const SizedBox(
                                           height: 8.0,
@@ -147,7 +154,8 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                                   size: 19.0, color: Colors.black),
                             ),
                             InkWell(
-                              onTap: () => context.read<HomeController>().setPage(-1),
+                              onTap: () =>
+                                  context.read<HomeController>().setPage(-1),
                               child: Text(
                                 'View All',
                                 style: getCustomFont(
@@ -177,7 +185,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
                           child: Row(
                             children: [
-                              ...Advert.map((e) =>  advert(e)).toList()
+                              ...Advert.map((e) => advert(e)).toList()
                             ],
                           ),
                         ),
@@ -348,7 +356,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
         onTap: () => callBack(),
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height:40.0,
+          height: 40.0,
           decoration: BoxDecoration(
               color: color, borderRadius: BorderRadius.circular(7.0)),
           child: Padding(
@@ -547,7 +555,12 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                       ],
                     )
                   ],
-                ))
+                )),
+                Icon(
+                  Icons.bookmark_outline,
+                  size: 18.0,
+                  color: BLUECOLOR,
+                )
               ],
             ),
             const SizedBox(
