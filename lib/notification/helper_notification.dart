@@ -38,6 +38,15 @@ class HelperNotification {
         FilePathAndroidBitmap(''),
         largeIcon: FilePathAndroidBitmap(largeIcon));
 
-    return NotificationDetails();
+    return NotificationDetails(
+      android: AndroidNotificationDetails(
+        'channel_id_gettheskydoctors',
+        'channel name',
+        channelDescription: 'channel_description',
+        importance: Importance.max,
+        enableVibration: true,
+      ),
+      iOS: IOSNotificationDetails()
+    );
   }
 }
