@@ -13,6 +13,9 @@ import GoogleMaps
     FirebaseApp.configure()
     GMSServices.provideAPIKey("AIzaSyATma2tn2hS0AviulYrtjUDIgsJ1dFY7No")
     GeneratedPluginRegistrant.register(with: self)
+    if #available(iOS 10.0, *) {
+      UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
+    }
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
   override func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: data) {

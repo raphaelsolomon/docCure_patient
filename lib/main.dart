@@ -21,7 +21,7 @@ import 'package:provider/provider.dart';
 
 bool isFlutterLocalNotificationsInitialized = false;
 late AndroidNotificationChannel channel;
-late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -33,14 +33,14 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // Set the background messaging handler early on, as a named top-level function
   final RemoteMessage ? remoteMessage = await FirebaseMessaging.instance.getInitialMessage();
   if(remoteMessage != null){
-
+      print(remoteMessage);
   }
-  await HelperNotification.initialize(flutterLocalNotificationsPlugin);
+  await HelperNotification.initialize();
+  HelperNotification.onNotification.stream.listen(onClickedEvent);
+  // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
 
   var directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);
@@ -69,6 +69,10 @@ Future<void> main() async {
           ),
         ),
       ));
+}
+
+void onClickedEvent(String? payload) {
+
 }
 
 class MyApp extends StatelessWidget {
