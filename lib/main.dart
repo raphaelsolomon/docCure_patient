@@ -100,7 +100,7 @@ class MyApp extends StatelessWidget {
           Locale('en', ''),
           Locale('ar', ''),
         ],
-        title: 'DocCure Patient',
+        title: 'Patient',
         defaultTransition: Transition.zoom,
         debugShowCheckedModeBanner: true,
         theme: ThemeData(
