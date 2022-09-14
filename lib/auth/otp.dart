@@ -35,7 +35,7 @@ class _AuthOtpState extends State<AuthOtp> {
   final otp4 = TextEditingController();
   final node4 = FocusNode();
 
-  final box  = Hive.box<User>(BoxName);
+  final box = Hive.box<User>(BoxName);
 
   @override
   void initState() {
@@ -288,11 +288,18 @@ class _AuthOtpState extends State<AuthOtp> {
     });
 
     try {
-      final res =
-          await http.post(Uri.parse('${ROOTAPI}/api/user/email/verify'), body: {
-        'email': widget.body.trim(),
-        'otp': '${listOTp['1']}${listOTp['2']}${listOTp['3']}${listOTp['4']}'
-      });
+      final res = await http.post(Uri.parse('${ROOTAPI}/api/user/email/verify'),
+          body: widget.body.isEmail
+              ? {
+                  'email': widget.body.trim(),
+                  'otp':
+                      '${listOTp['1']}${listOTp['2']}${listOTp['3']}${listOTp['4']}'
+                }
+              : {
+                  'phone': widget.body.trim(),
+                  'otp':
+                      '${listOTp['1']}${listOTp['2']}${listOTp['3']}${listOTp['4']}'
+                });
       if (res.statusCode == 200) {
         final parsed = jsonDecode(res.body);
         popupMessage.dialogMessage(
