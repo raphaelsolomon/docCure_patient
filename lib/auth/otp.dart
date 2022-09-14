@@ -343,7 +343,7 @@ class _AuthOtpState extends State<AuthOtp> {
     setState(() => isResending = true);
     try {
       final res = await http.post(Uri.parse('${ROOTAPI}/api/user/otp/resend'),
-          body: {'email': widget.body.trim()});
+          body: widget.body.isEmail ? {'email': widget.body.trim()} : {'phone': widget.body.trim()});
       if (res.statusCode == 200) {
         final parsed = jsonDecode(res.body);
         popupMessage.dialogMessage(
