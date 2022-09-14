@@ -257,7 +257,7 @@ class _AuthOtpState extends State<AuthOtp> {
                   const SizedBox(
                     height: 15.0,
                   ),
-                  InkWell(
+                   widget.body.isEmail ? const SizedBox() : InkWell(
                     onTap: () {},
                     child: Text('Call me',
                         style: GoogleFonts.poppins(
