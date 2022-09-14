@@ -56,15 +56,6 @@ class _DashBoardState extends State<DashBoard> {
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      FirebaseMessaging.onMessage.listen((RemoteMessage msg) {
-        print('Got a message whilst in the foreground!');
-        print('Message data: ${msg.data}');
-
-        if (msg.notification != null) {
-          print('Message also contained a notification: ${msg.notification}');
-        }
-      });
-      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {});
       dialogMessage(context, subscribe(context));
       createClient();
     });

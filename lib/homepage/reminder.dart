@@ -135,7 +135,7 @@ class _MyReminderState extends State<MyReminder> {
                             const SizedBox(
                               height: 25.0,
                             ),
-                            getCardForm('Pill Name', 'Enter Pill Name'),
+                            getCardForm('Reminder Name', 'Enter Reminder Name'),
                             const SizedBox(
                               height: 20.0,
                             ),
