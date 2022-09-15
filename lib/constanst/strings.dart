@@ -322,7 +322,7 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         title: 'Communication',
         icon: FontAwesome5.facebook_messenger,
         children: [
-           {'index': -13, 'title': 'Social Media'},
+          {'index': -13, 'title': 'Social Media'},
         ],
         isOpen: false,
         index: 5),
@@ -385,8 +385,7 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
 const DUMMYTEXT =
     'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled';
 
-
-List<Map<String, dynamic>>countryListDrop = [
+List<Map<String, dynamic>> countryListDrop = [
   {"id": 1, "code": "93", "shortname": "AFG", "name": "Afghanistan"},
   {"id": 2, "code": "358 18", "shortname": "ALA", "name": "Åland Islands"},
   {"id": 3, "code": "355", "shortname": "ALB", "name": "Albania"},
@@ -827,7 +826,6 @@ List<Map<String, dynamic>>countryListDrop = [
   {"id": 248, "code": "260", "shortname": "ZMB", "name": "Zambia"},
   {"id": 249, "code": "263", "shortname": "ZWE", "name": "Zimbabwe"}
 ];
-
 
 List countryList = [
   {"id": 1, "code": "93", "shortname": "AFG", "name": "Afghanistan"},
@@ -1416,3 +1414,54 @@ List<String> HospitalClinic = [
 ];
 
 List<String> doctorServices = ['None', 'None', 'None', 'None'];
+
+List<String> SurgeryAndTrans = [
+  'Zenith Medical & Kidney Centre',
+  'Clarion Call Kidney Transplant program',
+  'Grandville Medical Center',
+  'Primus Hospital Nigeria',
+  'Clearview Hospital',
+  'Vedic Lifecare Hospital',
+  'Primrose Specialist Hospital',
+  'St. I\'ve Hospital',
+  'Reddington Hospital',
+  'Eko Hospital',
+  'St. Nicholas Hospital',
+  'Lagoon Hospital'
+];
+
+List<String> DiagnosisTest = [
+  'Vcare Diagnosis Limited',
+  'Hallmark Diagnostic Center',
+  'O2 Medical Diagnostic Services',
+  'Accunalysus Medical Diagnostic',
+  'Landmark Diagnostics',
+  'EL-Lab Medical Diagnostics and Research Center',
+  'Synlab',
+  'RiverLabs',
+  'Cleveland Clinic',
+  'Everight Diagnostic & Lab'
+];
+
+List<String> ServicesList = [
+  'Dental & Tooth Cleaning',
+  'Lab. Test',
+  'Surgical',
+  'Diagnostic',
+  'Ambulances',
+  'chiropractic',
+  'Mental',
+  'Substance abuse',
+  'Fluid & Allergy',
+  'Anesthesiology',
+  'Anticoagulation',
+  'Audiology',
+  'Breast Cancer',
+  'Cardiac',
+  'Dialysis',
+  'Dermatology',
+  'Diabetes',
+  'Diagnostic',
+  'Otorhinolaryngology',
+  'Orthopedics'
+];

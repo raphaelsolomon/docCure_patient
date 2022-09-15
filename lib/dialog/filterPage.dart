@@ -289,7 +289,11 @@ class _FilterPageState extends State<FilterPage> {
                         ? filterTreatmentType()
                         : widget.filterType == 'Hospital/Clinic'
                             ? filterHospitalType()
-                            : Container(),
+                            : widget.filterType == 'Diagnosis Test'
+                                ? filterDiagnosisType()
+                                : widget.filterType == 'Surgery/transplant'
+                                    ? filterSurgeryAndTransType()
+                                    : filterServicesType(),
                 const SizedBox(
                   height: 20.0,
                 ),
@@ -625,6 +629,70 @@ class _FilterPageState extends State<FilterPage> {
           ),
           getDropDownAssurance(
               HospitalClinic, 'First Consultants Medical Centre'),
+        ],
+      );
+
+  Widget filterServicesType() => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 20.0,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Text(
+              'Select Service Type',
+              style: getCustomFont(
+                  size: 15.0, color: Colors.black, weight: FontWeight.w500),
+            ),
+          ),
+          const SizedBox(
+            height: 9.0,
+          ),
+          getDropDownAssurance(ServicesList, 'Dental & Tooth Cleaning'),
+        ],
+      );
+
+  Widget filterSurgeryAndTransType() => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 20.0,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Text(
+              'Select Surgery And Trnsplant Type',
+              style: getCustomFont(
+                  size: 15.0, color: Colors.black, weight: FontWeight.w500),
+            ),
+          ),
+          const SizedBox(
+            height: 9.0,
+          ),
+          getDropDownAssurance(
+              SurgeryAndTrans, 'Zenith Medical & Kidney Centre'),
+        ],
+      );
+
+  Widget filterDiagnosisType() => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 20.0,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Text(
+              'Select Diagnosis Type',
+              style: getCustomFont(
+                  size: 15.0, color: Colors.black, weight: FontWeight.w500),
+            ),
+          ),
+          const SizedBox(
+            height: 9.0,
+          ),
+          getDropDownAssurance(DiagnosisTest, 'Vcare Diagnosis Limited'),
         ],
       );
 }
