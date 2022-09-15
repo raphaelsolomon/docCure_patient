@@ -23,7 +23,7 @@
     <application
         android:label="patient"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name="com.gettheskydoctors.patient.MainActivity"
             android:exported="true"
