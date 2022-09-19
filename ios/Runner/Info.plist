@@ -8,14 +8,14 @@
 	<dict>
 	<key>CFBundleURLSchemes</key>
 	<array>
-		<string>fb423275736456944</string>
+		<string>fb1275231889898366</string>
 	</array>
 	</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>423275736456944</string>
+	<string>1275231889898366</string>
 	<key>FacebookClientToken</key>
-	<string>50718284bb83dd156a04096601813ade</string>
+	<string>151341bd525ffc933ee40b8767912251</string>
 	<key>FacebookDisplayName</key>
 	<string>Patient</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>

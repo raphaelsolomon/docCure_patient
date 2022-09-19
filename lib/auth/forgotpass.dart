@@ -118,9 +118,10 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
                 height: 30.0,
               ),
               GestureDetector(
-                onTap: () => Get.to(() => AuthOtp(isEmail
-                    ? email.text.trim()
-                    : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}', false)),
+                 // onTap: () => Get.to(() => AuthOtp(isEmail
+                //     ? email.text.trim()
+                //     : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}', false)),
+                onTap: () => Get.back(),
                 child: Text(
                   'Back to login',
                   style: GoogleFonts.poppins(
