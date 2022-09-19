@@ -29,42 +29,37 @@ class _MyReminderState extends State<MyReminder> {
             color: Color(0xFFf6f6f6),
             child: Column(children: [
               Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 15.0, vertical: 0.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
                 width: MediaQuery.of(context).size.width,
-                height: 89.0,
                 color: BLUECOLOR,
                 child: Column(children: [
                   const SizedBox(
-                    height: 50.0,
+                    height: 45.0,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                          onTap: () {
-                            if (counter <= 0) {
-                              context.read<HomeController>().onBackPress();
-                            } else {
-                              setState(() {
-                                counter = counter - 1;
-                              });
-                            }
-                          },
+                          onTap: () =>
+                              context.read<HomeController>().onBackPress(),
                           child: Icon(
                             Icons.arrow_back_ios,
                             color: Colors.white,
-                            size: 20.0,
+                            size: 18.0,
                           )),
-                      Text(counter == 0 ? 'Reminders' : 'Create Reminder',
+                      Text('Reminder',
                           style:
-                              getCustomFont(size: 18.0, color: Colors.white)),
+                              getCustomFont(color: Colors.white, size: 16.0)),
                       Icon(
                         null,
                         color: Colors.white,
                       )
                     ],
-                  )
+                  ),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
                 ]),
               ),
               Expanded(
@@ -98,7 +93,8 @@ class _MyReminderState extends State<MyReminder> {
                                   ),
                                   Flexible(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text('Diabetes Pills',
                                             style: getCustomFont(
@@ -113,7 +109,7 @@ class _MyReminderState extends State<MyReminder> {
                                                 size: 13.0,
                                                 weight: FontWeight.normal,
                                                 color: Colors.black45)),
-                                                const SizedBox(
+                                        const SizedBox(
                                           height: 3.0,
                                         ),
                                         Text(
@@ -216,11 +212,11 @@ class _MyReminderState extends State<MyReminder> {
                                 )
                               ],
                             ),
-                             const SizedBox(
+                            const SizedBox(
                               height: 40.0,
                             ),
                             getPayButton(context, () {}),
-                             const SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
                           ],

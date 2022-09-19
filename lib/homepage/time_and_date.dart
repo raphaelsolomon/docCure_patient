@@ -11,6 +11,7 @@ import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:date_picker_timeline/date_picker_timeline.dart';
 
 class TimeAndDate extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffold;
@@ -72,41 +73,33 @@ class _TimeAndDateState extends State<TimeAndDate> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
               width: MediaQuery.of(context).size.width,
-              height: 89.0,
               color: BLUECOLOR,
               child: Column(children: [
                 const SizedBox(
-                  height: 50.0,
+                  height: 45.0,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Flexible(
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                              onTap: () =>
-                                  widget.scaffold.currentState!.openDrawer(),
-                              child: Icon(Icons.menu, color: Colors.white)),
-                          const SizedBox(
-                            width: 10.0,
-                          ),
-                          Text('Time and Date',
-                              style: GoogleFonts.poppins(
-                                  color: Colors.white, fontSize: 17.0))
-                        ],
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        context.read<HomeController>().setPage(12);
-                      },
-                      child: Icon(
-                        Icons.notifications_active,
-                        color: Colors.white,
-                      ),
+                    GestureDetector(
+                        onTap: () =>
+                            context.read<HomeController>().onBackPress(),
+                        child: Icon(
+                          Icons.arrow_back_ios,
+                          color: Colors.white,
+                          size: 18.0,
+                        )),
+                    Text('Time And Date',
+                        style: getCustomFont(color: Colors.white, size: 16.0)),
+                    Icon(
+                      null,
+                      color: Colors.white,
                     )
                   ],
-                )
+                ),
+                const SizedBox(
+                  height: 15.0,
+                ),
               ]),
             ),
             Expanded(
@@ -358,7 +351,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.all(15.0),
+                      padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8.0),
                           color: Colors.white,
@@ -369,55 +362,19 @@ class _TimeAndDateState extends State<TimeAndDate> {
                                 blurRadius: 10.0,
                                 offset: Offset(0.0, 1.0))
                           ]),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          circularButton(Icons.arrow_back_ios, () {
-                            if (DateTime.now().month - 1 < currentMonthDate) {
-                              setState(() {
-                                currentMonthDate = currentMonthDate - 1;
-                              });
-                            }
-                          }),
-                          Text(
-                            '${month[currentMonthDate]} ${DateTime.now().year}',
-                            style: getCustomFont(
-                                size: 15.0,
-                                color: Colors.black,
-                                weight: FontWeight.w400),
-                          ),
-                          circularButton(Icons.arrow_forward_ios, () {
-                            if (currentMonthDate < month.length - 1) {
-                              setState(() {
-                                currentMonthDate = currentMonthDate + 1;
-                              });
-                            }
-                          })
-                        ],
+                      child: DatePicker(
+                        DateTime.now(),
+                        initialSelectedDate: DateTime.now(),
+                        selectionColor: Colors.white,
+                        selectedTextColor: Colors.black,
+                        dayTextStyle: getCustomFont(color: Colors.white, size: 10.0),
+                        dateTextStyle: getCustomFont(color: Colors.white, size: 19.0),
+                        monthTextStyle: getCustomFont(color: Colors.white, size: 10.0),
+                        onDateChange: (date) {},
                       ),
                     ),
                     const SizedBox(
                       height: 10.0,
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      // child: CalendarWeek(
-                      //   controller: CalendarWeekController(),
-                      //   height: 100,
-                      //   showMonth: false,
-                      //   minDate: DateTime.now().add(
-                      //     Duration(days: -365),
-                      //   ),
-                      //   maxDate: DateTime.now().add(
-                      //     Duration(days: 365),
-                      //   ),
-                      //   onDatePressed: (DateTime datetime) {
-                      //     // Do something
-                      //   },
-                      // ),
-                    ),
-                    const SizedBox(
-                      height: 20.0,
                     ),
                     GridView.builder(
                         padding: const EdgeInsets.all(0.0),

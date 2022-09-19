@@ -15,28 +15,34 @@ class MyOffer extends StatelessWidget {
         child: Column(children: [
           Container(
             padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 16.0),
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
             width: MediaQuery.of(context).size.width,
-            height: 86.0,
             color: BLUECOLOR,
             child: Column(children: [
               const SizedBox(
-                height: 25.0,
+                height: 45.0,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
                       onTap: () => context.read<HomeController>().onBackPress(),
-                      child: Icon(Icons.menu, size: 20.0, color: Colors.white)),
-                  Text('My Offers/Coupons',
-                      style: getCustomFont(size: 18.0, color: Colors.white)),
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                        size: 18.0,
+                      )),
+                  Text('Offers/Coupons',
+                      style: getCustomFont(color: Colors.white, size: 16.0)),
                   Icon(
                     null,
                     color: Colors.white,
                   )
                 ],
-              )
+              ),
+              const SizedBox(
+                height: 15.0,
+              ),
             ]),
           ),
           const SizedBox(

@@ -16,17 +16,6 @@ const String CALL_STATUS_DIALLED = "dialled";
 const String CALL_STATUS_RECEIVED = "received";
 const String CALL_STATUS_MISSED = "missed";
 const USERPATH = 'details';
-List removeBottom = [12, -5, 9, -12, -6, -7, -9, 8, -8, 4];
-List removeBottom1 = [
-  7,
-  1,
-  5,
-  -1,
-  -4,
-  -2,
-  4,
-  8,
-];
 
 List<User> users = [
   // User(
@@ -262,6 +251,9 @@ getNavdraweritem(BuildContext context) {
   ];
 }
 
+List removeBottom = [1, -10, 3, 8, -14, -8, -5, 9, -9, -6, -19, -7, -12, 6, 8, -2, -13, -7];
+List removeBottom1 = [1, -10, 3, 8, -14, -8, -5, 9, -9, -6, -19, -7, -12, 6, 8, -2, -13, -7];
+
 List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
   return [
     NavDrawerItem(
@@ -323,9 +315,10 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         icon: FontAwesome5.facebook_messenger,
         children: [
           {'index': -13, 'title': 'Social Media'},
+          {'index': 5, 'title': 'Chat'},
         ],
         isOpen: false,
-        index: 5),
+        index: -0),
     // NavDrawerItem(
     //     title: 'My Prescription',
     //     icon: Icons.family_restroom,
@@ -344,7 +337,6 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         children: [
           {'index': -12, 'title': 'My Offer'},
           {'index': 6, 'title': 'My Invoices'},
-          {'index': -0, 'title': 'Account'},
           {'index': 8, 'title': 'Favourite'},
           //{'index': -0, 'title': 'Reviews'}
         ],
@@ -366,7 +358,6 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         title: 'Settings',
         icon: Icons.settings,
         children: [
-          // {'index': -13, 'title': 'Language'},
           {'index': -14, 'title': 'Currency'},
           {'index': -8, 'title': 'Change Password'},
           {'index': -5, 'title': 'Notification'}

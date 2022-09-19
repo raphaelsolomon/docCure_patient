@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:doccure_patient/auth/otp.dart';
+import 'package:doccure_patient/resources/firebase_method.dart';
 import 'package:http/http.dart' as http;
 import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
 import 'package:doccure_patient/auth/login.dart';
@@ -185,7 +186,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         socialAccount(FontAwesome.facebook, Color(0xFF1777F2),
-                            callBack: () {}),
+                            callBack: () => FirebaseMethods.facebookLogin()),
                         const SizedBox(
                           width: 20.0,
                         ),
@@ -195,7 +196,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                           width: 20.0,
                         ),
                         socialAccount(FontAwesome.google, Colors.redAccent,
-                            callBack: () {}),
+                            callBack: () => FirebaseMethods.googleSignIn()),
                       ],
                     ),
                     const SizedBox(

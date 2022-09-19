@@ -43,25 +43,21 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                               GestureDetector(
                                   onTap: () => widget.scaffold.currentState!
                                       .openDrawer(),
-                                  child: Icon(Icons.menu, color: Colors.white)),
+                                  child: Icon(Icons.menu,
+                                      color: Colors.white, size: 18.0)),
                               const SizedBox(
                                 width: 10.0,
                               ),
                               Text('Search Doctor',
                                   style: GoogleFonts.poppins(
-                                      color: Colors.white, fontSize: 18.0))
+                                      color: Colors.white, fontSize: 16.0))
                             ],
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            context.read<HomeController>().setPage(12);
-                          },
-                          child: Icon(
-                            Icons.notifications_active,
-                            color: Colors.white,
-                          ),
-                        )
+                        Icon(
+                          null,
+                          color: Colors.white,
+                        ),
                       ],
                     )
                   ]),

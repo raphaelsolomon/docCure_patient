@@ -56,24 +56,19 @@ class _SearchDoctorState extends State<SearchDoctor> {
                               GestureDetector(
                                   onTap: () => widget.scaffold.currentState!
                                       .openDrawer(),
-                                  child: Icon(Icons.menu, color: Colors.white)),
+                                  child: Icon(Icons.menu, color: Colors.white,size: 18.0)),
                               const SizedBox(
                                 width: 10.0,
                               ),
                               Text('Search by Doctor',
                                   style: getCustomFont(
-                                      size: 18.0, color: Colors.white))
+                                      size: 16.0, color: Colors.white))
                             ],
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            context.read<HomeController>().setPage(12);
-                          },
-                          child: Icon(
-                            Icons.notifications_active,
-                            color: Colors.white,
-                          ),
+                        Icon(
+                          null,
+                          color: Colors.white,
                         )
                       ],
                     ),

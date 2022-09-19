@@ -20,9 +20,9 @@ class PickupLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (user != null && user!.uid != null)
+    return (user != null && user!.email != null)
         ? StreamBuilder<DocumentSnapshot>(
-            stream: callMethods.callStream(uid: user!.uid!),
+            stream: callMethods.callStream(uid: user!.email!),
             builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
               if (snapshot.data != null && snapshot.data!.exists) {
                 Call call = Call(

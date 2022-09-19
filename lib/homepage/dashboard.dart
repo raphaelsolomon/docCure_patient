@@ -2,6 +2,7 @@ import 'package:agora_rtm/agora_rtm.dart';
 import 'package:doccure_patient/auth/change_password.dart';
 import 'package:doccure_patient/callscreens/pickup/pick_layout.dart';
 import 'package:doccure_patient/chat/chat_list.dart';
+import 'package:doccure_patient/company/account.dart';
 import 'package:doccure_patient/company/invoice_receipt.dart';
 import 'package:doccure_patient/company/myoffer.dart';
 import 'package:doccure_patient/company/myprescription.dart';
@@ -133,14 +134,7 @@ class _DashBoardState extends State<DashBoard> {
                                                                                                                 ? FindDoctorsPage(scaffold)
                                                                                                                 : page ==-13 
                                                                                                                     ? SocialMedia(scaffold)
-                                                                                                                    :Container(
-                                                                                                                    child: Center(
-                                                                                                                      child: Text(
-                                                                                                                        'Development Mode..',
-                                                                                                                        style: getCustomFont(size: 19.0, color: Colors.black),
-                                                                                                                      ),
-                                                                                                                    ),
-                                                                                                                  ),
+                                                                                                                    : AccountPage(),
                     !isVisible &&
                             (!removeBottom.contains(page) &&
                                 !removeBottom1.contains(page))

@@ -14,41 +14,36 @@ class ShareApp extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         color: Color(0xFFf6f6f6),
         child: Column(children: [
-          Container(
+           Container(
             padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 16.0),
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
             width: MediaQuery.of(context).size.width,
-            height: 86.0,
             color: BLUECOLOR,
             child: Column(children: [
               const SizedBox(
-                height: 25.0,
+                height: 45.0,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flexible(
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                            onTap: () =>
-                                context.read<HomeController>().onBackPress(),
-                            child: Icon(Icons.arrow_back_ios,
-                                size: 20.0, color: Colors.white)),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Text('Share The Love',
-                            style:
-                                getCustomFont(size: 18.0, color: Colors.white))
-                      ],
-                    ),
-                  ),
+                  GestureDetector(
+                      onTap: () => context.read<HomeController>().onBackPress(),
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                        size: 18.0,
+                      )),
+                  Text('Share App',
+                      style: getCustomFont(color: Colors.white, size: 16.0)),
                   Icon(
                     null,
                     color: Colors.white,
                   )
                 ],
-              )
+              ),
+              const SizedBox(
+                height: 15.0,
+              ),
             ]),
           ),
           Expanded(

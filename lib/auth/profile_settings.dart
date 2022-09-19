@@ -1,8 +1,10 @@
 import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ProfileSettings extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffold;
@@ -38,40 +40,36 @@ class _ProfileSettingsState extends State<ProfileSettings> {
         height: MediaQuery.of(context).size.height,
         color: Color(0xFFf6f6f6),
         child: Column(children: [
-          Container(
+           Container(
             padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 16.0),
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
             width: MediaQuery.of(context).size.width,
-            height: 86.0,
             color: BLUECOLOR,
             child: Column(children: [
               const SizedBox(
-                height: 25.0,
+                height: 45.0,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flexible(
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                            onTap: () =>
-                                widget.scaffold.currentState!.openDrawer(),
-                            child: Icon(Icons.menu, color: Colors.white)),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Text('Profile Settings',
-                            style:
-                                getCustomFont(size: 18.0, color: Colors.white))
-                      ],
-                    ),
-                  ),
+                  GestureDetector(
+                      onTap: () => context.read<HomeController>().onBackPress(),
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                        size: 18.0,
+                      )),
+                  Text('Profile Settings',
+                      style: getCustomFont(color: Colors.white, size: 16.0)),
                   Icon(
-                    Icons.notifications_active,
+                    null,
                     color: Colors.white,
                   )
                 ],
-              )
+              ),
+              const SizedBox(
+                height: 15.0,
+              ),
             ]),
           ),
           Padding(

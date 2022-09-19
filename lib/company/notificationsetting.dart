@@ -22,48 +22,36 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
         height: MediaQuery.of(context).size.height,
         color: Color(0xFFf6f6f6),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Container(
+           Container(
             padding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
             width: MediaQuery.of(context).size.width,
-            height: 86.0,
             color: BLUECOLOR,
             child: Column(children: [
               const SizedBox(
-                height: 50.0,
+                height: 45.0,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flexible(
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                            onTap: () =>
-                                context.read<HomeController>().onBackPress(),
-                            child: Icon(Icons.arrow_back_ios,
-                                size: 19.0, color: Colors.white)),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Text('Notification Settings',
-                            style:
-                                getCustomFont(size: 18.0, color: Colors.white))
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 13.0, vertical: 5.0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50.0),
-                        color: Colors.white),
-                    child: Text(
-                      'save',
-                      style: getCustomFont(size: 11.0, color: BLUECOLOR),
-                    ),
+                  GestureDetector(
+                      onTap: () => context.read<HomeController>().onBackPress(),
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                        size: 18.0,
+                      )),
+                  Text('Notification Settings',
+                      style: getCustomFont(color: Colors.white, size: 16.0)),
+                  Icon(
+                    null,
+                    color: Colors.white,
                   )
                 ],
-              )
+              ),
+              const SizedBox(
+                height: 15.0,
+              ),
             ]),
           ),
           const SizedBox(

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:doccure_patient/resources/firebase_method.dart';
 import 'package:doccure_patient/auth/forgotpass.dart';
 import 'package:doccure_patient/auth/register.dart';
 import 'package:doccure_patient/constanst/strings.dart';
@@ -171,17 +171,17 @@ class _AuthLoginState extends State<AuthLogin> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   socialAccount(FontAwesome.facebook, Color(0xFF1777F2),
-                      callBack: () {}),
-                  const SizedBox(
-                    width: 20.0,
-                  ),
-                  socialAccount(FontAwesome.linkedin, Color(0xFF0078B5),
-                      callBack: () {}),
-                  const SizedBox(
-                    width: 20.0,
-                  ),
-                  socialAccount(FontAwesome.google, Colors.redAccent,
-                      callBack: () {}),
+                            callBack: () => FirebaseMethods.facebookLogin()),
+                        const SizedBox(
+                          width: 20.0,
+                        ),
+                        socialAccount(FontAwesome.linkedin, Color(0xFF0078B5),
+                            callBack: () {}),
+                        const SizedBox(
+                          width: 20.0,
+                        ),
+                        socialAccount(FontAwesome.google, Colors.redAccent,
+                            callBack: () => FirebaseMethods.googleSignIn()),
                 ],
               ),
               const SizedBox(

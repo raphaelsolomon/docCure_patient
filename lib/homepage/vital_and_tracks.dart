@@ -51,46 +51,37 @@ class _VitalAndTracksState extends State<VitalAndTracks> {
             color: Color(0xFFf6f6f6),
             child: Column(children: [
               Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 15.0, vertical: 16.0),
-                width: MediaQuery.of(context).size.width,
-                height: 86.0,
-                color: BLUECOLOR,
-                child: Column(children: [
-                  const SizedBox(
-                    height: 25.0,
-                  ),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: Row(
-                          children: [
-                            GestureDetector(
-                                onTap: () =>
-                                    widget.scaffold.currentState!.openDrawer(),
-                                child: Icon(Icons.menu, color: Colors.white)),
-                            const SizedBox(
-                              width: 10.0,
-                            ),
-                            Text('Vital & Tracks',
-                                style: getCustomFont(
-                                    size: 18.0, color: Colors.white))
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          context.read<HomeController>().setPage(12);
-                        },
-                        child: Icon(
-                          Icons.notifications_active,
-                          color: Colors.white,
-                        ),
-                      )
-                    ],
-                  )
-                ]),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+            width: MediaQuery.of(context).size.width,
+            color: BLUECOLOR,
+            child: Column(children: [
+              const SizedBox(
+                height: 45.0,
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                      onTap: () => context.read<HomeController>().onBackPress(),
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                        size: 18.0,
+                      )),
+                  Text('Vitals And Tracks',
+                      style: getCustomFont(color: Colors.white, size: 16.0)),
+                  Icon(
+                    null,
+                    color: Colors.white,
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 15.0,
+              ),
+            ]),
+          ),
               Expanded(
                   child: SingleChildScrollView(
                 child: Column(

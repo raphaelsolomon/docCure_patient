@@ -398,7 +398,7 @@ navDrawer(BuildContext context, scaffold) => Container(
     );
 
 setChildrenClickListener(e, BuildContext context) {
-  switch (e['index']) {
+  switch (e['index'] as int) {
     case 6:
       context.read<HomeController>().setPage(6);
       break;
