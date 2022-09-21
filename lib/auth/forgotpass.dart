@@ -1,6 +1,6 @@
 import 'package:doccure_patient/auth/forget_OTP.dart';
 import 'package:doccure_patient/auth/login.dart';
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:doccure_patient/services/request.dart';
 import 'package:flutter/material.dart';

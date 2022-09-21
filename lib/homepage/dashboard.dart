@@ -14,7 +14,7 @@ import 'package:doccure_patient/company/rateus.dart';
 import 'package:doccure_patient/company/shareapp.dart';
 import 'package:doccure_patient/company/socialmedia.dart';
 import 'package:doccure_patient/company/support.dart';
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/homepage/doctor_profile.dart';
 import 'package:doccure_patient/homepage/find_doctors.dart';

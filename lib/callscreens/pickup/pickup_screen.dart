@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:doccure_patient/callscreens/videocallscreen.dart';
 import 'package:doccure_patient/callscreens/voicecallscreen.dart';
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/model/call.dart';
 import 'package:doccure_patient/permission/permissions.dart';
 import 'package:doccure_patient/resources/call_methods.dart';

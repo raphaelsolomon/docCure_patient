@@ -1,5 +1,5 @@
 // ignore_for_file: must_be_immutable
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/model/timeing_model.dart';
 import 'package:doccure_patient/providers/page_controller.dart';

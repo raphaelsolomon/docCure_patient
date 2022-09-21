@@ -1,4 +1,4 @@
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/model/cart_model.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';

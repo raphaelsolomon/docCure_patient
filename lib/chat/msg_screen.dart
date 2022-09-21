@@ -1,6 +1,6 @@
 import 'package:agora_rtm/agora_rtm.dart';
 import 'package:doccure_patient/callscreens/pickup/pick_layout.dart';
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/msg_log.dart';
 import 'package:flutter/foundation.dart';

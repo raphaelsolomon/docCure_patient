@@ -119,6 +119,8 @@ flutter:
     - assets/imgs/
     - assets/fonts/
     - assets/auth/
+    - assets/estore/
+    
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

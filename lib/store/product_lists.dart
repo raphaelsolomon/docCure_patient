@@ -1,4 +1,4 @@
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/store/product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

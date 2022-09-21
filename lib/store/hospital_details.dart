@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

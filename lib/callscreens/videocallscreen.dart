@@ -8,7 +8,7 @@ import 'package:agora_rtc_engine/rtc_local_view.dart' as rtclocalview;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtcremoteview;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doccure_patient/callscreens/time_view.dart';
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/model/call.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:doccure_patient/resources/call_methods.dart';

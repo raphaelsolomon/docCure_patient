@@ -1,5 +1,5 @@
 import 'package:doccure_patient/auth/login.dart';
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/dialog/add_family.dart';
 import 'package:doccure_patient/main.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';

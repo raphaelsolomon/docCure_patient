@@ -1,6 +1,6 @@
 import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/auth/register.dart';
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';

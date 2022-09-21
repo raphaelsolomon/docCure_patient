@@ -1,5 +1,5 @@
 import 'package:doccure_patient/auth/otp.dart';
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

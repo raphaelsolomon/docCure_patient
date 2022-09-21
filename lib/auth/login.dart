@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:doccure_patient/resources/firebase_method.dart';
 import 'package:doccure_patient/auth/forgotpass.dart';
 import 'package:doccure_patient/auth/register.dart';
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/homepage/dashboard.dart';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';

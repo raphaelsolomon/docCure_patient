@@ -1,4 +1,4 @@
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:doccure_patient/store/hospital_details.dart';
@@ -94,7 +94,7 @@ Widget getDashboard(context, width) => Padding(
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
-                          ...List.generate(10, (index) => firstScroll())
+                           ...shop_by_categgory.map((e) => firstScroll(e))
                         ],
                       ),
                     ),
@@ -127,7 +127,7 @@ Widget getDashboard(context, width) => Padding(
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
-                          ...List.generate(10, (index) => secondScroll(context))
+                          ...shop_by_offer.map((e) => secondScroll(context, e))
                         ],
                       ),
                     ),
@@ -167,8 +167,8 @@ Widget getDashboard(context, width) => Padding(
                             mainAxisSpacing: 15.0,
                             mainAxisExtent: 50.0,
                             crossAxisSpacing: 20.0),
-                        itemCount: 8,
-                        itemBuilder: (ctx, i) => thirdScroll(context)),
+                        itemCount: allStores.length,
+                        itemBuilder: (ctx, i) => thirdScroll(context, allStores[i])),
                     const SizedBox(
                       height: 85.0,
                     ),
@@ -285,7 +285,7 @@ Widget getHospital(context, Function brand, {onBack}) => Padding(
                         padding: const EdgeInsets.only(left: 20.0),
                         child: Row(
                           children: [
-                            ...List.generate(10, (index) => firstScroll())
+                            ...shop_by_categgory.map((e) => firstScroll(e))
                           ],
                         ),
                       ),
@@ -561,7 +561,7 @@ Widget getPharmacy(context, Function brand, {onBack}) => Padding(
                         padding: const EdgeInsets.only(left: 20.0),
                         child: Row(
                           children: [
-                            ...List.generate(10, (index) => firstScroll())
+                             ...shop_by_categgory.map((e) => firstScroll(e))
                           ],
                         ),
                       ),

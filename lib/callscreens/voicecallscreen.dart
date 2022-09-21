@@ -5,7 +5,7 @@ import 'dart:ui';
 
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/model/call.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:doccure_patient/resources/call_methods.dart';

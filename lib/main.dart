@@ -1,6 +1,6 @@
 import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/auth/onboarding.dart';
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/firebase_options.dart';
 import 'package:doccure_patient/homepage/dashboard.dart';
 import 'package:doccure_patient/model/person/user.dart';

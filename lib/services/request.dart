@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:doccure_patient/constanst/strings.dart';
+import 'package:doccure_patient/constant/strings.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
