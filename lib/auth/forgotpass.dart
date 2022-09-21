@@ -1,10 +1,16 @@
-import 'package:doccure_patient/auth/otp.dart';
+import 'package:doccure_patient/auth/forget_OTP.dart';
+import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/constanst/strings.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
+import 'package:doccure_patient/services/request.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:phone_form_field/phone_form_field.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
 
 class AuthForgotPass extends StatefulWidget {
   const AuthForgotPass({Key? key}) : super(key: key);
@@ -17,6 +23,7 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
   bool isEmail = true;
   late PhoneController phoneController;
   final email = TextEditingController();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -113,15 +120,20 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
               const SizedBox(
                 height: 50.0,
               ),
-              getButton(context, () {}, text: 'Reset Password'),
+              isLoading
+                  ? SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Center(
+                        child: CircularProgressIndicator(color: BLUECOLOR),
+                      ),
+                    )
+                  : getButton(context, () => validDate(),
+                      text: 'Reset Password'),
               const SizedBox(
                 height: 30.0,
               ),
               GestureDetector(
-                 // onTap: () => Get.to(() => AuthOtp(isEmail
-                //     ? email.text.trim()
-                //     : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}', false)),
-                onTap: () => Get.back(),
+                onTap: () => Get.off(() => AuthLogin()),
                 child: Text(
                   'Back to login',
                   style: GoogleFonts.poppins(
@@ -190,4 +202,67 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
           ),
         ],
       );
+
+  void validDate() async {
+    if (isEmail && email.text.trim().isEmpty) {
+      popupMessage.dialogMessage(
+          context, popupMessage.serviceMessage(context, 'Input not valid'));
+      return;
+    }
+
+    if (!isEmail && phoneController.value == null) {
+      popupMessage.dialogMessage(
+          context, popupMessage.serviceMessage(context, 'Input not valid'));
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final res =
+          await http.post(Uri.parse('${ROOTAPI}/api/user/forget/password/init'),
+              body: isEmail
+                  ? {
+                      'email': email.text.trim(),
+                    }
+                  : {
+                      'phone':
+                          '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+                    });
+      if (res.statusCode == 200) {
+        final parsed = jsonDecode(res.body);
+        popupMessage.dialogMessage(
+            context,
+            popupMessage.serviceMessage(context, parsed['message'],
+                status: true, cB: () {
+              Get.to(() => ForgotOtp(
+                  isEmail
+                      ? email.text.trim()
+                      : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+                  false));
+            }),
+            barrierDismiss: false);
+      } else {
+        final parsed = jsonDecode(res.body);
+        popupMessage.dialogMessage(
+            context,
+            popupMessage.serviceMessage(context, parsed['message'],
+                status: false));
+      }
+    } on SocketException {
+      popupMessage.dialogMessage(
+          context,
+          popupMessage.serviceMessage(
+              context, 'Plase check internect connection',
+              status: false));
+    } finally {
+      setState(() {
+        isLoading = false;
+        email.clear();
+        phoneController.reset();
+      });
+    }
+  }
 }
