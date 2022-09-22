@@ -192,7 +192,7 @@ class _AuthLoginState extends State<AuthLogin> {
                                 ],
                                 onGetUserProfile: (user) {
                                   print('${user.user.token.accessToken} - ${user.user.firstName!.localized!.label} - ${user.user.lastName!.localized!.label} - ${user.user.profilePicture!.displayImageContent!.elements!.first.identifiers!.first.identifier} - ${user.user.userId} - ${user.user.email!.elements!.first.handleDeep!.emailAddress}');
-                                  Get.offAll(() => Dashboard());
+                                  Get.offAll(() => DashBoard());
                                 },
                                 onError: (e) {
                                   print('Error: ${e.toString()}');
