@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:get/get.dart';
+import 'package:linkedin_login/linkedin_login.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
@@ -191,7 +192,29 @@ class _AuthRegisterState extends State<AuthRegister> {
                           width: 20.0,
                         ),
                         socialAccount(FontAwesome.linkedin, Color(0xFF0078B5),
-                            callBack: () {}),
+                            callBack: () {
+                              Get.to(() => LinkedInUserWidget(
+                                redirectUrl: LINKEDIN_REDIRECT,
+                                clientId: LINKEDIN_CLIENTID,
+                                clientSecret: LINKEDIN_SECRET,
+                                projection: const [
+                                  ProjectionParameters.id,
+                                  ProjectionParameters.localizedFirstName,
+                                  ProjectionParameters.localizedLastName,
+                                  ProjectionParameters.firstName,
+                                  ProjectionParameters.lastName,
+                                  ProjectionParameters.profilePicture,
+                                ],
+                                onGetUserProfile: (user) {
+                                  print('${user.user.token.accessToken} - ${user.user.firstName!.localized!.label} - ${user.user.lastName!.localized!.label} - ${user.user.profilePicture!.displayImageContent!.elements!.first.identifiers!.first.identifier} - ${user.user.userId} - ${user.user.email!.elements!.first.handleDeep!.emailAddress}');
+                                  Get.offAll(() => Dashboard());
+                                },
+                                onError: (e) {
+                                  print('Error: ${e.toString()}');
+                                  print('Error: ${e.stackTrace.toString()}');
+                                },
+                              ));
+                            }),
                         const SizedBox(
                           width: 20.0,
                         ),
