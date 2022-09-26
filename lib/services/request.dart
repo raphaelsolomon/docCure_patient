@@ -5,8 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
 const String ROOTAPI = 'https://api.gettheskydoctors.com';
+const String PATIENT_API = "http://patient.gettheskydoctors.com";
 
-class RequestApiServices {
+class ApiServices {
   String GOOGLEAPI = 'https://fcm.googleapis.com/fcm/send';
 
   void sendNotification(token) async {
@@ -31,5 +32,21 @@ class RequestApiServices {
     final file = File(filePath);
     await file.writeAsBytes(response.bodyBytes);
     return filePath;
+  }
+
+  static Future<Map<String, dynamic>> getProfile(token) async {
+    final request = await http.Request('GET', Uri.parse(PATIENT_API));
+    request.body = json.encode({
+        "url": "http://patient.gettheskydoctors.com"
+    });
+    request.headers.addAll({
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    });
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    }
+    return {};
   }
 }

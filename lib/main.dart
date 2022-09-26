@@ -7,9 +7,11 @@ import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/notification/helper_notification.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
+import 'package:doccure_patient/services/request.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -22,7 +24,6 @@ import 'package:provider/provider.dart';
 bool isFlutterLocalNotificationsInitialized = false;
 late AndroidNotificationChannel channel;
 
-
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   print('A bg message just showed up : ${message.messageId}');
@@ -33,9 +34,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final RemoteMessage ? remoteMessage = await FirebaseMessaging.instance.getInitialMessage();
-  if(remoteMessage != null){
-      print(remoteMessage);
+  final RemoteMessage? remoteMessage =
+      await FirebaseMessaging.instance.getInitialMessage();
+  if (remoteMessage != null) {
+    print(remoteMessage);
   }
   await HelperNotification.initialize();
   HelperNotification.onNotification.stream.listen(onClickedEvent);
@@ -71,18 +73,30 @@ Future<void> main() async {
       ));
 }
 
-void onClickedEvent(String? payload) {
+void onClickedEvent(String? payload) {}
 
-}
-
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+  final box = Hive.box('Initialization');
+  final Box<User> user = Hive.box<User>(BoxName);
+
+  @override
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final box = Hive.box('Initialization');
-    final Box<User> user = Hive.box<User>(BoxName);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
