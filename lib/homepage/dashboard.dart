@@ -30,8 +30,10 @@ import 'package:doccure_patient/homepage/vital_and_tracks.dart';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/msg_log.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
+import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:doccure_patient/resuable/custom_nav.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
+import 'package:doccure_patient/services/request.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +58,11 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (box.get(USERPATH) != null) {
+        final response = await ApiServices.getProfile(box.get(USERPATH)!.token);
+        context.read<UserProvider>().setProfile(response);
+      }
       dialogMessage(context, subscribe(context));
       createClient();
     });

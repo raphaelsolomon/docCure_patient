@@ -8,6 +8,10 @@ import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const String CALL_COLLECTION = "call";
+const LINKEDIN_CLIENTID= '772wa1uu6cvroc';
+const LINKEDIN_SECRET = 'aQF6dRF0wmkPm366';
+const LINKEDIN_REDIRECT = 'https://www.linkedin.com/developers/tools/oauth/redirect';
+const LINKEDIN_ACCESS = 'AQUQv9Hzq_OEB82jAgynLLVp8PADGaUcE2bBug-WWAg100hOYKIWBAH1Vt8fXS-y20jB5YSYbr5yLq0Itv7H-s72JHxVfochrVOf-WSneoxOhMiriw16WwGlabu1PwbtvFTaAoyVYYL943stj_Qb7bj76GKqQPTOlTQlGwYfqB8NS1_YLzNdsx9M3rZrnMKAoOH6IiQW-T8YfTUyfYeRj0tLn2MMqDbr1kh2h5yMY8uEm-tmsP451X5L_UBNcrPf_GKkODH-kyZvO6PofJOP3rSKoZ41O1hLjPcYkKV8-lLdDHLgTXylWdQQ_3yIeJb5vVeMYTX7FhtX32EfMXObS3deTYinzw';
 const String APP_ID = "696c822eb6044bdda1120f3a7ae97fc2";
 const String FIREBASE_WEB_TOKEN =
     "AAAAqF03j5w:APA91bFWo0NcDfGQSWBlMOXw5S7_PoxTzn8ysxuB2CVVUEJXYujYJxxxw6Yl_qTI4bUgICzdTtx66o1QhKfJAcCd_wsqqrcEyItKJRXhIo5xAsV8mVGrmq07QiBorF-J4_HEIic7aR8W";

@@ -45,7 +45,7 @@ class HelperNotification {
   }
 
   static Future showNotification(FlutterLocalNotificationsPlugin plugin, {int id = 0, title, body, payload}) async {
-    final largeIcon = await RequestApiServices.downloadFile('url', DateTime.now().toString());
+    final largeIcon = await ApiServices.downloadFile('url', DateTime.now().toString());
     final styleInformation = BigPictureStyleInformation(
         FilePathAndroidBitmap(''),
         largeIcon: FilePathAndroidBitmap(largeIcon));

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:doccure_patient/resources/firebase_method.dart';
 import 'package:doccure_patient/auth/forgotpass.dart';
 import 'package:doccure_patient/auth/register.dart';
@@ -9,6 +10,7 @@ import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:doccure_patient/services/request.dart';
 import 'package:flutter/material.dart';
+import 'package:linkedin_login/linkedin_login.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:get/get.dart';
@@ -17,6 +19,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:http/http.dart' as http;
 import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
+import 'package:provider/provider.dart';
 
 class AuthLogin extends StatefulWidget {
   const AuthLogin({Key? key}) : super(key: key);
@@ -176,7 +179,29 @@ class _AuthLoginState extends State<AuthLogin> {
                           width: 20.0,
                         ),
                         socialAccount(FontAwesome.linkedin, Color(0xFF0078B5),
-                            callBack: () {}),
+                            callBack: () {
+                              Get.to(() => LinkedInUserWidget(
+                                redirectUrl: LINKEDIN_REDIRECT,
+                                clientId: LINKEDIN_CLIENTID,
+                                clientSecret: LINKEDIN_SECRET,
+                                projection: const [
+                                  ProjectionParameters.id,
+                                  ProjectionParameters.localizedFirstName,
+                                  ProjectionParameters.localizedLastName,
+                                  ProjectionParameters.firstName,
+                                  ProjectionParameters.lastName,
+                                  ProjectionParameters.profilePicture,
+                                ],
+                                onGetUserProfile: (user) {
+                                  print('${user.user.token.accessToken} - ${user.user.firstName!.localized!.label} - ${user.user.lastName!.localized!.label} - ${user.user.profilePicture!.displayImageContent!.elements!.first.identifiers!.first.identifier} - ${user.user.userId} - ${user.user.email!.elements!.first.handleDeep!.emailAddress}');
+                                  Get.offAll(() => DashBoard());
+                                },
+                                onError: (e) {
+                                  print('Error: ${e.toString()}');
+                                  print('Error: ${e.stackTrace.toString()}');
+                                },
+                              ));
+                            }),
                         const SizedBox(
                           width: 20.0,
                         ),
@@ -310,39 +335,31 @@ class _AuthLoginState extends State<AuthLogin> {
                   'password': password.text.trim(),
                 }
               : {
-                  'phone':
-                      '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+                  'phone': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
                   'password': password.text.trim(),
                 });
       if (res.statusCode == 200) {
         final parsed = jsonDecode(res.body);
-        getUserProfile(
-            parsed['data']['access_token'], parsed['data']['redirect_url']);
+        Map<String, dynamic> result = await ApiServices.getProfile(parsed['data']['access_token']);
+        context.read<UserProvider>().setProfile(result);
+        getUserProfile(parsed['data']['access_token'], parsed['data']['redirect_url']);
       } else {
         setState(() {
           isLoading = false;
         });
         final parsed = jsonDecode(res.body);
-        popupMessage.dialogMessage(
-            context,
-            popupMessage.serviceMessage(context, parsed['message'],
-                status: false));
+        popupMessage.dialogMessage(context,  popupMessage.serviceMessage(context, parsed['message'], status: false));
       }
     } on SocketException {
       setState(() {
         isLoading = false;
       });
-      popupMessage.dialogMessage(
-          context,
-          popupMessage.serviceMessage(
-              context, 'Plase check internect connection',
-              status: false));
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Plase check internect connection', status: false));
     }
   }
 
   getUserProfile(token, newURL) async {
-    final res = await http.get(Uri.parse('${ROOTAPI}/api/user/profile'),
-        headers: {'Authorization': 'Bearer ${token}'});
+    final res = await http.get(Uri.parse('${ROOTAPI}/api/v1/auth/patient/profile'), headers: {'Authorization': 'Bearer ${token}'});
     if (res.statusCode == 200) {
       setState(() {
         isLoading = false;
