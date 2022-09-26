@@ -50,20 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD1eyM2zSPQ7YcUYjjp3nffPocX03wjm-U',
-    appId: '1:721938423020:android:2bc6eb8d3a877036aa59c9',
-    messagingSenderId: '721938423020',
-    projectId: 'gettheskydoctors',
-    storageBucket: 'gettheskydoctors.appspot.com',
+    apiKey: 'AIzaSyCfXeWug-060t_nZ9dpW0urwIRrW1cuyRE',
+    appId: '1:898273018789:android:f7ad3c8fbc8bbf5467de4c',
+    messagingSenderId: '898273018789',
+    projectId: 'gettheskydoctor',
+    storageBucket: 'gettheskydoctor.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB6z4fc2nF2-nKSfx6vrUAW7t1UNZgWn18',
-    appId: '1:721938423020:ios:c8f1ef9901debd9eaa59c9',
-    messagingSenderId: '721938423020',
-    projectId: 'gettheskydoctors',
-    storageBucket: 'gettheskydoctors.appspot.com',
-    iosClientId: '721938423020-ksmpg0c79kngq6je1o36kjovsh7kkecu.apps.googleusercontent.com',
+    apiKey: 'AIzaSyCtCnLrwLosw_tf0LoqLcQSmtTjTHjoW38',
+    appId: '1:898273018789:ios:4ece3d84e597a80f67de4c',
+    messagingSenderId: '898273018789',
+    projectId: 'gettheskydoctor',
+    storageBucket: 'gettheskydoctor.appspot.com',
+    androidClientId: '898273018789-veo6njsp2465u71j6l5kfe29rde1tnkh.apps.googleusercontent.com',
+    iosClientId: '898273018789-bv01ujp5gurhqidf4lul2bfvcm901g3j.apps.googleusercontent.com',
     iosBundleId: 'com.gettheskydoctors.patient',
   );
 }

@@ -7,7 +7,6 @@ import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/notification/helper_notification.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
-import 'package:doccure_patient/services/request.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';

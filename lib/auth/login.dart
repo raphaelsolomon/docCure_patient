@@ -340,9 +340,10 @@ class _AuthLoginState extends State<AuthLogin> {
                 });
       if (res.statusCode == 200) {
         final parsed = jsonDecode(res.body);
-        Map<String, dynamic> result = await ApiServices.getProfile(parsed['data']['access_token']);
-        context.read<UserProvider>().setProfile(result);
-        getUserProfile(parsed['data']['access_token'], parsed['data']['redirect_url']);
+        print(parsed);
+        //Map<String, dynamic> result = await ApiServices.getProfile(parsed['data']['access_token']);
+        //context.read<UserProvider>().setProfile(result);
+       // getUserProfile(parsed['data']['access_token'], parsed['data']['redirect_url']);
       } else {
         setState(() {
           isLoading = false;
@@ -354,12 +355,13 @@ class _AuthLoginState extends State<AuthLogin> {
       setState(() {
         isLoading = false;
       });
-      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Plase check internect connection', status: false));
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Please check internect connection', status: false));
     }
   }
 
   getUserProfile(token, newURL) async {
-    final res = await http.get(Uri.parse('${ROOTAPI}/api/v1/auth/patient/profile'), headers: {'Authorization': 'Bearer ${token}'});
+    final res = await http.get(Uri.parse('${ROOTAPI}/api/v1/auth/patient/profile'),
+     headers: {'Authorization': 'Bearer ${token}'});
     if (res.statusCode == 200) {
       setState(() {
         isLoading = false;
