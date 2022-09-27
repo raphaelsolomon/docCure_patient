@@ -74,7 +74,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                       width: MediaQuery.of(context).size.width,
                       child: Center(
                         child: Image.asset('assets/auth/1.jpeg',
-                            repeat: ImageRepeat.noRepeat, fit: BoxFit.contain),
+                            repeat: ImageRepeat.noRepeat, fit: BoxFit.contain, height: 250),
                       ),
                     ),
                     const SizedBox(

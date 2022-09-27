@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:doccure_patient/resources/firebase_method.dart';
 import 'package:doccure_patient/auth/forgotpass.dart';
 import 'package:doccure_patient/auth/register.dart';
@@ -19,7 +18,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:http/http.dart' as http;
 import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
-import 'package:provider/provider.dart';
 
 class AuthLogin extends StatefulWidget {
   const AuthLogin({Key? key}) : super(key: key);
@@ -67,7 +65,7 @@ class _AuthLoginState extends State<AuthLogin> {
                 height: 50.0,
               ),
               Image.asset('assets/auth/2.jpeg',
-                  repeat: ImageRepeat.noRepeat, fit: BoxFit.contain),
+                  repeat: ImageRepeat.noRepeat, fit: BoxFit.cover, height: 250,),
               const SizedBox(
                 height: 40.0,
               ),

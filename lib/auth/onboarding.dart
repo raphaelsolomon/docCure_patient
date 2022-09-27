@@ -52,9 +52,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
+                          color: Colors.transparent,
                           image: DecorationImage(
                               image: AssetImage(ONBOARDING[index]['image']),
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fill,
                               repeat: ImageRepeat.noRepeat),
                           borderRadius: const BorderRadius.only(
                               bottomLeft: Radius.circular(20.0),
@@ -63,7 +64,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       ),
                     ),
                     const SizedBox(
-                      height: 20.0,
+                      height: 10.0,
                     ),
                     Expanded(
                         child: Container(

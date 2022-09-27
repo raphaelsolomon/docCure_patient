@@ -19,7 +19,7 @@ class FirebaseMethods {
       final AuthCredential authCredential = GoogleAuthProvider.credential(
           idToken: googleSignInAuthentication.idToken,
           accessToken: googleSignInAuthentication.accessToken);
-      print(authCredential.asMap());
+      print(googleSignIn.currentUser.toString());
     }
   }
 

@@ -85,9 +85,7 @@ class _DashBoardState extends State<DashBoard> {
             user: box.get('details'),
             scaffold: Scaffold(
                 key: scaffold,
-                drawer: !removeBottom.contains(page)
-                    ? navDrawer(context, scaffold)
-                    : null,
+                drawer: !removeBottom.contains(page) ? navDrawer(context, scaffold) : null,
                 backgroundColor: Colors.white,
                 body: Stack(
                   children: [
@@ -159,7 +157,8 @@ class _DashBoardState extends State<DashBoard> {
 
   void createClient() async {
     _client = await AgoraRtmClient.createInstance(APP_ID);
-    _client!.login(null, box.get(USERPATH)!.uid!);
+    //_client!.login(null, box.get(USERPATH)!.uid!);
+    _client!.login(null, 'darkseid');
     _client!.onMessageReceived = (AgoraRtmMessage message, String peerId) {
       logController.addLog("Private Message from $peerId: ${message.text}");
     };

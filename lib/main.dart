@@ -33,8 +33,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final RemoteMessage? remoteMessage =
-      await FirebaseMessaging.instance.getInitialMessage();
+  final RemoteMessage? remoteMessage = await FirebaseMessaging.instance.getInitialMessage();
   if (remoteMessage != null) {
     print(remoteMessage);
   }
@@ -88,9 +87,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      
-    });
     super.initState();
   }
 

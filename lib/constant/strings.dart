@@ -168,31 +168,31 @@ const BoxName = 'userBox';
 
 List ONBOARDING = [
   {
-    'image': 'assets/imgs/1.png',
+    'image': 'assets/auth/spl.png',
     'title': 'Instant Prescription',
     'description':
         'Get access to Doctors and Pharmacist if you are not sure of your prescription, you can easily chat and book online appointment with any Doctor of your Choice.'
   },
   {
-    'image': 'assets/imgs/2.png',
+    'image': 'assets/auth/pana.png',
     'title': 'Book Appointments with Doctors Right from your Phone and System!',
     'description':
         'Get Access to a wide range of Specialist Doctors around the World have never been this easy.'
   },
   {
-    'image': 'assets/imgs/3.png',
+    'image': 'assets/imgs/4.png',
     'title': 'Browse the Largest Database',
     'description':
         'of Doctors, Nurses, Pharmacist, Pharmacy Stores, Hospital and Clinics, Health Insurance and Other Health Services Providers in Africa and Globally with Just a click Away.'
   },
   {
-    'image': 'assets/imgs/4.png',
+    'image': 'assets/auth/amico.png',
     'title': 'Book Diagnostic Test from Experts Diagnostic Centers Globally!',
     'description':
         'You can have your Diagnostics Done on Schedule with our Wide network of Reliable Facilities and Centers.'
   },
   {
-    'image': 'assets/imgs/5.png',
+    'image': 'assets/auth/rafiki.png',
     'title': 'Get Your Prescriptions and Orders Delivered at Your Door Step!',
     'description':
         'You Can Order You’re Medications, Health Equipment and Accessories Delivered to Your Home or Office at your Convenience'
