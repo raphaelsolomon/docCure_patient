@@ -318,8 +318,7 @@ class _AuthRegisterState extends State<AuthRegister> {
                   'country_id': '$country_id'
                 }
               : {
-                  'phone':
-                      '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+                  'phone': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
                   'name': fullname.text.trim(),
                   'category_id': '3',
                   'password': password.text.trim(),

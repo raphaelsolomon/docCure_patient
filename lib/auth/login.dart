@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:doccure_patient/resources/firebase_method.dart';
 import 'package:doccure_patient/auth/forgotpass.dart';
 import 'package:doccure_patient/auth/register.dart';
@@ -18,6 +19,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:http/http.dart' as http;
 import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
+import 'package:provider/provider.dart';
 
 class AuthLogin extends StatefulWidget {
   const AuthLogin({Key? key}) : super(key: key);
@@ -64,8 +66,12 @@ class _AuthLoginState extends State<AuthLogin> {
               const SizedBox(
                 height: 50.0,
               ),
-              Image.asset('assets/auth/2.jpeg',
-                  repeat: ImageRepeat.noRepeat, fit: BoxFit.cover, height: 250,),
+              Image.asset(
+                'assets/auth/2.jpeg',
+                repeat: ImageRepeat.noRepeat,
+                fit: BoxFit.cover,
+                height: 250,
+              ),
               const SizedBox(
                 height: 40.0,
               ),
@@ -172,39 +178,40 @@ class _AuthLoginState extends State<AuthLogin> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   socialAccount(FontAwesome.facebook, Color(0xFF1777F2),
-                            callBack: () => FirebaseMethods.facebookLogin()),
-                        const SizedBox(
-                          width: 20.0,
-                        ),
-                        socialAccount(FontAwesome.linkedin, Color(0xFF0078B5),
-                            callBack: () {
-                              Get.to(() => LinkedInUserWidget(
-                                redirectUrl: LINKEDIN_REDIRECT,
-                                clientId: LINKEDIN_CLIENTID,
-                                clientSecret: LINKEDIN_SECRET,
-                                projection: const [
-                                  ProjectionParameters.id,
-                                  ProjectionParameters.localizedFirstName,
-                                  ProjectionParameters.localizedLastName,
-                                  ProjectionParameters.firstName,
-                                  ProjectionParameters.lastName,
-                                  ProjectionParameters.profilePicture,
-                                ],
-                                onGetUserProfile: (user) {
-                                  print('${user.user.token.accessToken} - ${user.user.firstName!.localized!.label} - ${user.user.lastName!.localized!.label} - ${user.user.profilePicture!.displayImageContent!.elements!.first.identifiers!.first.identifier} - ${user.user.userId} - ${user.user.email!.elements!.first.handleDeep!.emailAddress}');
-                                  Get.offAll(() => DashBoard());
-                                },
-                                onError: (e) {
-                                  print('Error: ${e.toString()}');
-                                  print('Error: ${e.stackTrace.toString()}');
-                                },
-                              ));
-                            }),
-                        const SizedBox(
-                          width: 20.0,
-                        ),
-                        socialAccount(FontAwesome.google, Colors.redAccent,
-                            callBack: () => FirebaseMethods.googleSignIn()),
+                      callBack: () => FirebaseMethods.facebookLogin()),
+                  const SizedBox(
+                    width: 20.0,
+                  ),
+                  socialAccount(FontAwesome.linkedin, Color(0xFF0078B5),
+                      callBack: () {
+                    Get.to(() => LinkedInUserWidget(
+                          redirectUrl: LINKEDIN_REDIRECT,
+                          clientId: LINKEDIN_CLIENTID,
+                          clientSecret: LINKEDIN_SECRET,
+                          projection: const [
+                            ProjectionParameters.id,
+                            ProjectionParameters.localizedFirstName,
+                            ProjectionParameters.localizedLastName,
+                            ProjectionParameters.firstName,
+                            ProjectionParameters.lastName,
+                            ProjectionParameters.profilePicture,
+                          ],
+                          onGetUserProfile: (user) {
+                            print(
+                                '${user.user.token.accessToken} - ${user.user.firstName!.localized!.label} - ${user.user.lastName!.localized!.label} - ${user.user.profilePicture!.displayImageContent!.elements!.first.identifiers!.first.identifier} - ${user.user.userId} - ${user.user.email!.elements!.first.handleDeep!.emailAddress}');
+                            Get.offAll(() => DashBoard());
+                          },
+                          onError: (e) {
+                            print('Error: ${e.toString()}');
+                            print('Error: ${e.stackTrace.toString()}');
+                          },
+                        ));
+                  }),
+                  const SizedBox(
+                    width: 20.0,
+                  ),
+                  socialAccount(FontAwesome.google, Colors.redAccent,
+                      callBack: () => FirebaseMethods.googleSignIn()),
                 ],
               ),
               const SizedBox(
@@ -333,58 +340,51 @@ class _AuthLoginState extends State<AuthLogin> {
                   'password': password.text.trim(),
                 }
               : {
-                  'phone': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+                  'phone':
+                      '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
                   'password': password.text.trim(),
                 });
       if (res.statusCode == 200) {
         final parsed = jsonDecode(res.body);
-        print(parsed);
-        //Map<String, dynamic> result = await ApiServices.getProfile(parsed['data']['access_token']);
-        //context.read<UserProvider>().setProfile(result);
-       // getUserProfile(parsed['data']['access_token'], parsed['data']['redirect_url']);
+        Map<String, dynamic> result = await ApiServices.getProfile(parsed['data']['access_token']);
+        User user = User(
+          uid: '${result['data']['id']}',
+          name: result['data']['name'],
+          email: result['data']['email'],
+          phone: result['data']['phone'],
+          country: result['data']['country'],
+          token: 'Bearer ${parsed['data']['access_token']}',
+          profilePhoto: result['data']['profile_picture'],
+          verified: result['data']['is_verified'] == '1',
+          dob: result['data']['dob'],
+          city: result['data']['city'],
+          state: result['data']['state'],
+          address: result['data']['address'],
+          bloodgroup: result['data']['blood_group'],
+          zip_code: result['data']['zip_code'],
+          created_at: result['data']['created_at'],
+        );
+        context.read<UserProvider>().setProfile(result);
+        box.put(USERPATH, user).then((value) => Get.offAll(() => DashBoard()));
       } else {
         setState(() {
           isLoading = false;
         });
         final parsed = jsonDecode(res.body);
-        popupMessage.dialogMessage(context,  popupMessage.serviceMessage(context, parsed['message'], status: false));
+        popupMessage.dialogMessage(
+            context,
+            popupMessage.serviceMessage(context, parsed['message'],
+                status: false));
       }
     } on SocketException {
       setState(() {
         isLoading = false;
       });
-      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Please check internect connection', status: false));
-    }
-  }
-
-  getUserProfile(token, newURL) async {
-    final res = await http.get(Uri.parse('${ROOTAPI}/api/v1/auth/patient/profile'),
-     headers: {'Authorization': 'Bearer ${token}'});
-    if (res.statusCode == 200) {
-      setState(() {
-        isLoading = false;
-      });
-      User user = User(
-          uid: '${jsonDecode(res.body)['data']['id']}',
-          name: jsonDecode(res.body)['data']['name'],
-          email: jsonDecode(res.body)['data']['email'],
-          phone: jsonDecode(res.body)['data']['phone'],
-          verified: jsonDecode(res.body)['data']['phone_email_verified'] == '0'
-              ? false
-              : true,
-          country: jsonDecode(res.body)['data']['country_id'],
-          token: 'Bearer ${token}',
-          profilePhoto: jsonDecode(res.body)['data']['profile_image'],
-          gender: jsonDecode(res.body)['data']['gender'],
-          status: jsonDecode(res.body)['data']['status'],
-          dob: jsonDecode(res.body)['data']['dob'],
-          weight: jsonDecode(res.body)['data']['weight'],
-          height: jsonDecode(res.body)['data']['height'],
-          age: jsonDecode(res.body)['data']['age'],
-          marital_status: jsonDecode(res.body)['data']['marital_status'],
-          cat: jsonDecode(res.body)['data']['cat']);
-
-      box.put(USERPATH, user).then((value) => Get.offAll(() => DashBoard()));
+      popupMessage.dialogMessage(
+          context,
+          popupMessage.serviceMessage(
+              context, 'Please check internect connection',
+              status: false));
     }
   }
 }

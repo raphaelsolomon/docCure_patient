@@ -256,7 +256,8 @@ getOtpForm({ctl, node, onChange}) => Container(
       child: TextFormField(
         controller: ctl,
         focusNode: node,
-        style: getCustomFont(size: 16.0, color: Colors.black, weight: FontWeight.w500),
+        style: getCustomFont(
+            size: 16.0, color: Colors.black, weight: FontWeight.w500),
         inputFormatters: [
           LengthLimitingTextInputFormatter(1),
         ],
@@ -276,124 +277,131 @@ navDrawer(BuildContext context, scaffold) => Container(
       width: (MediaQuery.of(context).size.width / 2) + 78.0,
       height: MediaQuery.of(context).size.height,
       color: Colors.white,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              height: 150.0,
-              width: MediaQuery.of(context).size.width,
-              color: BLUECOLOR,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(20.0),
+            height: 150.0,
+            width: MediaQuery.of(context).size.width,
+            color: BLUECOLOR.withOpacity(.5),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const SizedBox(
+                height: 10.0,
+              ),
+              GestureDetector(
+                  onTap: () => scaffold.currentState!.closeDrawer(),
+                  child: Icon(Icons.keyboard_backspace, color: Colors.white)),
+              const SizedBox(
+                height: 7.0,
+              ),
+              Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      context.read<HomeController>().setPage(-2);
+                    },
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage('assets/imgs/2.png'),
+                      radius: 30.0,
+                      backgroundColor: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Flexible(
+                      child: Text(
+                    'John Deo',
+                    style: GoogleFonts.poppins(
+                        fontSize: 15.0, color: Colors.white),
+                  ))
+                ],
+              ),
+            ]),
+          ),
+          const SizedBox(
+            height: 5.0,
+          ),
+          Expanded(
+            child: SingleChildScrollView(
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    GestureDetector(
-                        onTap: () => scaffold.currentState!.closeDrawer(),
-                        child: Icon(Icons.keyboard_backspace,
-                            color: Colors.white)),
-                    const SizedBox(
-                      height: 7.0,
-                    ),
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            context.read<HomeController>().setPage(-2);
-                          },
-                          child: CircleAvatar(
-                            backgroundImage: AssetImage('assets/imgs/2.png'),
-                            radius: 30.0,
-                            backgroundColor: Colors.white,
+                children: [
+                  ...getNavdraweritem_(context).map((e) {
+                    if (e.children.isEmpty) {
+                      return InkWell(
+                        onTap: () {
+                          scaffold.currentState!.closeDrawer();
+                          setClickListener(e, context);
+                        },
+                        child: Container(
+                          height: 45.0,
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          margin: const EdgeInsets.only(bottom: 15.0),
+                          child: Row(children: [
+                            CircleAvatar(
+                              backgroundColor: BLUECOLOR.withOpacity(.5),
+                              radius: 18.0,
+                              child: Icon(
+                                e.icon,
+                                color: Colors.white,
+                                size: 15.0,
+                              ),
+                            ),
+                            const SizedBox(width: 15.0),
+                            Flexible(
+                                child: Text(
+                              e.title,
+                              style: GoogleFonts.poppins(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black87.withOpacity(.7)),
+                            ))
+                          ]),
+                        ),
+                      );
+                    }
+                    return ExpansionTile(
+                        tilePadding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 5.0),
+                        leading: CircleAvatar(
+                          radius: 18.0,
+                          backgroundColor: BLUECOLOR.withOpacity(.5),
+                          child: Icon(
+                            e.icon,
+                            color: Colors.white,
+                            size: 15.0,
                           ),
                         ),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Flexible(
-                            child: Text(
-                          'John Deo',
+                        title: Text(
+                          e.title,
                           style: GoogleFonts.poppins(
-                              fontSize: 15.0, color: Colors.white),
-                        ))
-                      ],
-                    ),
-                  ]),
-            ),
-            const SizedBox(
-              height: 5.0,
-            ),
-            ...getNavdraweritem_(context).map((e) {
-              if (e.children.isEmpty) {
-                return InkWell(
-                  onTap: () {
-                    scaffold.currentState!.closeDrawer();
-                    setClickListener(e, context);
-                  },
-                  child: Container(
-                    height: 45.0,
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    margin: const EdgeInsets.only(bottom: 15.0),
-                    child: Row(children: [
-                      CircleAvatar(
-                        radius: 18.0,
-                        child: Icon(
-                          e.icon,
-                          color: Colors.white,
-                          size: 15.0,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black87.withOpacity(.7)),
                         ),
-                      ),
-                      const SizedBox(width: 15.0),
-                      Flexible(
-                          child: Text(
-                        e.title,
-                        style: GoogleFonts.poppins(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black87.withOpacity(.7)),
-                      ))
-                    ]),
-                  ),
-                );
-              }
-              return ExpansionTile(
-                  tilePadding: const EdgeInsets.symmetric( horizontal: 15.0),
-                  leading: CircleAvatar(
-                    radius: 18.0,
-                    child: Icon(
-                      e.icon,
-                      color: Colors.white,
-                      size: 15.0,
-                    ),
-                  ),
-                  title: Text(
-                    e.title,
-                    style: GoogleFonts.poppins(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black87.withOpacity(.7)),
-                  ),
-                  children: e.children.map((entries) {
-                    return GestureDetector(
-                      onTap: () => setChildrenClickListener(entries, context),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 50.0, vertical: 13.0),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: Text(entries['title'],
-                              style: getCustomFont(
-                                  size: 16.0,
-                                  color: Colors.black87.withOpacity(.7))),
-                        ),
-                      ),
-                    );
-                  }).toList());
-            })
-          ],
-        ),
+                        children: e.children.map((entries) {
+                          return GestureDetector(
+                            onTap: () =>
+                                setChildrenClickListener(entries, context),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 50.0, vertical: 13.0),
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Text(entries['title'],
+                                    style: getCustomFont(
+                                        size: 16.0,
+                                        color: Colors.black87.withOpacity(.7))),
+                              ),
+                            ),
+                          );
+                        }).toList());
+                  })
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
 
@@ -672,9 +680,14 @@ Widget firstScroll(e) => Container(
             style: getCustomFont(
                 size: 15.0, color: Colors.white, weight: FontWeight.bold),
           ),
-          Expanded(child: Align(
+          Expanded(
+              child: Align(
             alignment: Alignment.bottomRight,
-            child: Image.asset('${e['icon']}', width: 50.0, height: 55.0,),
+            child: Image.asset(
+              '${e['icon']}',
+              width: 50.0,
+              height: 55.0,
+            ),
           ))
         ],
       ),
@@ -693,9 +706,16 @@ Widget secondScroll(context, e) => Container(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Flexible(
-            fit: FlexFit.tight,
-            child: Text(e['title'], style: getCustomFont(size: 17.0, color: Colors.white, weight: FontWeight.w500),)),
-          Image.asset('${e['icon']}', height: double.infinity,)
+              fit: FlexFit.tight,
+              child: Text(
+                e['title'],
+                style: getCustomFont(
+                    size: 17.0, color: Colors.white, weight: FontWeight.w500),
+              )),
+          Image.asset(
+            '${e['icon']}',
+            height: double.infinity,
+          )
         ],
       ),
     );
@@ -710,12 +730,14 @@ Widget thirdScroll(context, e) => GestureDetector(
             height: 50.0,
             width: 50.0,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: e['color']
-                ),
-                child: Center(
-                  child: Image.asset('${e['icon']}', width: 30.0, height: 30.0,),
-                ),
+                borderRadius: BorderRadius.circular(10.0), color: e['color']),
+            child: Center(
+              child: Image.asset(
+                '${e['icon']}',
+                width: 30.0,
+                height: 30.0,
+              ),
+            ),
           ),
           const SizedBox(
             width: 10.0,

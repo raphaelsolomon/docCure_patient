@@ -6,7 +6,8 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
 class AllHomePage extends StatefulWidget {
-  const AllHomePage({super.key});
+  final GlobalKey<ScaffoldState> scaffold;
+  const AllHomePage(this.scaffold, {super.key});
 
   @override
   State<AllHomePage> createState() => _AllHomePageState();
@@ -33,126 +34,134 @@ class _AllHomePageState extends State<AllHomePage> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Container(
-        width: width,
-        height: height,
-        color: Color(0xFFf6f6f6),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 10.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: CircleAvatar(
-                  backgroundImage: isImage
-                      ? NetworkImage(user!.profilePhoto!)
-                      : NetworkImage(
-                          'https://img.freepik.com/free-vector/flat-hand-drawn-patient-taking-medical-examination-illustration_23-2148859982.jpg?w=2000'),
-                  radius: 20.0,
+    return Container(
+      width: width,
+      height: height,
+      color: Color(0xFFf6f6f6),
+      child: Column(
+        children: [
+          const SizedBox(height: 30.0),
+          Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 10.0,
                 ),
-              ),
-              const SizedBox(
-                height: 15.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 50.0),
-                child: FittedBox(
-                  child: Text(
-                    user!.gender == null
-                        ? 'Welcome, ${user!.name}'
-                        : user!.gender!.toLowerCase() == 'male'
-                            ? 'Welcome, Mr. ${user!.name}'
-                            : 'Welcome, Mrs. ${user!.name}',
-                    style: getCustomFont(
-                        size: 26.0,
-                        color: Colors.black,
-                        weight: FontWeight.w500),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                       GestureDetector(
+                          onTap: () => widget.scaffold.currentState!.openDrawer(),
+                          child: Icon(Icons.menu, color: Colors.black)),
+                      CircleAvatar(
+                        backgroundImage: isImage
+                            ? NetworkImage(user!.profilePhoto!)
+                            : NetworkImage(
+                                'https://img.freepik.com/free-vector/flat-hand-drawn-patient-taking-medical-examination-illustration_23-2148859982.jpg?w=2000'),
+                        radius: 20.0,
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 3.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(
-                  'What would you like to do today?',
-                  style: getCustomFont(
-                      size: 13.0, color: Colors.black, weight: FontWeight.w400),
+                const SizedBox(
+                  height: 15.0,
                 ),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              user!.verified!
-                  ? const SizedBox()
-                  : Column(
-                      children: [
-                        GestureDetector(
-                            onTap: () =>
-                                Get.to(() => AuthOtp(user!.email!, true)),
-                            child: mailAlert(context)),
-                        const SizedBox(
-                          height: 29.0,
-                        ),
-                      ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0, right: 50.0),
+                  child: FittedBox(
+                    child: Text(
+                     'Welcome, ${user!.name}',
+                      style: getCustomFont(
+                          size: 26.0,
+                          color: Colors.black,
+                          weight: FontWeight.w500),
                     ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    children: [
-                      ...List.generate(10, (index) => horizontalItem())
-                    ],
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 15.0,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
+                const SizedBox(
+                  height: 3.0,
+                ),
+                Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    children: [
-                      ...List.generate(10, (index) => horizontalItem())
-                    ],
+                  child: Text(
+                    'What would you like to do today?',
+                    style: getCustomFont(
+                        size: 13.0, color: Colors.black, weight: FontWeight.w400),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 25.0,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    children: [
-                      ...List.generate(
-                          4, (index) => horizontalSecondItem(context))
-                    ],
-                  ),
+                const SizedBox(
+                  height: 20.0,
                 ),
-              ),
-              const SizedBox(
-                height: 80.0,
-              )
-            ],
+                user!.verified!
+                    ? const SizedBox()
+                    : Column(
+                        children: [
+                          GestureDetector(
+                              onTap: () =>
+                                  Get.to(() => AuthOtp(user!.email!, true)),
+                              child: mailAlert(context)),
+                          const SizedBox(
+                            height: 29.0,
+                          ),
+                        ],
+                      ),
+              ],
+            ),
           ),
-        ),
+          Expanded(child: SingleChildScrollView(
+            child: Column(children: [
+              SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        children: [
+                          ...List.generate(10, (index) => horizontalItem())
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        children: [
+                          ...List.generate(10, (index) => horizontalItem())
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 25.0,
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        children: [
+                          ...List.generate(
+                              4, (index) => horizontalSecondItem(context))
+                        ],
+                      ),
+                    ),
+                  ),
+            ]),
+          ),)
+        ],
       ),
     );
   }
 
   Widget horizontalItem() => Container(
-        width: 185.0,
+        width: 160.0,
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.only(right: 10.0),
         decoration: BoxDecoration(
@@ -172,7 +181,7 @@ class _AllHomePageState extends State<AllHomePage> {
               'Find a medical center',
               textAlign: TextAlign.center,
               style: getCustomFont(
-                  size: 15.0, color: Colors.black, weight: FontWeight.w600),
+                  size: 15.5, color: Colors.black, weight: FontWeight.w600),
             ),
             const SizedBox(
               height: 9.0,
@@ -181,7 +190,7 @@ class _AllHomePageState extends State<AllHomePage> {
               'Find hosiptals, pharmacies, laboratories and clinics',
               textAlign: TextAlign.center,
               style: getCustomFont(
-                  size: 12.0, color: Colors.black45, weight: FontWeight.w400),
+                  size: 13.0, color: Colors.black45, weight: FontWeight.w400),
             ),
             const SizedBox(
               height: 5.0,

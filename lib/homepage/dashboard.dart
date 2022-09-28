@@ -34,7 +34,6 @@ import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:doccure_patient/resuable/custom_nav.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:doccure_patient/services/request.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -90,7 +89,7 @@ class _DashBoardState extends State<DashBoard> {
                 body: Stack(
                   children: [
                     page == 0
-                        ? AllHomePage()
+                        ? AllHomePage(scaffold)
                         : page == 10
                             ? HomePage(scaffold)
                             : page == 12 //no bottom nav

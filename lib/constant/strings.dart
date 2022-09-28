@@ -328,6 +328,12 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         isOpen: false,
         index: 7),
     NavDrawerItem(
+        title: 'Profile Settings',
+        icon: FontAwesome5.user,
+        children: [],
+        isOpen: false,
+        index: -2),
+    NavDrawerItem(
         title: 'Communication',
         icon: FontAwesome5.facebook_messenger,
         children: [
@@ -342,12 +348,6 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
     //     children: [],
     //     isOpen: false,
     //     index: -11),
-    NavDrawerItem(
-        title: 'Profile Settings',
-        icon: FontAwesome5.user,
-        children: [],
-        isOpen: false,
-        index: -2),
     NavDrawerItem(
         title: 'My Transaction',
         icon: FontAwesome5.file_invoice,

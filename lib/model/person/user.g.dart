@@ -25,21 +25,20 @@ class UserAdapter extends TypeAdapter<User> {
       country: fields[5] as String?,
       profilePhoto: fields[6] as String?,
       token: fields[7] as String?,
-      gender: fields[8] as String?,
-      marital_status: fields[9] as String?,
-      age: fields[13] as String?,
+      city: fields[8] as String?,
+      state: fields[9] as String?,
+      bloodgroup: fields[11] as String?,
       dob: fields[10] as String?,
-      status: fields[15] as String?,
-      cat: fields[14] as String?,
-      height: fields[12] as String?,
-      weight: fields[11] as String?,
+      address: fields[12] as String?,
+      zip_code: fields[13] as String?,
+      created_at: fields[14] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(16)
+      ..writeByte(15)
       ..writeByte(0)
       ..write(obj.uid)
       ..writeByte(1)
@@ -57,21 +56,19 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(7)
       ..write(obj.token)
       ..writeByte(8)
-      ..write(obj.gender)
+      ..write(obj.city)
       ..writeByte(9)
-      ..write(obj.marital_status)
+      ..write(obj.state)
       ..writeByte(10)
       ..write(obj.dob)
       ..writeByte(11)
-      ..write(obj.weight)
+      ..write(obj.bloodgroup)
       ..writeByte(12)
-      ..write(obj.height)
+      ..write(obj.address)
       ..writeByte(13)
-      ..write(obj.age)
+      ..write(obj.zip_code)
       ..writeByte(14)
-      ..write(obj.cat)
-      ..writeByte(15)
-      ..write(obj.status);
+      ..write(obj.created_at);
   }
 
   @override

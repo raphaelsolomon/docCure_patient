@@ -2,12 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
 
-const String ROOTAPI = 'https://api.gettheskydoctors.com';
-const String PATIENT_API = "http://patient.gettheskydoctors.com";
+const String ROOTAPI = 'https://patientapi.gettheskydoctors.com';
 
 class ApiServices {
   String GOOGLEAPI = 'https://fcm.googleapis.com/fcm/send';
@@ -37,19 +36,17 @@ class ApiServices {
   }
 
   static Future<Map<String, dynamic>> getProfile(token) async {
-    final request = await http.Request('GET', Uri.parse(ROOTAPI));
-    request.body = json.encode({"url": "http://patient.gettheskydoctors.com"});
-    request.headers.addAll({'Authorization': 'Bearer $token', 'Content-Type': 'application/json'});
-    http.StreamedResponse response = await request.send();
+    final response = await http.Client().get(Uri.parse('${ROOTAPI}/api/v1/auth/patient/profile'), headers: {'Authorization': 'Bearer $token'});
     if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
+      final parsed = jsonDecode(response.body);
+      return parsed;
     }
     return {};
   }
 
   static Future<void> changePassword(BuildContext c, token, oldPass, newPass) async {
     var request = http.Request('PATCH', Uri.parse('${ROOTAPI}/api/patient/change-password'));
-    request.body = '''{\n    "url": "http://patient.gettheskydoctors.com",\n    "old_password": "${oldPass}",\n    "new_password": "${newPass}"\n}''';
+    request.body = '''{\n    "old_password": "${oldPass}",\n    "new_password": "${newPass}"\n}''';
     request.headers.addAll({'Authorization': 'Bearer $token', 'Content-Type': 'application/json'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
