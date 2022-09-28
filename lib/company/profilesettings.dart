@@ -285,18 +285,37 @@ http.StreamedResponse response = await request.send();
         setState(() {
         isloading = true;
       });
-        final parsed = jsonDecode(value);
-         popupMessage.dialogMessage(context,  popupMessage.serviceMessage(context, parsed['message'], status: true));
+        final result = jsonDecode(value);
+         User user = User(
+          uid: '${result['data']['id']}',
+          name: result['data']['name'],
+          email: result['data']['email'],
+          phone: result['data']['phone'],
+          country: result['data']['country'],
+          token: '${box.get(USERPATH)!.token}',
+          profilePhoto: result['data']['profile_picture'],
+          verified: result['data']['is_verified'] == '1',
+          dob: result['data']['dob'],
+          city: result['data']['city'],
+          state: result['data']['state'],
+          address: result['data']['address'],
+          bloodgroup: result['data']['blood_group'],
+          zip_code: result['data']['zip_code'],
+          created_at: result['data']['created_at'],
+        );
+         box.put(USERPATH, user).then((value) {
+            popupMessage.dialogMessage(context,  popupMessage.serviceMessage(context, result['message'], status: true));
+         });
       });
     } else {
       setState(() {
-        isloading = true;
+        isloading = false;
       });
       popupMessage.dialogMessage(context,  popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
     }
     }on SocketException {
       setState(() {
-        isloading = true;
+        isloading = false;
       });
       popupMessage.dialogMessage(context,  popupMessage.serviceMessage(context, 'Check Internet Connection', status: false));
     }
