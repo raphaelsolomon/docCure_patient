@@ -105,12 +105,12 @@ class ApiServices {
    //================================ DEPENDENTS =================================
    static Future<Map<String, dynamic>> getAllDepends(BuildContext c, token) async {
     var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/dependents/all-dependents'));
-    request.body = jsonEncode({"url": "http://patient.gettheskydoctors.com"});
-    request.headers.addAll({'Authorization': 'Bearer $token', 'Content-Type': 'application/json'});
+    request.headers.addAll({'Authorization': '$token', 'Content-Type': 'application/json'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-       final parsed = jsonDecode(await response.stream.bytesToString());
-       return parsed;
+     return response.stream.bytesToString().then((value) {
+         return jsonDecode(value);
+     });
     } else {
       final parsed = jsonDecode(await response.stream.bytesToString());
       popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));

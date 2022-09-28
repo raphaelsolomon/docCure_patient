@@ -4,6 +4,7 @@ import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
+import 'package:doccure_patient/services/request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -48,7 +49,14 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      fullname.text = box.get(USERPATH)!.name!;
+      getFrom();
+    });
+    super.initState();
+  }
+
+
+  void getFrom() {
+    fullname.text = box.get(USERPATH)!.name!;
       email.text =
           box.get(USERPATH)!.email == null ? '' : box.get(USERPATH)!.email!;
       address.text =
@@ -72,8 +80,6 @@ class _ProfileSettingsState extends State<ProfileSettings> {
       _selectedDate = box.get(USERPATH)!.dob == null
           ? DateTime.now()
           : DateTime.parse(box.get(USERPATH)!.dob!);
-    });
-    super.initState();
   }
 
   @override
@@ -242,7 +248,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                         isloading
                             ? SizedBox(
                                 width: MediaQuery.of(context).size.width,
-                                child: Center(child: CircularProgressIndicator()))
+                                child: Center(child: CircularProgressIndicator(color: BLUECOLOR,)))
                             : getButton(context, () => onExecute(), 'Done'),
                         const SizedBox(
                           height: 20.0,
@@ -263,11 +269,11 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     });
 
     try{
-     var request = http.Request('PATCH', Uri.parse('https://patientapi.gettheskydoctors.com/api/v1/auth/patient/update-profile'));
+     var request = http.Request('PATCH', Uri.parse('${ROOTAPI}/api/v1/auth/patient/update-profile'));
       request.body = json.encode({
       "email": email.text.trim(),
       "name": fullname.text.trim(),
-      "phone": '+${phoneController.value!.countryCode}${phoneController.value!.nsn}' == null? '': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+      "phone": phoneController.value == null ? '': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
       "dob": DateFormat('yyyy-MM-dd').format(_selectedDate),
       "blood_group": bloodGroup,
       "address": address.text,
@@ -283,7 +289,7 @@ http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       response.stream.bytesToString().then((value)  {
         setState(() {
-        isloading = true;
+        isloading = false;
       });
         final result = jsonDecode(value);
          User user = User(
@@ -304,6 +310,7 @@ http.StreamedResponse response = await request.send();
           created_at: result['data']['created_at'],
         );
          box.put(USERPATH, user).then((value) {
+            getFrom();
             popupMessage.dialogMessage(context,  popupMessage.serviceMessage(context, result['message'], status: true));
          });
       });

@@ -1,7 +1,10 @@
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
+import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
+import 'package:doccure_patient/services/request.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 class MyFamily extends StatefulWidget {
@@ -13,6 +16,7 @@ class MyFamily extends StatefulWidget {
 
 class _MyFamilyState extends State<MyFamily> {
   var family = [];
+  final box = Hive.box<User>(BoxName);
 
   @override
   Widget build(BuildContext context) {
@@ -55,13 +59,29 @@ class _MyFamilyState extends State<MyFamily> {
               ),
             ]),
           ),
-              Expanded(
-                  child: family.isEmpty
-                      ? emptyContainer(context)
-                      : ListView.builder(
+              // Expanded(
+              //     child: family.isEmpty
+              //         ? emptyContainer(context)
+                      
+
+              FutureBuilder<Map<String, dynamic>>(
+                future: ApiServices.getAllDepends(context, box.get(USERPATH)!.token),
+                builder: (context, snapshot) {
+                  if(snapshot.connectionState == ConnectionState.waiting) {
+                      return Expanded(child: Center(child: CircularProgressIndicator(color: BLUECOLOR),));
+                  }
+                  if(snapshot.connectionState == ConnectionState.done) {
+                    if(snapshot.hasData && snapshot.data != null) {
+                      return Expanded(child: ListView.builder(
                           itemCount: 10,
                           padding: const EdgeInsets.all(0.0),
-                          itemBuilder: (ctx, i) => listItem()))
+                          itemBuilder: (ctx, i) => listItem()));
+                    }else {
+                      Expanded(child: emptyContainer(context));
+                    }
+                  }
+                  return Text('${snapshot.error}', style: getCustomFont(size: 14.0, color: Colors.black45));
+              } )
                           
             ])),
         Visibility(
@@ -88,10 +108,12 @@ class _MyFamilyState extends State<MyFamily> {
             borderRadius: BorderRadius.circular(15.0),
             color: Colors.white,
             boxShadow: SHADOW),
-        child: Row(children: [
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
           Container(
-            width: 100,
-            height: 100,
+            width: 50,
+            height: 50,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100.0),
                 border: Border.all(width: 2.0, color: BLUECOLOR)),

@@ -1,5 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'package:doccure_patient/model/person/user.dart';
+import 'package:doccure_patient/services/request.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -15,6 +20,12 @@ class AddFamilyDailog extends StatefulWidget {
 class _AddFamilyDailogState extends State<AddFamilyDailog> {
   var selectedDate = DateTime.now();
   File filename = File('');
+  bool isloading = false;
+  final fullname = TextEditingController();
+  final relationship = TextEditingController();
+  final email = TextEditingController();
+  String gender = 'Male';
+  final box = Hive.box<User>(BoxName);
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +79,7 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                 const SizedBox(
                   height: 5.0,
                 ),
-                getCardForm('Full Name'),
+                getCardForm('Full Name', ctl: fullname),
                 const SizedBox(
                   height: 15.0,
                 ),
@@ -85,7 +96,7 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                 const SizedBox(
                   height: 5.0,
                 ),
-                getCardForm('Brother'),
+                getCardForm('Brother', ctl: relationship),
                 const SizedBox(
                   height: 15.0,
                 ),
@@ -102,7 +113,7 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                 const SizedBox(
                   height: 5.0,
                 ),
-                getCardForm('johndoe@example.com'),
+                getCardForm('johndoe@example.com', ctl: email),
                 const SizedBox(
                   height: 15.0,
                 ),
@@ -119,7 +130,7 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                 const SizedBox(
                   height: 5.0,
                 ),
-                getDropDownAssurance(),
+                getDropDownAssurance(onChange: (s) => gender = s),
                 const SizedBox(
                   height: 15.0,
                 ),
@@ -170,10 +181,17 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                   height: 30.0,
                 ),
                 Divider(),
-                 const SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
-                getButton(context, () {}),
+                isloading
+                    ? SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Center(
+                            child: CircularProgressIndicator(
+                          color: BLUECOLOR,
+                        )))
+                    : getButton(context, () => onExecute()),
                 const SizedBox(
                   height: 20.0,
                 ),
@@ -204,10 +222,15 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5.0),
-                  border: Border.all(color: const Color(0xFFE8E8E8), width: 1.0),
+                  border:
+                      Border.all(color: const Color(0xFFE8E8E8), width: 1.0),
                   color: Colors.grey.shade300,
                 ),
-                child: Center(child: Text('Choose File', style: getCustomFont(size: 13.0, color: Colors.black),)),
+                child: Center(
+                    child: Text(
+                  'Choose File',
+                  style: getCustomFont(size: 13.0, color: Colors.black),
+                )),
               ),
             ),
             Flexible(
@@ -238,7 +261,7 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
     );
   }
 
-  getDropDownAssurance() {
+  getDropDownAssurance({onChange}) {
     return Container(
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -260,6 +283,7 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
               borderSide: BorderSide.none),
         ),
         initialValue: 'Male',
+        onChanged: (s) => onChange(s),
         items: ['Male', 'Female']
             .map((gender) => DropdownMenuItem(
                   value: gender,
@@ -330,4 +354,51 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
           ),
         ),
       );
+
+  void onExecute() async {
+
+
+    setState(() {
+      isloading = true;
+    });
+
+    try {
+      var request = http.Request('POST', Uri.parse('${ROOTAPI}/api/v1/auth/patient/dependents/add-dependent'));
+      request.body = json.encode({
+        "name": "John Doe",
+        "picture": "test-picure",
+        "relationship": "test-relationship",
+        "gender": "test-gender",
+        "number": "34567890",
+        "bloodgroup": "A+"
+      });
+      request.headers.addAll({
+        'Authorization': '${box.get(USERPATH)!.token}',
+        'Content-Type': 'application/json'
+      });
+
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        response.stream.bytesToString().then((value) {
+          setState(() {
+            isloading = false;
+          });
+          final parsed = json.decode(value);
+          popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, parsed['message'], status: true));
+        });
+      } else {
+        setState(() {
+          isloading = false;
+        });
+        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
+      }
+    } on SocketException {
+      setState(() {
+        isloading = false;
+      });
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Check Internet Connection', status: false));
+    }finally {
+      Navigator.pop(context);
+    }
+  }
 }

@@ -348,7 +348,7 @@ class _AuthLoginState extends State<AuthLogin> {
         final parsed = jsonDecode(res.body);
         Map<String, dynamic> result = await ApiServices.getProfile(parsed['data']['access_token']);
         User user = User(
-          uid: '${result['data']['id']}',
+          uid: '${result['data']['user_id']}',
           name: result['data']['name'],
           email: result['data']['email'],
           phone: result['data']['phone'],
@@ -385,6 +385,10 @@ class _AuthLoginState extends State<AuthLogin> {
           popupMessage.serviceMessage(
               context, 'Please check internect connection',
               status: false));
+    }finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 }
