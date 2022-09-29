@@ -54,32 +54,30 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     super.initState();
   }
 
-
   void getFrom() {
-    fullname.text = box.get(USERPATH)!.name!;
-      email.text =
-          box.get(USERPATH)!.email == null ? '' : box.get(USERPATH)!.email!;
-      address.text =
-          box.get(USERPATH)!.address == null ? '' : box.get(USERPATH)!.address!;
-      city.text =
-          box.get(USERPATH)!.city == null ? '' : box.get(USERPATH)!.city!;
-      state.text =
-          box.get(USERPATH)!.state == null ? '' : box.get(USERPATH)!.state!;
+    setState(() {
+      fullname.text = box.get(USERPATH)!.name!;
+      email.text = box.get(USERPATH)!.email == null ? '' : box.get(USERPATH)!.email!;
+      address.text = box.get(USERPATH)!.address == null ? '' : box.get(USERPATH)!.address!;
+      city.text = box.get(USERPATH)!.city == null ? '' : box.get(USERPATH)!.city!;
+      state.text = box.get(USERPATH)!.state == null ? '' : box.get(USERPATH)!.state!;
       zip_code.text = box.get(USERPATH)!.zip_code == null
           ? ''
           : box.get(USERPATH)!.zip_code!;
 
       var i = countryList.indexWhere((element) => '${element['id']}' == '${box.get(USERPATH)!.country}');
+
       country.text = countryList.elementAt(i)['name'];
       country_id = '${countryList.elementAt(i)['id']}';
 
       bloodGroup = box.get(USERPATH)!.bloodgroup == null
-          ? 'Blood Group'
+          ? 'AA'
           : box.get(USERPATH)!.bloodgroup!;
 
       _selectedDate = box.get(USERPATH)!.dob == null
           ? DateTime.now()
           : DateTime.parse(box.get(USERPATH)!.dob!);
+    });
   }
 
   @override
@@ -189,7 +187,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                             child: getFormBox('Date of Birth',
                                 '${DateFormat('yyyy-MM-dd').format(_selectedDate)}'),
                             onTap: () async {
-                                showDatePicker(
+                              showDatePicker(
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime(1950),
@@ -209,7 +207,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                         dropDown(
                           ['AA', 'AB', 'O+', 'O-'],
                           text: 'Blood Group',
-                          label: bloodGroup, callBack: (s) => bloodGroup = s,
+                          label: bloodGroup,
+                          callBack: (s) => bloodGroup = s,
                         ),
                         const SizedBox(
                           height: 10.0,
@@ -238,17 +237,17 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                         const SizedBox(
                           height: 10.0,
                         ),
-                        GestureDetector(
-                          onTap: () => showBottomSheet(),
-                          child: getFormBox('Country', '', ctl: country),
-                        ),
+                        getCountry('Country', country.text),
                         const SizedBox(
                           height: 20.0,
                         ),
                         isloading
                             ? SizedBox(
                                 width: MediaQuery.of(context).size.width,
-                                child: Center(child: CircularProgressIndicator(color: BLUECOLOR,)))
+                                child: Center(
+                                    child: CircularProgressIndicator(
+                                  color: BLUECOLOR,
+                                )))
                             : getButton(context, () => onExecute(), 'Done'),
                         const SizedBox(
                           height: 20.0,
@@ -268,67 +267,85 @@ class _ProfileSettingsState extends State<ProfileSettings> {
       isloading = true;
     });
 
-    try{
-     var request = http.Request('PATCH', Uri.parse('${ROOTAPI}/api/v1/auth/patient/update-profile'));
-      request.body = json.encode({
-      "email": email.text.trim(),
-      "name": fullname.text.trim(),
-      "phone": phoneController.value == null ? '': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
-      "dob": DateFormat('yyyy-MM-dd').format(_selectedDate),
-      "blood_group": bloodGroup,
-      "address": address.text,
-      "city": city.text,
-      "state": state.text,
-      "country": country_id,
-      "zip_code": zip_code.text,
-      "profile_picture": "https://www.whatspaper.com/wp-content/uploads/2021/12/hd-itachi-uchiha-wallpaper-whatspaper-21.jpg"
-    });
-      request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}', 'Content-Type': 'application/json'});
+    print(country_id);
 
-http.StreamedResponse response = await request.send();
-    if (response.statusCode == 200) {
-      response.stream.bytesToString().then((value)  {
-        setState(() {
-        isloading = false;
+    try {
+      var request = http.Request(
+          'PATCH', Uri.parse('${ROOTAPI}/api/v1/auth/patient/update-profile'));
+      request.body = json.encode({
+        "email": email.text.trim(),
+        "name": fullname.text.trim(),
+        "phone": phoneController.value == null
+            ? ''
+            : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+        "dob": DateFormat('yyyy-MM-dd').format(_selectedDate),
+        "blood_group": bloodGroup,
+        "address": address.text,
+        "city": city.text,
+        "state": state.text,
+        "country": country_id,
+        "zip_code": zip_code.text,
+        "profile_picture":
+            "https://www.whatspaper.com/wp-content/uploads/2021/12/hd-itachi-uchiha-wallpaper-whatspaper-21.jpg"
       });
-        final result = jsonDecode(value);
-         User user = User(
-          uid: '${result['data']['id']}',
-          name: result['data']['name'],
-          email: result['data']['email'],
-          phone: result['data']['phone'],
-          country: result['data']['country'],
-          token: '${box.get(USERPATH)!.token}',
-          profilePhoto: result['data']['profile_picture'],
-          verified: result['data']['is_verified'] == '1',
-          dob: result['data']['dob'],
-          city: result['data']['city'],
-          state: result['data']['state'],
-          address: result['data']['address'],
-          bloodgroup: result['data']['blood_group'],
-          zip_code: result['data']['zip_code'],
-          created_at: result['data']['created_at'],
-        );
-         box.put(USERPATH, user).then((value) {
+      request.headers.addAll({
+        'Authorization': '${box.get(USERPATH)!.token}',
+        'Content-Type': 'application/json'
+      });
+
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        response.stream.bytesToString().then((value) {
+          setState(() {
+            isloading = false;
+          });
+          final result = jsonDecode(value);
+          User user = User(
+            uid: '${result['data']['id']}',
+            name: result['data']['name'],
+            email: result['data']['email'],
+            phone: result['data']['phone'],
+            country: result['data']['country'],
+            token: '${box.get(USERPATH)!.token}',
+            profilePhoto: result['data']['profile_picture'],
+            verified: result['data']['is_verified'] == '1',
+            dob: result['data']['dob'],
+            city: result['data']['city'],
+            state: result['data']['state'],
+            address: result['data']['address'],
+            bloodgroup: result['data']['blood_group'],
+            zip_code: result['data']['zip_code'],
+            created_at: result['data']['created_at'],
+          );
+          box.put(USERPATH, user).then((value) {
             getFrom();
-            popupMessage.dialogMessage(context,  popupMessage.serviceMessage(context, result['message'], status: true));
-         });
-      });
-    } else {
+            popupMessage.dialogMessage(
+                context,
+                popupMessage.serviceMessage(context, result['message'],
+                    status: true));
+          });
+        });
+      } else {
+        setState(() {
+          isloading = false;
+        });
+        popupMessage.dialogMessage(
+            context,
+            popupMessage.serviceMessage(context, response.reasonPhrase,
+                status: false));
+      }
+    } on SocketException {
       setState(() {
         isloading = false;
       });
-      popupMessage.dialogMessage(context,  popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
-    }
-    }on SocketException {
-      setState(() {
-        isloading = false;
-      });
-      popupMessage.dialogMessage(context,  popupMessage.serviceMessage(context, 'Check Internet Connection', status: false));
+      popupMessage.dialogMessage(
+          context,
+          popupMessage.serviceMessage(context, 'Check Internet Connection',
+              status: false));
     }
   }
 
-   void showBottomSheet() {
+  void showBottomSheet() {
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
@@ -354,21 +371,22 @@ http.StreamedResponse response = await request.send();
                   child: Column(
                       children: List.generate(
                           countryList.length,
-                          (index) => Column(
+                          (i) => Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        country.text = '${countryList[index]['name']}';
-                                        country_id = '${countryList[index]['id']}';
+                                        country.text =
+                                            '${countryList[i]['name']}';
+                                        country_id = '${countryList[i]['id']}';
                                       });
                                       Navigator.pop(context);
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.all(5.0),
                                       child: Text(
-                                        '${countryList[index]['name']}',
+                                        '${countryList[i]['name']}',
                                         style: getCustomFont(
                                             size: 16.0, color: Colors.black),
                                       ),
@@ -415,8 +433,10 @@ http.StreamedResponse response = await request.send();
                     controller: ctl,
                     decoration: InputDecoration(
                         hintText: hint,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        hintStyle: getCustomFont(size: 14.0, color: Colors.black45),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 10.0),
+                        hintStyle:
+                            getCustomFont(size: 14.0, color: Colors.black45),
                         border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(0.0))),
@@ -430,7 +450,7 @@ http.StreamedResponse response = await request.send();
     );
   }
 
-  Widget dropDown(List<String> list, {text, label, callBack}) => Padding(
+  Widget dropDown(List<String> list, {text, label = 'AA', callBack}) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -461,6 +481,7 @@ http.StreamedResponse response = await request.send();
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 9.9, vertical: 5.0),
+                        hintText: bloodGroup,
                         border: OutlineInputBorder(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(10.0)),
@@ -468,7 +489,6 @@ http.StreamedResponse response = await request.send();
                               BorderSide(width: 0.6, color: Colors.grey),
                         ),
                       ),
-                      // initialValue: 'Male',
                       onChanged: (s) => callBack(s),
                       items: list
                           .map((gender) => DropdownMenuItem(
@@ -542,4 +562,58 @@ http.StreamedResponse response = await request.send();
           ],
         ),
       );
+
+  Widget getCountry(text, label) => GestureDetector(
+        onTap: () => showBottomSheet(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '$text',
+                style: getCustomFont(size: 12.0, color: Colors.black),
+              ),
+              const SizedBox(
+                height: 4.0,
+              ),
+              Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 45.0,
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 10.0),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    border: Border.all(width: 0.6, color: Colors.black45),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  ),
+                  margin: const EdgeInsets.only(top: 5.0),
+                  child: Text('$label',
+                      style: getCustomFont(size: 15.0, color: Colors.black45)))
+            ],
+          ),
+        ),
+      );
 }
+
+
+// seperatePhoneAndDialCode() {
+//     Map<String, String> foundedCountry = {};
+//     for (var country in Countries.allCountries) {
+//       String dialCode = country["dial_code"].toString();
+//       if (phoneWithDialCode.value.contains(dialCode)) {
+//         foundedCountry = country;
+//       }
+//     }
+
+//     if (foundedCountry.isNotEmpty) {
+//       var dialCode = phoneWithDialCode.value.substring(
+//         0,
+//         foundedCountry["dial_code"]!.length,
+//       );
+//       var newPhoneNumber = phoneWithDialCode.value.substring(
+//         foundedCountry["dial_code"]!.length,
+//       );
+//       print({dialCode, newPhoneNumber});
+//     }
+//   }

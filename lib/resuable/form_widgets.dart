@@ -273,7 +273,7 @@ getOtpForm({ctl, node, onChange}) => Container(
       ),
     );
 
-navDrawer(BuildContext context, scaffold) => Container(
+navDrawer(BuildContext context, scaffold, box) => Container(
       width: (MediaQuery.of(context).size.width / 2) + 78.0,
       height: MediaQuery.of(context).size.height,
       color: Colors.white,
@@ -302,7 +302,7 @@ navDrawer(BuildContext context, scaffold) => Container(
                       context.read<HomeController>().setPage(-2);
                     },
                     child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/imgs/2.png'),
+                      backgroundImage: NetworkImage('${box.get(USERPATH).profilePhoto}'),
                       radius: 30.0,
                       backgroundColor: Colors.white,
                     ),

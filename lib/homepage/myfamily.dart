@@ -1,5 +1,6 @@
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
+import 'package:doccure_patient/dialog/update_family.dart';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/services/request.dart';
@@ -27,62 +28,90 @@ class _MyFamilyState extends State<MyFamily> {
             height: MediaQuery.of(context).size.height,
             color: Color(0xFFf6f6f6),
             child: Column(children: [
-                Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
-            width: MediaQuery.of(context).size.width,
-            color: BLUECOLOR,
-            child: Column(children: [
-              const SizedBox(
-                height: 45.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                      onTap: () => context.read<HomeController>().onBackPress(),
-                      child: Icon(
-                        Icons.arrow_back_ios,
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+                width: MediaQuery.of(context).size.width,
+                color: BLUECOLOR,
+                child: Column(children: [
+                  const SizedBox(
+                    height: 45.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                          onTap: () =>
+                              context.read<HomeController>().onBackPress(),
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white,
+                            size: 18.0,
+                          )),
+                      Text('Family',
+                          style:
+                              getCustomFont(color: Colors.white, size: 16.0)),
+                      Icon(
+                        null,
                         color: Colors.white,
-                        size: 18.0,
-                      )),
-                  Text('Family',
-                      style: getCustomFont(color: Colors.white, size: 16.0)),
-                  Icon(
-                    null,
-                    color: Colors.white,
-                  )
-                ],
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                ]),
               ),
-              const SizedBox(
-                height: 15.0,
-              ),
-            ]),
-          ),
-              // Expanded(
-              //     child: family.isEmpty
-              //         ? emptyContainer(context)
-                      
-
               FutureBuilder<Map<String, dynamic>>(
-                future: ApiServices.getAllDepends(context, box.get(USERPATH)!.token),
-                builder: (context, snapshot) {
-                  if(snapshot.connectionState == ConnectionState.waiting) {
-                      return Expanded(child: Center(child: CircularProgressIndicator(color: BLUECOLOR),));
-                  }
-                  if(snapshot.connectionState == ConnectionState.done) {
-                    if(snapshot.hasData && snapshot.data != null) {
-                      return Expanded(child: ListView.builder(
-                          itemCount: 10,
-                          padding: const EdgeInsets.all(0.0),
-                          itemBuilder: (ctx, i) => listItem()));
-                    }else {
-                      Expanded(child: emptyContainer(context));
+                  future: ApiServices.getAllDepends(
+                      context, box.get(USERPATH)!.token),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Expanded(
+                          child: Center(
+                        child: CircularProgressIndicator(color: BLUECOLOR),
+                      ));
                     }
-                  }
-                  return Text('${snapshot.error}', style: getCustomFont(size: 14.0, color: Colors.black45));
-              } )
-                          
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData && snapshot.data != null) {
+                        if (snapshot.data!['data'].length <= 0) {
+                          return Expanded(child: emptyContainer(context));
+                        }
+                        return Expanded(
+                          child: Stack(
+                            children: [
+                              Container(
+                                  child: ListView.builder(
+                                      itemCount: snapshot.data!['data'].length,
+                                      padding: const EdgeInsets.all(0.0),
+                                      itemBuilder: (ctx, i) =>
+                                          listItem(snapshot.data!['data'][i])),
+                                  width: MediaQuery.of(context).size.width,
+                                  height: MediaQuery.of(context).size.height),
+                              Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0, vertical: 20.0),
+                                    child: FloatingActionButton(
+                                        onPressed: () => dialogMessage(
+                                            context, familyPop(context)),
+                                        backgroundColor: BLUECOLOR,
+                                        child: Icon(
+                                          Icons.add,
+                                        )),
+                                  ))
+                            ],
+                          ),
+                        );
+                      } else {
+                        return Expanded(child: emptyContainer(context));
+                      }
+                    }
+                    return Text('${snapshot.error}',
+                        style:
+                            getCustomFont(size: 14.0, color: Colors.black45));
+                  })
             ])),
         Visibility(
           visible: family.isNotEmpty,
@@ -91,7 +120,10 @@ class _MyFamilyState extends State<MyFamily> {
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: CircleAvatar(
-                child: Icon(Icons.add, color: Colors.white,),
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
                 backgroundColor: BLUECOLOR,
                 radius: 30.0,
               ),
@@ -102,48 +134,83 @@ class _MyFamilyState extends State<MyFamily> {
     );
   }
 
-  listItem() => Container(
+  listItem(e) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+        margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 5.0),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15.0),
+            borderRadius: BorderRadius.circular(8.0),
             color: Colors.white,
             boxShadow: SHADOW),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100.0),
-                border: Border.all(width: 2.0, color: BLUECOLOR)),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(100.0),
-              child: Image.asset(
-                'assets/imgs/1.png',
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                Text(
-                  'John Doe Williams',
-                  style: getCustomFont(size: 17.0, color: Colors.black),
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100.0),
+                      border: Border.all(
+                          width: 2.0, color: BLUECOLOR.withOpacity(.4))),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(100.0),
+                    child: Image.network(
+                      '${e['picture']}',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
                 ),
-                Text(
-                  '70 years old',
-                  style: getCustomFont(size: 17.0, color: Colors.black45),
+                const SizedBox(width: 10.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${e['name']}',
+                      style: getCustomFont(size: 16.0, color: Colors.black),
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.family_restroom,
+                          color: BLUECOLOR,
+                          size: 10.0,
+                        ),
+                        const SizedBox(width: 4.0),
+                        Text(
+                          '${e['gender']}, ${e['relationship']}',
+                          style:
+                              getCustomFont(size: 14.0, color: Colors.black45),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
-          Icon(
-            Icons.family_restroom,
-            color: BLUECOLOR,
-            size: 18.0,
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () => showRequestSheet(context, UpdateFamily(e)),
+                child: Icon(
+                  Icons.edit,
+                  color: BLUECOLOR,
+                  size: 18.0,
+                ),
+              ),
+              const SizedBox(width: 20.0,),
+              GestureDetector(
+                onTap: () => ApiServices.deleteDependent(context, box.get(USERPATH)!.token, e['id'], (){setState(() {
+                  
+                });}),
+                child: Icon(
+                  Icons.delete,
+                  color: Colors.redAccent,
+                  size: 18.0,
+                ),
+              ),
+            ],
           )
         ]),
       );
@@ -180,8 +247,7 @@ class _MyFamilyState extends State<MyFamily> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: BLUECOLOR),
+                    borderRadius: BorderRadius.circular(8.0), color: BLUECOLOR),
                 padding: const EdgeInsets.symmetric(
                     horizontal: 28.0, vertical: 11.0),
                 child: Text(
@@ -193,4 +259,6 @@ class _MyFamilyState extends State<MyFamily> {
           ],
         ),
       );
+
+
 }

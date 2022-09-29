@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/services/request.dart';
@@ -9,28 +10,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
-class AddFamilyDailog extends StatefulWidget {
-  const AddFamilyDailog({Key? key}) : super(key: key);
+class AddMedical extends StatefulWidget {
+  const AddMedical({Key? key}) : super(key: key);
 
   @override
-  State<AddFamilyDailog> createState() => _AddFamilyDailogState();
+  State<AddMedical> createState() => _AddMedicalState();
 }
 
-class _AddFamilyDailogState extends State<AddFamilyDailog> {
-  late PhoneController phoneController;
-  var selectedDate = DateTime.now();
-  File filename = File('');
+class _AddMedicalState extends State<AddMedical> {
   bool isloading = false;
+
   final fullname = TextEditingController();
-  final relationship = TextEditingController();
-  final email = TextEditingController();
-  String gender = 'Male';
-  String bloodGroup = 'AA';
+  final bmi = TextEditingController();
+  final heartRate = TextEditingController();
+  final fcb = TextEditingController();
+  final weight = TextEditingController();
+
   final box = Hive.box<User>(BoxName);
 
   @override
   void initState() {
-    phoneController = PhoneController(null);
     super.initState();
   }
 
@@ -55,7 +54,7 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
             children: [
               Flexible(
                   child: Text(
-                'Add a new member',
+                'Add Medical Record',
                 style: getCustomFont(size: 14.0, color: Colors.black),
               )),
               Icon(
@@ -86,14 +85,14 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                 const SizedBox(
                   height: 5.0,
                 ),
-                getCardForm('Full Name', ctl: fullname),
+                getCardForm('Name', ctl: fullname),
                 const SizedBox(
                   height: 15.0,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
-                    'Relationship',
+                    'BMI',
                     style: getCustomFont(
                         size: 15.0,
                         color: Colors.black,
@@ -103,14 +102,14 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                 const SizedBox(
                   height: 5.0,
                 ),
-                getCardForm('Brother', ctl: relationship),
+                getCardForm('BMI', ctl: bmi),
                 const SizedBox(
                   height: 15.0,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
-                    'E-mail Address',
+                    'Heart Rate',
                     style: getCustomFont(
                         size: 15.0,
                         color: Colors.black,
@@ -120,14 +119,14 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                 const SizedBox(
                   height: 5.0,
                 ),
-                getCardForm('johndoe@example.com', ctl: email),
+                getCardForm('Heart Rate', ctl: heartRate),
                 const SizedBox(
                   height: 15.0,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
-                    'Gender',
+                    'FBC Status',
                     style: getCustomFont(
                         size: 15.0,
                         color: Colors.black,
@@ -137,14 +136,14 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                 const SizedBox(
                   height: 5.0,
                 ),
-                getDropDownAssurance(onChange: (s) => gender = s),
+                getCardForm('FBC Status', ctl: fcb),
                 const SizedBox(
                   height: 15.0,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
-                    'Blood Group',
+                    'Weight',
                     style: getCustomFont(
                         size: 15.0,
                         color: Colors.black,
@@ -154,54 +153,7 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                 const SizedBox(
                   height: 5.0,
                 ),
-                getBloodGroup(onChange: (s) => bloodGroup = s),
-                const SizedBox(
-                  height: 15.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text(
-                    'Phone number',
-                    style: getCustomFont(
-                        size: 15.0,
-                        color: Colors.black,
-                        weight: FontWeight.w500),
-                  ),
-                ),
-                const SizedBox(
-                  height: 5.0,
-                ),
-                getPhoenNumber(phoneController),
-                // getDateForm(DateFormat('yyyy-MM-dd').format(selectedDate),
-                //     () async {
-                //   final DateTime? picked = await showDatePicker(
-                //       context: context,
-                //       initialDate: DateTime.now(),
-                //       firstDate: DateTime(2015, 8),
-                //       lastDate: DateTime(2101));
-                //   if (picked != null && picked != selectedDate) {
-                //     setState(() {
-                //       selectedDate = picked;
-                //     });
-                //   }
-                // }),
-                const SizedBox(
-                  height: 15.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text(
-                    'Photo',
-                    style: getCustomFont(
-                        size: 15.0,
-                        color: Colors.black,
-                        weight: FontWeight.w500),
-                  ),
-                ),
-                const SizedBox(
-                  height: 5.0,
-                ),
-                getUploadForm(filename.path),
+                getCardForm('Weight', ctl: weight),
                 const SizedBox(
                   height: 30.0,
                 ),
@@ -469,7 +421,7 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
               color: BLUECOLOR, borderRadius: BorderRadius.circular(50.0)),
           child: Center(
             child: Text(
-              'Add Member',
+              'Add Medical Record',
               style: getCustomFont(
                   size: 14.0, color: Colors.white, weight: FontWeight.normal),
             ),
@@ -479,36 +431,52 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
 
   void onExecute() async {
     if (fullname.text.trim().isEmpty) {
-      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'E-mail is not valid'));
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Medical name is not valid'));
       return;
     }
 
-    if (phoneController.value == null) {
-      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Phone Nuber is required'));
+    if (weight.text.trim().isEmpty) {
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Weight is not valid'));
       return;
     }
 
-    final data = {
-        'name': fullname.text,
-        'picture': 'https://wallpaperaccess.com/full/8054251.jpg',
-        'relationship': relationship.text, 
-        'gender': gender,
-        'number': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
-        'bloodgroup': bloodGroup,
-      };
+
+    if (fcb.text.trim().isEmpty) {
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'FBC status is not valid'));
+      return;
+    }
+
+    if (heartRate.text.trim().isEmpty) {
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Heart Rate is not valid'));
+      return;
+    }
+
+    if (bmi.text.trim().isEmpty) {
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'BMI is not valid'));
+      return;
+    }
+
 
     setState(() {
       isloading = true;
     });
 
     try {
-      final response = await http.Client().post(Uri.parse('${ROOTAPI}/api/v1/auth/patient/dependents/add-dependent'), body: data, headers: {
+      var request = http.Request('PATCH', Uri.parse('${ROOTAPI}/api/v1/auth/patient/records/other-medical-record/add'));
+      request.body = jsonEncode({
+        'name': fullname.text,
+        "bmi": bmi.text.trim(),
+        "heart_rate": heartRate.text.trim(),
+        "fbc_status": fcb.text.trim(),
+        "weight": weight.text.trim(),
+      });
+      request.headers.addAll({
         'Authorization': '${box.get(USERPATH)!.token}',
       });
+      http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
           setState(() => isloading = false);
-          Navigator.pop(context);
-          popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Dependent added successfully', status: true));
+          popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Medical record added successfully', status: true));
       } else {
          setState(() => isloading = false);
         popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));

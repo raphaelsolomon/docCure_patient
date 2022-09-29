@@ -74,13 +74,13 @@ class ApiServices {
 
   //================================ MEDICAL RECORD SET =================================
   static Future<Map<String, dynamic>> getAllMedicalRecords(BuildContext c, token) async {
-    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/patient/all-medical-records'));
-    request.body = jsonEncode({"url": "http://patient.gettheskydoctors.com"});
-    request.headers.addAll({'Authorization': 'Bearer $token', 'Content-Type': 'application/json'});
+    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/records/all-medical-records'));
+    request.headers.addAll({'Authorization': '$token'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-       final parsed = jsonDecode(await response.stream.bytesToString());
-       return parsed;
+       return response.stream.bytesToString().then((value) {
+          return jsonDecode(value);
+       });
     } else {
       final parsed = jsonDecode(await response.stream.bytesToString());
       popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
@@ -132,28 +132,32 @@ class ApiServices {
     }
   }
 
-  static Future deleteDependent(BuildContext c, token, id) async {
+  static Future deleteDependent(BuildContext c, token, id, callBack) async {
+    callBack();
     var request = http.Request('DELETE', Uri.parse('${ROOTAPI}/api/v1/auth/patient/dependents/delete-dependent/${id}'));
-    request.body = jsonEncode({"url": "http://patient.gettheskydoctors.com"});
-    request.headers.addAll({'Authorization': 'Bearer $token', 'Content-Type': 'application/json'});
+    request.headers.addAll({'Authorization': '$token'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-       final parsed = jsonDecode(await response.stream.bytesToString());
-       return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['success']['message'], status: true));
+      return response.stream.bytesToString().then((value) {
+        callBack();
+           final parsed = jsonDecode(value);
+          return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['message'], status: true));
+       });
     } else {
-      final parsed = jsonDecode(await response.stream.bytesToString());
-      return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
+       return response.stream.bytesToString().then((value) {
+          return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, jsonDecode(value)['message'], status: false));
+       });
     }
   }
 
   static Future updateDependent(BuildContext c, token, id) async {
     var request = http.Request('PATCH', Uri.parse('${ROOTAPI}/api/v1/auth/patient/dependents/edit-dependent/${id}'));
-    request.body = jsonEncode({"url": "http://patient.gettheskydoctors.com", "name": "Uchiha Itachi"});
-    request.headers.addAll({'Authorization': 'Bearer $token', 'Content-Type': 'application/json'});
+    request.headers.addAll({'Authorization': '$token'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-       final parsed = jsonDecode(await response.stream.bytesToString());
-       return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['success']['message'], status: true));
+       return response.stream.bytesToString().then((value) {
+          return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, jsonDecode(value)['success']['message'], status: true));
+       });
     } else {
       final parsed = jsonDecode(await response.stream.bytesToString());
       return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
@@ -163,12 +167,12 @@ class ApiServices {
   //================================ MEDICAL OTHER RECORD SET =================================
   static Future<Map<String, dynamic>> getAllOtherMedicalRecords(BuildContext c, token) async {
     var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/records/other-medical-record/all'));
-    request.body = jsonEncode({"url": "http://patient.gettheskydoctors.com"});
-    request.headers.addAll({'Authorization': 'Bearer $token', 'Content-Type': 'application/json'});
+    request.headers.addAll({'Authorization': '$token'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-       final parsed = jsonDecode(await response.stream.bytesToString());
-       return parsed;
+       return response.stream.bytesToString().then((value) {
+          return jsonDecode(value);
+       });
     } else {
       final parsed = jsonDecode(await response.stream.bytesToString());
       popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
@@ -204,14 +208,16 @@ class ApiServices {
     }
   }
 
-  static Future deleteOtherMedicalRecord(BuildContext c, token, id) async {
-    var request = http.Request('POST', Uri.parse('${ROOTAPI}/api/v1/auth/patient/records/other-medical-record/delete/${id}'));
-    request.body = jsonEncode({"url": "http://patient.gettheskydoctors.com"});
-    request.headers.addAll({'Authorization': 'Bearer $token', 'Content-Type': 'application/json'});
+  static Future deleteOtherMedicalRecord(BuildContext c, token, id, callBack) async {
+    callBack();
+    var request = http.Request('DELETE', Uri.parse('${ROOTAPI}/api/v1/auth/patient/records/other-medical-record/delete/${id}'));
+    request.headers.addAll({'Authorization': '$token'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-       final parsed = jsonDecode(await response.stream.bytesToString());
-       return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['success']['message'], status: true));
+       return response.stream.bytesToString().then((value) {
+          callBack();
+          return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, jsonDecode(value)['message'], status: true));
+       });
     } else {
       final parsed = jsonDecode(await response.stream.bytesToString());
       return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));

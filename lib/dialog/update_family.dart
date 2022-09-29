@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/services/request.dart';
@@ -9,14 +10,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
-class AddFamilyDailog extends StatefulWidget {
-  const AddFamilyDailog({Key? key}) : super(key: key);
+class UpdateFamily extends StatefulWidget {
+  final Map<String, dynamic> MyFamily;
+  const UpdateFamily(this.MyFamily, {Key? key}) : super(key: key);
 
   @override
-  State<AddFamilyDailog> createState() => _AddFamilyDailogState();
+  State<UpdateFamily> createState() => _UpdateFamilyState();
 }
 
-class _AddFamilyDailogState extends State<AddFamilyDailog> {
+class _UpdateFamilyState extends State<UpdateFamily> {
   late PhoneController phoneController;
   var selectedDate = DateTime.now();
   File filename = File('');
@@ -30,7 +32,12 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
 
   @override
   void initState() {
-    phoneController = PhoneController(null);
+    seperatePhoneAndDialCode(widget.MyFamily['number']);
+    fullname.text = widget.MyFamily['name'];
+    relationship.text = widget.MyFamily['relationship'];
+    gender = widget.MyFamily['gender'];
+    bloodGroup = widget.MyFamily['bloodgroup'];
+
     super.initState();
   }
 
@@ -55,7 +62,7 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
             children: [
               Flexible(
                   child: Text(
-                'Add a new member',
+                'Edit member',
                 style: getCustomFont(size: 14.0, color: Colors.black),
               )),
               Icon(
@@ -469,7 +476,7 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
               color: BLUECOLOR, borderRadius: BorderRadius.circular(50.0)),
           child: Center(
             child: Text(
-              'Add Member',
+              'Update Member',
               style: getCustomFont(
                   size: 14.0, color: Colors.white, weight: FontWeight.normal),
             ),
@@ -488,27 +495,27 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
       return;
     }
 
-    final data = {
+    setState(() {
+      isloading = true;
+    });
+
+    try {
+      var request = http.Request('PATCH', Uri.parse('${ROOTAPI}/api/v1/auth/patient/dependents/edit-dependent/${widget.MyFamily['id']}'));
+      request.body = jsonEncode({
         'name': fullname.text,
         'picture': 'https://wallpaperaccess.com/full/8054251.jpg',
         'relationship': relationship.text, 
         'gender': gender,
         'number': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
         'bloodgroup': bloodGroup,
-      };
-
-    setState(() {
-      isloading = true;
-    });
-
-    try {
-      final response = await http.Client().post(Uri.parse('${ROOTAPI}/api/v1/auth/patient/dependents/add-dependent'), body: data, headers: {
+      });
+      request.headers.addAll({
         'Authorization': '${box.get(USERPATH)!.token}',
       });
+      http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
           setState(() => isloading = false);
-          Navigator.pop(context);
-          popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Dependent added successfully', status: true));
+          popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Dependent Updated successfully', status: true));
       } else {
          setState(() => isloading = false);
         popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
@@ -516,6 +523,25 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
     } on SocketException {
        setState(() => isloading = false);
       popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Check Internet Connection', status: false));
+    }
+  }
+
+  seperatePhoneAndDialCode(phoneWithDialCode) {
+    var foundedCountry = {};
+    for (var country in countryList) {
+      String dialCode = country["code"].toString();
+      if (phoneWithDialCode.toString().startsWith("+${dialCode}")) {
+        foundedCountry = country;
+        break;
+      }
+    }
+
+    if (foundedCountry.isNotEmpty) {
+      //var dialCode = phoneWithDialCode.substring(0, '+${foundedCountry["code"]}'.length);
+      var newPhoneNumber = phoneWithDialCode.substring('+${foundedCountry["code"]}'.length);
+      phoneController = PhoneController(PhoneNumber(nsn: newPhoneNumber, isoCode: IsoCode.NG));
+    } else {
+       phoneController = PhoneController(null);
     }
   }
 }

@@ -84,7 +84,7 @@ class _DashBoardState extends State<DashBoard> {
             user: box.get('details'),
             scaffold: Scaffold(
                 key: scaffold,
-                drawer: !removeBottom.contains(page) ? navDrawer(context, scaffold) : null,
+                drawer: !removeBottom.contains(page) ? navDrawer(context, scaffold, box) : null,
                 backgroundColor: Colors.white,
                 body: Stack(
                   children: [
