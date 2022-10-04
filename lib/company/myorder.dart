@@ -3,9 +3,9 @@ import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MyFavourite extends StatelessWidget {
+class MyOrder extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffold;
-  const MyFavourite(this.scaffold, {Key? key}) : super(key: key);
+  const MyOrder(this.scaffold, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

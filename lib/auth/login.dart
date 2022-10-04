@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:doccure_patient/providers/user_provider.dart';
+import 'package:doccure_patient/model/referral/referral.dart';
 import 'package:doccure_patient/resources/firebase_method.dart';
 import 'package:doccure_patient/auth/forgotpass.dart';
 import 'package:doccure_patient/auth/register.dart';
@@ -19,7 +19,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:http/http.dart' as http;
 import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
-import 'package:provider/provider.dart';
 
 class AuthLogin extends StatefulWidget {
   const AuthLogin({Key? key}) : super(key: key);
@@ -35,6 +34,7 @@ class _AuthLoginState extends State<AuthLogin> {
   final email = TextEditingController();
   final password = TextEditingController();
   final box = Hive.box<User>(BoxName);
+  final refbox = Hive.box(ReferralBox);
 
   @override
   void initState() {
@@ -363,9 +363,9 @@ class _AuthLoginState extends State<AuthLogin> {
           bloodgroup: result['data']['blood_group'],
           zip_code: result['data']['zip_code'],
           created_at: result['data']['created_at'],
+          onboarded: parsed['data']['onboarded'] == '1'
         );
-        context.read<UserProvider>().setProfile(result);
-        box.put(USERPATH, user).then((value) => Get.offAll(() => DashBoard()));
+        box.put(USERPATH, user).then((value) => getReferral(parsed['data']['access_token']));
       } else {
         setState(() {
           isLoading = false;
@@ -389,6 +389,20 @@ class _AuthLoginState extends State<AuthLogin> {
       setState(() {
         isLoading = false;
       });
+    }
+  }
+
+  getReferral(token) async {
+    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/referral/code'));
+    request.headers.addAll({'Authorization': 'Bearer ' + token});
+    http.StreamedResponse response = await request.send();
+    if(response.statusCode == 200) {
+      response.stream.bytesToString().then((value) {
+          final ref = ReferralModel.fromJson(jsonDecode(value));
+          refbox.put(USERPATH, jsonEncode(ref.toJson())).then((value) => Get.offAll(() => DashBoard()));
+      });
+    } else{
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
     }
   }
 }

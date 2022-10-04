@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 part 'user.g.dart';
 
 @HiveType(typeId: 1)
-class User {
+class User extends HiveObject {
   @HiveField(0)
   String? uid;
   @HiveField(1)
@@ -33,6 +33,8 @@ class User {
   String? zip_code;
   @HiveField(14)
   String? created_at;
+  @HiveField(15)
+  bool? onboarded;
 
   User(
       {this.uid,
@@ -49,7 +51,8 @@ class User {
       this.dob,
       this.address,
       this.zip_code,
-      this.created_at});
+      this.created_at,
+      this.onboarded});
 
   Map toMap(User user) {
     var data = <String, dynamic>{};
@@ -68,6 +71,7 @@ class User {
     data["blood_group"] = user.bloodgroup;
     data["created_at"] = user.created_at;
     data["dob"] = user.dob;
+    data['onboarded'] = user.onboarded;
     return data;
   }
 
@@ -88,5 +92,6 @@ class User {
     address = mapData['address'];
     bloodgroup = mapData['blood_group'];
     created_at = mapData['created_at'];
+    onboarded = mapData['onboarded'];
   }
 }

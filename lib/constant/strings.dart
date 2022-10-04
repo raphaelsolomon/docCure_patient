@@ -21,6 +21,7 @@ const String CALL_STATUS_RECEIVED = "received";
 const String CALL_STATUS_MISSED = "missed";
 const USERPATH = 'details';
 
+
 List<User> users = [
   // User(
   //     email: 'phoenixk54@gmail.com',
@@ -165,6 +166,7 @@ const DUMMYREVIEW =
     'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.';
 
 const BoxName = 'userBox';
+const ReferralBox = 'refBox';
 
 List ONBOARDING = [
   {
@@ -255,8 +257,8 @@ getNavdraweritem(BuildContext context) {
   ];
 }
 
-List removeBottom = [1, -10, 3, 8, -14, -8, -5, 9, -9, -6, -19, -7, -12, 6, 8, -2, -13, 7];
-List removeBottom1 = [1, -10, 3, 8, -14, -8, -5, 9, -9, -6, -19, -7, -12, 6, 8, -2, -13, 7];
+List removeBottom = [1, -10, 3, 8, -14, -8, -5, 9, -9, -6, -19, -7, -12, 6, 8, -2, -13, 7, -17];
+List removeBottom1 = [1, -10, 3, 8, -14, -8, -5, 9, -9, -6, -19, -7, -12, 6, 8, -2, -13, 7 -17];
 
 
 List shop_by_categgory = [{'title': 'OTC MEDICINES', 'color': Colors.blueGrey, 'icon': 'assets/estore/estore5.png'}, 
@@ -354,7 +356,7 @@ List<NavDrawerItem> getNavdraweritem_(BuildContext context) {
         children: [
           {'index': -12, 'title': 'My Offer'},
           {'index': 6, 'title': 'My Invoices'},
-          {'index': 8, 'title': 'Favourite'},
+          {'index': -17, 'title': 'Favourite'},
           //{'index': -0, 'title': 'Reviews'}
         ],
         isOpen: false,

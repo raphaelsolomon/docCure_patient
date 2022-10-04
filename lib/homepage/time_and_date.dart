@@ -29,6 +29,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
     {'title': 'Chat', 'icon': FontAwesome5.facebook_messenger},
     {'title': 'Physical Visit', 'icon': FontAwesome5.walking}
   ];
+  var _selected  = DateTime.now();
   String type = 'Audio Call';
 
   List<TimingModel> timemodel = [
@@ -365,12 +366,13 @@ class _TimeAndDateState extends State<TimeAndDate> {
                       child: DatePicker(
                         DateTime.now(),
                         initialSelectedDate: DateTime.now(),
-                        selectionColor: Colors.white,
-                        selectedTextColor: Colors.black,
-                        dayTextStyle: getCustomFont(color: Colors.white, size: 10.0),
-                        dateTextStyle: getCustomFont(color: Colors.white, size: 19.0),
-                        monthTextStyle: getCustomFont(color: Colors.white, size: 10.0),
-                        onDateChange: (date) {},
+                        selectionColor: BLUECOLOR,
+                        dayTextStyle: getCustomFont(color: Colors.black, size: 10.0),
+                        dateTextStyle: getCustomFont(color: Colors.black, size: 19.0),
+                        monthTextStyle: getCustomFont(color: Colors.black, size: 10.0),
+                        onDateChange: (date) {
+                          _selected = date;
+                        },
                       ),
                     ),
                     const SizedBox(

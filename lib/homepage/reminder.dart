@@ -1,11 +1,18 @@
 import 'dart:convert';
 import 'package:doccure_patient/constant/strings.dart';
+import 'package:doccure_patient/model/person/user.dart';
+import 'package:doccure_patient/model/reminder_model.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
+import 'package:doccure_patient/services/request.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:http/http.dart' as http;
 
 class MyReminder extends StatefulWidget {
   const MyReminder({Key? key}) : super(key: key);
@@ -18,6 +25,22 @@ class _MyReminderState extends State<MyReminder> {
   int counter = 0;
   List days = [];
   bool isActive = false;
+
+  bool isLoading = true;
+  ReminderModel? reminderModel;
+  final box = Hive.box<User>(BoxName);
+  final _refreshController = RefreshController(initialRefresh: false);
+
+  @override
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      getReminders(_refreshController).then((value) => setState(() {
+        this.reminderModel = value;
+        isLoading = false;
+      }));
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,67 +87,77 @@ class _MyReminderState extends State<MyReminder> {
               ),
               Expanded(
                   child: counter == 0
-                      ? ListView.builder(
-                          padding: const EdgeInsets.all(0.0),
-                          itemCount: 5,
-                          itemBuilder: (ctx, i) {
-                            return Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 5.0, vertical: 4.0),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15.0, vertical: 10.0),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(2.0),
-                                  boxShadow: SHADOW),
-                              child: Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 28.0,
-                                    backgroundColor: BLUECOLOR.withOpacity(.1),
-                                    child: Icon(
-                                      Icons.notifications_active,
-                                      color: BLUECOLOR,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10.0,
-                                  ),
-                                  Flexible(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text('Diabetes Pills',
-                                            style: getCustomFont(
-                                                size: 15.0,
-                                                weight: FontWeight.w500,
-                                                color: Colors.black)),
-                                        const SizedBox(
-                                          height: 4.0,
+                      ? SmartRefresher(
+                          controller: _refreshController,
+                          enablePullDown: true,
+                          header: WaterDropHeader(waterDropColor: BLUECOLOR.withOpacity(.5)),
+                          onRefresh: () => getReminders(_refreshController).then((value) => setState(() {
+                            this.reminderModel = value;
+                          })),
+                          child: ListView.builder(
+                              padding: const EdgeInsets.all(0.0),
+                              itemCount: 5,
+                              itemBuilder: (ctx, i) {
+                                return Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 5.0, vertical: 4.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15.0, vertical: 10.0),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(2.0),
+                                      boxShadow: SHADOW),
+                                  child: Row(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 28.0,
+                                        backgroundColor:
+                                            BLUECOLOR.withOpacity(.1),
+                                        child: Icon(
+                                          Icons.notifications_active,
+                                          color: BLUECOLOR,
                                         ),
-                                        Text('Mon, Tue, Wed, Thurs, Sat, Sun',
-                                            style: getCustomFont(
-                                                size: 13.0,
-                                                weight: FontWeight.normal,
-                                                color: Colors.black45)),
-                                        const SizedBox(
-                                          height: 3.0,
+                                      ),
+                                      const SizedBox(
+                                        width: 10.0,
+                                      ),
+                                      Flexible(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text('${reminderModel!.data![i].pillName}',
+                                                style: getCustomFont(
+                                                    size: 15.0,
+                                                    weight: FontWeight.w500,
+                                                    color: Colors.black)),
+                                            const SizedBox(
+                                              height: 4.0,
+                                            ),
+                                            Text(
+                                                'Mon, Tue, Wed, Thurs, Sat, Sun',
+                                                style: getCustomFont(
+                                                    size: 13.0,
+                                                    weight: FontWeight.normal,
+                                                    color: Colors.black45)),
+                                            const SizedBox(
+                                              height: 3.0,
+                                            ),
+                                            Text(
+                                                '08: 00 am, 12:00 pm, 03:30 pm, 06:00 pm',
+                                                style: getCustomFont(
+                                                    size: 12.0,
+                                                    weight: FontWeight.w500,
+                                                    color: Colors.black54))
+                                          ],
                                         ),
-                                        Text(
-                                            '08: 00 am, 12:00 pm, 03:30 pm, 06:00 pm',
-                                            style: getCustomFont(
-                                                size: 12.0,
-                                                weight: FontWeight.w500,
-                                                color: Colors.black54))
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            );
-                          })
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }),
+                        )
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -439,4 +472,20 @@ class _MyReminderState extends State<MyReminder> {
           ),
         ),
       );
+
+  Future<ReminderModel> getReminders(RefreshController controller) async {
+    ReminderModel model = new ReminderModel();
+    setState(() => isLoading = true);
+    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/reminders/all'));
+    request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      controller.refreshCompleted();
+      return response.stream.bytesToString().then((value) {
+        return model = ReminderModel.fromJson(jsonDecode(value));
+      });
+    }
+    controller.refreshFailed();
+    return model;
+  }
 }

@@ -440,6 +440,9 @@ setChildrenClickListener(e, BuildContext context) {
     case -14:
       dialogMessage(context, CurrencyDialog());
       break;
+    case -17:
+      context.read<HomeController>().setPage(-17);
+      break;  
   }
 }
 

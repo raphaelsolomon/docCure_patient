@@ -1,14 +1,43 @@
+import 'dart:convert';
+
 import 'package:doccure_patient/constant/strings.dart';
+import 'package:doccure_patient/model/favourite_model.dart';
+import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
+import 'package:doccure_patient/services/request.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:http/http.dart' as http;
 
-class MyFavourite extends StatelessWidget {
-  final GlobalKey<ScaffoldState> scaffold;
-  const MyFavourite(this.scaffold, {Key? key}) : super(key: key);
+class MyFavourite extends StatefulWidget {
+  const MyFavourite({Key? key}) : super(key: key);
+
+  @override
+  State<MyFavourite> createState() => _MyFavouriteState();
+}
+
+class _MyFavouriteState extends State<MyFavourite> {
+  bool isLoading = true;
+  FavouriteModel? favouriteModel;
+  final box = Hive.box<User>(BoxName);
+  final _refreshController = RefreshController(initialRefresh: false);
+
+  @override
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      getFavourites(_refreshController).then((value) => setState(() {
+            favouriteModel = value;
+            isLoading = false;
+          }));
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +46,7 @@ class MyFavourite extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         color: Color(0xFFf6f6f6),
         child: Column(children: [
-           Container(
+          Container(
             padding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
             width: MediaQuery.of(context).size.width,
@@ -50,19 +79,29 @@ class MyFavourite extends StatelessWidget {
             ]),
           ),
           const SizedBox(
-            height: 15.0,
+            height: 5.0,
           ),
           Expanded(
-              child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 0.0, vertical: 0.0),
-                  itemCount: 5,
-                  shrinkWrap: true,
-                  itemBuilder: (ctx, i) => findDoctors(context)))
+              child: isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : SmartRefresher(
+                      enablePullDown: true,
+                      header: WaterDropHeader(waterDropColor: BLUECOLOR.withOpacity(.5)),
+                      controller: _refreshController,
+                      onRefresh: () => getFavourites(_refreshController)
+                          .then((value) => setState(() {
+                                favouriteModel = value;
+                              })),
+                      child: ListView.builder(
+                          padding: const EdgeInsets.all(0.0),
+                          itemCount: favouriteModel!.data!.length,
+                          shrinkWrap: true,
+                          itemBuilder: (ctx, i) => findDoctors(context, favouriteModel!.data![i])),
+                    ))
         ]));
   }
 
-  Widget findDoctors(context) => Container(
+  Widget findDoctors(context, Data data) => Container(
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
@@ -96,7 +135,7 @@ class MyFavourite extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      'Dr. Ruby Perrln',
+                      '${data.name}',
                       style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 15.0,
@@ -137,7 +176,7 @@ class MyFavourite extends StatelessWidget {
                                 width: 5.0,
                               ),
                               Text(
-                                'Dentist',
+                                '${data.specialization}',
                                 style: GoogleFonts.poppins(
                                     color: Colors.lightBlue,
                                     fontSize: 13.0,
@@ -203,7 +242,7 @@ class MyFavourite extends StatelessWidget {
                               size: 14.0,
                             ),
                             Text(
-                              'Florida, USA',
+                              '${data.state}, ${data.country ?? ''}',
                               style: GoogleFonts.poppins(
                                   color: Colors.black,
                                   fontSize: 14.0,
@@ -279,7 +318,7 @@ class MyFavourite extends StatelessWidget {
                       width: 3.0,
                     ),
                     Text(
-                      '\$300 - \$1000',
+                      '\$${data.consultationFee}',
                       style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 15.0,
@@ -303,10 +342,9 @@ class MyFavourite extends StatelessWidget {
                   width: 15.0,
                 ),
                 Flexible(
-                  child:
-                      getAppointment(context, () {
-                         context.read<HomeController>().setPage(-1);
-                      }, text: 'Book Appointment'),
+                  child: getAppointment(context, () {
+                    context.read<HomeController>().setPage(-1);
+                  }, text: 'Book Appointment'),
                 )
               ],
             )
@@ -339,9 +377,7 @@ class MyFavourite extends StatelessWidget {
         ),
       );
 
-  Widget getAppointment(context, callBack,
-          {color = BLUECOLOR, text = 'Search Now'}) =>
-      GestureDetector(
+  Widget getAppointment(context, callBack, {color = BLUECOLOR, text = 'Search Now'}) => GestureDetector(
         onTap: () => callBack(),
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -365,4 +401,19 @@ class MyFavourite extends StatelessWidget {
           ),
         ),
       );
+
+  Future<FavouriteModel> getFavourites(RefreshController controller) async {
+    FavouriteModel model = new FavouriteModel();
+    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/favorites/all'));
+    request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      controller.refreshCompleted();
+      return response.stream.bytesToString().then((value) {
+        return model = FavouriteModel.fromJson(jsonDecode(value));;
+      });
+    }
+    controller.refreshFailed();
+    return model;
+  }
 }

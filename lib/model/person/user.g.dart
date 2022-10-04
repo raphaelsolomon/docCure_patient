@@ -32,13 +32,14 @@ class UserAdapter extends TypeAdapter<User> {
       address: fields[12] as String?,
       zip_code: fields[13] as String?,
       created_at: fields[14] as String?,
+      onboarded: fields[15] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(15)
+      ..writeByte(16)
       ..writeByte(0)
       ..write(obj.uid)
       ..writeByte(1)
@@ -68,7 +69,9 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(13)
       ..write(obj.zip_code)
       ..writeByte(14)
-      ..write(obj.created_at);
+      ..write(obj.created_at)
+      ..writeByte(15)
+      ..write(obj.onboarded);
   }
 
   @override

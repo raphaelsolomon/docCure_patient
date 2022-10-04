@@ -2,6 +2,7 @@ import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/dialog/add_family.dart';
 import 'package:doccure_patient/main.dart';
+import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 dialogMessage(BuildContext context, widget, {barrierDismiss = true}) {
   showDialog(
@@ -676,6 +678,8 @@ Widget logoutPop(BuildContext context) {
                   ),
                   GestureDetector(
                     onTap: () {
+                      Hive.box<User>(BoxName).clear();
+                      Hive.box(ReferralBox).clear();
                       Get.offAll(() => AuthLogin());
                     },
                     child: Text(

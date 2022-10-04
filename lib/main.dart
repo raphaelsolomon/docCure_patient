@@ -4,6 +4,7 @@ import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/firebase_options.dart';
 import 'package:doccure_patient/homepage/dashboard.dart';
 import 'package:doccure_patient/model/person/user.dart';
+import 'package:doccure_patient/model/referral/referral.dart';
 import 'package:doccure_patient/notification/helper_notification.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
@@ -32,7 +33,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final RemoteMessage? remoteMessage = await FirebaseMessaging.instance.getInitialMessage();
+  final RemoteMessage? remoteMessage =
+      await FirebaseMessaging.instance.getInitialMessage();
   if (remoteMessage != null) {
     print(remoteMessage);
   }
@@ -42,10 +44,14 @@ Future<void> main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   var directory = await getApplicationDocumentsDirectory();
-  Hive.init(directory.path);
-  Hive.registerAdapter(UserAdapter());
+  Hive
+    ..init(directory.path)
+    ..registerAdapter(UserAdapter());
+
   await Hive.openBox<User>(BoxName);
+  await Hive.openBox(ReferralBox);
   await Hive.openBox('Initialization');
+
   runApp(const MyApp());
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

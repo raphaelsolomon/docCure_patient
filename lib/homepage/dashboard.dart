@@ -3,6 +3,7 @@ import 'package:doccure_patient/auth/change_password.dart';
 import 'package:doccure_patient/callscreens/pickup/pick_layout.dart';
 import 'package:doccure_patient/chat/chat_list.dart';
 import 'package:doccure_patient/company/account.dart';
+import 'package:doccure_patient/company/favourite.dart';
 import 'package:doccure_patient/company/invoice_receipt.dart';
 import 'package:doccure_patient/company/myoffer.dart';
 import 'package:doccure_patient/company/myprescription.dart';
@@ -124,7 +125,7 @@ class _DashBoardState extends State<DashBoard> {
                                                                                         ? Prescriptions(scaffold)
                                                                                         : page == -12 //no bottom nav
                                                                                             ? MyOffer()
-                                                                                            : page == -3
+                                                                                            : page == -17 ? MyFavourite() : page == -3
                                                                                                 ? SearchDoctor(scaffold)
                                                                                                 : page == -1 //no bottom nav
                                                                                                     ? TimeAndDate(scaffold)
