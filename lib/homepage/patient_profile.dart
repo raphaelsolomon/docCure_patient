@@ -30,6 +30,14 @@ class _MyProfileState extends State<MyProfile> {
   final box = Hive.box<User>(BoxName);
 
   String index = 'Overview';
+  String country = '';
+
+  @override
+  void initState() {
+    var i = countryList.indexWhere((element) => '${element['id']}' == '${box.get(USERPATH)!.country}');
+    country = countryList.elementAt(i)['name'] ?? '';
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -674,21 +682,21 @@ class _MyProfileState extends State<MyProfile> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Michelle Fairfax',
+                                      '${box.get(USERPATH)!.name}',
                                       style: getCustomFont(
                                           color: Colors.black,
                                           size: 17.0,
                                           weight: FontWeight.w400),
                                     ),
                                     Text(
-                                      'Patient ID - PT0025',
+                                      'Patient ID - PT${box.get(USERPATH)!.uid}',
                                       style: getCustomFont(
                                           color: Colors.black54,
                                           size: 13.0,
                                           weight: FontWeight.w400),
                                     ),
                                     Text(
-                                      'Blood Group - O+',
+                                      'Blood Group - ${box.get(USERPATH)!.bloodgroup}',
                                       style: getCustomFont(
                                           color: Colors.black54,
                                           size: 13.0,
@@ -714,10 +722,10 @@ class _MyProfileState extends State<MyProfile> {
                                       width: 5.0,
                                     ),
                                     Text(
-                                      '+1 504 368 6874',
+                                      '${box.get(USERPATH)!.phone}',
                                       style: getCustomFont(
                                           color: Colors.black54,
-                                          size: 13.0,
+                                          size: 12.0,
                                           weight: FontWeight.w400),
                                     ),
                                   ],
@@ -725,6 +733,7 @@ class _MyProfileState extends State<MyProfile> {
                               ),
                               Flexible(
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Icon(Icons.location_on,
                                         size: 15.0, color: Colors.black),
@@ -732,7 +741,7 @@ class _MyProfileState extends State<MyProfile> {
                                       width: 5.0,
                                     ),
                                     Text(
-                                      'Florida, USA',
+                                      '${box.get(USERPATH)!.state}, ${country}',
                                       style: getCustomFont(
                                           color: Colors.black54,
                                           size: 13.0,

@@ -57,15 +57,20 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   void getFrom() {
     setState(() {
       fullname.text = box.get(USERPATH)!.name!;
-      email.text = box.get(USERPATH)!.email == null ? '' : box.get(USERPATH)!.email!;
-      address.text = box.get(USERPATH)!.address == null ? '' : box.get(USERPATH)!.address!;
-      city.text = box.get(USERPATH)!.city == null ? '' : box.get(USERPATH)!.city!;
-      state.text = box.get(USERPATH)!.state == null ? '' : box.get(USERPATH)!.state!;
+      email.text =
+          box.get(USERPATH)!.email == null ? '' : box.get(USERPATH)!.email!;
+      address.text =
+          box.get(USERPATH)!.address == null ? '' : box.get(USERPATH)!.address!;
+      city.text =
+          box.get(USERPATH)!.city == null ? '' : box.get(USERPATH)!.city!;
+      state.text =
+          box.get(USERPATH)!.state == null ? '' : box.get(USERPATH)!.state!;
       zip_code.text = box.get(USERPATH)!.zip_code == null
           ? ''
           : box.get(USERPATH)!.zip_code!;
 
-      var i = countryList.indexWhere((element) => '${element['id']}' == '${box.get(USERPATH)!.country}');
+      var i = countryList.indexWhere(
+          (element) => '${element['id']}' == '${box.get(USERPATH)!.country}');
 
       country.text = countryList.elementAt(i)['name'];
       country_id = '${countryList.elementAt(i)['id']}';
@@ -225,7 +230,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                         const SizedBox(
                           height: 10.0,
                         ),
-                        getFormBox('City', '', ctl: city),
+                        getCountry('Country', country.text),
                         const SizedBox(
                           height: 10.0,
                         ),
@@ -233,11 +238,11 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                         const SizedBox(
                           height: 10.0,
                         ),
-                        getFormBox('Zip Code', '', ctl: zip_code),
+                        getFormBox('City', '', ctl: city),
                         const SizedBox(
                           height: 10.0,
                         ),
-                        getCountry('Country', country.text),
+                        getFormBox('Zip Code', '', ctl: zip_code),
                         const SizedBox(
                           height: 20.0,
                         ),

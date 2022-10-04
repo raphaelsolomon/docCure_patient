@@ -32,7 +32,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 // 4M5F6CFH72
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+    name: 'patient',
+    options: DefaultFirebaseOptions.currentPlatform);
   final RemoteMessage? remoteMessage =
       await FirebaseMessaging.instance.getInitialMessage();
   if (remoteMessage != null) {
