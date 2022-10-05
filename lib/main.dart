@@ -1,10 +1,11 @@
+import 'dart:io';
+
 import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/auth/onboarding.dart';
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/firebase_options.dart';
 import 'package:doccure_patient/homepage/dashboard.dart';
 import 'package:doccure_patient/model/person/user.dart';
-import 'package:doccure_patient/model/referral/referral.dart';
 import 'package:doccure_patient/notification/helper_notification.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
@@ -32,9 +33,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 // 4M5F6CFH72
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    name: 'patient',
-    options: DefaultFirebaseOptions.currentPlatform);
+  Platform.isIOS
+      ? await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
+      : await Firebase.initializeApp(name: 'patient', options: DefaultFirebaseOptions.currentPlatform);
   final RemoteMessage? remoteMessage =
       await FirebaseMessaging.instance.getInitialMessage();
   if (remoteMessage != null) {

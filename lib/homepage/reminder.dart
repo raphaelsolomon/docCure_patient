@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/model/reminder_model.dart';
@@ -13,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:http/http.dart' as http;
+import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
 
 class MyReminder extends StatefulWidget {
   const MyReminder({Key? key}) : super(key: key);
@@ -24,7 +26,10 @@ class MyReminder extends StatefulWidget {
 class _MyReminderState extends State<MyReminder> {
   int counter = 0;
   List days = [];
+  String frequency = '';
   bool isActive = false;
+  final pillname = TextEditingController();
+  bool addButtonLoading = false;
 
   bool isLoading = true;
   ReminderModel? reminderModel;
@@ -35,9 +40,9 @@ class _MyReminderState extends State<MyReminder> {
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       getReminders(_refreshController).then((value) => setState(() {
-        this.reminderModel = value;
-        isLoading = false;
-      }));
+            this.reminderModel = value;
+            isLoading = false;
+          }));
     });
     super.initState();
   }
@@ -64,8 +69,15 @@ class _MyReminderState extends State<MyReminder> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                          onTap: () =>
-                              context.read<HomeController>().onBackPress(),
+                          onTap: () {
+                            if (counter == 0) {
+                              context.read<HomeController>().onBackPress();
+                            } else {
+                              setState(() {
+                                counter = 0;
+                              });
+                            }
+                          },
                           child: Icon(
                             Icons.arrow_back_ios,
                             color: Colors.white,
@@ -85,174 +97,199 @@ class _MyReminderState extends State<MyReminder> {
                   ),
                 ]),
               ),
+              const SizedBox(height: 5.0,),
               Expanded(
                   child: counter == 0
-                      ? SmartRefresher(
-                          controller: _refreshController,
-                          enablePullDown: true,
-                          header: WaterDropHeader(waterDropColor: BLUECOLOR.withOpacity(.5)),
-                          onRefresh: () => getReminders(_refreshController).then((value) => setState(() {
-                            this.reminderModel = value;
-                          })),
-                          child: ListView.builder(
-                              padding: const EdgeInsets.all(0.0),
-                              itemCount: 5,
-                              itemBuilder: (ctx, i) {
-                                return Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 5.0, vertical: 4.0),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15.0, vertical: 10.0),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(2.0),
-                                      boxShadow: SHADOW),
-                                  child: Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 28.0,
-                                        backgroundColor:
-                                            BLUECOLOR.withOpacity(.1),
-                                        child: Icon(
-                                          Icons.notifications_active,
-                                          color: BLUECOLOR,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 10.0,
-                                      ),
-                                      Flexible(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text('${reminderModel!.data![i].pillName}',
-                                                style: getCustomFont(
-                                                    size: 15.0,
-                                                    weight: FontWeight.w500,
-                                                    color: Colors.black)),
-                                            const SizedBox(
-                                              height: 4.0,
+                      ? isLoading
+                          ? Center(
+                              child:
+                                  CircularProgressIndicator(color: BLUECOLOR))
+                          : SmartRefresher(
+                              controller: _refreshController,
+                              enablePullDown: true,
+                              header: WaterDropHeader(
+                              waterDropColor: BLUECOLOR.withOpacity(.5)),
+                              onRefresh: () => getReminders(_refreshController).then((value) => setState(() {
+                                        this.reminderModel = value;
+                                      })),
+                              child: ListView.builder(
+                                  padding: const EdgeInsets.all(0.0),
+                                  itemCount: reminderModel!.data!.length,
+                                  itemBuilder: (ctx, i) {
+                                    List<String> listdays = [];
+                                  reminderModel!.data![i].reminderDates!.forEach((element) => {
+                                    listdays.add(element.date!)
+                                   });
+                                    return Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 6.0, vertical: 5.0),
+                                      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(2.0),
+                                          boxShadow: SHADOW),
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 28.0,
+                                            backgroundColor:
+                                                BLUECOLOR.withOpacity(.1),
+                                            child: Icon(
+                                              Icons.notifications_active,
+                                              color: BLUECOLOR,
                                             ),
-                                            Text(
-                                                'Mon, Tue, Wed, Thurs, Sat, Sun',
-                                                style: getCustomFont(
-                                                    size: 13.0,
-                                                    weight: FontWeight.normal,
-                                                    color: Colors.black45)),
-                                            const SizedBox(
-                                              height: 3.0,
+                                          ),
+                                          const SizedBox(
+                                            width: 10.0,
+                                          ),
+                                          Flexible(
+                                            fit: FlexFit.tight,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                    '${reminderModel!.data![i].pillName}',
+                                                    style: getCustomFont(
+                                                        size: 16.0,
+                                                        weight: FontWeight.w500,
+                                                        color: Colors.black)),
+                                                const SizedBox(
+                                                  height: 4.0,
+                                                ),
+                                                Text(
+                                                    '${listdays.join(', ')}',
+                                                    style: getCustomFont(
+                                                        size: 14.0,
+                                                        weight:
+                                                            FontWeight.normal,
+                                                        color: Colors.black54)),
+                                                const SizedBox(
+                                                  height: 3.0,
+                                                ),
+                                                Text(
+                                                    '${reminderModel!.data![i].noOfTimes} times, ${reminderModel!.data![i].frequency}',
+                                                    style: getCustomFont(
+                                                        size: 14.0,
+                                                        weight: FontWeight.w500,
+                                                        color: Colors.black54))
+                                              ],
                                             ),
-                                            Text(
-                                                '08: 00 am, 12:00 pm, 03:30 pm, 06:00 pm',
-                                                style: getCustomFont(
-                                                    size: 12.0,
-                                                    weight: FontWeight.w500,
-                                                    color: Colors.black54))
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }),
-                        )
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 25.0,
-                            ),
-                            getCardForm('Reminder Name', 'Enter Reminder Name'),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: Text(
-                                'Select Days',
-                                style: getCustomFont(
-                                    size: 14.0,
-                                    color: Colors.black45,
-                                    weight: FontWeight.w500),
+                                          ),
+                                          reminderModel!.data![i].isDeleteLoading ? SizedBox(
+                                            height: 20.0, width: 20.0, child: CircularProgressIndicator(color: BLUECOLOR, strokeWidth: 1.5,),
+                                          ): GestureDetector(onTap: () => onDelete(reminderModel!.data, i), child: Icon(Icons.delete_forever, color: Colors.redAccent))
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                            )
+                      : SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 25.0,
                               ),
-                            ),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                            getDaysForm(),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: Text(
-                                'Frequency',
-                                style: getCustomFont(
-                                    size: 14.0,
-                                    color: Colors.black45,
-                                    weight: FontWeight.w500),
+                              getCardForm(
+                                  'Reminder Name', 'Enter Reminder Name',
+                                  ctl: pillname),
+                              const SizedBox(
+                                height: 20.0,
                               ),
-                            ),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                            getDropDownAssurance(),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: Text(
-                                'Select Times',
-                                style: getCustomFont(
-                                    size: 14.0,
-                                    color: Colors.black45,
-                                    weight: FontWeight.w500),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0),
+                                child: Text(
+                                  'Select Days',
+                                  style: getCustomFont(
+                                      size: 14.0,
+                                      color: Colors.black45,
+                                      weight: FontWeight.w500),
+                                ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                            Row(
-                              children: [
-                                Flexible(child: getTimeForm()),
-                                GestureDetector(
-                                  onTap: () async {
-                                    TimeOfDay? picked = await showTimePicker(
-                                        context: context,
-                                        initialTime: TimeOfDay.now());
-                                    print(formatTimeOfDay(picked!));
-                                  },
-                                  child: Container(
-                                    height: 48.0,
-                                    margin: const EdgeInsets.only(right: 15.0),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 13.0),
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        color: BLUECOLOR.withOpacity(.3)),
-                                    child: Icon(
-                                      Icons.add,
-                                      color: Colors.white,
+                              const SizedBox(
+                                height: 20.0,
+                              ),
+                              getDaysForm(),
+                              const SizedBox(
+                                height: 20.0,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0),
+                                child: Text(
+                                  'Frequency',
+                                  style: getCustomFont(
+                                      size: 14.0,
+                                      color: Colors.black45,
+                                      weight: FontWeight.w500),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20.0,
+                              ),
+                              getDropDownAssurance(),
+                              const SizedBox(
+                                height: 20.0,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0),
+                                child: Text(
+                                  'Select Times',
+                                  style: getCustomFont(
+                                      size: 14.0,
+                                      color: Colors.black45,
+                                      weight: FontWeight.w500),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20.0,
+                              ),
+                              Row(
+                                children: [
+                                  Flexible(child: getTimeForm()),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      TimeOfDay? picked = await showTimePicker(
+                                          context: context,
+                                          initialTime: TimeOfDay.now());
+                                      print(formatTimeOfDay(picked!));
+                                    },
+                                    child: Container(
+                                      height: 48.0,
+                                      margin:
+                                          const EdgeInsets.only(right: 15.0),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 13.0),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          color: BLUECOLOR.withOpacity(.3)),
+                                      child: Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 40.0,
-                            ),
-                            getPayButton(context, () {}),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                          ],
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 40.0,
+                              ),
+                              addButtonLoading
+                                  ? Center(
+                                      child: CircularProgressIndicator(
+                                          color: BLUECOLOR))
+                                  : getPayButton(context, () => addReminders()),
+                              const SizedBox(
+                                height: 20.0,
+                              ),
+                            ],
+                          ),
                         ))
             ])),
         Align(
@@ -301,6 +338,7 @@ class _MyReminderState extends State<MyReminder> {
               borderSide: BorderSide.none),
         ),
         initialValue: 'Daily',
+        onChanged: (value) => frequency = '$value',
         items: [
           'Daily',
           'Bi-Weekly',
@@ -310,8 +348,7 @@ class _MyReminderState extends State<MyReminder> {
           'Quarterly',
           'Bi-Yearly',
           'Yearly'
-        ]
-            .map((gender) => DropdownMenuItem(
+        ].map((gender) => DropdownMenuItem(
                   value: gender,
                   child: Text(
                     gender,
@@ -341,6 +378,7 @@ class _MyReminderState extends State<MyReminder> {
                 borderRadius: BorderRadius.circular(5.0),
                 color: BLUECOLOR.withOpacity(.1)),
             child: TextField(
+              controller: ctl,
               style: getCustomFont(size: 14.0, color: Colors.black45),
               maxLines: 1,
               decoration: InputDecoration(
@@ -475,7 +513,6 @@ class _MyReminderState extends State<MyReminder> {
 
   Future<ReminderModel> getReminders(RefreshController controller) async {
     ReminderModel model = new ReminderModel();
-    setState(() => isLoading = true);
     var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/reminders/all'));
     request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
     http.StreamedResponse response = await request.send();
@@ -487,5 +524,80 @@ class _MyReminderState extends State<MyReminder> {
     }
     controller.refreshFailed();
     return model;
+  }
+
+  Future<void> addReminders() async {
+    if (pillname.text.trim().isEmpty) {
+      return;
+    }
+
+    if (days.isEmpty) {
+      return;
+    }
+
+    if (frequency.trim().isEmpty) {
+      return;
+    }
+
+    setState(() {
+      addButtonLoading = true;
+    });
+
+    try {
+      var request = http.Request('POST', Uri.parse('${ROOTAPI}/api/v1/auth/patient/reminders/add'));
+      request.body = json.encode({
+        "pill_name": "Chlorophinecol",
+        "reminder_dates": [
+          {"date": "mon"},
+          {"date": "tues"}
+        ],
+        "frequency": "Daily",
+        "no_of_times": "2"
+      });
+      request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        return response.stream.bytesToString().then((value) {
+          popupMessage.dialogMessage(
+              context, popupMessage.serviceMessage(context, jsonDecode(value)['message'], status: false));
+        });
+      }
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
+    } on SocketException {
+    } finally {
+      setState(() {
+        addButtonLoading = false;
+      });
+    }
+  }
+  
+  onDelete(List<Data>? data, int i) async{
+    setState(() {
+      data![i].setisDeleteLoading(true);
+    });
+
+    try{
+    var request = http.Request('DELETE', Uri.parse('${ROOTAPI}/api/v1/auth/patient/reminders/delete/${data![i].id}'));
+    request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+       return response.stream.bytesToString().then((value) {
+          data.removeAt(i);
+          return popupMessage.dialogMessage(
+              context, popupMessage.serviceMessage(context, jsonDecode(value)['message'], status: true));
+       });
+    }
+    else {
+     return popupMessage.dialogMessage(
+              context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
+    }
+    } on SocketException {
+      popupMessage.dialogMessage(
+              context, popupMessage.serviceMessage(context, 'Please Check Internet Connection', status: false));
+    } finally {
+      setState(() {
+      data![i].setisDeleteLoading(false);
+    });
+    }
   }
 }
