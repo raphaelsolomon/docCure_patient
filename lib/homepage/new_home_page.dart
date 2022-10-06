@@ -119,13 +119,13 @@ class _AllHomePageState extends State<AllHomePage> {
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Row(
                         children: [
-                          ...List.generate(10, (index) => horizontalItem())
+                          ...List.generate(homeItem1.length, (i) => horizontalItem(homeItem1[i]))
                         ],
                       ),
                     ),
                   ),
                   const SizedBox(
-                    height: 15.0,
+                    height: 20.0,
                   ),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -133,7 +133,7 @@ class _AllHomePageState extends State<AllHomePage> {
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Row(
                         children: [
-                          ...List.generate(10, (index) => horizontalItem())
+                          ...List.generate(homeItem2.length, (i) => horizontalItem(homeItem2[i]))
                         ],
                       ),
                     ),
@@ -160,44 +160,47 @@ class _AllHomePageState extends State<AllHomePage> {
     );
   }
 
-  Widget horizontalItem() => Container(
-        width: 160.0,
-        padding: const EdgeInsets.all(15.0),
-        margin: const EdgeInsets.only(right: 10.0),
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
-        child: Column(
-          children: [
-            Image.asset(
-              'assets/imgs/1.png',
-              width: 80.0,
-              height: 80.0,
-              fit: BoxFit.contain,
-            ),
-            const SizedBox(
-              height: 12.0,
-            ),
-            Text(
-              'Find a medical center',
-              textAlign: TextAlign.center,
-              style: getCustomFont(
-                  size: 15.5, color: Colors.black, weight: FontWeight.w600),
-            ),
-            const SizedBox(
-              height: 9.0,
-            ),
-            Text(
-              'Find hosiptals, pharmacies, laboratories and clinics',
-              textAlign: TextAlign.center,
-              style: getCustomFont(
-                  size: 13.0, color: Colors.black45, weight: FontWeight.w400),
-            ),
-            const SizedBox(
-              height: 5.0,
-            ),
-          ],
+  Widget horizontalItem(homeItem1) => GestureDetector(
+    child: Container(
+          width: 160.0,
+          height: 230.0,
+          padding: const EdgeInsets.all(15.0),
+          margin: const EdgeInsets.only(right: 10.0),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
+          child: Column(
+            children: [
+              Image.asset(
+                'assets/imgs/1.png',
+                width: 80.0,
+                height: 80.0,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(
+                height: 12.0,
+              ),
+              Text(
+                '${homeItem1['title']}',
+                textAlign: TextAlign.center,
+                style: getCustomFont(
+                    size: 15.5, color: Colors.black, weight: FontWeight.w600),
+              ),
+              const SizedBox(
+                height: 9.0,
+              ),
+              Text(
+                '${homeItem1['desc']}',
+                textAlign: TextAlign.center,
+                style: getCustomFont(
+                    size: 13.0, color: Colors.black45, weight: FontWeight.w400),
+              ),
+              const SizedBox(
+                height: 5.0,
+              ),
+            ],
+          ),
         ),
-      );
+  );
 
   Widget horizontalSecondItem(context) => Container(
         width: MediaQuery.of(context).size.width / 1.4,

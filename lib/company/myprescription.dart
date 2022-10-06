@@ -91,17 +91,15 @@ class _PrescriptionsState extends State<Prescriptions> {
                         this.prescriptionModel = value;
                       })),
                       child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 0.0, vertical: 0.0),
+                          padding: const EdgeInsets.all(0.0),
                           itemCount: prescriptionModel!.data!.length,
                           shrinkWrap: true,
-                          itemBuilder: ((context, i) => prescriptionItem(
-                              context, prescriptionModel!.data![i]))),
+                          itemBuilder: ((context, i) => prescriptionItem(prescriptionModel!.data![i]))),
                     ))
         ]));
   }
 
-  Widget prescriptionItem(context, Data data) {
+  Widget prescriptionItem(Data data) {
     return Container(
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
@@ -117,16 +115,18 @@ class _PrescriptionsState extends State<Prescriptions> {
               children: [
                 Flexible(
                     child: FittedBox(
-                      child: Text(
-                                      '${data.name} Prescription',
-                                      style: getCustomFont(
-                        size: 15.0, color: Colors.black, weight: FontWeight.w400),
-                                    ),
-                    )),
+                  child: Text(
+                    'Prescription ${data.id}',
+                    style: getCustomFont(
+                        size: 14.0,
+                        color: Colors.black,
+                        weight: FontWeight.w400),
+                  ),
+                )),
                 Text(
-                  '${DateFormat('dd, MMM, yyyy').format(DateTime.parse(''))}',
+                  '${DateFormat('dd, MMM, yyyy').format(DateTime.parse(data.createdAt!))}',
                   style: getCustomFont(
-                      size: 15.0,
+                      size: 14.0,
                       color: Colors.black45,
                       weight: FontWeight.w400),
                 )
@@ -134,48 +134,58 @@ class _PrescriptionsState extends State<Prescriptions> {
             ),
             Divider(),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
-                  radius: 30.0,
+                  radius: 27.0,
                   backgroundImage: AssetImage('assets/imgs/1.png'),
                 ),
                 const SizedBox(
                   width: 15.0,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${data.doctorName}',
-                      style: getCustomFont(
-                          color: Colors.black,
-                          size: 19.0,
-                          weight: FontWeight.w400),
-                    ),
-                    Text(
-                      '${data.specialization}',
-                      style: getCustomFont(
-                          color: Colors.black54,
-                          size: 14.0,
-                          weight: FontWeight.w400),
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    Row(
-                      children: [
-                        getButton(context, () {},
-                            color: Colors.lightGreen.shade300),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        getButton(context, () {},
-                            icon: Icons.print,
-                            text: 'Print',
-                            color: Colors.grey),
-                      ],
-                    )
-                  ],
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${data.doctorName}',
+                        style: getCustomFont(
+                            color: Colors.black,
+                            size: 17.0,
+                            weight: FontWeight.w400),
+                      ),
+                      Text(
+                        '${data.specialization}',
+                        style: getCustomFont(
+                            color: Colors.black54,
+                            size: 13.0,
+                            weight: FontWeight.w400),
+                      ),
+                      Text(
+                        '${data.name}, ${data.quantity}',
+                        style: getCustomFont(
+                            color: Colors.black54,
+                            size: 13.0,
+                            weight: FontWeight.w400),
+                      ),
+                      const SizedBox(
+                        height: 8.0,
+                      ),
+                      Row(
+                        children: [
+                          getButton(context, () {},
+                              color: Colors.lightGreen.shade300),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          getButton(context, () {},
+                              icon: Icons.delete_forever,
+                              text: 'Delete',
+                              color: Colors.redAccent),
+                        ],
+                      )
+                    ],
+                  ),
                 )
               ],
             ),

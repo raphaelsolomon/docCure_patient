@@ -3,13 +3,16 @@ import 'package:doccure_patient/dialog/add_medical.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/dialog/update_medical.dart';
 import 'package:doccure_patient/model/person/user.dart';
+import 'package:doccure_patient/model/prescription_model.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/services/request.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MyProfile extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffold;
@@ -31,11 +34,20 @@ class _MyProfileState extends State<MyProfile> {
 
   String index = 'Overview';
   String country = '';
+  PrescriptionModel? presModel;
+  bool isPrescriptionLoading = true;
+  final _refreshController = RefreshController(initialRefresh: false);
 
   @override
   void initState() {
-    var i = countryList.indexWhere((element) => '${element['id']}' == '${box.get(USERPATH)!.country}');
-    country = countryList.elementAt(i)['name'] ?? '';
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      var i = countryList.indexWhere((e) => '${e['id']}' == '${box.get(USERPATH)!.country}');
+      country = countryList.elementAt(i)['name'] ?? '';
+      ApiServices.getPrescriptions(_refreshController, box).then((value) => setState(() {
+                this.presModel = value;
+                isPrescriptionLoading = false;
+              }));
+    });
     super.initState();
   }
 
@@ -105,13 +117,15 @@ class _MyProfileState extends State<MyProfile> {
                         )
                       : index == 'Prescriptions'
                           ? Expanded(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: List.generate(
-                                      5, (index) => prescriptionItem()),
-                                ),
-                              ),
-                            )
+                              child: isPrescriptionLoading
+                                  ? Center(
+                                      child: CircularProgressIndicator(
+                                          color: BLUECOLOR))
+                                  : ListView.builder(
+                                      padding: const EdgeInsets.all(0.0),
+                                      itemCount: presModel!.data!.length,
+                                      shrinkWrap: true,
+                                      itemBuilder: ((context, i) => prescriptionItem(presModel!.data![i]))))
                           : index == 'Medical Records'
                               ? Expanded(
                                   child: Stack(
@@ -128,7 +142,8 @@ class _MyProfileState extends State<MyProfile> {
                                             Icons.add,
                                             color: Colors.white,
                                           ),
-                                          onPressed: () => showRequestSheet(context, AddMedical()),
+                                          onPressed: () => showRequestSheet(
+                                              context, AddMedical()),
                                           backgroundColor: BLUECOLOR,
                                         ),
                                       ),
@@ -317,7 +332,7 @@ class _MyProfileState extends State<MyProfile> {
         ),
       );
 
-  Widget prescriptionItem() {
+  Widget prescriptionItem(Data data) {
     return Container(
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
@@ -334,7 +349,7 @@ class _MyProfileState extends State<MyProfile> {
                 Flexible(
                     child: FittedBox(
                   child: Text(
-                    'Prescription 1',
+                    'Prescription ${data.id}',
                     style: getCustomFont(
                         size: 14.0,
                         color: Colors.black,
@@ -342,7 +357,7 @@ class _MyProfileState extends State<MyProfile> {
                   ),
                 )),
                 Text(
-                  '14 Mar 2022',
+                  '${DateFormat('dd, MMM, yyyy').format(DateTime.parse(data.createdAt!))}',
                   style: getCustomFont(
                       size: 14.0,
                       color: Colors.black45,
@@ -366,21 +381,28 @@ class _MyProfileState extends State<MyProfile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Dr. Ruby Perrln',
+                        '${data.doctorName}',
                         style: getCustomFont(
                             color: Colors.black,
                             size: 17.0,
                             weight: FontWeight.w400),
                       ),
                       Text(
-                        'Dental',
+                        '${data.specialization}',
+                        style: getCustomFont(
+                            color: Colors.black54,
+                            size: 13.0,
+                            weight: FontWeight.w400),
+                      ),
+                      Text(
+                        '${data.name}, ${data.quantity}',
                         style: getCustomFont(
                             color: Colors.black54,
                             size: 13.0,
                             weight: FontWeight.w400),
                       ),
                       const SizedBox(
-                        height: 5.0,
+                        height: 8.0,
                       ),
                       Row(
                         children: [
@@ -390,9 +412,9 @@ class _MyProfileState extends State<MyProfile> {
                             width: 10.0,
                           ),
                           getButton(context, () {},
-                              icon: Icons.print,
-                              text: 'Print',
-                              color: Colors.grey),
+                              icon: Icons.delete_forever,
+                              text: 'Delete',
+                              color: Colors.redAccent),
                         ],
                       )
                     ],

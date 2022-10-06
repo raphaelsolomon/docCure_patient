@@ -57,8 +57,7 @@ class _MyReminderState extends State<MyReminder> {
             color: Color(0xFFf6f6f6),
             child: Column(children: [
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
                 width: MediaQuery.of(context).size.width,
                 color: BLUECOLOR,
                 child: Column(children: [

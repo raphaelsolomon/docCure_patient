@@ -1475,3 +1475,40 @@ List<String> ServicesList = [
   'Otorhinolaryngology',
   'Orthopedics'
 ];
+
+
+List homeItem1 = [{
+  'icon': '',
+  'title': 'Find a Medical Center',
+  'desc': 'Find hospitals, laboratories, pharmacies and clinics'
+}, {
+  'icon': '',
+  'title': 'Speak to a Doctor',
+  'desc': 'Discuss your health issues and book appointments'
+},{
+  'icon': '',
+  'title': 'Visit the ePharamcy',
+  'desc': 'Order medications and get it delivered anywhere'
+},{
+  'icon': '',
+  'title': 'Symptoms Checker',
+  'desc': 'Input symptoms and get instant diagnosis advice'
+},];
+
+List homeItem2 = [{
+  'icon': '',
+  'title': 'Book a Test',
+  'desc': 'Diagnostic tests at our partner laboratories'
+}, {
+  'icon': '',
+  'title': 'Cementeries & Accessories',
+  'desc': 'Find cementeries and accessories'
+},{
+  'icon': '',
+  'title': 'Book an Ambulance',
+  'desc': 'Get closes ambulance for emergency'
+},{
+  'icon': '',
+  'title': 'Womens\'s Care',
+  'desc': 'Routine and Advanced care for all age'
+},];

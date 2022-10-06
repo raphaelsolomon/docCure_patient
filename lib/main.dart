@@ -20,6 +20,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:phone_form_field/l10n/generated/phone_field_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 bool isFlutterLocalNotificationsInitialized = false;
 late AndroidNotificationChannel channel;
@@ -34,8 +35,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Platform.isIOS
-      ? await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
-      : await Firebase.initializeApp(name: 'patient', options: DefaultFirebaseOptions.currentPlatform);
+      ? await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform)
+      : await Firebase.initializeApp(
+          name: 'patient', options: DefaultFirebaseOptions.currentPlatform);
   final RemoteMessage? remoteMessage =
       await FirebaseMessaging.instance.getInitialMessage();
   if (remoteMessage != null) {
@@ -59,7 +62,7 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  ErrorWidget.builder = ((details) => Material(
+  ErrorWidget.builder = (details) => Material(
         child: Container(
           color: Colors.green,
           child: Column(
@@ -76,7 +79,7 @@ Future<void> main() async {
             ],
           ),
         ),
-      ));
+      );
 }
 
 void onClickedEvent(String? payload) {}
@@ -87,7 +90,6 @@ class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
 }
-
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   final box = Hive.box('Initialization');
@@ -105,30 +107,61 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
         ChangeNotifierProvider<HomeController>(create: (_) => HomeController()),
       ],
-      child: GetMaterialApp(
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          PhoneFieldLocalization.delegate
-        ],
-        locale: Locale('en', ''),
-        supportedLocales: const [
-          Locale('en', ''),
-          Locale('ar', ''),
-        ],
-        title: 'Patient',
-        defaultTransition: Transition.zoom,
-        debugShowCheckedModeBanner: true,
-        theme: ThemeData(
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            primarySwatch: Colors.blue,
-            primaryColor: Colors.black54),
-        home: box.get('isFirst') == null
-            ? const OnBoardingScreen()
-            : user.get(USERPATH) == null
-                ? const AuthLogin()
-                : DashBoard(),
+      child: RefreshConfiguration(
+        footerTriggerDistance: 15,
+        dragSpeedRatio: 0.91,
+        headerBuilder: () => MaterialClassicHeader(),
+        footerBuilder: () => ClassicFooter(),
+        enableLoadingWhenNoData: false,
+        enableRefreshVibrate: false,
+        enableLoadMoreVibrate: false,
+        shouldFooterFollowWhenNotFull: (state) {
+          // If you want load more with noMoreData state ,may be you should return false
+          return false;
+        },
+        child: GetMaterialApp(
+          localizationsDelegates: const [
+            RefreshLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            PhoneFieldLocalization.delegate
+          ],
+          locale: Locale('en'),
+          supportedLocales: const [
+            const Locale('en'),
+            const Locale('zh'),
+            const Locale('ja'),
+            const Locale('uk'),
+            const Locale('it'),
+            const Locale('ru'),
+            const Locale('fr'),
+            const Locale('es'),
+            const Locale('nl'),
+            const Locale('sv'),
+            const Locale('pt'),
+            const Locale('ko'),
+          ],
+          localeListResolutionCallback: (locales, supportedLocales) {
+            return locales!.first;
+          },
+          title: 'Patient',
+          defaultTransition: Transition.zoom,
+          debugShowCheckedModeBanner: true,
+          builder: (context, child) => ScrollConfiguration(
+            child: child!,
+            behavior: ScrollBehavior(),
+          ),
+          theme: ThemeData(
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              primarySwatch: Colors.blue,
+              primaryColor: Colors.black54),
+          home: box.get('isFirst') == null
+              ? const OnBoardingScreen()
+              : user.get(USERPATH) == null
+                  ? const AuthLogin()
+                  : DashBoard(),
+        ),
       ),
     );
   }

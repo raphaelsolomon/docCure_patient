@@ -25,7 +25,7 @@ class Data {
   final int? id;
   final String? doctorName;
   final String? specialization;
-  final int? patientId;
+  final dynamic patientId;
   final String? name;
   final String? quantity;
   final String? days;
@@ -50,7 +50,7 @@ class Data {
     : id = json['id'] as int?,
       doctorName = json['doctor_name'] as String?,
       specialization = json['specialization'] as String?,
-      patientId = json['patient_id'] as int?,
+      patientId = json['patient_id'],
       name = json['name'] as String?,
       quantity = json['quantity'] as String?,
       days = json['days'] as String?,

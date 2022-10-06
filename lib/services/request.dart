@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:doccure_patient/constant/strings.dart';
+import 'package:doccure_patient/model/prescription_model.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 const String ROOTAPI = 'https://patientapi.gettheskydoctors.com';
 
@@ -222,5 +224,21 @@ class ApiServices {
       final parsed = jsonDecode(await response.stream.bytesToString());
       return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
     }
+  }
+
+  //======================================PRESCRIPTION================================================================
+  static Future<PrescriptionModel> getPrescriptions(RefreshController controller, box) async {
+    PrescriptionModel model = new PrescriptionModel();
+    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/prescriptions/all'));
+    request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      controller.refreshCompleted();
+      return response.stream.bytesToString().then((value) {
+        return model = PrescriptionModel.fromJson(jsonDecode(value));
+      });
+    }
+    controller.refreshFailed();
+    return model;
   }
 }
