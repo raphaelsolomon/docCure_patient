@@ -20,7 +20,7 @@ class _StorePageState extends State<StorePage> {
   String page = 'Overview';
   List<String> headers = [
     'Overview'
-        'Appointments',
+    'Appointments',
     'Prescriptions',
     'Medical Records',
     'Billing'

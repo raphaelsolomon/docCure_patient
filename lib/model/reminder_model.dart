@@ -1,5 +1,5 @@
 class ReminderModel {
-  final bool? status;
+  final dynamic status;
   final String? message;
   final List<Data>? data;
   
@@ -11,7 +11,7 @@ class ReminderModel {
   });
 
   ReminderModel.fromJson(Map<String, dynamic> json)
-    : status = json['status'] as bool?,
+    : status = json['status'],
       message = json['message'] as String?,
       data = (json['data'] as List?)?.map((dynamic e) => Data.fromJson(e as Map<String,dynamic>)).toList();
       

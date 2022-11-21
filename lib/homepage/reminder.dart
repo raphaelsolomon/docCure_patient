@@ -29,6 +29,7 @@ class _MyReminderState extends State<MyReminder> {
   String frequency = '';
   bool isActive = false;
   final pillname = TextEditingController();
+  final pillNumbers = TextEditingController();
   bool addButtonLoading = false;
 
   bool isLoading = true;
@@ -57,7 +58,8 @@ class _MyReminderState extends State<MyReminder> {
             color: Color(0xFFf6f6f6),
             child: Column(children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
                 width: MediaQuery.of(context).size.width,
                 color: BLUECOLOR,
                 child: Column(children: [
@@ -96,7 +98,9 @@ class _MyReminderState extends State<MyReminder> {
                   ),
                 ]),
               ),
-              const SizedBox(height: 5.0,),
+              const SizedBox(
+                height: 5.0,
+              ),
               Expanded(
                   child: counter == 0
                       ? isLoading
@@ -107,8 +111,9 @@ class _MyReminderState extends State<MyReminder> {
                               controller: _refreshController,
                               enablePullDown: true,
                               header: WaterDropHeader(
-                              waterDropColor: BLUECOLOR.withOpacity(.5)),
-                              onRefresh: () => getReminders(_refreshController).then((value) => setState(() {
+                                  waterDropColor: BLUECOLOR.withOpacity(.5)),
+                              onRefresh: () => getReminders(_refreshController)
+                                  .then((value) => setState(() {
                                         this.reminderModel = value;
                                       })),
                               child: ListView.builder(
@@ -116,14 +121,15 @@ class _MyReminderState extends State<MyReminder> {
                                   itemCount: reminderModel!.data!.length,
                                   itemBuilder: (ctx, i) {
                                     List<String> listdays = [];
-                                  reminderModel!.data![i].reminderDates!.forEach((element) => {
-                                    listdays.add(element.date!)
-                                   });
+                                    reminderModel!.data![i].reminderDates!
+                                        .forEach((element) =>
+                                            {listdays.add(element.date!)});
                                     return Container(
                                       width: MediaQuery.of(context).size.width,
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 6.0, vertical: 5.0),
-                                      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15.0, vertical: 10.0),
                                       decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius:
@@ -158,8 +164,7 @@ class _MyReminderState extends State<MyReminder> {
                                                 const SizedBox(
                                                   height: 4.0,
                                                 ),
-                                                Text(
-                                                    '${listdays.join(', ')}',
+                                                Text('${listdays.join(', ')}',
                                                     style: getCustomFont(
                                                         size: 14.0,
                                                         weight:
@@ -177,9 +182,23 @@ class _MyReminderState extends State<MyReminder> {
                                               ],
                                             ),
                                           ),
-                                          reminderModel!.data![i].isDeleteLoading ? SizedBox(
-                                            height: 20.0, width: 20.0, child: CircularProgressIndicator(color: BLUECOLOR, strokeWidth: 1.5,),
-                                          ): GestureDetector(onTap: () => onDelete(reminderModel!.data, i), child: Icon(Icons.delete_forever, color: Colors.redAccent))
+                                          reminderModel!
+                                                  .data![i].isDeleteLoading
+                                              ? SizedBox(
+                                                  height: 20.0,
+                                                  width: 20.0,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: BLUECOLOR,
+                                                    strokeWidth: 1.5,
+                                                  ),
+                                                )
+                                              : GestureDetector(
+                                                  onTap: () => onDelete(
+                                                      reminderModel!.data, i),
+                                                  child: Icon(
+                                                      Icons.delete_forever,
+                                                      color: Colors.redAccent))
                                         ],
                                       ),
                                     );
@@ -234,46 +253,12 @@ class _MyReminderState extends State<MyReminder> {
                               const SizedBox(
                                 height: 20.0,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15.0),
-                                child: Text(
-                                  'Select Times',
-                                  style: getCustomFont(
-                                      size: 14.0,
-                                      color: Colors.black45,
-                                      weight: FontWeight.w500),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20.0,
-                              ),
                               Row(
                                 children: [
-                                  Flexible(child: getTimeForm()),
-                                  GestureDetector(
-                                    onTap: () async {
-                                      TimeOfDay? picked = await showTimePicker(
-                                          context: context,
-                                          initialTime: TimeOfDay.now());
-                                      print(formatTimeOfDay(picked!));
-                                    },
-                                    child: Container(
-                                      height: 48.0,
-                                      margin:
-                                          const EdgeInsets.only(right: 15.0),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 13.0),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          color: BLUECOLOR.withOpacity(.3)),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  )
+                                  Flexible(
+                                      child: getCardForm('Numbers of times',
+                                          'Enter Number of times',
+                                          ctl: pillNumbers))
                                 ],
                               ),
                               const SizedBox(
@@ -294,9 +279,8 @@ class _MyReminderState extends State<MyReminder> {
         Align(
           alignment: Alignment.bottomRight,
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-            child: FloatingActionButton(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+            child: isActive ? const SizedBox() : FloatingActionButton(
               tooltip: 'Add note',
               child: Icon(
                 Icons.add,
@@ -347,7 +331,8 @@ class _MyReminderState extends State<MyReminder> {
           'Quarterly',
           'Bi-Yearly',
           'Yearly'
-        ].map((gender) => DropdownMenuItem(
+        ]
+            .map((gender) => DropdownMenuItem(
                   value: gender,
                   child: Text(
                     gender,
@@ -512,7 +497,8 @@ class _MyReminderState extends State<MyReminder> {
 
   Future<ReminderModel> getReminders(RefreshController controller) async {
     ReminderModel model = new ReminderModel();
-    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/reminders/all'));
+    var request = http.Request(
+        'GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/reminders/all'));
     request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -538,30 +524,47 @@ class _MyReminderState extends State<MyReminder> {
       return;
     }
 
+    if (pillNumbers.text.trim().isEmpty) {
+      return;
+    }
+
     setState(() {
       addButtonLoading = true;
     });
 
     try {
-      var request = http.Request('POST', Uri.parse('${ROOTAPI}/api/v1/auth/patient/reminders/add'));
-      request.body = json.encode({
-        "pill_name": "Chlorophinecol",
-        "reminder_dates": [
-          {"date": "mon"},
-          {"date": "tues"}
-        ],
-        "frequency": "Daily",
-        "no_of_times": "2"
-      });
-      request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
-      http.StreamedResponse response = await request.send();
+      final response = await http.Client()
+          .post(Uri.parse('${ROOTAPI}/api/v1/auth/patient/reminders/add'),
+              body: jsonEncode({
+                "pill_name": "Chlorophinecol",
+                "reminder_dates": [
+                  {"date": "Monday"},
+                  {"date": "Tuesday"},
+                  {"date": "Friday"},
+                  {"date": "Sunday"}
+                ],
+                "frequency": "Daily",
+                "no_of_times": "2"
+              }),
+              headers: {
+            'Authorization': '${box.get(USERPATH)!.token}',
+            'Content-Type': 'application/json'
+          });
       if (response.statusCode == 200) {
-        return response.stream.bytesToString().then((value) {
-          popupMessage.dialogMessage(
-              context, popupMessage.serviceMessage(context, jsonDecode(value)['message'], status: false));
-        });
+        return getReminders(_refreshController).then((value) => setState(() {
+              this.reminderModel = value;
+              isLoading = false;
+              return popupMessage.dialogMessage(
+                  context,
+                  popupMessage.serviceMessage(
+                      context, jsonDecode(response.body)['message'],
+                      status: true));
+            }));
       }
-      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
+      popupMessage.dialogMessage(
+          context,
+          popupMessage.serviceMessage(context, response.reasonPhrase,
+              status: false));
     } on SocketException {
     } finally {
       setState(() {
@@ -569,34 +572,43 @@ class _MyReminderState extends State<MyReminder> {
       });
     }
   }
-  
-  onDelete(List<Data>? data, int i) async{
+
+  onDelete(List<Data>? data, int i) async {
     setState(() {
       data![i].setisDeleteLoading(true);
     });
 
-    try{
-    var request = http.Request('DELETE', Uri.parse('${ROOTAPI}/api/v1/auth/patient/reminders/delete/${data![i].id}'));
-    request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
-    http.StreamedResponse response = await request.send();
-    if (response.statusCode == 200) {
-       return response.stream.bytesToString().then((value) {
+    try {
+      var request = http.Request(
+          'DELETE',
+          Uri.parse(
+              '${ROOTAPI}/api/v1/auth/patient/reminders/delete/${data![i].id}'));
+      request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        return response.stream.bytesToString().then((value) {
           data.removeAt(i);
           return popupMessage.dialogMessage(
-              context, popupMessage.serviceMessage(context, jsonDecode(value)['message'], status: true));
-       });
-    }
-    else {
-     return popupMessage.dialogMessage(
-              context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
-    }
+              context,
+              popupMessage.serviceMessage(context, jsonDecode(value)['message'],
+                  status: true));
+        });
+      } else {
+        return popupMessage.dialogMessage(
+            context,
+            popupMessage.serviceMessage(context, response.reasonPhrase,
+                status: false));
+      }
     } on SocketException {
       popupMessage.dialogMessage(
-              context, popupMessage.serviceMessage(context, 'Please Check Internet Connection', status: false));
+          context,
+          popupMessage.serviceMessage(
+              context, 'Please Check Internet Connection',
+              status: false));
     } finally {
       setState(() {
-      data![i].setisDeleteLoading(false);
-    });
+        data![i].setisDeleteLoading(false);
+      });
     }
   }
 }
