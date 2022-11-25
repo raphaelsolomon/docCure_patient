@@ -67,7 +67,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
           ),
           const SizedBox(
-            height: 14.0,
+            height: 10.0,
           ),
           Expanded(
             child: Container(
@@ -82,7 +82,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     color: Colors.white,
                     child: Column(
                       children: [
-                        Expanded(child: Container()),
+                        Expanded(child: Image.network('https://www.gannett-cdn.com/-mm-/8c07fb5e886a00b62f067b40a655ac7eab58b994/c=0-62-3450-2008/local/-/media/Nashville/Nashville/2014/06/04//1401930981000-pills.jpg')),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -101,12 +101,20 @@ class _ProductDetailsState extends State<ProductDetails> {
                             Flexible(child: Text('Health Care', style: getCustomFont(size: 14.0, color: Colors.black45, weight: FontWeight.w500),)),
                             Flexible(child: GestureDetector(
                                 onTap: () => Get.to(() => ProductReview()),
-                                child: Text('Read all 125 reviews', style: getCustomFont(size: 14.0, color: Colors.black45, weight: FontWeight.w500),))),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Flexible(
+                                      fit: FlexFit.tight,
+                                      child: Text('Read all 125 reviews', style: getCustomFont(size: 14.0, color: Colors.black45, weight: FontWeight.w500),)),
+                                    Icon(Icons.arrow_forward_ios, color: Colors.black45, size: 17.0)
+                                  ],
+                                ))),
                           ],)
                       ],
                     ),
                   ),
-                  const SizedBox(height: 15.0,),
+                   const SizedBox(height: 5.0,),
                   Container(
                     width: width,
                     color: Colors.white,
@@ -120,7 +128,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 15.0,),
+                  const SizedBox(height: 5.0,),
                   Container(
                     width: width,
                     color: Colors.white,
@@ -140,7 +148,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 15.0,),
+                  const SizedBox(height: 10.0,),
                 ],
               ),
             ),
@@ -178,6 +186,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           width: 40.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
+            image: DecorationImage(image: NetworkImage('https://media.istockphoto.com/id/1179324818/photo/hospital-building-with-glass-wall-and-mirrored-building.jpg?s=612x612&w=0&k=20&c=6QyyKqIhzhRzwuAKR2rNqIy4G1bETLObbIihtD_xRPk='), fit: BoxFit.cover),
             color: Colors.blue,
           ),
         ),

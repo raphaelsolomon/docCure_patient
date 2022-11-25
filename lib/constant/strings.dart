@@ -201,6 +201,16 @@ List ONBOARDING = [
   }
 ];
 
+List<String> constDays = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday'
+];
+
 final SHADOW = [
   BoxShadow(
       color: Colors.black12,

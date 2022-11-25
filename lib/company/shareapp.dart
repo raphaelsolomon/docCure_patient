@@ -14,7 +14,7 @@ class ShareApp extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         color: Color(0xFFf6f6f6),
         child: Column(children: [
-           Container(
+          Container(
             padding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
             width: MediaQuery.of(context).size.width,
@@ -27,23 +27,23 @@ class ShareApp extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
-                      onTap: () => context.read<HomeController>().onBackPress(),
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                        size: 18.0,
-                      )),
-                  Text('Share App',
-                      style: getCustomFont(color: Colors.white, size: 16.0)),
+                      onTap: () =>
+                          context.read<HomeController>().onBackPress(),
+                      child: Icon(Icons.arrow_back_ios,
+                          size: 18.0, color: Colors.white)),
+                 
+                  Text('Share The Love',
+                      style:
+                          getCustomFont(size: 15.0, color: Colors.white)),
                   Icon(
                     null,
                     color: Colors.white,
                   )
                 ],
               ),
-              const SizedBox(
-                height: 15.0,
-              ),
+               const SizedBox(
+            height: 15.0,
+          ),
             ]),
           ),
           Expanded(
@@ -91,10 +91,11 @@ class ShareApp extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10.0),
                     decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
+                        color: BLUECOLOR.withOpacity(.05),
                         borderRadius: BorderRadius.circular(5.0)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
                           'whoWIH',
@@ -152,7 +153,7 @@ class ShareApp extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(width: 1.0, color: Colors.grey.shade400),
-          borderRadius: BorderRadius.circular(2.0)),
+          borderRadius: BorderRadius.circular(100.0)),
       child: Icon(
         icon,
         color: color,

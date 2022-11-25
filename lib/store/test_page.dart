@@ -2,8 +2,8 @@ import 'package:doccure_patient/constant/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CategoriesAndSub extends StatelessWidget {
-  const CategoriesAndSub({super.key});
+class BookTest extends StatelessWidget {
+  const BookTest({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class CategoriesAndSub extends StatelessWidget {
                                   color: Colors.white,
                                   size: 19.0,
                                 )),
-                            Text('Shop By Category',
+                            Text('Test Category',
                                 style: getCustomFont(
                                     size: 17.0, color: Colors.white)),
                             Icon(

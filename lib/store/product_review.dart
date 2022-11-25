@@ -134,7 +134,7 @@ class ProductReview extends StatelessWidget {
                   itemBuilder: (ctx, i) => Container(
                         width: MediaQuery.of(context).size.width,
                         padding: const EdgeInsets.all(15.0),
-                        margin: const EdgeInsets.symmetric(vertical: 5.0),
+                        margin: const EdgeInsets.symmetric(vertical: 3.0),
                         color: Colors.white,
                         child: Column(
                           children: [

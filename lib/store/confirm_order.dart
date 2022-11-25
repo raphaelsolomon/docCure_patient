@@ -36,7 +36,7 @@ class ConfirmOrder extends StatelessWidget {
                                   color: Colors.white,
                                   size: 19.0,
                                 )),
-                            Text('Confirm Order',
+                            Text('Items in cart',
                                 style: getCustomFont(
                                     size: 17.0, color: Colors.white)),
                             Icon(

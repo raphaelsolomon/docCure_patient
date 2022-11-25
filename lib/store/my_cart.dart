@@ -2,6 +2,7 @@ import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/model/cart_model.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
+import 'package:doccure_patient/store/delivery_location.dart';
 import 'package:doccure_patient/store/prescription_upload.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -318,6 +319,18 @@ class _MyCartState extends State<MyCart> {
         ],
       );
 
+  Widget prescriptionUpload() => Container(
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.all(15.0),
+      color: Colors.white,
+      margin: const EdgeInsets.symmetric(vertical: 3.0),
+      child: Row(children: [
+        Flexible(child: Text('prescription Uploaded', style: getCustomFont(size: 14.0, color: Colors.black, weight: FontWeight.w500,))),
+        Icon(Icons.remove_red_eye_sharp, color: BLUECOLOR, size: 18.0,),
+        const SizedBox(width: 20.0,),
+        Icon(Icons.delete, color: Colors.redAccent, size: 18.0,),
+      ]));
+
   Widget get myCartIndex => Column(children: [
         Container(
           width: MediaQuery.of(context).size.width,
@@ -399,7 +412,7 @@ class _MyCartState extends State<MyCart> {
                   const SizedBox(
                     height: 15.0,
                   ),
-                  isCoupon ? getCouponCode(context) : SizedBox(),
+                  isCoupon ? getCouponCode(context, ctl: null) : SizedBox(),
                   const SizedBox(
                     height: 15.0,
                   ),
@@ -495,10 +508,13 @@ class _MyCartState extends State<MyCart> {
               ),
             ),
             GestureDetector(
+              // onTap: () {
+              //   setState(() {
+              //     page = 2;
+              //   });
+              // },
               onTap: () {
-                setState(() {
-                  page = 2;
-                });
+                Get.to(() => DeliveryLocation());
               },
               child: Container(
                 width: MediaQuery.of(context).size.width,
@@ -520,7 +536,7 @@ class _MyCartState extends State<MyCart> {
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(15.0),
       color: Colors.white,
-      margin: const EdgeInsets.symmetric(vertical: 5.0),
+      margin: const EdgeInsets.symmetric(vertical: 3.0),
       child: Row(
         children: [
           CircleAvatar(

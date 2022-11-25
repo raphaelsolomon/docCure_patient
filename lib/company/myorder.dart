@@ -3,9 +3,9 @@ import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MyOrder extends StatelessWidget {
+class MyFavourite extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffold;
-  const MyOrder(this.scaffold, {Key? key}) : super(key: key);
+  const MyFavourite(this.scaffold, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +14,11 @@ class MyOrder extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         color: Color(0xFFf6f6f6),
         child: Column(children: [
-           Container(
+          Container(
             padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 16.0),
             width: MediaQuery.of(context).size.width,
+            height: 86.0,
             color: BLUECOLOR,
             child: Column(children: [
               const SizedBox(
@@ -28,22 +29,23 @@ class MyOrder extends StatelessWidget {
                 children: [
                   GestureDetector(
                       onTap: () => context.read<HomeController>().onBackPress(),
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                        size: 18.0,
-                      )),
-                  Text('Orders',
-                      style: getCustomFont(color: Colors.white, size: 16.0)),
-                  Icon(
-                    null,
-                    color: Colors.white,
+                      child: Icon(Icons.arrow_back_ios,
+                          size: 18.0, color: Colors.white)),
+           
+                  Text('My Orders',
+                      style:
+                          getCustomFont(size: 16.0, color: Colors.white)),
+                  InkWell(
+                    onTap: () {
+                      context.read<HomeController>().setPage(-22);
+                    },
+                    child: Icon(
+                      Icons.notifications_active,
+                      color: Colors.white,
+                    ),
                   )
                 ],
-              ),
-              const SizedBox(
-                height: 15.0,
-              ),
+              )
             ]),
           ),
           const SizedBox(
@@ -89,7 +91,9 @@ class MyOrder extends StatelessWidget {
                     style: getCustomFont(size: 13.0, color: Colors.black)),
               ],
             ),
-            Flexible(child: Row(children: [
+            Flexible(child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
                 decoration: BoxDecoration(

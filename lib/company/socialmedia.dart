@@ -27,36 +27,35 @@ class _SocialMediaState extends State<SocialMedia> {
         height: MediaQuery.of(context).size.height,
         color: Color(0xFFf6f6f6),
         child: Column(children: [
-           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
-            width: MediaQuery.of(context).size.width,
-            color: BLUECOLOR,
-            child: Column(children: [
-              const SizedBox(
-                height: 45.0,
-              ),
+          Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0, vertical: 0.0),
+                width: MediaQuery.of(context).size.width,
+                color: BLUECOLOR,
+                child: Column(children: [
+                  const SizedBox(
+                    height: 45.0,
+                  ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
                       onTap: () => context.read<HomeController>().onBackPress(),
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                        size: 18.0,
-                      )),
+                      child: Icon(Icons.arrow_back_ios,
+                          size: 18.0, color: Colors.white)),
+              
                   Text('Social Media',
-                      style: getCustomFont(color: Colors.white, size: 16.0)),
+                      style:
+                          getCustomFont(size: 16.0, color: Colors.white)),
                   Icon(
                     null,
                     color: Colors.white,
                   )
                 ],
               ),
-              const SizedBox(
-                height: 15.0,
-              ),
+               const SizedBox(
+            height: 15.0,
+          ),
             ]),
           ),
           const SizedBox(
@@ -69,19 +68,17 @@ class _SocialMediaState extends State<SocialMedia> {
                   itemBuilder: (ctx, i) => Container(
                         decoration: BoxDecoration(
                             boxShadow: SHADOW,
-                            borderRadius: BorderRadius.circular(13.0),
+                            borderRadius: BorderRadius.circular(12.0),
                             color: Colors.white),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0),
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 7.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Flexible(
                               child: Row(children: [
                                 CircleAvatar(
-                                  radius: 25.0,
+                                  radius: 20.0,
                                   backgroundImage:
                                       AssetImage(socials[i]['image']),
                                 ),
@@ -91,14 +88,14 @@ class _SocialMediaState extends State<SocialMedia> {
                                 Text(
                                   '${socials[i]['title']}',
                                   style: getCustomFont(
-                                      size: 14.0, color: Colors.black),
+                                      size: 13.0, color: Colors.black),
                                 )
                               ]),
                             ),
                             Icon(
                               Icons.arrow_forward_ios,
                               color: Colors.black,
-                              size: 19.0,
+                              size: 18.0,
                             )
                           ],
                         ),

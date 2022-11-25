@@ -22,7 +22,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
         height: MediaQuery.of(context).size.height,
         color: Color(0xFFf6f6f6),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-           Container(
+          Container(
             padding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
             width: MediaQuery.of(context).size.width,
@@ -35,23 +35,30 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
-                      onTap: () => context.read<HomeController>().onBackPress(),
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                        size: 18.0,
-                      )),
+                      onTap: () =>
+                          context.read<HomeController>().onBackPress(),
+                      child: Icon(Icons.arrow_back_ios,
+                          size: 18.0, color: Colors.white)),
+                 
                   Text('Notification Settings',
-                      style: getCustomFont(color: Colors.white, size: 16.0)),
-                  Icon(
-                    null,
-                    color: Colors.white,
+                      style:
+                          getCustomFont(size: 16.0, color: Colors.white)),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 13.0, vertical: 5.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50.0),
+                        color: Colors.white),
+                    child: Text(
+                      'save',
+                      style: getCustomFont(size: 11.0, color: BLUECOLOR),
+                    ),
                   )
                 ],
               ),
-              const SizedBox(
-                height: 15.0,
-              ),
+               const SizedBox(
+            height: 15.0,
+          ),
             ]),
           ),
           const SizedBox(
@@ -81,8 +88,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                 items(
                   NotificationSettingsModel(
                     title: 'Review Survey',
-                    description:
-                        'Share your payment experience for better experience user',
+                    description: 'Share your payment experience for better users experience',
                     isSelected: false,
                   ),
                 ),

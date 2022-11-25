@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:doccure_patient/store/confirm_order.dart';
 
 class DeliveryLocation extends StatefulWidget {
   const DeliveryLocation({super.key});
@@ -144,13 +145,16 @@ class _DeliveryLocationState extends State<DeliveryLocation> {
                           style: getCustomFont(size: 13.0, color: Colors.black38),
                         ),
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 45.0,
-                        color: BLUECOLOR,
-                        child: Text(
-                          'Continue',
-                          style: getCustomFont(size: 14.0, color: Colors.white),
+                      GestureDetector(
+                        onTap: () => Get.to(() => ConfirmOrder()),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 45.0,
+                          color: BLUECOLOR,
+                          child: Text(
+                            'Continue',
+                            style: getCustomFont(size: 14.0, color: Colors.white),
+                          ),
                         ),
                       )
                     ],

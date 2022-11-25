@@ -16,7 +16,7 @@ class HospitalDetails extends StatefulWidget {
 class _HospitalDetailsState extends State<HospitalDetails> {
   int counter = 0;
 
-  List<String> tabs = ['Overviews', 'Locations', 'Reviews', 'Business Hours'];
+  List<String> tabs = ['Overviews', 'Locations', 'Reviews', 'Business Hours', 'Service'];
   String selectedTab = 'Overviews';
   int totalFacility = 6;
   Completer<GoogleMapController> _controller = Completer();
@@ -167,7 +167,7 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                                     children: List.generate(
                                         4, (index) => getReviews())),
                               )
-                            : hours()),
+                            : selectedTab == 'Service' ? getServices() : hours()),
             Row(
               children: [
                 Flexible(
@@ -791,11 +791,11 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                 boxShadow: SHADOW),
             child: Column(children: [
               ...List.generate(
-                  7,
-                  (index) => Row(
+                  constDays.length,
+                  (i) => Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
+                          Row( 
                             children: [
                               Icon(
                                 Icons.check_circle_outline,
@@ -806,7 +806,7 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                                 width: 3.0,
                               ),
                               Text(
-                                'Monday',
+                                '${constDays[i]}',
                                 style: getCustomFont(
                                     size: 13.5, color: Colors.black),
                               )
@@ -846,4 +846,6 @@ class _HospitalDetailsState extends State<HospitalDetails> {
       ],
     );
   }
+  
+  Widget getServices() => Container();
 }

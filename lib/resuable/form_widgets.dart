@@ -3,10 +3,13 @@ import 'package:doccure_patient/dialog/curreency.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/store/index.dart';
+import 'package:doccure_patient/store/product_details.dart';
 import 'package:doccure_patient/store/product_lists.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -302,7 +305,8 @@ navDrawer(BuildContext context, scaffold, box) => Container(
                       context.read<HomeController>().setPage(-2);
                     },
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage('${box.get(USERPATH).profilePhoto}'),
+                      backgroundImage:
+                          NetworkImage('${box.get(USERPATH).profilePhoto}'),
                       radius: 30.0,
                       backgroundColor: Colors.white,
                     ),
@@ -362,7 +366,8 @@ navDrawer(BuildContext context, scaffold, box) => Container(
                       );
                     }
                     return ExpansionTile(
-                        tilePadding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 5.0),
+                        tilePadding: const EdgeInsets.only(
+                            left: 15.0, right: 15.0, bottom: 5.0),
                         leading: CircleAvatar(
                           radius: 18.0,
                           backgroundColor: BLUECOLOR.withOpacity(.5),
@@ -442,7 +447,7 @@ setChildrenClickListener(e, BuildContext context) {
       break;
     case -17:
       context.read<HomeController>().setPage(-17);
-      break;  
+      break;
   }
 }
 
@@ -821,4 +826,285 @@ Widget createPrescriptionNote(text) => Row(
               size: 14.0, color: Colors.black, weight: FontWeight.w500),
         )))
       ],
+    );
+
+Widget productItem(BuildContext context) => GestureDetector(
+      onTap: () => Get.to(() => ProductDetails()),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15.0),
+            boxShadow: SHADOW,
+            color: Colors.white),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                      child: Center(
+                    child: Image.asset('assets/imgs/pills.png'),
+                  )),
+                  const SizedBox(
+                    height: 2.0,
+                  ),
+                  Text(
+                    'Salospir 200mg Tablet',
+                    textAlign: TextAlign.start,
+                    style: getCustomFont(size: 14.0, color: Colors.black45),
+                  ),
+                  const SizedBox(
+                    height: 3.0,
+                  ),
+                  Text(
+                    '\$5.50',
+                    style: getCustomFont(
+                        size: 15.0,
+                        color: Colors.black,
+                        weight: FontWeight.bold),
+                  )
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                width: 30.0,
+                height: 35.0,
+                decoration: BoxDecoration(
+                    color: BLUECOLOR,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15.0),
+                        bottomRight: Radius.circular(15.0))),
+                child: Center(
+                  child: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: 19.0,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+
+Widget getReviews(BuildContext context) => Container(
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.all(15.0),
+      margin: const EdgeInsets.only(bottom: 7.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15.0),
+        color: Colors.white,
+        boxShadow: SHADOW,
+      ),
+      child: Column(children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              radius: 30.0,
+              backgroundColor: Colors.grey,
+              backgroundImage: AssetImage('assets/imgs/1.png'),
+            ),
+            const SizedBox(
+              width: 10.0,
+            ),
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Richard Wilson',
+                      style: getCustomFont(
+                        size: 17.0,
+                        color: Colors.black,
+                        weight: FontWeight.w500,
+                      )),
+                  Text('Reviewed 2 days ago',
+                      style: getCustomFont(
+                        size: 13.0,
+                        color: Colors.black54,
+                        weight: FontWeight.normal,
+                      )),
+                  const SizedBox(
+                    height: 3.0,
+                  ),
+                  RatingBar.builder(
+                    initialRating: 3,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemSize: 15.0,
+                    itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                      size: 15.0,
+                    ),
+                    onRatingUpdate: (rating) {
+                      print(rating);
+                    },
+                  ),
+                  const SizedBox(height: 7.0),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.thumb_up_outlined,
+                        color: Color(0xFF00CC80),
+                        size: 16.0,
+                      ),
+                      const SizedBox(
+                        width: 5.0,
+                      ),
+                      Flexible(
+                        child: Text('I recommend the doctor',
+                            style: getCustomFont(
+                              size: 13.0,
+                              color: Color(0xFF00CC80),
+                              weight: FontWeight.normal,
+                            )),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 7.0),
+                  Text('$DUMMYREVIEW',
+                      style: getCustomFont(
+                        size: 13.0,
+                        color: Colors.black,
+                        weight: FontWeight.normal,
+                      )),
+                  const SizedBox(height: 10.0),
+                  DottedBorder(
+                      color: Colors.black45,
+                      padding: const EdgeInsets.symmetric(horizontal: 1),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                      )),
+                  const SizedBox(height: 10.0),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.reply,
+                        color: Colors.lightBlueAccent,
+                        size: 16.0,
+                      ),
+                      const SizedBox(
+                        width: 5.0,
+                      ),
+                      Flexible(
+                        child: Text('Reply',
+                            style: getCustomFont(
+                              size: 13.0,
+                              color: Colors.lightBlueAccent,
+                              weight: FontWeight.normal,
+                            )),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10.0),
+                  Row(
+                    children: [
+                      Text('Recommend?',
+                          style: getCustomFont(
+                            size: 13.0,
+                            color: Colors.black,
+                            weight: FontWeight.normal,
+                          )),
+                      const SizedBox(
+                        width: 15.0,
+                      ),
+                      DottedBorder(
+                        borderType: BorderType.RRect,
+                        radius: Radius.circular(100.0),
+                        padding: EdgeInsets.all(5.0),
+                        dashPattern: [8, 4],
+                        strokeCap: StrokeCap.butt,
+                        color: Colors.black,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5.0, vertical: 0.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.thumb_up_outlined,
+                                color: Colors.black,
+                                size: 16.0,
+                              ),
+                              const SizedBox(
+                                width: 5.0,
+                              ),
+                              Text('Yes',
+                                  style: getCustomFont(
+                                    size: 13.0,
+                                    color: Colors.black,
+                                    weight: FontWeight.normal,
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 20.0),
+                      DottedBorder(
+                        borderType: BorderType.RRect,
+                        radius: Radius.circular(100.0),
+                        padding: EdgeInsets.all(5.0),
+                        dashPattern: [8, 4],
+                        strokeCap: StrokeCap.butt,
+                        color: Colors.black,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5.0, vertical: 0.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.thumb_down_outlined,
+                                color: Colors.black,
+                                size: 16.0,
+                              ),
+                              const SizedBox(
+                                width: 5.0,
+                              ),
+                              Text('No',
+                                  style: getCustomFont(
+                                    size: 13.0,
+                                    color: Colors.black,
+                                    weight: FontWeight.normal,
+                                  )),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Flexible(child: TextFormField()),
+                      const SizedBox(
+                        width: 25.0,
+                      ),
+                      Transform.rotate(
+                          angle: 5.9,
+                          child: Icon(
+                            Icons.send,
+                            color: BLUECOLOR.withOpacity(.7),
+                            size: 30.0,
+                          ))
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        )
+      ]),
     );

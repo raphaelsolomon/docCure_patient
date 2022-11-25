@@ -63,7 +63,7 @@ class OrderPlaced extends StatelessWidget {
                   children: [
                     const SizedBox(height: 10.0,),
                     Text(
-                      'Your Order has been placed successfully,\nand will be on the way soon.',
+                      'Your order has been placed successfully,\nand will be on the way soon.',
                       textAlign: TextAlign.center,
                       style: getCustomFont(size: 14.0, color: Colors.black54),
                     )

@@ -1,19 +1,11 @@
-import 'dart:convert';
-
 import 'package:doccure_patient/constant/strings.dart';
-import 'package:doccure_patient/model/favourite_model.dart';
-import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
-import 'package:doccure_patient/services/request.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:http/http.dart' as http;
 
 class MyFavourite extends StatefulWidget {
   const MyFavourite({Key? key}) : super(key: key);
@@ -23,24 +15,11 @@ class MyFavourite extends StatefulWidget {
 }
 
 class _MyFavouriteState extends State<MyFavourite> {
-  bool isLoading = true;
-  FavouriteModel? favouriteModel;
-  final box = Hive.box<User>(BoxName);
-  final _refreshController = RefreshController(initialRefresh: false);
-
-  @override
-  void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      getFavourites(_refreshController).then((value) => setState(() {
-            favouriteModel = value;
-            isLoading = false;
-          }));
-    });
-    super.initState();
-  }
+  String past = 'Medicines';
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -60,13 +39,12 @@ class _MyFavouriteState extends State<MyFavourite> {
                 children: [
                   GestureDetector(
                       onTap: () => context.read<HomeController>().onBackPress(),
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                        size: 18.0,
-                      )),
-                  Text('Favorites',
-                      style: getCustomFont(color: Colors.white, size: 16.0)),
+                      child: Icon(Icons.arrow_back_ios,
+                          size: 18.0, color: Colors.white)),
+                  Flexible(
+                    child: Text('Favourites',
+                        style: getCustomFont(size: 16.0, color: Colors.white)),
+                  ),
                   Icon(
                     null,
                     color: Colors.white,
@@ -79,29 +57,125 @@ class _MyFavouriteState extends State<MyFavourite> {
             ]),
           ),
           const SizedBox(
+            height: 15.0,
+          ),
+          Container(
+            padding: const EdgeInsets.all(6.0),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40.0),
+                color: Colors.white,
+                boxShadow: SHADOW),
+            child: Row(mainAxisSize: MainAxisSize.min, children: [
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    past = 'Medicines';
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 8.0),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50.0),
+                      color:
+                          past == 'Medicines' ? BLUECOLOR : Colors.transparent,
+                      boxShadow: past == 'Medicines' ? SHADOW : null),
+                  child: FittedBox(
+                    child: Text(
+                      'Medicines',
+                      style: getCustomFont(
+                          size: 13.0,
+                          color: past == 'Medicines'
+                              ? Colors.white
+                              : Colors.black),
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    past = 'Doctors';
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 8.0),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50.0),
+                      color: past == 'Doctors' ? BLUECOLOR : Colors.transparent,
+                      boxShadow: past == 'Doctors' ? SHADOW : null),
+                  child: FittedBox(
+                    child: Text(
+                      'Doctors',
+                      style: getCustomFont(
+                          size: 13.0,
+                          color:
+                              past == 'Doctors' ? Colors.white : Colors.black),
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    past = 'Hospitals';
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 8.0),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50.0),
+                      color:
+                          past == 'Hospitals' ? BLUECOLOR : Colors.transparent,
+                      boxShadow: past == 'Hospitals' ? SHADOW : null),
+                  child: FittedBox(
+                    child: Text(
+                      'Hospitals',
+                      style: getCustomFont(
+                          size: 13.0,
+                          color: past == 'Hospitals'
+                              ? Colors.white
+                              : Colors.black),
+                    ),
+                  ),
+                ),
+              )
+            ]),
+          ),
+          const SizedBox(
             height: 5.0,
           ),
-          Expanded(
-              child: isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : SmartRefresher(
-                      enablePullDown: true,
-                      header: WaterDropHeader(waterDropColor: BLUECOLOR.withOpacity(.5)),
-                      controller: _refreshController,
-                      onRefresh: () => getFavourites(_refreshController)
-                          .then((value) => setState(() {
-                                favouriteModel = value;
-                              })),
-                      child: ListView.builder(
-                          padding: const EdgeInsets.all(0.0),
-                          itemCount: favouriteModel!.data!.length,
+          past == 'Doctors'
+              ? Expanded(
+                  child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0.0, vertical: 0.0),
+                      itemCount: 5,
+                      shrinkWrap: true,
+                      itemBuilder: (ctx, i) => findDoctors(context)))
+              : past == 'Medicines'
+                  ? Expanded(
+                      child: GridView.builder(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15.0, vertical: 10.0),
                           shrinkWrap: true,
-                          itemBuilder: (ctx, i) => findDoctors(context, favouriteModel!.data![i])),
-                    ))
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: returnCrossAxis(size.width),
+                                  mainAxisSpacing: 10.0,
+                                  mainAxisExtent: 210.0,
+                                  crossAxisSpacing: 10.0),
+                          itemCount: 10,
+                          itemBuilder: (ctx, i) => productItem(context)),
+                    )
+                  : const SizedBox()
         ]));
   }
 
-  Widget findDoctors(context, Data data) => Container(
+  Widget findDoctors(context) => Container(
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
@@ -135,7 +209,7 @@ class _MyFavouriteState extends State<MyFavourite> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      '${data.name}',
+                      'Dr. Ruby Perrln',
                       style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 15.0,
@@ -176,7 +250,7 @@ class _MyFavouriteState extends State<MyFavourite> {
                                 width: 5.0,
                               ),
                               Text(
-                                '${data.specialization}',
+                                'Dentist',
                                 style: GoogleFonts.poppins(
                                     color: Colors.lightBlue,
                                     fontSize: 13.0,
@@ -209,9 +283,7 @@ class _MyFavouriteState extends State<MyFavourite> {
                                 direction: Axis.horizontal,
                                 allowHalfRating: true,
                                 itemCount: 5,
-                                itemSize: 15.0,
-                                itemPadding:
-                                    EdgeInsets.symmetric(horizontal: 2.0),
+                                itemSize: 14.0,
                                 itemBuilder: (context, _) => Icon(
                                   Icons.star,
                                   color: Colors.amber,
@@ -242,10 +314,10 @@ class _MyFavouriteState extends State<MyFavourite> {
                               size: 14.0,
                             ),
                             Text(
-                              '${data.state}, ${data.country ?? ''}',
+                              'Florida, USA',
                               style: GoogleFonts.poppins(
                                   color: Colors.black,
-                                  fontSize: 14.0,
+                                  fontSize: 13.0,
                                   fontWeight: FontWeight.w400),
                             ),
                           ],
@@ -291,7 +363,7 @@ class _MyFavouriteState extends State<MyFavourite> {
                         '98%',
                         style: GoogleFonts.poppins(
                             color: Colors.black,
-                            fontSize: 16.0,
+                            fontSize: 14.5,
                             fontWeight: FontWeight.w400),
                       ),
                     ],
@@ -318,10 +390,10 @@ class _MyFavouriteState extends State<MyFavourite> {
                       width: 3.0,
                     ),
                     Text(
-                      '\$${data.consultationFee}',
+                      '\$300 - \$1000',
                       style: GoogleFonts.poppins(
                           color: Colors.black,
-                          fontSize: 15.0,
+                          fontSize: 14.5,
                           fontWeight: FontWeight.w400),
                     ),
                   ],
@@ -377,7 +449,9 @@ class _MyFavouriteState extends State<MyFavourite> {
         ),
       );
 
-  Widget getAppointment(context, callBack, {color = BLUECOLOR, text = 'Search Now'}) => GestureDetector(
+  Widget getAppointment(context, callBack,
+          {color = BLUECOLOR, text = 'Search Now'}) =>
+      GestureDetector(
         onTap: () => callBack(),
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -401,19 +475,12 @@ class _MyFavouriteState extends State<MyFavourite> {
           ),
         ),
       );
+}
 
-  Future<FavouriteModel> getFavourites(RefreshController controller) async {
-    FavouriteModel model = new FavouriteModel();
-    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/favorites/all'));
-    request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
-    http.StreamedResponse response = await request.send();
-    if (response.statusCode == 200) {
-      controller.refreshCompleted();
-      return response.stream.bytesToString().then((value) {
-        return model = FavouriteModel.fromJson(jsonDecode(value));;
-      });
-    }
-    controller.refreshFailed();
-    return model;
-  }
+int returnCrossAxis(width) {
+  return width < 500
+      ? 2
+      : width > 500 && width < 100
+          ? 2
+          : 3;
 }

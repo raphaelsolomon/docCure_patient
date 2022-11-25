@@ -1,6 +1,8 @@
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
+import 'package:doccure_patient/store/product_lists_by_brand.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ByBrand extends StatelessWidget {
   final Function onBack;
@@ -63,7 +65,7 @@ class ByBrand extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 15.0, left: 15.0),
-                      child: getCardForm('Search medicines'),
+                      child: getCardForm('Search Brands'),
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -85,32 +87,35 @@ class ByBrand extends StatelessWidget {
                                       mainAxisExtent: 140,
                                       crossAxisSpacing: 20.0),
                               itemCount: 23,
-                              itemBuilder: (ctx, i) => Container(
-                                    padding: const EdgeInsets.all(10.0),
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(14.0),
-                                        color: Colors.white,
-                                        boxShadow: SHADOW),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                            child: Center(
-                                          child: Image.asset(
-                                              'assets/imgs/logo.png',
-                                              width: 150.0,
-                                              fit: BoxFit.contain),
-                                        )),
-                                        Text(
-                                          'Peak',
-                                          style: getCustomFont(
-                                              size: 13.0, color: Colors.black, weight: FontWeight.w500),
-                                        )
-                                      ],
+                              itemBuilder: (ctx, i) => GestureDetector(
+                                onTap: () => Get.to(() => ProductListBrand()),
+                                child: Container(
+                                      padding: const EdgeInsets.all(10.0),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(9.0),
+                                          color: Colors.white,
+                                          boxShadow: SHADOW),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                              child: Center(
+                                            child: Image.asset(
+                                                'assets/imgs/pills.png',
+                                                width: 150.0,
+                                                fit: BoxFit.contain),
+                                          )),
+                                          Text(
+                                            'Peak',
+                                            style: getCustomFont(
+                                                size: 14.0, color: Colors.black, weight: FontWeight.w400),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  )),
+                              )),
                           const SizedBox(
                             height: 80.0,
                           )

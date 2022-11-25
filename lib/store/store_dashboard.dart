@@ -1,5 +1,6 @@
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
+import 'package:doccure_patient/store/categories_and_sub.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:doccure_patient/store/hospital_details.dart';
 import 'package:doccure_patient/store/my_cart.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:get/get.dart';
+import 'package:doccure_patient/store/search_pharmacy.dart';
 
 Widget getDashboard(context, width) => Padding(
       padding: const EdgeInsets.only(left: 20.0, top: 28.0),
@@ -63,7 +65,7 @@ Widget getDashboard(context, width) => Padding(
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 20.0),
-                      child: getCardForm('Search medicines'),
+                      child: getCardForm('Search For Pharmacy Store'),
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -78,12 +80,15 @@ Widget getDashboard(context, width) => Padding(
                                   size: 14.0, color: Colors.black45),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20.0),
-                            child: Text(
-                              'view all',
-                              style: getCustomFont(
-                                  size: 14.0, color: Colors.greenAccent),
+                          GestureDetector(
+                            onTap: () => Get.to(() => CategoriesAndSub()),
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 20.0),
+                              child: Text(
+                                'view all',
+                                style: getCustomFont(
+                                    size: 14.0, color: Colors.greenAccent),
+                              ),
                             ),
                           ),
                         ]),
@@ -94,7 +99,7 @@ Widget getDashboard(context, width) => Padding(
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
-                           ...shop_by_categgory.map((e) => firstScroll(e))
+                          ...shop_by_categgory.map((e) => firstScroll(e))
                         ],
                       ),
                     ),
@@ -107,6 +112,39 @@ Widget getDashboard(context, width) => Padding(
                           Flexible(
                             child: Text(
                               'Offers',
+                              style: getCustomFont(
+                                  size: 14.0, color: Colors.black45),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 20.0),
+                            child: Text(
+                              'My Offer',
+                              style: getCustomFont(
+                                  size: 14.0, color: Colors.greenAccent),
+                            ),
+                          ),
+                        ]),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          ...shop_by_offer.map((e) => secondScroll(context, e))
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 14.0,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              'Deals',
                               style: getCustomFont(
                                   size: 14.0, color: Colors.black45),
                             ),
@@ -138,19 +176,25 @@ Widget getDashboard(context, width) => Padding(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Flexible(
-                            child: Text(
-                              'All Pharmacy stores',
-                              style: getCustomFont(
-                                  size: 14.0, color: Colors.black45),
+                            child: GestureDetector(
+                              onTap: () => Get.to(() => SearchStores((){}, 'Pharmacy Stores')),
+                              child: Text(
+                                'All Pharmacy stores',
+                                style: getCustomFont(
+                                    size: 14.0, color: Colors.black45),
+                              ),
                             ),
                           ),
                           Flexible(
                             child: Padding(
                               padding: const EdgeInsets.only(right: 20.0),
-                              child: Text(
-                                'All Hospital/Clinics',
-                                style: getCustomFont(
-                                    size: 14.0, color: Colors.black45),
+                              child: GestureDetector(
+                                 onTap: () => Get.to(() => SearchStores((){}, 'Hospitals/Clinics')),
+                                child: Text(
+                                  'All Hospital/Clinics',
+                                  style: getCustomFont(
+                                      size: 14.0, color: Colors.black45),
+                                ),
                               ),
                             ),
                           ),
@@ -168,7 +212,8 @@ Widget getDashboard(context, width) => Padding(
                             mainAxisExtent: 50.0,
                             crossAxisSpacing: 20.0),
                         itemCount: allStores.length,
-                        itemBuilder: (ctx, i) => thirdScroll(context, allStores[i])),
+                        itemBuilder: (ctx, i) =>
+                            thirdScroll(context, allStores[i])),
                     const SizedBox(
                       height: 85.0,
                     ),
@@ -196,8 +241,9 @@ Widget getHospital(context, Function brand, {onBack}) => Padding(
                   Row(
                     children: [
                       GestureDetector(
-                        onTap: () =>  onBack(),
-                        child: Icon(Icons.arrow_back_ios, size: 19.0, color: Colors.black)),
+                          onTap: () => onBack(),
+                          child: Icon(Icons.arrow_back_ios,
+                              size: 19.0, color: Colors.black)),
                       const SizedBox(width: 10.0),
                       Image.asset('assets/imgs/logo.png',
                           width: 150.0, fit: BoxFit.contain),
@@ -246,7 +292,7 @@ Widget getHospital(context, Function brand, {onBack}) => Padding(
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 15.0, left: 15.0),
-                      child: getCardForm('Search medicines'),
+                      child: getCardForm('Search For Hospitals'),
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -269,8 +315,8 @@ Widget getHospital(context, Function brand, {onBack}) => Padding(
                                 padding: const EdgeInsets.only(right: 20.0),
                                 child: Text(
                                   'view all',
-                                  style:
-                                      getCustomFont(size: 14.0, color: BLUECOLOR),
+                                  style: getCustomFont(
+                                      size: 14.0, color: BLUECOLOR),
                                 ),
                               ),
                             ),
@@ -472,8 +518,9 @@ Widget getPharmacy(context, Function brand, {onBack}) => Padding(
                   Row(
                     children: [
                       GestureDetector(
-                        onTap: () => onBack(),
-                        child: Icon(Icons.arrow_back_ios, size: 19.0, color: Colors.black)),
+                          onTap: () => onBack(),
+                          child: Icon(Icons.arrow_back_ios,
+                              size: 19.0, color: Colors.black)),
                       const SizedBox(width: 10.0),
                       Image.asset('assets/imgs/logo.png',
                           width: 150.0, fit: BoxFit.contain),
@@ -522,7 +569,7 @@ Widget getPharmacy(context, Function brand, {onBack}) => Padding(
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 15.0, left: 15.0),
-                      child: getCardForm('Search medicines'),
+                      child: getCardForm('Search For Pharmacy Stores'),
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -561,7 +608,7 @@ Widget getPharmacy(context, Function brand, {onBack}) => Padding(
                         padding: const EdgeInsets.only(left: 20.0),
                         child: Row(
                           children: [
-                             ...shop_by_categgory.map((e) => firstScroll(e))
+                            ...shop_by_categgory.map((e) => firstScroll(e))
                           ],
                         ),
                       ),
@@ -585,8 +632,8 @@ Widget getPharmacy(context, Function brand, {onBack}) => Padding(
                               padding: const EdgeInsets.only(right: 20.0),
                               child: Text(
                                 'view all',
-                                style: getCustomFont(
-                                    size: 14.0, color: BLUECOLOR),
+                                style:
+                                    getCustomFont(size: 14.0, color: BLUECOLOR),
                               ),
                             ),
                           ]),

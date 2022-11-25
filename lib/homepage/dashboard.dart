@@ -100,7 +100,7 @@ class _DashBoardState extends State<DashBoard> {
                                     : page == 5
                                         ? ChatListScreen(scaffold, logController, _client)
                                         : page == 6
-                                            ? MyInvoicePage(scaffold)
+                                            ? MyInvoicePage()
                                             : page == 7 //no bottom nav
                                                 ? MyFamily()
                                                 : page == 8 //no bottom nav

@@ -1,28 +1,11 @@
-import 'dart:convert';
-
 import 'package:doccure_patient/constant/strings.dart';
-import 'package:doccure_patient/model/referral/referral.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-class MyReferrals extends StatefulWidget {
-  MyReferrals({Key? key}) : super(key: key);
-
-  @override
-  State<MyReferrals> createState() => _MyReferralsState();
-}
-
-class _MyReferralsState extends State<MyReferrals> {
-  final refbox = Hive.box(ReferralBox);
-
-  @override
-  void initState() {
-    super.initState();
-  }
+class MyReferrals extends StatelessWidget {
+  const MyReferrals({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,26 +24,23 @@ class _MyReferralsState extends State<MyReferrals> {
                 height: 45.0,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
                       onTap: () => context.read<HomeController>().onBackPress(),
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                        size: 18.0,
-                      )),
-                  Text('Referral',
-                      style: getCustomFont(color: Colors.white, size: 16.0)),
+                      child: Icon(Icons.arrow_back_ios,
+                          size: 20.0, color: Colors.white)),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Text('My Referrals',
+                      style: getCustomFont(size: 16.0, color: Colors.white)),
                   Icon(
                     null,
                     color: Colors.white,
                   )
                 ],
-              ),
-              const SizedBox(
-                height: 15.0,
-              ),
+              )
+              ,const SizedBox(height: 15.0,)
             ]),
           ),
           Expanded(
@@ -101,11 +81,8 @@ class _MyReferralsState extends State<MyReferrals> {
                           height: 5.0,
                         ),
                         Text(
-                          '${ReferralModel.fromJson(jsonDecode(refbox.get(USERPATH))).data!.referralCode ?? ''}',
-                          style: getCustomFont(
-                              size: 23.0,
-                              color: Colors.white,
-                              weight: FontWeight.bold),
+                          '532457',
+                          style: getCustomFont(size: 23.0, color: Colors.white, weight: FontWeight.bold),
                         ),
                         const SizedBox(
                           height: 10.0,
@@ -113,9 +90,9 @@ class _MyReferralsState extends State<MyReferrals> {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
+                   const SizedBox(
+                          height: 20.0,
+                        ),
                   SizedBox(
                     child: Align(
                       alignment: Alignment.centerLeft,
@@ -123,7 +100,7 @@ class _MyReferralsState extends State<MyReferrals> {
                         'Refer & Earn',
                         textAlign: TextAlign.center,
                         style: getCustomFont(
-                            size: 24.0,
+                          size: 24.0,
                             color: Colors.black87,
                             weight: FontWeight.w700),
                       ),
@@ -146,21 +123,14 @@ class _MyReferralsState extends State<MyReferrals> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      social(FontAwesome.facebook, BLUECOLOR, () async {}),
-                      social(FontAwesome.whatsapp, Colors.green, () async {
-                        await canLaunchUrl(Uri.parse(
-                                '${ReferralModel.fromJson(jsonDecode(refbox.get(USERPATH))).data!.whatsappLink}'))
-                            ? await launchUrl(Uri.parse(
-                                '${ReferralModel.fromJson(jsonDecode(refbox.get(USERPATH))).data!.whatsappLink}'))
-                            : print('false');
-                      }),
+                      social(FontAwesome.facebook, BLUECOLOR),
+                      social(FontAwesome.whatsapp, Colors.green),
+                      social(FontAwesome.twitter, Colors.lightBlueAccent),
                       social(
-                          FontAwesome.twitter, Colors.lightBlueAccent, () {}),
-                      social(FontAwesome.google_plus_circle,
-                          Colors.red.shade300, () {}),
+                          FontAwesome.google_plus_circle, Colors.red.shade300),
                     ],
                   ),
-                  const SizedBox(
+                   const SizedBox(
                     height: 40.0,
                   ),
                 ],
@@ -169,20 +139,15 @@ class _MyReferralsState extends State<MyReferrals> {
           ))
         ]));
   }
-
-  social(icon, color, callBack) => GestureDetector(
-        onTap: () => callBack(),
-        child: Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-            margin: const EdgeInsets.all(5.0),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(width: 1.0, color: Colors.grey.shade400),
-                borderRadius: BorderRadius.circular(5.0)),
-            child: Icon(
-              icon,
-              color: color,
-            )),
-      );
+   social(icon, color) => Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+      margin: const EdgeInsets.all(5.0),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(width: 1.0, color: Colors.grey.shade400),
+          borderRadius: BorderRadius.circular(100.0)),
+      child: Icon(
+        icon,
+        color: color,
+      ));
 }
