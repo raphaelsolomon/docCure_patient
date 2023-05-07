@@ -1,20 +1,20 @@
 // ignore_for_file: unnecessary_string_escapes, deprecated_member_use
 
 import 'dart:async';
-import 'dart:ui';
 
-import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:agora_rtc_engine/rtc_local_view.dart' as rtclocalview;
-import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtcremoteview;
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:agora_token_service/agora_token_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doccure_patient/callscreens/time_view.dart';
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/model/call.dart';
+import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:doccure_patient/resources/call_methods.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -34,23 +34,153 @@ class VideoCallScreenState extends State<VideoCallScreen> {
   final CallMethods callMethods = CallMethods();
 
   UserProvider? userProvider;
+  final box = Hive.box<User>(BoxName);
   StreamSubscription? callStreamSubscription;
   late RtcEngine _engine;
   final GlobalKey<TimerViewState> _timerKey = GlobalKey();
-  static final _users = <int>[];
+
   final _infoStrings = <String>[];
   bool muted = false;
-  bool _mutedVideo = false;
   int? remoteID;
+  int uid = 0;
+  bool _localUserJoined = false;
+  bool isFlashIsOn = false;
   bool _reConnectingRemoteView = false;
-  bool _isFront = false;
+  String channelID = "";
+  String token = '';
 
   @override
   void initState() {
     super.initState();
-    Wakelock.enable(); // Turn on wakelock feature till call is running
-    addPostFrameCallback();
-    initializeAgora();
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      token = await generateToken();
+      channelID = widget.call.channelId!;
+      context.read<UserProvider>().setCall(widget.call.toJson());
+      Wakelock.enable(); // Turn on wakelock feature till call is running
+      addPostFrameCallback();
+      initializeAgora();
+    });
+  }
+
+  @override
+  void dispose() async {
+    try {
+      await _engine.leaveChannel();
+      _engine.release();
+      context.read<UserProvider>().setCall({});
+    } catch (e) {}
+    super.dispose();
+  }
+
+  Future<String> generateToken() async {
+    final expirationInSeconds = 3600;
+    final currentTimestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    final expireTimestamp = currentTimestamp + expirationInSeconds;
+    final token = RtcTokenBuilder.build(
+      appId: APP_ID,
+      appCertificate: APP_CERTIFICATE,
+      channelName: widget.call.channelId!,
+      uid: '${uid}',
+      role: RtcRole.publisher,
+      expireTimestamp: expireTimestamp,
+    );
+    return token;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () => _onBackPressed(context),
+      child: Scaffold(
+        body: Stack(children: [
+          Center(
+            child: _remoteVideo(),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 50.0),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15.0),
+                child: Container(
+                  width: 110,
+                  height: 160,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0), color: Colors.grey.shade300, boxShadow: [BoxShadow(color: Colors.grey.shade200, offset: Offset(0.0, 1.0), blurRadius: 5.0, spreadRadius: 1.0)]),
+                  child: Center(
+                    child: _localUserJoined
+                        ? AgoraVideoView(
+                            controller: VideoViewController(
+                              rtcEngine: _engine,
+                              canvas: VideoCanvas(uid: uid),
+                            ),
+                          )
+                        : const CircularProgressIndicator(),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 50.0,
+            left: 0.0,
+            right: 0.0,
+            child: Column(
+              children: [
+                TimerView((s) {}, key: _timerKey),
+                const SizedBox(height: 20.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () async {
+                        if (await _engine.isCameraTorchSupported()) {
+                          if (!isFlashIsOn) {
+                            _engine.setCameraTorchOn(true);
+                            isFlashIsOn = true;
+                          } else {
+                            _engine.setCameraTorchOn(false);
+                            isFlashIsOn = false;
+                          }
+                        }
+                      },
+                      child: Container(
+                        width: 40.0,
+                        height: 40.0,
+                        decoration: BoxDecoration(color: Colors.blue, boxShadow: SHADOW, borderRadius: BorderRadius.circular(100.0)),
+                        child: Center(child: Icon(Icons.flashlight_on, color: Colors.white, size: 19.0)),
+                      ),
+                    ),
+                    const SizedBox(width: 20.0),
+                    GestureDetector(
+                      onTap: () async {
+                        await _engine.leaveChannel();
+                        callMethods.endCall(call: widget.call);
+                      },
+                      child: Container(
+                        width: 60.0,
+                        height: 60.0,
+                        decoration: BoxDecoration(color: Colors.redAccent, boxShadow: SHADOW, borderRadius: BorderRadius.circular(100.0)),
+                        child: Center(child: Icon(Icons.call_end, color: Colors.white, size: 19.0)),
+                      ),
+                    ),
+                    const SizedBox(width: 20.0),
+                    GestureDetector(
+                      onTap: () => _engine.switchCamera(),
+                      child: Container(
+                        width: 40.0,
+                        height: 40.0,
+                        decoration: BoxDecoration(color: Colors.blue, boxShadow: SHADOW, borderRadius: BorderRadius.circular(100.0)),
+                        child: Center(child: Icon(Icons.sync, color: Colors.white, size: 19.0)),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ]),
+      ),
+    );
   }
 
   Future<void> initializeAgora() async {
@@ -65,27 +195,24 @@ class VideoCallScreenState extends State<VideoCallScreen> {
     }
 
     await _initRtcEngine();
-    await _engine.enableWebSdkInteroperability(true);
-    var configuration = VideoEncoderConfiguration();
-    configuration.dimensions = VideoDimensions(width: 1920, height: 1080);
-    configuration.orientationMode = VideoOutputOrientationMode.Adaptative;
-    await _engine.setVideoEncoderConfiguration(configuration);
-    // VideoEncoderConfiguration config = VideoEncoderConfiguration();
-    // config.dimensions = const VideoDimensions(width: 1800, height: 1800);
-    // config.frameRate = VideoFrameRate.Fps15;
-    // config.bitrate = 140;
-    // await _engine.setVideoEncoderConfiguration(config);
-    // await _engine.setParameters(
-    //     '''{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":15,\"bitRate\":140}}''');
-    await _engine.joinChannel(null, widget.call.channelId!, null, 0);
+    var hostbroadcaster = const ChannelMediaOptions(
+      clientRoleType: ClientRoleType.clientRoleBroadcaster,
+      channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+    );
+
+    await _engine.joinChannel(
+      token: token,
+      channelId: channelID,
+      uid: uid,
+      options: hostbroadcaster,
+    );
+    await _engine.startPreview();
   }
 
   addPostFrameCallback() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       userProvider = Provider.of<UserProvider>(context, listen: false);
-      callStreamSubscription = callMethods
-          .callStream(uid: userProvider!.getUser.uid!)
-          .listen((DocumentSnapshot ds) {
+      callStreamSubscription = callMethods.callStream(uid: userProvider!.getUser.email!).listen((DocumentSnapshot ds) {
         // defining the logic
         switch (ds.data()) {
           case null:
@@ -100,335 +227,127 @@ class VideoCallScreenState extends State<VideoCallScreen> {
     });
   }
 
-  /// Create agora sdk instance and initialize
   Future<void> _initRtcEngine() async {
-    _engine = await RtcEngine.create(APP_ID);
+    await [Permission.microphone, Permission.camera].request();
+
+    //create the engine
+    _engine = createAgoraRtcEngine();
+    await _engine.initialize(const RtcEngineContext(appId: APP_ID));
     await _engine.enableVideo();
-    _engine.setEventHandler(RtcEngineEventHandler(error: (err) {
-      setState(() {
+    _engine.registerEventHandler(RtcEngineEventHandler(
+      onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
+        final info = 'onJoinChannel: ${connection.channelId}, uid: ${connection.localUid}';
+        _infoStrings.add(info);
+        _localUserJoined = true;
+        mounted ? setState(() {}) : null;
+      },
+      onError: (err, msg) {
         final info = 'onError: $err';
         _infoStrings.add(info);
-      });
-    }, joinChannelSuccess: (String channel, int uid, int elapsed) {
-      setState(() {
-        final info = 'onJoinChannel: $channel, uid: $uid';
+        mounted ? setState(() {}) : null;
+      },
+      onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
+        final info = 'onUserJoined: $remoteUid';
         _infoStrings.add(info);
-      });
-    }, userJoined: (int uid, int elapsed) {
-      setState(() {
-        final info = 'onUserJoined: $uid';
-        _infoStrings.add(info);
-        remoteID = uid;
-        _users.add(uid);
-        if (kDebugMode) {
-          print(_users);
-        }
-      });
-    }, userInfoUpdated: (int i, UserInfo userInfo) {
-      setState(() {
+        remoteID = remoteUid;
+        _timerKey.currentState!.startTimer();
+        mounted ? setState(() {}) : null;
+      },
+      onUserInfoUpdated: (int i, UserInfo userInfo) {
         final info = 'onUpdatedUserInfo: ${userInfo.toString()}';
         _infoStrings.add(info);
-      });
-    }, rejoinChannelSuccess: (String string, int a, int b) {
-      setState(() {
-        final info = 'onRejoinChannelSuccess: $string';
+        mounted ? setState(() {}) : null;
+      },
+      onRejoinChannelSuccess: (connection, elapsed) {
+        final info = 'onRejoinChannelSuccess: ${connection.localUid}';
         _infoStrings.add(info);
-      });
-    }, userOffline: (uid, elapsed) async {
-      if (elapsed == UserOfflineReason.Dropped) {
-        Wakelock.disable();
-      }
-      callMethods.endCall(call: widget.call);
-      setState(() {
+        mounted ? setState(() {}) : null;
+      },
+      onUserOffline: (RtcConnection connection, uid, elapsed) async {
+        if (elapsed == UserOfflineReasonType.userOfflineDropped || elapsed == UserOfflineReasonType.userOfflineQuit) {
+          Wakelock.disable();
+        }
+        callMethods.endCall(call: widget.call);
+
         final info = 'onUserOffline: a: ${uid}, b: ${elapsed}';
         _infoStrings.add(info);
         remoteID = null;
         _timerKey.currentState?.cancelTimer();
-      });
-    }, localUserRegistered: (int i, String s) {
-      setState(() {
+        mounted ? setState(() {}) : null;
+      },
+      onLocalUserRegistered: (int i, String s) {
         final info = 'onRegisteredLocalUser: string: s, i: ${i.toString()}';
         _infoStrings.add(info);
-      });
-    }, leaveChannel: (stat) {
-      setState(() {
-        _infoStrings.add('onLeaveChannel');
-        _users.clear();
-      });
-    }, connectionLost: () {
-      setState(() {
+        mounted ? setState(() {}) : null;
+      },
+      onLeaveChannel: (connection, stat) async {
+        try {
+          await callMethods.endCall(call: widget.call);
+        } catch (e) {
+          print(e);
+        } finally {
+          _engine.release();
+        }
+      },
+      onConnectionLost: (c) {
         const info = 'onConnectionLost';
         _infoStrings.add(info);
-      });
-    }, firstRemoteVideoFrame: (int uid, int width, int height, int elapsed) {
-      setState(() {
+        mounted ? setState(() {}) : null;
+      },
+      onFirstRemoteVideoFrame: (connection, int uid, int width, int height, int elapsed) {
         final info = 'firstRemoteVideo: $uid ${width}x $height';
         _infoStrings.add(info);
-      });
-    }, remoteVideoStats: (remoteVideoStats) {
-      if (remoteVideoStats.receivedBitrate == 0) {
-        setState(() {
+        mounted ? setState(() {}) : null;
+      },
+      onRemoteVideoStats: (connection, remoteVideoStats) {
+        if (remoteVideoStats.receivedBitrate == 0) {
           _reConnectingRemoteView = true;
-        });
-      } else {
-        setState(() {
+        } else {
           _reConnectingRemoteView = false;
-        });
-      }
-    }, connectionStateChanged: (type, reason) async {
-      if (type == ConnectionStateType.Connected) {
-        setState(() {
+        }
+        mounted ? setState(() {}) : null;
+      },
+      onConnectionStateChanged: (connection, type, reason) async {
+        if (type == ConnectionStateType.connectionStateConnected) {
           _reConnectingRemoteView = false;
-        });
-      } else if (type == ConnectionStateType.Reconnecting) {
-        setState(() {
+        } else if (type == ConnectionStateType.connectionStateConnecting) {
           _reConnectingRemoteView = true;
-        });
-      }
-    }));
-  }
-
-  /// Helper function to get list of native views
-  List<Widget> _getRenderViews() {
-    final List<StatefulWidget> list = [];
-    list.add(const rtclocalview.SurfaceView());
-    for (var uid in _users) {
-      list.add(rtcremoteview.SurfaceView(
-        uid: uid,
-        channelId: widget.call.channelId!,
-      ));
-    }
-    return list;
-  }
-
-  /// Video view wrapper
-  Widget _videoView(view) {
-    return Expanded(child: Container(child: view));
-  }
-
-  /// Video view row wrapper
-  Widget _expandedVideoRow(List<Widget> views) {
-    final wrappedViews = views.map<Widget>(_videoView).toList();
-    return Expanded(
-      child: Row(
-        children: wrappedViews,
-      ),
-    );
-  }
-
-  /// Video layout wrapper
-  Widget _viewRows() {
-    final views = _getRenderViews();
-    switch (views.length) {
-      case 1:
-        return Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              image: DecorationImage(
-                  image: widget.call.hasDialled!
-                      ? NetworkImage(widget.call.receiverPic!)
-                      : const NetworkImage(''),
-                  fit: BoxFit.cover,
-                  filterQuality: FilterQuality.low)),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-            child: Center(
-              child: Container(
-                height: 250,
-                width: 250,
-                decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(.1),
-                    borderRadius: BorderRadius.circular(300.0)),
-                child: Center(
-                  child: Container(
-                    height: 200,
-                    width: 200,
-                    decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(.2),
-                        borderRadius: BorderRadius.circular(300.0)),
-                    child: Center(
-                      child: Container(
-                        height: 150,
-                        width: 150,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            image: DecorationImage(
-                                image: widget.call.hasDialled!
-                                    ? NetworkImage(widget.call.receiverPic!)
-                                    : const NetworkImage(''),
-                                fit: BoxFit.cover,
-                                filterQuality: FilterQuality.low),
-                            borderRadius: BorderRadius.circular(100.0)),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      case 2:
-        return Stack(
-          children: <Widget>[
-            Container(
-              width: 130,
-              height: 180,
-              margin:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  border: Border.all(
-                      color: Colors.white,
-                      width: 5.0,
-                      style: BorderStyle.solid)),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: _expandedVideoRow([views[0]]),
-              ),
-            ),
-            _expandedVideoRow([views[1]]),
-            _reConnectingRemoteView
-                ? Container(
-                    color: Colors.black.withAlpha(200),
-                    child: Center(
-                        child: Text(
-                      "Reconnecting",
-                      style: getCustomFont(
-                          color: Colors.white,
-                          size: 15.0,
-                          weight: FontWeight.w500),
-                    )))
-                : SizedBox()
-          ],
-        );
-      case 3:
-        return Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 3))
-          ],
-        );
-      case 4:
-        return Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 4))
-          ],
-        );
-      default:
-    }
-    return Container();
-  }
-
-  void _onToggleMute() {
-    setState(() {
-      muted = !muted;
-    });
-    _engine.muteLocalAudioStream(muted);
-  }
-
-  // void _onToggleMuteVideo() {
-  //   setState(() {
-  //     _mutedVideo = !_mutedVideo;
-  //   });
-  //   _engine.muteLocalVideoStream(_mutedVideo);
-  // }
-
-  void _onSwitchCamera() async {
-    await _engine.switchCamera().then((value) => setState(() {
-      _isFront = !_isFront;
-    })).catchError((err) {});
-  }
-
-  /// Toolbar layout
-  Widget _toolbar() {
-    return Container(
-      alignment: Alignment.bottomCenter,
-      padding: const EdgeInsets.symmetric(vertical: 48),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          RawMaterialButton(
-            onPressed: _onToggleMute,
-            shape: const CircleBorder(),
-            elevation: 2.0,
-            fillColor: muted ? Colors.blueAccent : Colors.white,
-            padding: const EdgeInsets.all(12.0),
-            child: Icon(
-              muted ? Icons.mic : Icons.mic_off,
-              color: muted ? Colors.white : Colors.blueAccent,
-              size: 20.0,
-            ),
-          ),
-          RawMaterialButton(
-            onPressed: () => callMethods.endCall(
-              call: widget.call,
-            ),
-            shape: const CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.redAccent,
-            padding: const EdgeInsets.all(18.0),
-            child: const Icon(
-              Icons.call_end,
-              color: Colors.white,
-              size: 35.0,
-            ),
-          ),
-          RawMaterialButton(
-            onPressed: _onSwitchCamera,
-            shape: const CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(12.0),
-            child: const Icon(
-              Icons.switch_access_shortcut,
-              color: Colors.blueAccent,
-              size: 20.0,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    // clear users
-    _users.clear();
-    // destroy sdk
-    _engine.leaveChannel();
-    _engine.destroy();
-    callStreamSubscription!.cancel();
-    Wakelock.disable(); // Turn off wakelock feature after call end
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => _onBackPressed(context),
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Stack(
-          children: [
-            Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 40.0),
-                  child: TimerView(
-                    () {},
-                    key: _timerKey,
-                  ),
-                )),
-            _viewRows(),
-            _toolbar(),
-          ],
-        ),
-      ),
-    );
+        }
+        mounted ? setState(() {}) : null;
+      },
+      onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
+        debugPrint('[onTokenPrivilegeWillExpire] connection: ${connection.toJson()}, token: $token');
+      },
+    ));
   }
 
   Future<bool> _onBackPressed(BuildContext context) async {
+    _engine.release();
     return await callMethods.endCall(call: widget.call);
+  }
+
+  Widget _remoteVideo() {
+    if (remoteID != null) {
+      return AgoraVideoView(
+        controller: VideoViewController.remote(
+          rtcEngine: _engine,
+          canvas: VideoCanvas(uid: remoteID),
+          connection: RtcConnection(channelId: channelID),
+        ),
+      );
+    } else {
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(widget.call.receiverPic!), fit: BoxFit.cover)),
+        child: Center(
+          child: const Text(
+            'Please wait for remote user to join',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontSize: 16.0),
+          ),
+        ),
+      );
+    }
   }
 }

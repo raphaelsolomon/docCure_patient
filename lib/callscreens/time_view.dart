@@ -19,7 +19,6 @@ class TimerViewState extends State<TimerView> {
   @override
   void initState() {
     super.initState();
-    startTimer();
   }
 
   void startTimer() {
@@ -50,18 +49,15 @@ class TimerViewState extends State<TimerView> {
     return _getResendVerificationButton();
   }
 
-  Widget _getResendVerificationButton() => Text(
-      '${getFormatDuration(Duration(seconds: _counter))}',
-      style: getCustomFont(
-          size: 14.0, color: Colors.white, weight: FontWeight.w400));
+  Widget _getResendVerificationButton() => Text('${getFormatDuration(Duration(seconds: _counter))}', style: getCustomFont(size: 16.0, color: Colors.white, weight: FontWeight.w500, letterSpacing: 1.0));
 
   String getFormatDuration(Duration duration) {
-  String twoDigits(int n) => n.toString().padLeft(2, "0");
-  var twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-  var twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-  if (duration.inHours > 0) {
-    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds hrs";
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    var twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    var twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    if (duration.inHours > 0) {
+      return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+    }
+    return "$twoDigitMinutes:$twoDigitSeconds";
   }
-  return "$twoDigitMinutes:$twoDigitSeconds mins";
-}
 }

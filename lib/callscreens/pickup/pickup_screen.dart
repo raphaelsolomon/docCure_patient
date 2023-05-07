@@ -35,12 +35,7 @@ class _PickupScreenState extends State<PickupScreen> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Wakelock.enable(); // Turn on wakelock feature till call is running
       //To Play Ringtone
-      FlutterRingtonePlayer.play(
-          android: AndroidSounds.ringtone,
-          ios: IosSounds.electronic,
-          looping: true,
-          volume: 0.5,
-          asAlarm: false);
+      FlutterRingtonePlayer.play(android: AndroidSounds.ringtone, ios: IosSounds.electronic, looping: true, volume: 0.5, asAlarm: false);
       _timer = Timer(const Duration(milliseconds: 60 * 1000), _endCall);
     });
     super.initState();
@@ -57,7 +52,6 @@ class _PickupScreenState extends State<PickupScreen> {
     Wakelock.disable(); // Turn off wakelock feature after call end
     FlutterRingtonePlayer.stop(); // To Stop Ringtone
     await callMethods.endCall(call: widget.call);
-    Navigator.pop(context);
   }
 
   @override
@@ -68,11 +62,7 @@ class _PickupScreenState extends State<PickupScreen> {
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(widget.call.callerPic!),
-                    fit: BoxFit.cover,
-                    filterQuality: FilterQuality.low)),
+            decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(widget.call.callerPic!), fit: BoxFit.cover, filterQuality: FilterQuality.low)),
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(vertical: 100),
             child: BackdropFilter(
@@ -82,38 +72,25 @@ class _PickupScreenState extends State<PickupScreen> {
                 children: <Widget>[
                   Expanded(
                     child: Column(children: [
-                      const Text(
-                        "Incoming...",
-                        style: TextStyle(
-                          fontSize: 30,
-                        ),
+                      Text(
+                        "Incoming ${widget.call.type! ? "video" : "voice"} call....",
+                        style: TextStyle(fontSize: 25, color: Colors.white),
                       ),
                       const SizedBox(height: 50),
                       Container(
                         height: 250,
                         width: 250,
-                        decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(.1),
-                            borderRadius: BorderRadius.circular(300.0)),
+                        decoration: BoxDecoration(color: Colors.white.withOpacity(.1), borderRadius: BorderRadius.circular(300.0)),
                         child: Center(
                           child: Container(
                             height: 200,
                             width: 200,
-                            decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(.2),
-                                borderRadius: BorderRadius.circular(300.0)),
+                            decoration: BoxDecoration(color: Colors.white.withOpacity(.2), borderRadius: BorderRadius.circular(300.0)),
                             child: Center(
                               child: Container(
                                 height: 150,
                                 width: 150,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    image: DecorationImage(
-                                        image: NetworkImage(
-                                            widget.call.callerPic!),
-                                        fit: BoxFit.cover,
-                                        filterQuality: FilterQuality.low),
-                                    borderRadius: BorderRadius.circular(100.0)),
+                                decoration: BoxDecoration(color: Colors.white, image: DecorationImage(image: NetworkImage(widget.call.callerPic!), fit: BoxFit.cover, filterQuality: FilterQuality.low), borderRadius: BorderRadius.circular(100.0)),
                               ),
                             ),
                           ),
@@ -124,6 +101,7 @@ class _PickupScreenState extends State<PickupScreen> {
                         widget.call.callerName!,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
+                          color: Colors.white,
                           fontSize: 20,
                         ),
                       ),
@@ -134,45 +112,39 @@ class _PickupScreenState extends State<PickupScreen> {
               ),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () => _endCall(),
-                child: Container(
-                  width: 60.0,
-                  height: 60.0,
-                  decoration: BoxDecoration(
-                      color: Colors.redAccent,
-                      boxShadow: SHADOW,
-                      borderRadius: BorderRadius.circular(100.0)),
-                  child: Center(
-                      child: Icon(Icons.call_end,
-                          color: Colors.white, size: 19.0)),
+          Positioned(
+            bottom: 80.0,
+            left: 0.0,
+            right: 0.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () => _endCall(),
+                  child: Container(
+                    width: 60.0,
+                    height: 60.0,
+                    decoration: BoxDecoration(color: Colors.redAccent, boxShadow: SHADOW, borderRadius: BorderRadius.circular(100.0)),
+                    child: Center(child: Icon(Icons.call_end, color: Colors.white, size: 19.0)),
+                  ),
                 ),
-              ),
-              const SizedBox(width: 25),
-              GestureDetector(
-                onTap: () async {
-                  if (await Permissions.cameraAndMicrophonePermissionsGranted()) {
-                    FlutterRingtonePlayer.stop();
-                    widget.call.type!
-                        ? Get.off(() => VideoCallScreen(call: widget.call))
-                        : Get.off(() => VoiceCallScreen(call: widget.call));
-                  }
-                },
-                child: Container(
-                  width: 60.0,
-                  height: 60.0,
-                  decoration: BoxDecoration(
-                      color: Colors.greenAccent,
-                      boxShadow: SHADOW,
-                      borderRadius: BorderRadius.circular(100.0)),
-                  child: Center(
-                      child: Icon(Icons.call, color: Colors.white, size: 19.0)),
+                const SizedBox(width: 25),
+                GestureDetector(
+                  onTap: () async {
+                    if (await Permissions.cameraAndMicrophonePermissionsGranted()) {
+                      FlutterRingtonePlayer.stop();
+                      widget.call.type! ? Get.to(() => VideoCallScreen(call: widget.call)) : Get.to(() => VoiceCallScreen(call: widget.call));
+                    }
+                  },
+                  child: Container(
+                    width: 60.0,
+                    height: 60.0,
+                    decoration: BoxDecoration(color: Colors.greenAccent, boxShadow: SHADOW, borderRadius: BorderRadius.circular(100.0)),
+                    child: Center(child: Icon(Icons.call, color: Colors.white, size: 19.0)),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

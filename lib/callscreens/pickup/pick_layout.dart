@@ -14,7 +14,7 @@ class PickupLayout extends StatelessWidget {
 
   PickupLayout({
     Key? key,
-     required this.user,
+    required this.user,
     required this.scaffold,
   }) : super(key: key);
 
@@ -25,16 +25,7 @@ class PickupLayout extends StatelessWidget {
             stream: callMethods.callStream(uid: user!.email!),
             builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
               if (snapshot.data != null && snapshot.data!.exists) {
-                Call call = Call(
-                  callerId: snapshot.data!.get('caller_id'),
-                  callerName: snapshot.data!.get('caller_name'),
-                  callerPic: snapshot.data!.get('caller_pic'),
-                  channelId: snapshot.data!.get('channel_id'),
-                  receiverId: snapshot.data!.get('receiver_id'),
-                  receiverName: snapshot.data!.get('receiver_name'),
-                  receiverPic: snapshot.data!.get('receiver_pic'),
-                  hasDialled: snapshot.data!.get('has_dialled'),
-                );
+                Call call = Call.fromMap(snapshot.data!.data());
 
                 if (!call.hasDialled!) {
                   return PickupScreen(call: call);
@@ -43,11 +34,10 @@ class PickupLayout extends StatelessWidget {
               return scaffold;
             },
           )
-        : scaffold;
+        : Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
   }
 }
-// const Scaffold(
-//             body: Center(
-//               child: CircularProgressIndicator(),
-//             ),
-//           );

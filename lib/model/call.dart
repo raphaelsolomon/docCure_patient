@@ -47,4 +47,16 @@ class Call {
     hasDialled = callMap["has_dialled"];
     type = callMap["type"];
   }
+
+  Map<String, dynamic> toJson() => {
+        "caller_id": callerId,
+        "caller_name": callerName,
+        "caller_pic": callerPic,
+        "receiver_id": receiverId,
+        "receiver_name": receiverName,
+        "receiver_pic": receiverPic,
+        "channel_id": channelId,
+        "has_dialled": hasDialled,
+        "type": type,
+      };
 }

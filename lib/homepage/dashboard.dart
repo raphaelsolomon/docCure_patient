@@ -1,4 +1,3 @@
-import 'package:agora_rtm/agora_rtm.dart';
 import 'package:doccure_patient/auth/change_password.dart';
 import 'package:doccure_patient/callscreens/pickup/pick_layout.dart';
 import 'package:doccure_patient/chat/chat_list.dart';
@@ -32,16 +31,15 @@ import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/msg_log.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
+import 'package:doccure_patient/resources/call_methods.dart';
 import 'package:doccure_patient/resuable/custom_nav.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:doccure_patient/services/request.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
-
 
 class DashBoard extends StatefulWidget {
   const DashBoard({Key? key}) : super(key: key);
@@ -51,8 +49,8 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
-  AgoraRtmClient? _client;
   LogController logController = LogController();
+  final CallMethods callMethods = CallMethods();
   final scaffold = GlobalKey<ScaffoldState>();
   final box = Hive.box<User>(BoxName);
 
@@ -60,19 +58,20 @@ class _DashBoardState extends State<DashBoard> {
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (box.get(USERPATH) != null) {
+        context.read<UserProvider>().setUser(box.get(USERPATH));
         final response = await ApiServices.getProfile(box.get(USERPATH)!.token);
         context.read<UserProvider>().setProfile(response);
       }
       dialogMessage(context, subscribe(context));
-      createClient();
     });
     super.initState();
   }
 
   @override
-  void dispose() {
+  void dispose() async {
+    print('================onDispose========================');
+    context.read<UserProvider>().getCall.channelId == null ? null : await callMethods.endCall(call: context.read<UserProvider>().getCall);
     super.dispose();
-    _client!.logout();
   }
 
   @override
@@ -98,7 +97,7 @@ class _DashBoardState extends State<DashBoard> {
                                 : page == 1 //no bottom nav
                                     ? VitalAndTracks(scaffold)
                                     : page == 5
-                                        ? ChatListScreen(scaffold, logController, _client)
+                                        ? ChatListScreen(scaffold, logController)
                                         : page == 6
                                             ? MyInvoicePage()
                                             : page == 7 //no bottom nav
@@ -125,23 +124,23 @@ class _DashBoardState extends State<DashBoard> {
                                                                                         ? Prescriptions(scaffold)
                                                                                         : page == -12 //no bottom nav
                                                                                             ? MyOffer()
-                                                                                            : page == -17 ? MyFavourite() : page == -3
-                                                                                                ? SearchDoctor(scaffold)
-                                                                                                : page == -1 //no bottom nav
-                                                                                                    ? TimeAndDate(scaffold)
-                                                                                                    : page == -2 //no bottom nav
-                                                                                                       // ? ProfileSettings(scaffold)
-                                                                                                       ? ProfileSettings(scaffold)
-                                                                                                        : page == -14
-                                                                                                            ? InvoiceReceipt(scaffold)
-                                                                                                            : page == -16
-                                                                                                                ? FindDoctorsPage(scaffold)
-                                                                                                                : page ==-13 
-                                                                                                                    ? SocialMedia(scaffold)
-                                                                                                                    : AccountPage(),
-                    !isVisible &&
-                            (!removeBottom.contains(page) &&
-                                !removeBottom1.contains(page))
+                                                                                            : page == -17
+                                                                                                ? MyFavourite()
+                                                                                                : page == -3
+                                                                                                    ? SearchDoctor(scaffold)
+                                                                                                    : page == -1 //no bottom nav
+                                                                                                        ? TimeAndDate(scaffold)
+                                                                                                        : page == -2 //no bottom nav
+                                                                                                            // ? ProfileSettings(scaffold)
+                                                                                                            ? ProfileSettings(scaffold)
+                                                                                                            : page == -14
+                                                                                                                ? InvoiceReceipt(scaffold)
+                                                                                                                : page == -16
+                                                                                                                    ? FindDoctorsPage(scaffold)
+                                                                                                                    : page == -13
+                                                                                                                        ? SocialMedia(scaffold)
+                                                                                                                        : AccountPage(),
+                    !isVisible && (!removeBottom.contains(page) && !removeBottom1.contains(page))
                         ? Align(
                             alignment: Alignment.bottomCenter,
                             child: CustomNavBar(
@@ -153,25 +152,5 @@ class _DashBoardState extends State<DashBoard> {
                 ))),
       ),
     );
-  }
-
-  void createClient() async {
-    _client = await AgoraRtmClient.createInstance(APP_ID);
-    //_client!.login(null, box.get(USERPATH)!.uid!);
-    _client!.login(null, 'darkseid');
-    _client!.onMessageReceived = (AgoraRtmMessage message, String peerId) {
-      logController.addLog("Private Message from $peerId: ${message.text}");
-    };
-    _client!.onConnectionStateChanged = (int state, int reason) {
-      if (kDebugMode) {
-        print('Connection state changed: $state, reason: $reason');
-      }
-      if (state == 5) {
-        _client!.logout();
-        if (kDebugMode) {
-          print('Logout.');
-        }
-      }
-    };
   }
 }

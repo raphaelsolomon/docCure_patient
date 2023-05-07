@@ -1,7 +1,7 @@
 class CouponModel {
   final bool? status;
   final String? message;
-  final List<Data>? data;
+  final List<CouponData>? data;
 
   CouponModel({
     this.status,
@@ -10,18 +10,14 @@ class CouponModel {
   });
 
   CouponModel.fromJson(Map<String, dynamic> json)
-    : status = json['status'] as bool?,
-      message = json['message'] as String?,
-      data = (json['data'] as List?)?.map((dynamic e) => Data.fromJson(e as Map<String,dynamic>)).toList();
+      : status = json['status'] as bool?,
+        message = json['message'] as String?,
+        data = (json['data'] as List?)?.map((dynamic e) => CouponData.fromJson(e as Map<String, dynamic>)).toList();
 
-  Map<String, dynamic> toJson() => {
-    'status' : status,
-    'message' : message,
-    'data' : data?.map((e) => e.toJson()).toList()
-  };
+  Map<String, dynamic> toJson() => {'status': status, 'message': message, 'data': data?.map((e) => e.toJson()).toList()};
 }
 
-class Data {
+class CouponData {
   final int? id;
   final String? couponCode;
   final String? description;
@@ -31,7 +27,7 @@ class Data {
   final String? discountType;
   final String? discountValue;
 
-  Data({
+  CouponData({
     this.id,
     this.couponCode,
     this.description,
@@ -42,24 +38,15 @@ class Data {
     this.discountValue,
   });
 
-  Data.fromJson(Map<String, dynamic> json)
-    : id = json['id'] as int?,
-      couponCode = json['coupon_code'] as String?,
-      description = json['description'] as String?,
-      status = json['status'] as int?,
-      createdAt = json['created_at'] as String?,
-      updatedAt = json['updated_at'] as String?,
-      discountType = json['discount_type'] as String?,
-      discountValue = json['discount_value'] as String?;
+  CouponData.fromJson(Map<String, dynamic> json)
+      : id = json['id'] as int?,
+        couponCode = json['coupon_code'] as String?,
+        description = json['description'] as String?,
+        status = json['status'] as int?,
+        createdAt = json['created_at'] as String?,
+        updatedAt = json['updated_at'] as String?,
+        discountType = json['discount_type'] as String?,
+        discountValue = json['discount_value'] as String?;
 
-  Map<String, dynamic> toJson() => {
-    'id' : id,
-    'coupon_code' : couponCode,
-    'description' : description,
-    'status' : status,
-    'created_at' : createdAt,
-    'updated_at' : updatedAt,
-    'discount_type' : discountType,
-    'discount_value' : discountValue
-  };
+  Map<String, dynamic> toJson() => {'id': id, 'coupon_code': couponCode, 'description': description, 'status': status, 'created_at': createdAt, 'updated_at': updatedAt, 'discount_type': discountType, 'discount_value': discountValue};
 }

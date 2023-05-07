@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:doccure_patient/firebase_options.dart';
-import 'package:doccure_patient/homepage/dashboard.dart';
-import 'package:get/get.dart';
+import 'package:doccure_patient/model/person/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
@@ -12,9 +11,7 @@ class FirebaseMethods {
       googleSignIn = GoogleSignIn(clientId: DefaultFirebaseOptions.currentPlatform.iosClientId);
     }
     final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
-    if (googleSignInAccount != null) {
-      
-    }
+    if (googleSignInAccount != null) {}
   }
 
   static facebookLogin() async {
@@ -26,7 +23,6 @@ class FirebaseMethods {
       final userData = await FacebookAuth.instance.getUserData();
       print(accessToken.token);
       print(userData);
-      Get.to(() => DashBoard());
     } else {
       print(result.status);
       print(result.message);

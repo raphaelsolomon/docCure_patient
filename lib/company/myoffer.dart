@@ -29,9 +29,9 @@ class _MyOfferState extends State<MyOffer> {
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       getCoupons(_refreshController).then((value) => setState(() {
-        isLoading = false;
-        this.couponModel = value;
-      }));
+            isLoading = false;
+            this.couponModel = value;
+          }));
     });
     super.initState();
   }
@@ -61,8 +61,7 @@ class _MyOfferState extends State<MyOffer> {
                         color: Colors.white,
                         size: 18.0,
                       )),
-                  Text('Offers/Coupons',
-                      style: getCustomFont(color: Colors.white, size: 16.0)),
+                  Text('Offers/Coupons', style: getCustomFont(color: Colors.white, size: 16.0)),
                   Icon(
                     null,
                     color: Colors.white,
@@ -78,36 +77,26 @@ class _MyOfferState extends State<MyOffer> {
             height: 15.0,
           ),
           Expanded(
-              child: isLoading
+              child: !isLoading
                   ? Center(child: CircularProgressIndicator(color: BLUECOLOR))
                   : SmartRefresher(
-                    enablePullDown: true,
-                    header: WaterDropHeader(waterDropColor: BLUECOLOR.withOpacity(.5)),
-                    controller: _refreshController,
-                    onRefresh: () => getCoupons(_refreshController).then((value) => setState(() {
-                      this.couponModel = value;
-                    })),
-                    child: ListView.builder(
-                            padding: const EdgeInsets.all(0.0),
-                            itemCount: couponModel!.data!.length,
-                            shrinkWrap: true,
-                            itemBuilder: (ctx, i) => myOffers(context, couponModel!.data![i])
-                      ),
-                  ))
+                      enablePullDown: true,
+                      header: WaterDropHeader(waterDropColor: BLUECOLOR.withOpacity(.5)),
+                      controller: _refreshController,
+                      onRefresh: () => getCoupons(_refreshController).then((value) => setState(() {
+                            this.couponModel = value;
+                          })),
+                      child: ListView.builder(
+                          padding: const EdgeInsets.all(0.0), itemCount: couponModel == null ? 3 : couponModel!.data!.length, shrinkWrap: true, itemBuilder: (ctx, i) => myOffers(context, couponModel == null ? [] : couponModel!.data!, i)),
+                    ))
         ]));
   }
 
-  Widget myOffers(context, Data data) => Container(
+  Widget myOffers(context, List<CouponData> data, int i) => Container(
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.symmetric(vertical: 7.0, horizontal: 12.0),
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(
-              color: Colors.black12,
-              spreadRadius: 1.0,
-              blurRadius: 10.0,
-              offset: Offset(0.0, 1.0))
-        ], color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
+        decoration: BoxDecoration(boxShadow: [BoxShadow(color: Colors.black12, spreadRadius: 1.0, blurRadius: 10.0, offset: Offset(0.0, 1.0))], color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -116,15 +105,11 @@ class _MyOfferState extends State<MyOffer> {
               width: 20.0,
             ),
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
               decoration: BoxDecoration(color: Colors.green.withOpacity(.1)),
               child: Text(
                 'Get',
-                style: getCustomFont(
-                    size: 20.0,
-                    color: Colors.greenAccent,
-                    weight: FontWeight.bold),
+                style: getCustomFont(size: 20.0, color: Colors.greenAccent, weight: FontWeight.bold),
               ),
             )
           ],

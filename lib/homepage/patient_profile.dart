@@ -23,13 +23,7 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
-  List<String> headers = [
-    'Overview',
-    'Appointments',
-    'Prescriptions',
-    'Medical Records',
-    'Billing'
-  ];
+  List<String> headers = ['Overview', 'Appointments', 'Prescriptions', 'Medical Records', 'Billing'];
   final box = Hive.box<User>(BoxName);
 
   String index = 'Overview';
@@ -44,9 +38,9 @@ class _MyProfileState extends State<MyProfile> {
       var i = countryList.indexWhere((e) => '${e['id']}' == '${box.get(USERPATH)!.country}');
       country = countryList.elementAt(i)['name'] ?? '';
       ApiServices.getPrescriptions(_refreshController, box).then((value) => setState(() {
-                this.presModel = value;
-                isPrescriptionLoading = false;
-              }));
+            this.presModel = value;
+            isPrescriptionLoading = false;
+          }));
     });
     super.initState();
   }
@@ -60,8 +54,7 @@ class _MyProfileState extends State<MyProfile> {
       child: Column(
         children: [
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
             width: MediaQuery.of(context).size.width,
             color: BLUECOLOR,
             child: Column(children: [
@@ -78,8 +71,7 @@ class _MyProfileState extends State<MyProfile> {
                         color: Colors.white,
                         size: 18.0,
                       )),
-                  Text('Medical Records',
-                      style: getCustomFont(color: Colors.white, size: 16.0)),
+                  Text('Medical Records', style: getCustomFont(color: Colors.white, size: 16.0)),
                   Icon(
                     null,
                     color: Colors.white,
@@ -93,8 +85,7 @@ class _MyProfileState extends State<MyProfile> {
           ),
           Expanded(
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.0),
               child: Column(
                 children: [
                   SingleChildScrollView(
@@ -110,22 +101,19 @@ class _MyProfileState extends State<MyProfile> {
                       ? Expanded(
                           child: SingleChildScrollView(
                             child: Column(
-                              children: List.generate(
-                                  5, (index) => appointmentItem()),
+                              children: List.generate(5, (index) => appointmentItem()),
                             ),
                           ),
                         )
                       : index == 'Prescriptions'
                           ? Expanded(
-                              child: isPrescriptionLoading
-                                  ? Center(
-                                      child: CircularProgressIndicator(
-                                          color: BLUECOLOR))
+                              child: !isPrescriptionLoading
+                                  ? Center(child: CircularProgressIndicator(color: BLUECOLOR))
                                   : ListView.builder(
                                       padding: const EdgeInsets.all(0.0),
-                                      itemCount: presModel!.data!.length,
+                                      itemCount: presModel == null ? dummyData().data!.length : presModel!.data!.length,
                                       shrinkWrap: true,
-                                      itemBuilder: ((context, i) => prescriptionItem(presModel!.data![i]))))
+                                      itemBuilder: ((context, i) => prescriptionItem(presModel == null ? dummyData().data![i] : presModel!.data![i]))))
                           : index == 'Medical Records'
                               ? Expanded(
                                   child: Stack(
@@ -134,16 +122,14 @@ class _MyProfileState extends State<MyProfile> {
                                     Align(
                                       alignment: Alignment.bottomRight,
                                       child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20.0, vertical: 20.0),
+                                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                                         child: FloatingActionButton.extended(
                                           label: Text('Add Record'),
                                           icon: Icon(
                                             Icons.add,
                                             color: Colors.white,
                                           ),
-                                          onPressed: () => showRequestSheet(
-                                              context, AddMedical()),
+                                          onPressed: () => showRequestSheet(context, AddMedical()),
                                           backgroundColor: BLUECOLOR,
                                         ),
                                       ),
@@ -155,8 +141,7 @@ class _MyProfileState extends State<MyProfile> {
                                   : Expanded(
                                       child: SingleChildScrollView(
                                         child: Column(
-                                          children: List.generate(
-                                              5, (index) => billingItem()),
+                                          children: List.generate(5, (index) => billingItem()),
                                         ),
                                       ),
                                     )
@@ -173,17 +158,11 @@ class _MyProfileState extends State<MyProfile> {
         onTap: () => setState(() => index = e),
         child: Container(
             margin: const EdgeInsets.only(right: 3.0),
-            padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
-            decoration: BoxDecoration(
-                color: index == e ? BLUECOLOR : Colors.transparent,
-                borderRadius: BorderRadius.circular(50.0)),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+            decoration: BoxDecoration(color: index == e ? BLUECOLOR : Colors.transparent, borderRadius: BorderRadius.circular(50.0)),
             child: Text(
               '$e',
-              style: getCustomFont(
-                  size: 13.0,
-                  color: index == e ? Colors.white : Colors.black,
-                  weight: FontWeight.normal),
+              style: getCustomFont(size: 13.0, color: index == e ? Colors.white : Colors.black, weight: FontWeight.normal),
             )),
       );
 
@@ -192,10 +171,7 @@ class _MyProfileState extends State<MyProfile> {
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.0),
-            color: Colors.white,
-            boxShadow: SHADOW),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.0), color: Colors.white, boxShadow: SHADOW),
         child: Column(
           children: [
             Row(
@@ -205,18 +181,12 @@ class _MyProfileState extends State<MyProfile> {
                     child: FittedBox(
                   child: Text(
                     'Booking Date - 16 Mar 2022',
-                    style: getCustomFont(
-                        size: 13.0,
-                        color: Colors.black,
-                        weight: FontWeight.w400),
+                    style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w400),
                   ),
                 )),
                 Text(
                   'dental',
-                  style: getCustomFont(
-                      size: 13.0,
-                      color: Colors.black45,
-                      weight: FontWeight.w400),
+                  style: getCustomFont(size: 13.0, color: Colors.black45, weight: FontWeight.w400),
                 )
               ],
             ),
@@ -238,10 +208,7 @@ class _MyProfileState extends State<MyProfile> {
                       FittedBox(
                         child: Text(
                           'Dr. Ruby Perrln',
-                          style: getCustomFont(
-                              color: Colors.black,
-                              size: 16.0,
-                              weight: FontWeight.w500),
+                          style: getCustomFont(color: Colors.black, size: 16.0, weight: FontWeight.w500),
                         ),
                       ),
                       const SizedBox(
@@ -249,20 +216,14 @@ class _MyProfileState extends State<MyProfile> {
                       ),
                       Text(
                         'Appt Date - 22 Mar 2020, 4:30PM',
-                        style: getCustomFont(
-                            color: Colors.black54,
-                            size: 13.0,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black54, size: 13.0, weight: FontWeight.w400),
                       ),
                       const SizedBox(
                         height: 5.0,
                       ),
                       Text(
                         '\$150.00',
-                        style: getCustomFont(
-                            color: Colors.black,
-                            size: 13.0,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black, size: 13.0, weight: FontWeight.w400),
                       ),
                     ],
                   ),
@@ -279,35 +240,23 @@ class _MyProfileState extends State<MyProfile> {
                 const SizedBox(
                   width: 10.0,
                 ),
-                getButton(context, () {},
-                    icon: Icons.check,
-                    text: 'Confirm',
-                    color: Colors.lightGreen),
+                getButton(context, () {}, icon: Icons.check, text: 'Confirm', color: Colors.lightGreen),
                 const SizedBox(
                   width: 10.0,
                 ),
-                getButton(context, () {},
-                    icon: Icons.print,
-                    text: 'Reschedule',
-                    color: Colors.orange),
+                getButton(context, () {}, icon: Icons.print, text: 'Reschedule', color: Colors.orange),
               ],
             )
           ],
         ));
   }
 
-  Widget getButton(context, callBack,
-          {text = 'View',
-          icon = Icons.remove_red_eye,
-          color = Colors.lightBlueAccent}) =>
-      GestureDetector(
+  Widget getButton(context, callBack, {text = 'View', icon = Icons.remove_red_eye, color = Colors.lightBlueAccent}) => GestureDetector(
         onTap: () => callBack(),
         child: Container(
-          decoration: BoxDecoration(
-              color: color, borderRadius: BorderRadius.circular(50.0)),
+          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(50.0)),
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 14.0, vertical: 7.0),
+            padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 7.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -321,10 +270,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 Text(
                   '$text',
-                  style: getCustomFont(
-                      size: 13.0,
-                      color: Colors.white,
-                      weight: FontWeight.normal),
+                  style: getCustomFont(size: 13.0, color: Colors.white, weight: FontWeight.normal),
                 ),
               ],
             ),
@@ -332,15 +278,12 @@ class _MyProfileState extends State<MyProfile> {
         ),
       );
 
-  Widget prescriptionItem(Data data) {
+  Widget prescriptionItem(PrescriptionData data) {
     return Container(
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.0),
-            color: Colors.white,
-            boxShadow: SHADOW),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.0), color: Colors.white, boxShadow: SHADOW),
         child: Column(
           children: [
             Row(
@@ -350,18 +293,12 @@ class _MyProfileState extends State<MyProfile> {
                     child: FittedBox(
                   child: Text(
                     'Prescription ${data.id}',
-                    style: getCustomFont(
-                        size: 14.0,
-                        color: Colors.black,
-                        weight: FontWeight.w400),
+                    style: getCustomFont(size: 14.0, color: Colors.black, weight: FontWeight.w400),
                   ),
                 )),
                 Text(
                   '${DateFormat('dd, MMM, yyyy').format(DateTime.parse(data.createdAt!))}',
-                  style: getCustomFont(
-                      size: 14.0,
-                      color: Colors.black45,
-                      weight: FontWeight.w400),
+                  style: getCustomFont(size: 14.0, color: Colors.black45, weight: FontWeight.w400),
                 )
               ],
             ),
@@ -382,39 +319,26 @@ class _MyProfileState extends State<MyProfile> {
                     children: [
                       Text(
                         '${data.doctorName}',
-                        style: getCustomFont(
-                            color: Colors.black,
-                            size: 17.0,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black, size: 17.0, weight: FontWeight.w400),
                       ),
                       Text(
                         '${data.specialization}',
-                        style: getCustomFont(
-                            color: Colors.black54,
-                            size: 13.0,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black54, size: 13.0, weight: FontWeight.w400),
                       ),
                       Text(
                         '${data.name}, ${data.quantity}',
-                        style: getCustomFont(
-                            color: Colors.black54,
-                            size: 13.0,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black54, size: 13.0, weight: FontWeight.w400),
                       ),
                       const SizedBox(
                         height: 8.0,
                       ),
                       Row(
                         children: [
-                          getButton(context, () {},
-                              color: Colors.lightGreen.shade300),
+                          getButton(context, () {}, color: Colors.lightGreen.shade300),
                           const SizedBox(
                             width: 10.0,
                           ),
-                          getButton(context, () {},
-                              icon: Icons.delete_forever,
-                              text: 'Delete',
-                              color: Colors.redAccent),
+                          getButton(context, () {}, icon: Icons.delete_forever, text: 'Delete', color: Colors.redAccent),
                         ],
                       )
                     ],
@@ -431,10 +355,7 @@ class _MyProfileState extends State<MyProfile> {
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.0),
-            color: Colors.white,
-            boxShadow: SHADOW),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.0), color: Colors.white, boxShadow: SHADOW),
         child: Column(
           children: [
             Row(
@@ -443,15 +364,11 @@ class _MyProfileState extends State<MyProfile> {
                 Flexible(
                     child: Text(
                   '#MR-0010',
-                  style: getCustomFont(
-                      size: 15.0, color: Colors.black, weight: FontWeight.w400),
+                  style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w400),
                 )),
                 Text(
                   '14 Mar 2022',
-                  style: getCustomFont(
-                      size: 15.0,
-                      color: Colors.black45,
-                      weight: FontWeight.w400),
+                  style: getCustomFont(size: 15.0, color: Colors.black45, weight: FontWeight.w400),
                 )
               ],
             ),
@@ -471,53 +388,37 @@ class _MyProfileState extends State<MyProfile> {
                     children: [
                       Text(
                         'Dr. Ruby Perrln',
-                        style: getCustomFont(
-                            color: Colors.black,
-                            size: 19.0,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black, size: 19.0, weight: FontWeight.w400),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             'Dental',
-                            style: getCustomFont(
-                                color: Colors.black54,
-                                size: 14.0,
-                                weight: FontWeight.w400),
+                            style: getCustomFont(color: Colors.black54, size: 14.0, weight: FontWeight.w400),
                           ),
                           Flexible(
                             child: Text(
                               'Dental Filling',
-                              style: getCustomFont(
-                                  color: Colors.black,
-                                  size: 13.0,
-                                  weight: FontWeight.w400),
+                              style: getCustomFont(color: Colors.black, size: 13.0, weight: FontWeight.w400),
                             ),
                           ),
                         ],
                       ),
                       Text(
                         'Dental-test.pdf',
-                        style: getCustomFont(
-                            color: Colors.black54,
-                            size: 14.0,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black54, size: 14.0, weight: FontWeight.w400),
                       ),
                       const SizedBox(
                         height: 5.0,
                       ),
                       Row(
                         children: [
-                          getButton(context, () {},
-                              color: Colors.lightGreen.shade300),
+                          getButton(context, () {}, color: Colors.lightGreen.shade300),
                           const SizedBox(
                             width: 10.0,
                           ),
-                          getButton(context, () {},
-                              icon: Icons.print,
-                              text: 'Print',
-                              color: Colors.grey),
+                          getButton(context, () {}, icon: Icons.print, text: 'Print', color: Colors.grey),
                         ],
                       )
                     ],
@@ -534,10 +435,7 @@ class _MyProfileState extends State<MyProfile> {
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.0),
-            color: Colors.white,
-            boxShadow: SHADOW),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.0), color: Colors.white, boxShadow: SHADOW),
         child: Column(
           children: [
             Row(
@@ -546,16 +444,12 @@ class _MyProfileState extends State<MyProfile> {
                 Flexible(
                     child: Text(
                   '#MR-0010',
-                  style: getCustomFont(
-                      size: 14.0, color: Colors.black, weight: FontWeight.w400),
+                  style: getCustomFont(size: 14.0, color: Colors.black, weight: FontWeight.w400),
                 )),
                 Flexible(
                   child: Text(
                     'Paid on - 14 Mar 2022',
-                    style: getCustomFont(
-                        size: 14.0,
-                        color: Colors.black45,
-                        weight: FontWeight.w400),
+                    style: getCustomFont(size: 14.0, color: Colors.black45, weight: FontWeight.w400),
                   ),
                 )
               ],
@@ -577,53 +471,37 @@ class _MyProfileState extends State<MyProfile> {
                     children: [
                       Text(
                         'Dr. Ruby Perrln',
-                        style: getCustomFont(
-                            color: Colors.black,
-                            size: 17.0,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black, size: 17.0, weight: FontWeight.w400),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             'Dental',
-                            style: getCustomFont(
-                                color: Colors.black54,
-                                size: 13.0,
-                                weight: FontWeight.w400),
+                            style: getCustomFont(color: Colors.black54, size: 13.0, weight: FontWeight.w400),
                           ),
                           Flexible(
                             child: Text(
                               '\$450',
-                              style: getCustomFont(
-                                  color: Colors.black,
-                                  size: 13.0,
-                                  weight: FontWeight.w400),
+                              style: getCustomFont(color: Colors.black, size: 13.0, weight: FontWeight.w400),
                             ),
                           ),
                         ],
                       ),
                       Text(
                         'Dental-test.pdf',
-                        style: getCustomFont(
-                            color: Colors.black54,
-                            size: 13.0,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black54, size: 13.0, weight: FontWeight.w400),
                       ),
                       const SizedBox(
                         height: 5.0,
                       ),
                       Row(
                         children: [
-                          getButton(context, () {},
-                              color: Colors.lightGreen.shade300),
+                          getButton(context, () {}, color: Colors.lightGreen.shade300),
                           const SizedBox(
                             width: 10.0,
                           ),
-                          getButton(context, () {},
-                              icon: Icons.print,
-                              text: 'Print',
-                              color: Colors.grey),
+                          getButton(context, () {}, icon: Icons.print, text: 'Print', color: Colors.grey),
                         ],
                       )
                     ],
@@ -652,8 +530,7 @@ class _MyProfileState extends State<MyProfile> {
                         borderRadius: BorderRadius.circular(100.0),
                         shadowColor: Colors.grey,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 10.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
                           child: Icon(
                             FontAwesome5.info,
                             size: 15.0,
@@ -679,13 +556,9 @@ class _MyProfileState extends State<MyProfile> {
                 Flexible(
                   child: Container(
                       padding: const EdgeInsets.all(15.0),
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 5.0),
+                      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
                       width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
-                          color: Colors.white,
-                          boxShadow: SHADOW),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.0), color: Colors.white, boxShadow: SHADOW),
                       child: Column(
                         children: [
                           Row(
@@ -693,8 +566,7 @@ class _MyProfileState extends State<MyProfile> {
                             children: [
                               CircleAvatar(
                                 radius: 27.0,
-                                backgroundImage:
-                                    AssetImage('assets/imgs/1.png'),
+                                backgroundImage: AssetImage('assets/imgs/1.png'),
                               ),
                               const SizedBox(
                                 width: 15.0,
@@ -705,24 +577,15 @@ class _MyProfileState extends State<MyProfile> {
                                   children: [
                                     Text(
                                       '${box.get(USERPATH)!.name}',
-                                      style: getCustomFont(
-                                          color: Colors.black,
-                                          size: 17.0,
-                                          weight: FontWeight.w400),
+                                      style: getCustomFont(color: Colors.black, size: 17.0, weight: FontWeight.w400),
                                     ),
                                     Text(
                                       'Patient ID - PT${box.get(USERPATH)!.uid}',
-                                      style: getCustomFont(
-                                          color: Colors.black54,
-                                          size: 13.0,
-                                          weight: FontWeight.w400),
+                                      style: getCustomFont(color: Colors.black54, size: 13.0, weight: FontWeight.w400),
                                     ),
                                     Text(
                                       'Blood Group - ${box.get(USERPATH)!.bloodgroup}',
-                                      style: getCustomFont(
-                                          color: Colors.black54,
-                                          size: 13.0,
-                                          weight: FontWeight.w400),
+                                      style: getCustomFont(color: Colors.black54, size: 13.0, weight: FontWeight.w400),
                                     ),
                                   ],
                                 ),
@@ -738,17 +601,13 @@ class _MyProfileState extends State<MyProfile> {
                               Flexible(
                                 child: Row(
                                   children: [
-                                    Icon(Icons.phone,
-                                        size: 15.0, color: Colors.black),
+                                    Icon(Icons.phone, size: 15.0, color: Colors.black),
                                     const SizedBox(
                                       width: 5.0,
                                     ),
                                     Text(
                                       '${box.get(USERPATH)!.phone}',
-                                      style: getCustomFont(
-                                          color: Colors.black54,
-                                          size: 12.0,
-                                          weight: FontWeight.w400),
+                                      style: getCustomFont(color: Colors.black54, size: 12.0, weight: FontWeight.w400),
                                     ),
                                   ],
                                 ),
@@ -757,17 +616,13 @@ class _MyProfileState extends State<MyProfile> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Icon(Icons.location_on,
-                                        size: 15.0, color: Colors.black),
+                                    Icon(Icons.location_on, size: 15.0, color: Colors.black),
                                     const SizedBox(
                                       width: 5.0,
                                     ),
                                     Text(
                                       '${box.get(USERPATH)!.state}, ${country}',
-                                      style: getCustomFont(
-                                          color: Colors.black54,
-                                          size: 13.0,
-                                          weight: FontWeight.w400),
+                                      style: getCustomFont(color: Colors.black54, size: 13.0, weight: FontWeight.w400),
                                     ),
                                   ],
                                 ),
@@ -798,8 +653,7 @@ class _MyProfileState extends State<MyProfile> {
                         borderRadius: BorderRadius.circular(100.0),
                         shadowColor: Colors.grey,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 10.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
                           child: Icon(
                             FontAwesome5.user,
                             size: 15.0,
@@ -825,34 +679,22 @@ class _MyProfileState extends State<MyProfile> {
                 Flexible(
                   child: Container(
                       padding: const EdgeInsets.all(15.0),
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 5.0),
+                      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
                       width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
-                          color: Colors.white,
-                          boxShadow: SHADOW),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'About Me',
-                              style: getCustomFont(
-                                  color: Colors.black,
-                                  size: 17.0,
-                                  weight: FontWeight.w400),
-                            ),
-                            const SizedBox(
-                              height: 10.0,
-                            ),
-                            Text(
-                              '$DUMMYTEXT',
-                              style: getCustomFont(
-                                  color: Colors.black54,
-                                  size: 13.0,
-                                  weight: FontWeight.w400),
-                            ),
-                          ])),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.0), color: Colors.white, boxShadow: SHADOW),
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        Text(
+                          'About Me',
+                          style: getCustomFont(color: Colors.black, size: 17.0, weight: FontWeight.w400),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        Text(
+                          '$DUMMYTEXT',
+                          style: getCustomFont(color: Colors.black54, size: 13.0, weight: FontWeight.w400),
+                        ),
+                      ])),
                 )
               ],
             ),
@@ -873,8 +715,7 @@ class _MyProfileState extends State<MyProfile> {
                       borderRadius: BorderRadius.circular(100.0),
                       shadowColor: Colors.grey,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
                         child: Icon(
                           FontAwesome5.medkit,
                           size: 15.0,
@@ -899,28 +740,19 @@ class _MyProfileState extends State<MyProfile> {
                 Flexible(
                   child: Container(
                       padding: const EdgeInsets.all(15.0),
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 5.0),
+                      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
                       width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
-                          color: Colors.white,
-                          boxShadow: SHADOW),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Last Booking',
-                              style: getCustomFont(
-                                  color: Colors.black,
-                                  size: 17.0,
-                                  weight: FontWeight.w400),
-                            ),
-                            const SizedBox(
-                              height: 10.0,
-                            ),
-                            ...List.generate(2, (index) => lastBooking())
-                          ])),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.0), color: Colors.white, boxShadow: SHADOW),
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        Text(
+                          'Last Booking',
+                          style: getCustomFont(color: Colors.black, size: 17.0, weight: FontWeight.w400),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        ...List.generate(2, (index) => lastBooking())
+                      ])),
                 )
               ],
             ),
@@ -939,8 +771,7 @@ class _MyProfileState extends State<MyProfile> {
               ),
               Text(
                 'Last Booking',
-                style: getCustomFont(
-                    color: Colors.black, size: 15.0, weight: FontWeight.w400),
+                style: getCustomFont(color: Colors.black, size: 15.0, weight: FontWeight.w400),
               ),
             ],
           ),
@@ -949,16 +780,14 @@ class _MyProfileState extends State<MyProfile> {
           ),
           Text(
             'Dentist',
-            style: getCustomFont(
-                color: Colors.black54, size: 13.0, weight: FontWeight.w400),
+            style: getCustomFont(color: Colors.black54, size: 13.0, weight: FontWeight.w400),
           ),
           const SizedBox(
             height: 1.0,
           ),
           Text(
             '15 Nov 2022 4:00 PM',
-            style: getCustomFont(
-                color: Colors.black54, size: 13.0, weight: FontWeight.w400),
+            style: getCustomFont(color: Colors.black54, size: 13.0, weight: FontWeight.w400),
           ),
           const SizedBox(
             height: 15.0,
@@ -968,14 +797,13 @@ class _MyProfileState extends State<MyProfile> {
 
   Widget tableInvoice(context) {
     return FutureBuilder<Map<String, dynamic>>(
-        future: ApiServices.getAllOtherMedicalRecords(
-            context, box.get(USERPATH)!.token),
+        future: ApiServices.getAllOtherMedicalRecords(context, box.get(USERPATH)!.token),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData && snapshot.data!['data'].length > 0) {
               return tableHeader(snapshot.data!['data']);
             }
-            return tableHeader(snapshot.data!['data']);
+            return tableHeader([]);
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(color: BLUECOLOR),
@@ -988,108 +816,58 @@ class _MyProfileState extends State<MyProfile> {
   tableChild(e) => TableRow(children: [
         Column(children: [
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-            child: Text('${e['id']}',
-                style: getCustomFont(
-                    size: 15.0,
-                    weight: FontWeight.normal,
-                    color: Colors.black45)),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            child: Text('${e['id']}', style: getCustomFont(size: 15.0, weight: FontWeight.normal, color: Colors.black45)),
           )
         ]),
         Column(children: [
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-            child: Text('${e['name']}',
-                style: getCustomFont(
-                    size: 15.0,
-                    weight: FontWeight.normal,
-                    color: Colors.black45)),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            child: Text('${e['name']}', style: getCustomFont(size: 15.0, weight: FontWeight.normal, color: Colors.black45)),
           )
         ]),
         Column(children: [
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-            child: Text('${e['bmi']}',
-                maxLines: 1,
-                style: getCustomFont(
-                    size: 15.0,
-                    weight: FontWeight.normal,
-                    color: Colors.black45)),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            child: Text('${e['bmi']}', maxLines: 1, style: getCustomFont(size: 15.0, weight: FontWeight.normal, color: Colors.black45)),
           )
         ]),
         Column(children: [
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-            child: Text('${e['heart_rate']}',
-                maxLines: 1,
-                style: getCustomFont(
-                    size: 15.0,
-                    weight: FontWeight.normal,
-                    color: Colors.black45)),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            child: Text('${e['heart_rate']}', maxLines: 1, style: getCustomFont(size: 15.0, weight: FontWeight.normal, color: Colors.black45)),
           )
         ]),
         Column(children: [
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-            child: Text('${e['fbc_status']}',
-                maxLines: 1,
-                style: getCustomFont(
-                    size: 15.0,
-                    weight: FontWeight.normal,
-                    color: Colors.black45)),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            child: Text('${e['fbc_status']}', maxLines: 1, style: getCustomFont(size: 15.0, weight: FontWeight.normal, color: Colors.black45)),
           )
         ]),
         Column(children: [
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-            child: Text('${e['weight']}Kg',
-                maxLines: 1,
-                style: getCustomFont(
-                    size: 15.0,
-                    weight: FontWeight.normal,
-                    color: Colors.black45)),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            child: Text('${e['weight']}Kg', maxLines: 1, style: getCustomFont(size: 15.0, weight: FontWeight.normal, color: Colors.black45)),
           )
         ]),
         Column(children: [
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-            child: Text(
-                '${DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse('${e['order_date']}'))}',
-                maxLines: 1,
-                style: getCustomFont(
-                    size: 15.0,
-                    weight: FontWeight.normal,
-                    color: Colors.black45)),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            child: Text('${DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse('${e['order_date']}'))}', maxLines: 1, style: getCustomFont(size: 15.0, weight: FontWeight.normal, color: Colors.black45)),
           )
         ]),
         Column(children: [
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             child: Row(
               children: [
                 Flexible(
                   child: GestureDetector(
                     onTap: () => showRequestSheet(context, EditMedical(e)),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 5.0),
-                      decoration: BoxDecoration(
-                          color: BLUECOLOR.withOpacity(.9),
-                          borderRadius: BorderRadius.circular(4.0)),
-                      child: Text('Edit',
-                          maxLines: 1,
-                          style: getCustomFont(
-                              size: 15.0,
-                              weight: FontWeight.normal,
-                              color: Colors.white)),
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                      decoration: BoxDecoration(color: BLUECOLOR.withOpacity(.9), borderRadius: BorderRadius.circular(4.0)),
+                      child: Text('Edit', maxLines: 1, style: getCustomFont(size: 15.0, weight: FontWeight.normal, color: Colors.white)),
                     ),
                   ),
                 ),
@@ -1098,23 +876,11 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 Flexible(
                   child: GestureDetector(
-                    onTap: () => ApiServices.deleteOtherMedicalRecord(
-                        context,
-                        box.get(USERPATH)!.token,
-                        '${e['id']}',
-                        () => setState(() {})),
+                    onTap: () => ApiServices.deleteOtherMedicalRecord(context, box.get(USERPATH)!.token, '${e['id']}', () => setState(() {})),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 5.0),
-                      decoration: BoxDecoration(
-                          color: Colors.red.withOpacity(.9),
-                          borderRadius: BorderRadius.circular(4.0)),
-                      child: Text('Del',
-                          maxLines: 1,
-                          style: getCustomFont(
-                              size: 15.0,
-                              weight: FontWeight.normal,
-                              color: Colors.white)),
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                      decoration: BoxDecoration(color: Colors.red.withOpacity(.9), borderRadius: BorderRadius.circular(4.0)),
+                      child: Text('Del', maxLines: 1, style: getCustomFont(size: 15.0, weight: FontWeight.normal, color: Colors.white)),
                     ),
                   ),
                 ),
@@ -1132,106 +898,55 @@ class _MyProfileState extends State<MyProfile> {
             children: [
               Table(
                 defaultColumnWidth: FixedColumnWidth(120),
-                border: TableBorder.all(
-                    color: Colors.grey.shade300,
-                    style: BorderStyle.solid,
-                    width: 1),
+                border: TableBorder.all(color: Colors.grey.shade300, style: BorderStyle.solid, width: 1),
                 children: [
                   TableRow(children: [
                     Column(children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0),
-                        child: Text('#',
-                            maxLines: 1,
-                            style: getCustomFont(
-                                size: 15.0,
-                                weight: FontWeight.bold,
-                                color: Colors.black)),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                        child: Text('#', maxLines: 1, style: getCustomFont(size: 15.0, weight: FontWeight.bold, color: Colors.black)),
                       )
                     ]),
                     Column(children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0),
-                        child: Text('Name',
-                            maxLines: 1,
-                            style: getCustomFont(
-                                size: 15.0,
-                                weight: FontWeight.bold,
-                                color: Colors.black)),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                        child: Text('Name', maxLines: 1, style: getCustomFont(size: 15.0, weight: FontWeight.bold, color: Colors.black)),
                       )
                     ]),
                     Column(children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0),
-                        child: Text('BMI',
-                            maxLines: 1,
-                            style: getCustomFont(
-                                size: 15.0,
-                                weight: FontWeight.bold,
-                                color: Colors.black)),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                        child: Text('BMI', maxLines: 1, style: getCustomFont(size: 15.0, weight: FontWeight.bold, color: Colors.black)),
                       )
                     ]),
                     Column(children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0),
-                        child: Text('Heart Rate',
-                            maxLines: 1,
-                            style: getCustomFont(
-                                size: 15.0,
-                                weight: FontWeight.bold,
-                                color: Colors.black)),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                        child: Text('Heart Rate', maxLines: 1, style: getCustomFont(size: 15.0, weight: FontWeight.bold, color: Colors.black)),
                       )
                     ]),
                     Column(children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0),
-                        child: Text('FBC Status',
-                            maxLines: 1,
-                            style: getCustomFont(
-                                size: 15.0,
-                                weight: FontWeight.bold,
-                                color: Colors.black)),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                        child: Text('FBC Status', maxLines: 1, style: getCustomFont(size: 15.0, weight: FontWeight.bold, color: Colors.black)),
                       )
                     ]),
                     Column(children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0),
-                        child: Text('Weight',
-                            maxLines: 1,
-                            style: getCustomFont(
-                                size: 15.0,
-                                weight: FontWeight.bold,
-                                color: Colors.black)),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                        child: Text('Weight', maxLines: 1, style: getCustomFont(size: 15.0, weight: FontWeight.bold, color: Colors.black)),
                       )
                     ]),
                     Column(children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0),
-                        child: Text('Order Date',
-                            maxLines: 1,
-                            style: getCustomFont(
-                                size: 15.0,
-                                weight: FontWeight.bold,
-                                color: Colors.black)),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                        child: Text('Order Date', maxLines: 1, style: getCustomFont(size: 15.0, weight: FontWeight.bold, color: Colors.black)),
                       )
                     ]),
                     Column(children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0),
-                        child: Text('Action',
-                            maxLines: 1,
-                            style: getCustomFont(
-                                size: 15.0,
-                                weight: FontWeight.bold,
-                                color: Colors.black)),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                        child: Text('Action', maxLines: 1, style: getCustomFont(size: 15.0, weight: FontWeight.bold, color: Colors.black)),
                       )
                     ]),
                   ]),

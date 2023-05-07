@@ -31,9 +31,9 @@ class _PrescriptionsState extends State<Prescriptions> {
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       getPrescriptions(_refreshController).then((value) => setState(() {
-        this.prescriptionModel = value;
-        isLoading = false;
-      }));
+            this.prescriptionModel = value;
+            isLoading = false;
+          }));
     });
     super.initState();
   }
@@ -46,8 +46,7 @@ class _PrescriptionsState extends State<Prescriptions> {
         color: Color(0xFFf6f6f6),
         child: Column(children: [
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
             width: MediaQuery.of(context).size.width,
             color: BLUECOLOR,
             child: Column(children: [
@@ -64,8 +63,7 @@ class _PrescriptionsState extends State<Prescriptions> {
                         color: Colors.white,
                         size: 18.0,
                       )),
-                  Text('Prescriptions',
-                      style: getCustomFont(color: Colors.white, size: 16.0)),
+                  Text('Prescriptions', style: getCustomFont(color: Colors.white, size: 16.0)),
                   Icon(
                     null,
                     color: Colors.white,
@@ -88,26 +86,19 @@ class _PrescriptionsState extends State<Prescriptions> {
                       enablePullDown: true,
                       header: WaterDropHeader(waterDropColor: BLUECOLOR.withOpacity(.5)),
                       onRefresh: () => getPrescriptions(_refreshController).then((value) => setState(() {
-                        this.prescriptionModel = value;
-                      })),
-                      child: ListView.builder(
-                          padding: const EdgeInsets.all(0.0),
-                          itemCount: prescriptionModel!.data!.length,
-                          shrinkWrap: true,
-                          itemBuilder: ((context, i) => prescriptionItem(prescriptionModel!.data![i]))),
+                            this.prescriptionModel = value;
+                          })),
+                      child: ListView.builder(padding: const EdgeInsets.all(0.0), itemCount: prescriptionModel!.data!.length, shrinkWrap: true, itemBuilder: ((context, i) => prescriptionItem(prescriptionModel!.data![i]))),
                     ))
         ]));
   }
 
-  Widget prescriptionItem(Data data) {
+  Widget prescriptionItem(PrescriptionData data) {
     return Container(
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.0),
-            color: Colors.white,
-            boxShadow: SHADOW),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.0), color: Colors.white, boxShadow: SHADOW),
         child: Column(
           children: [
             Row(
@@ -117,18 +108,12 @@ class _PrescriptionsState extends State<Prescriptions> {
                     child: FittedBox(
                   child: Text(
                     'Prescription ${data.id}',
-                    style: getCustomFont(
-                        size: 14.0,
-                        color: Colors.black,
-                        weight: FontWeight.w400),
+                    style: getCustomFont(size: 14.0, color: Colors.black, weight: FontWeight.w400),
                   ),
                 )),
                 Text(
                   '${DateFormat('dd, MMM, yyyy').format(DateTime.parse(data.createdAt!))}',
-                  style: getCustomFont(
-                      size: 14.0,
-                      color: Colors.black45,
-                      weight: FontWeight.w400),
+                  style: getCustomFont(size: 14.0, color: Colors.black45, weight: FontWeight.w400),
                 )
               ],
             ),
@@ -149,39 +134,26 @@ class _PrescriptionsState extends State<Prescriptions> {
                     children: [
                       Text(
                         '${data.doctorName}',
-                        style: getCustomFont(
-                            color: Colors.black,
-                            size: 17.0,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black, size: 17.0, weight: FontWeight.w400),
                       ),
                       Text(
                         '${data.specialization}',
-                        style: getCustomFont(
-                            color: Colors.black54,
-                            size: 13.0,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black54, size: 13.0, weight: FontWeight.w400),
                       ),
                       Text(
                         '${data.name}, ${data.quantity}',
-                        style: getCustomFont(
-                            color: Colors.black54,
-                            size: 13.0,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black54, size: 13.0, weight: FontWeight.w400),
                       ),
                       const SizedBox(
                         height: 8.0,
                       ),
                       Row(
                         children: [
-                          getButton(context, () {},
-                              color: Colors.lightGreen.shade300),
+                          getButton(context, () {}, color: Colors.lightGreen.shade300),
                           const SizedBox(
                             width: 10.0,
                           ),
-                          getButton(context, () {},
-                              icon: Icons.delete_forever,
-                              text: 'Delete',
-                              color: Colors.redAccent),
+                          getButton(context, () {}, icon: Icons.delete_forever, text: 'Delete', color: Colors.redAccent),
                         ],
                       )
                     ],
@@ -193,18 +165,12 @@ class _PrescriptionsState extends State<Prescriptions> {
         ));
   }
 
-  Widget getButton(context, callBack,
-          {text = 'View',
-          icon = Icons.remove_red_eye,
-          color = Colors.lightBlueAccent}) =>
-      GestureDetector(
+  Widget getButton(context, callBack, {text = 'View', icon = Icons.remove_red_eye, color = Colors.lightBlueAccent}) => GestureDetector(
         onTap: () => callBack(),
         child: Container(
-          decoration: BoxDecoration(
-              color: color, borderRadius: BorderRadius.circular(50.0)),
+          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(50.0)),
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 14.0, vertical: 7.0),
+            padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 7.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -218,10 +184,7 @@ class _PrescriptionsState extends State<Prescriptions> {
                 ),
                 Text(
                   '$text',
-                  style: getCustomFont(
-                      size: 14.0,
-                      color: Colors.white,
-                      weight: FontWeight.normal),
+                  style: getCustomFont(size: 14.0, color: Colors.white, weight: FontWeight.normal),
                 ),
               ],
             ),

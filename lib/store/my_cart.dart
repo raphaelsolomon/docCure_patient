@@ -21,31 +21,11 @@ class _MyCartState extends State<MyCart> {
   int page = 0;
   bool isCoupon = false;
   List<CartModel> cartModel = [
-    CartModel(
-        itemName: 'Silispor 100mg Tablet',
-        price: 3.50,
-        desc: 'pack of 100mg',
-        quantity: 1),
-    CartModel(
-        itemName: 'Silispor 200mg Tablet',
-        price: 3.50,
-        desc: 'pack of 200mg',
-        quantity: 1),
-    CartModel(
-        itemName: 'Silispor 300mg Tablet',
-        price: 3.50,
-        desc: 'pack of 300mg',
-        quantity: 1),
-    CartModel(
-        itemName: 'Silispor 400mg Tablet',
-        price: 3.50,
-        desc: 'pack of 400mg',
-        quantity: 1),
-    CartModel(
-        itemName: 'Silispor 500mg Tablet',
-        price: 3.50,
-        desc: 'pack of 500mg',
-        quantity: 1),
+    CartModel(itemName: 'Silispor 100mg Tablet', price: 3.50, desc: 'pack of 100mg', quantity: 1),
+    CartModel(itemName: 'Silispor 200mg Tablet', price: 3.50, desc: 'pack of 200mg', quantity: 1),
+    CartModel(itemName: 'Silispor 300mg Tablet', price: 3.50, desc: 'pack of 300mg', quantity: 1),
+    CartModel(itemName: 'Silispor 400mg Tablet', price: 3.50, desc: 'pack of 400mg', quantity: 1),
+    CartModel(itemName: 'Silispor 500mg Tablet', price: 3.50, desc: 'pack of 500mg', quantity: 1),
   ];
 
   double total = 0.0;
@@ -102,8 +82,7 @@ class _MyCartState extends State<MyCart> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
             width: MediaQuery.of(context).size.width,
             height: 89.0,
             color: BLUECOLOR,
@@ -125,8 +104,7 @@ class _MyCartState extends State<MyCart> {
                         color: Colors.white,
                         size: 20.0,
                       )),
-                  Text('Payment Method',
-                      style: getCustomFont(size: 18.0, color: Colors.white)),
+                  Text('Payment Method', style: getCustomFont(size: 18.0, color: Colors.white)),
                   Icon(
                     null,
                     color: Colors.white,
@@ -145,22 +123,13 @@ class _MyCartState extends State<MyCart> {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 11.0),
-                  decoration: BoxDecoration(
-                      color: BLUECOLOR,
-                      borderRadius: BorderRadius.circular(8.0)),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 11.0),
+                  decoration: BoxDecoration(color: BLUECOLOR, borderRadius: BorderRadius.circular(8.0)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Amount to pay ',
-                          style:
-                              getCustomFont(color: Colors.white, size: 13.0)),
-                      Text('\$31.0 ',
-                          style: getCustomFont(
-                              color: Colors.white,
-                              size: 15.0,
-                              weight: FontWeight.w700)),
+                      Text('Amount to pay ', style: getCustomFont(color: Colors.white, size: 13.0)),
+                      Text('\$31.0 ', style: getCustomFont(color: Colors.white, size: 15.0, weight: FontWeight.w700)),
                     ],
                   ),
                 ),
@@ -176,27 +145,19 @@ class _MyCartState extends State<MyCart> {
                   color: Colors.black,
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 5.0),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8.0)),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8.0)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Flexible(
                           child: Row(
                             children: [
-                              Icon(Icons.wallet_giftcard,
-                                  color: Colors.lightBlue),
+                              Icon(Icons.wallet_giftcard, color: Colors.lightBlue),
                               const SizedBox(
                                 width: 10.0,
                               ),
-                              Text('Wallet ',
-                                  style: getCustomFont(
-                                      color: Colors.black,
-                                      size: 16.0,
-                                      weight: FontWeight.w700)),
+                              Text('Wallet ', style: getCustomFont(color: Colors.black, size: 16.0, weight: FontWeight.w700)),
                             ],
                           ),
                         ),
@@ -204,11 +165,7 @@ class _MyCartState extends State<MyCart> {
                           onTap: () {
                             dialogMessage(context, walletTop(context));
                           },
-                          child: Text('\$314.50 ',
-                              style: getCustomFont(
-                                  color: Colors.black,
-                                  size: 15.0,
-                                  weight: FontWeight.w700)),
+                          child: Text('\$314.50 ', style: getCustomFont(color: Colors.black, size: 15.0, weight: FontWeight.w700)),
                         ),
                       ],
                     ),
@@ -219,10 +176,7 @@ class _MyCartState extends State<MyCart> {
                 ),
                 Text(
                   'Cards',
-                  style: getCustomFont(
-                      weight: FontWeight.bold,
-                      size: 20.0,
-                      color: Colors.black45),
+                  style: getCustomFont(weight: FontWeight.bold, size: 20.0, color: Colors.black45),
                 ),
                 const SizedBox(
                   height: 10.0,
@@ -235,10 +189,7 @@ class _MyCartState extends State<MyCart> {
                 ),
                 Text(
                   'Cash',
-                  style: getCustomFont(
-                      weight: FontWeight.bold,
-                      size: 20.0,
-                      color: Colors.black45),
+                  style: getCustomFont(weight: FontWeight.bold, size: 20.0, color: Colors.black45),
                 ),
                 const SizedBox(
                   height: 10.0,
@@ -251,10 +202,7 @@ class _MyCartState extends State<MyCart> {
                 ),
                 Text(
                   'Bank',
-                  style: getCustomFont(
-                      weight: FontWeight.bold,
-                      size: 20.0,
-                      color: Colors.black45),
+                  style: getCustomFont(weight: FontWeight.bold, size: 20.0, color: Colors.black45),
                 ),
                 const SizedBox(
                   height: 10.0,
@@ -271,10 +219,7 @@ class _MyCartState extends State<MyCart> {
                 ),
                 Text(
                   'Others',
-                  style: getCustomFont(
-                      weight: FontWeight.bold,
-                      size: 20.0,
-                      color: Colors.black45),
+                  style: getCustomFont(weight: FontWeight.bold, size: 20.0, color: Colors.black45),
                 ),
                 const SizedBox(
                   height: 10.0,
@@ -300,19 +245,12 @@ class _MyCartState extends State<MyCart> {
                   width: 15.0,
                 ),
                 Flexible(
-                  child: Text('$text',
-                      style: getCustomFont(
-                          color: Colors.black,
-                          size: 14.0,
-                          weight: FontWeight.w500)),
+                  child: Text('$text', style: getCustomFont(color: Colors.black, size: 14.0, weight: FontWeight.w500)),
                 ),
               ],
             ),
           ),
-          SizedBox(
-              height: 10.0,
-              width: 10.0,
-              child: Radio(onChanged: (b) {}, value: false, groupValue: true)),
+          SizedBox(height: 10.0, width: 10.0, child: Radio(onChanged: (b) {}, value: false, groupValue: true)),
           const SizedBox(
             width: 20.0,
           )
@@ -325,50 +263,60 @@ class _MyCartState extends State<MyCart> {
       color: Colors.white,
       margin: const EdgeInsets.symmetric(vertical: 3.0),
       child: Row(children: [
-        Flexible(child: Text('prescription Uploaded', style: getCustomFont(size: 14.0, color: Colors.black, weight: FontWeight.w500,))),
-        Icon(Icons.remove_red_eye_sharp, color: BLUECOLOR, size: 18.0,),
-        const SizedBox(width: 20.0,),
-        Icon(Icons.delete, color: Colors.redAccent, size: 18.0,),
+        Flexible(
+            child: Text('prescription Uploaded',
+                style: getCustomFont(
+                  size: 14.0,
+                  color: Colors.black,
+                  weight: FontWeight.w500,
+                ))),
+        Icon(
+          Icons.remove_red_eye_sharp,
+          color: BLUECOLOR,
+          size: 18.0,
+        ),
+        const SizedBox(
+          width: 20.0,
+        ),
+        Icon(
+          Icons.delete,
+          color: Colors.redAccent,
+          size: 18.0,
+        ),
       ]));
 
   Widget get myCartIndex => Column(children: [
         Container(
           width: MediaQuery.of(context).size.width,
           color: BLUECOLOR,
-          child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 25.0,
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                          onTap: () => Get.back(),
-                          child: Icon(
-                            Icons.arrow_back_ios,
-                            color: Colors.white,
-                            size: 19.0,
-                          )),
-                      Text('Cart',
-                          style:
-                              getCustomFont(size: 17.0, color: Colors.white)),
-                      Icon(
-                        null,
+          child: Column(mainAxisSize: MainAxisSize.max, crossAxisAlignment: CrossAxisAlignment.start, children: [
+            const SizedBox(
+              height: 25.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                      onTap: () => Get.back(),
+                      child: Icon(
+                        Icons.arrow_back_ios,
                         color: Colors.white,
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 12.0,
-                ),
-              ]),
+                        size: 19.0,
+                      )),
+                  Text('Cart', style: getCustomFont(size: 17.0, color: Colors.white)),
+                  Icon(
+                    null,
+                    color: Colors.white,
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 12.0,
+            ),
+          ]),
         ),
         const SizedBox(
           height: 5.0,
@@ -403,10 +351,7 @@ class _MyCartState extends State<MyCart> {
                     },
                     child: Text(
                       'Apply a coupon code',
-                      style: getCustomFont(
-                          color: Colors.lightBlueAccent,
-                          size: 14.0,
-                          weight: FontWeight.w400),
+                      style: getCustomFont(color: Colors.lightBlueAccent, size: 14.0, weight: FontWeight.w400),
                     ),
                   ),
                   const SizedBox(
@@ -421,17 +366,11 @@ class _MyCartState extends State<MyCart> {
                     children: [
                       Text(
                         'Sub Total',
-                        style: getCustomFont(
-                            color: Colors.black,
-                            size: 13.5,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black, size: 13.5, weight: FontWeight.w400),
                       ),
                       Text(
                         '\$16.0',
-                        style: getCustomFont(
-                            color: Colors.black45,
-                            size: 13.5,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black45, size: 13.5, weight: FontWeight.w400),
                       ),
                     ],
                   ),
@@ -443,17 +382,11 @@ class _MyCartState extends State<MyCart> {
                     children: [
                       Text(
                         'Promo Code Applied',
-                        style: getCustomFont(
-                            color: Colors.black,
-                            size: 13.5,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black, size: 13.5, weight: FontWeight.w400),
                       ),
                       Text(
                         '-\$16.0',
-                        style: getCustomFont(
-                            color: Colors.black45,
-                            size: 13.5,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black45, size: 13.5, weight: FontWeight.w400),
                       ),
                     ],
                   ),
@@ -465,17 +398,11 @@ class _MyCartState extends State<MyCart> {
                     children: [
                       Text(
                         'Service Charge',
-                        style: getCustomFont(
-                            color: Colors.black,
-                            size: 13.5,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black, size: 13.5, weight: FontWeight.w400),
                       ),
                       Text(
                         '\$4.0',
-                        style: getCustomFont(
-                            color: Colors.black45,
-                            size: 13.5,
-                            weight: FontWeight.w400),
+                        style: getCustomFont(color: Colors.black45, size: 13.5, weight: FontWeight.w400),
                       ),
                     ],
                   ),
@@ -487,17 +414,11 @@ class _MyCartState extends State<MyCart> {
                     children: [
                       Text(
                         'Amount to pay',
-                        style: getCustomFont(
-                            color: Colors.black,
-                            size: 15.0,
-                            weight: FontWeight.bold),
+                        style: getCustomFont(color: Colors.black, size: 15.0, weight: FontWeight.bold),
                       ),
                       Text(
                         '\$${total}',
-                        style: getCustomFont(
-                            color: BLUECOLOR,
-                            size: 14.0,
-                            weight: FontWeight.bold),
+                        style: getCustomFont(color: BLUECOLOR, size: 14.0, weight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -518,7 +439,7 @@ class _MyCartState extends State<MyCart> {
               },
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                height: 45.0,
+                height: 50.0,
                 color: BLUECOLOR,
                 child: Center(
                   child: Text(
@@ -552,15 +473,11 @@ class _MyCartState extends State<MyCart> {
               children: [
                 Text(
                   cartModel.itemName!,
-                  style: getCustomFont(
-                      size: 14.0, color: Colors.black, weight: FontWeight.w500),
+                  style: getCustomFont(size: 14.0, color: Colors.black, weight: FontWeight.w500),
                 ),
                 Text(
                   cartModel.desc!,
-                  style: getCustomFont(
-                      size: 13.0,
-                      color: Colors.black45,
-                      weight: FontWeight.w400),
+                  style: getCustomFont(size: 13.0, color: Colors.black45, weight: FontWeight.w400),
                 ),
                 const SizedBox(
                   height: 2.0,
@@ -586,10 +503,7 @@ class _MyCartState extends State<MyCart> {
                           ),
                           Text(
                             '${cartModel.quantity}',
-                            style: getCustomFont(
-                                size: 14.0,
-                                color: Colors.black,
-                                weight: FontWeight.w400),
+                            style: getCustomFont(size: 14.0, color: Colors.black, weight: FontWeight.w400),
                           ),
                           const SizedBox(
                             width: 8.0,
@@ -609,10 +523,7 @@ class _MyCartState extends State<MyCart> {
                     ),
                     Text(
                       '\$3.50',
-                      style: getCustomFont(
-                          size: 14.0,
-                          color: BLUECOLOR,
-                          weight: FontWeight.bold),
+                      style: getCustomFont(size: 14.0, color: BLUECOLOR, weight: FontWeight.bold),
                     ),
                   ],
                 )

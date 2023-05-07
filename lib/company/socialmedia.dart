@@ -46,7 +46,7 @@ class _SocialMediaState extends State<SocialMedia> {
               
                   Text('Social Media',
                       style:
-                          getCustomFont(size: 16.0, color: Colors.white)),
+                          getCustomFont(size: 18.0, color: Colors.white)),
                   Icon(
                     null,
                     color: Colors.white,

@@ -63,7 +63,7 @@ android {
     }
 
      signingConfigs {
-        debug {
+        release {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
             storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
@@ -72,7 +72,7 @@ android {
     }
 
     buildTypes {
-        debug {
+        release {
             // Enables code shrinking, obfuscation, and optimization for only
             // your project's release build type.
             minifyEnabled true
