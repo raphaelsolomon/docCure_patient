@@ -5,5 +5,6 @@ class LogController extends ValueNotifier<List<String>> {
 
   void addLog(String log) {
     value = [log, ...value];
+    print(value);
   }
 }

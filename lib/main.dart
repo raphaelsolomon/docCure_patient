@@ -1,14 +1,17 @@
 import 'dart:io';
 
+import 'package:agora_chat_sdk/agora_chat_sdk.dart';
 import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/auth/onboarding.dart';
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/firebase_options.dart';
 import 'package:doccure_patient/homepage/dashboard.dart';
+import 'package:doccure_patient/model/message/message.dart';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/notification/helper_notification.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
+import 'package:doccure_patient/services/request.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -35,11 +38,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Platform.isIOS ? await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform) : await Firebase.initializeApp(name: 'patient', options: DefaultFirebaseOptions.currentPlatform);
-  final RemoteMessage? remoteMessage = await FirebaseMessaging.instance.getInitialMessage();
-  if (remoteMessage != null) {
-    print(remoteMessage);
-  }
+
   await HelperNotification.initialize();
+
   HelperNotification.onNotification.stream.listen(onClickedEvent);
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -47,11 +48,12 @@ Future<void> main() async {
   var directory = await getApplicationDocumentsDirectory();
   Hive
     ..init(directory.path)
-    ..registerAdapter(UserAdapter());
+    ..registerAdapter(UserAdapter())
+    ..registerAdapter(MessageModelAdapter());
 
   await Hive.openBox<User>(BoxName);
   await Hive.openBox(ReferralBox);
-  await Hive.openBox('Initialization');
+  await Hive.openBox(BOXMESSAGEBOX);
 
   runApp(const MyApp());
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -72,6 +74,33 @@ Future<void> main() async {
       );
 }
 
+Future<void> onRefreshToken() async {
+  FirebaseMessaging.instance.getToken().then((fcmToken) async {
+    if (fcmToken != null) {
+      try {
+        if (Platform.isIOS) {
+          await ChatClient.getInstance.pushManager.updateAPNsDeviceToken(fcmToken);
+        } else if (Platform.isAndroid) {
+          await ChatClient.getInstance.pushManager.updateFCMPushToken(fcmToken);
+        }
+      } on ChatError catch (e) {
+        debugPrint("bind fcm token error: ${e.code}, desc: ${e.description}");
+      }
+    }
+  });
+  FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
+    try {
+      if (Platform.isIOS) {
+        await ChatClient.getInstance.pushManager.updateAPNsDeviceToken(newToken);
+      } else if (Platform.isAndroid) {
+        await ChatClient.getInstance.pushManager.updateFCMPushToken(newToken);
+      }
+    } on ChatError catch (e) {
+      debugPrint("bind fcm token error: ${e.code}, desc: ${e.description}");
+    }
+  });
+}
+
 void onClickedEvent(String? payload) {}
 
 class MyApp extends StatefulWidget {
@@ -85,9 +114,18 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   final box = Hive.box('Initialization');
   final Box<User> user = Hive.box<User>(BoxName);
+  String running = '';
 
   @override
   void initState() {
+    ApiServices.getAppToken().then((value) {
+      setState(() {
+        if (value.isNotEmpty)
+          box.put(BOXAGORATOKEN, value);
+        else
+          running = value;
+      });
+    });
     super.initState();
   }
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:doccure_patient/constant/strings.dart';
+import 'package:doccure_patient/model/agora_reg.model.dart';
 import 'package:doccure_patient/model/prescription_model.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -10,8 +11,41 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 const String ROOTAPI = 'https://patientapi.gettheskydoctors.com';
 
+const String ROOTAGORA = 'https://a71.chat.agora.io/${AGORA_ORGNAME}/${AGORA_APPNAME}/users';
+
 class ApiServices {
   String GOOGLEAPI = 'https://fcm.googleapis.com/fcm/send';
+
+  static Future<AgoraRegUser> getreguser(token, Map<String, String> body) async {
+    late AgoraRegUser agoraRegUser;
+    final res = await http.Client().post(Uri.parse(ROOTAGORA), body: body, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${token}',
+    });
+    if (res.statusCode == 200) {
+      agoraRegUser = AgoraRegUserFromJson(res.body);
+    }
+    return agoraRegUser;
+  }
+
+  static Future<String> getAppToken() async {
+    late String agoraRegUser = '';
+    final res = await http.Client().get(Uri.parse('http://192.168.8.102:3000/api/v1/appToken'));
+    if (res.statusCode == 200) {
+      agoraRegUser = jsonDecode(res.body)['token'];
+    }
+    return agoraRegUser;
+  }
+
+  static Future<String> getChatUserToken(String userID) async {
+    late String agoraRegUser = '';
+    final res = await http.Client().get(Uri.parse('http://192.168.8.102:3000/api/v1/user-token/${userID}'));
+    if (res.statusCode == 200) {
+      agoraRegUser = jsonDecode(res.body)['token'];
+      print(agoraRegUser);
+    }
+    return agoraRegUser;
+  }
 
   void sendNotification(token) async {
     final res = await http.post(Uri.parse(GOOGLEAPI), headers: {
@@ -52,11 +86,11 @@ class ApiServices {
     request.headers.addAll({'Authorization': 'Bearer $token', 'Content-Type': 'application/json'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-       final parsed = jsonDecode(await response.stream.bytesToString());
-        popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['success']['message'], status: true));
+      final parsed = jsonDecode(await response.stream.bytesToString());
+      popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['success']['message'], status: true));
     } else {
       final parsed = jsonDecode(await response.stream.bytesToString());
-      popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
+      popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
     }
   }
 
@@ -66,11 +100,11 @@ class ApiServices {
     request.headers.addAll({'Authorization': 'Bearer $token', 'Content-Type': 'application/json'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-       final parsed = jsonDecode(await response.stream.bytesToString());
-        popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['success']['message'], status: true));
+      final parsed = jsonDecode(await response.stream.bytesToString());
+      popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['success']['message'], status: true));
     } else {
       final parsed = jsonDecode(await response.stream.bytesToString());
-      popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
+      popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
     }
   }
 
@@ -80,12 +114,12 @@ class ApiServices {
     request.headers.addAll({'Authorization': '$token'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-       return response.stream.bytesToString().then((value) {
-          return jsonDecode(value);
-       });
+      return response.stream.bytesToString().then((value) {
+        return jsonDecode(value);
+      });
     } else {
       final parsed = jsonDecode(await response.stream.bytesToString());
-      popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
+      popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
       return {};
     }
   }
@@ -96,26 +130,26 @@ class ApiServices {
     request.headers.addAll({'Authorization': 'Bearer $token', 'Content-Type': 'application/json'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-       final parsed = jsonDecode(await response.stream.bytesToString());
-       return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['success']['message'], status: true));
+      final parsed = jsonDecode(await response.stream.bytesToString());
+      return popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['success']['message'], status: true));
     } else {
       final parsed = jsonDecode(await response.stream.bytesToString());
-      return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
+      return popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
     }
   }
 
-   //================================ DEPENDENTS =================================
-   static Future<Map<String, dynamic>> getAllDepends(BuildContext c, token) async {
+  //================================ DEPENDENTS =================================
+  static Future<Map<String, dynamic>> getAllDepends(BuildContext c, token) async {
     var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/dependents/all-dependents'));
     request.headers.addAll({'Authorization': '$token', 'Content-Type': 'application/json'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-     return response.stream.bytesToString().then((value) {
-         return jsonDecode(value);
-     });
+      return response.stream.bytesToString().then((value) {
+        return jsonDecode(value);
+      });
     } else {
       final parsed = jsonDecode(await response.stream.bytesToString());
-      popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
+      popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
       return {};
     }
   }
@@ -126,11 +160,11 @@ class ApiServices {
     request.headers.addAll({'Authorization': 'Bearer $token', 'Content-Type': 'application/json'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-       final parsed = jsonDecode(await response.stream.bytesToString());
-       return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['success']['message'], status: true));
+      final parsed = jsonDecode(await response.stream.bytesToString());
+      return popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['success']['message'], status: true));
     } else {
       final parsed = jsonDecode(await response.stream.bytesToString());
-      return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
+      return popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
     }
   }
 
@@ -142,13 +176,13 @@ class ApiServices {
     if (response.statusCode == 200) {
       return response.stream.bytesToString().then((value) {
         callBack();
-           final parsed = jsonDecode(value);
-          return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['message'], status: true));
-       });
+        final parsed = jsonDecode(value);
+        return popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['message'], status: true));
+      });
     } else {
-       return response.stream.bytesToString().then((value) {
-          return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, jsonDecode(value)['message'], status: false));
-       });
+      return response.stream.bytesToString().then((value) {
+        return popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, jsonDecode(value)['message'], status: false));
+      });
     }
   }
 
@@ -157,12 +191,12 @@ class ApiServices {
     request.headers.addAll({'Authorization': '$token'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-       return response.stream.bytesToString().then((value) {
-          return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, jsonDecode(value)['success']['message'], status: true));
-       });
+      return response.stream.bytesToString().then((value) {
+        return popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, jsonDecode(value)['success']['message'], status: true));
+      });
     } else {
       final parsed = jsonDecode(await response.stream.bytesToString());
-      return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
+      return popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
     }
   }
 
@@ -172,12 +206,12 @@ class ApiServices {
     request.headers.addAll({'Authorization': '$token'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-       return response.stream.bytesToString().then((value) {
-          return jsonDecode(value);
-       });
+      return response.stream.bytesToString().then((value) {
+        return jsonDecode(value);
+      });
     } else {
       final parsed = jsonDecode(await response.stream.bytesToString());
-      popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
+      popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
       return {};
     }
   }
@@ -188,11 +222,11 @@ class ApiServices {
     request.headers.addAll({'Authorization': 'Bearer $token', 'Content-Type': 'application/json'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-       final parsed = jsonDecode(await response.stream.bytesToString());
-       return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['success']['message'], status: true));
+      final parsed = jsonDecode(await response.stream.bytesToString());
+      return popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['success']['message'], status: true));
     } else {
       final parsed = jsonDecode(await response.stream.bytesToString());
-      return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
+      return popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
     }
   }
 
@@ -202,11 +236,11 @@ class ApiServices {
     request.headers.addAll({'Authorization': 'Bearer $token', 'Content-Type': 'application/json'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-       final parsed = jsonDecode(await response.stream.bytesToString());
-       return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['success']['message'], status: true));
+      final parsed = jsonDecode(await response.stream.bytesToString());
+      return popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['success']['message'], status: true));
     } else {
       final parsed = jsonDecode(await response.stream.bytesToString());
-      return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
+      return popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
     }
   }
 
@@ -216,13 +250,13 @@ class ApiServices {
     request.headers.addAll({'Authorization': '$token'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-       return response.stream.bytesToString().then((value) {
-          callBack();
-          return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, jsonDecode(value)['message'], status: true));
-       });
+      return response.stream.bytesToString().then((value) {
+        callBack();
+        return popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, jsonDecode(value)['message'], status: true));
+      });
     } else {
       final parsed = jsonDecode(await response.stream.bytesToString());
-      return popupMessage.dialogMessage(c,  popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
+      return popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
     }
   }
 

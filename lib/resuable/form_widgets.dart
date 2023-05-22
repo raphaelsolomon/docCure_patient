@@ -243,7 +243,7 @@ getOtpForm({ctl, node, onChange}) => Container(
     );
 
 navDrawer(BuildContext context, scaffold, box) => Container(
-      width: (MediaQuery.of(context).size.width / 2) + 78.0,
+      width: (MediaQuery.of(context).size.width / 2) + 100.0,
       height: MediaQuery.of(context).size.height,
       color: Colors.white,
       child: Column(
@@ -317,7 +317,7 @@ navDrawer(BuildContext context, scaffold, box) => Container(
                             Flexible(
                                 child: Text(
                               e.title,
-                              style: GoogleFonts.poppins(fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.black87.withOpacity(.7)),
+                              style: GoogleFonts.poppins(fontSize: 14.0, fontWeight: FontWeight.w500, color: Colors.black87.withOpacity(.7)),
                             ))
                           ]),
                         ),
@@ -336,7 +336,7 @@ navDrawer(BuildContext context, scaffold, box) => Container(
                         ),
                         title: Text(
                           e.title,
-                          style: GoogleFonts.poppins(fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.black87.withOpacity(.7)),
+                          style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black87.withOpacity(.7)),
                         ),
                         children: e.children.map((entries) {
                           return GestureDetector(
@@ -345,7 +345,7 @@ navDrawer(BuildContext context, scaffold, box) => Container(
                               padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 13.0),
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width,
-                                child: Text(entries['title'], style: getCustomFont(size: 16.0, color: Colors.black87.withOpacity(.7))),
+                                child: Text(entries['title'], style: getCustomFont(size: 14.0, color: Colors.black87.withOpacity(.7))),
                               ),
                             ),
                           );
@@ -375,7 +375,7 @@ setChildrenClickListener(e, BuildContext context) {
       break;
     case 5:
       context.read<HomeController>().setPage(5);
-      break;  
+      break;
     case -6:
       context.read<HomeController>().setPage(-6);
       break;

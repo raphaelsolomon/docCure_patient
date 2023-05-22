@@ -1,3 +1,4 @@
+import 'package:agora_chat_sdk/agora_chat_sdk.dart';
 import 'package:doccure_patient/auth/change_password.dart';
 import 'package:doccure_patient/callscreens/pickup/pick_layout.dart';
 import 'package:doccure_patient/chat/chat_list.dart';
@@ -16,6 +17,7 @@ import 'package:doccure_patient/company/socialmedia.dart';
 import 'package:doccure_patient/company/support.dart';
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
+import 'package:doccure_patient/dialog/virtual_acct/pay_link.dart';
 import 'package:doccure_patient/homepage/doctor_profile.dart';
 import 'package:doccure_patient/homepage/find_doctors.dart';
 import 'package:doccure_patient/homepage/home.dart';
@@ -53,10 +55,28 @@ class _DashBoardState extends State<DashBoard> {
   final CallMethods callMethods = CallMethods();
   final scaffold = GlobalKey<ScaffoldState>();
   final box = Hive.box<User>(BoxName);
+  final messageBox = Hive.box(BOXMESSAGEBOX);
+
+  ChatOptions options = ChatOptions(
+    appKey: '71376350#1118140',
+    autoLogin: false,
+    requireAck: true,
+    requireDeliveryAck: true,
+    isAutoDownloadThumbnail: true,
+  );
 
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      //initialize agora sdk and sign in user
+      options.enableFCM("898273018789");
+      options.enableAPNs("898273018789");
+      await ChatClient.getInstance.init(options);
+      await ChatClient.getInstance.startCallback();
+      _addChatListener();
+      ApiServices.getChatUserToken('phoenixk545').then((value) => _signInAgoraChat('phoenixk545', value));
+      //==============on token refresh and token get=========
+      //onRefreshToken();
       if (box.get(USERPATH) != null) {
         context.read<UserProvider>().setUser(box.get(USERPATH));
         final response = await ApiServices.getProfile(box.get(USERPATH)!.token);
@@ -67,11 +87,101 @@ class _DashBoardState extends State<DashBoard> {
     super.initState();
   }
 
+  void _signInAgoraChat(String userID, String token) async {
+    try {
+      await ChatClient.getInstance.loginWithAgoraToken(userID, token);
+      logController.addLog('==========login succcess, userID: ${box.get(USERPATH)!.uid!}');
+    } on ChatError catch (e) {
+      print('login failed, code: ${e.code}, desc: ${e.description}');
+    }
+  }
+
+  void _addChatListener() {
+    ChatClient.getInstance.contactManager.addEventHandler(
+        "UNIQUE_HANDLER_ID",
+        ContactEventHandler(
+          onContactInvited: (userId, reason) {
+            print('${userId} ${reason}');
+          },
+          onFriendRequestDeclined: (userId) {
+            print('${userId} declined');
+          },
+        ));
+    // Adds message status changed event.
+    ChatClient.getInstance.chatManager.addMessageEvent(
+        "UNIQUE_HANDLER_ID",
+        ChatMessageEvent(onSuccess: (msgId, msg) {
+          //   LogController().addLog("send message onSuccess");
+          context.read<UserProvider>().setMessage(msg, messageBox, true);
+        }, onProgress: (msgId, progress) {
+          //  LogController().addLog("send message onProgress ${progress}");
+          context.read<UserProvider>().setMessageProcessing(progress);
+        }, onError: (msgId, msg, error) {
+          LogController().addLog("send message failed, code: ${error.code}, desc: ${error.description}");
+          context.read<UserProvider>().setMessage(msg, messageBox, false);
+        }));
+
+    ChatClient.getInstance.chatManager.addEventHandler(
+        "UNIQUE_HANDLER_ID",
+        ChatEventHandler(
+            onMessagesDelivered: (messages) {},
+            onMessagesRead: (messages) {},
+            onMessagesRecalled: (messages) {},
+            onMessagesReceived: (messages) {
+              for (var msg in messages) {
+                switch (msg.body.type) {
+                  case MessageType.TXT:
+                    ChatTextMessageBody body = msg.body as ChatTextMessageBody;
+                    LogController().addLog("receive text message: ${body.content}, from: ${msg.from}");
+                    context.read<UserProvider>().setMessage(msg, messageBox, true);
+                    break;
+                  case MessageType.IMAGE:
+                    ChatClient.getInstance.chatManager.downloadThumbnail(msg);
+                    ChatImageMessageBody imgBody = msg.body as ChatImageMessageBody;
+                    String? thumbnailLocalPath = imgBody.thumbnailLocalPath;
+                    LogController().addLog("receive text message: ${imgBody.localPath}, from: ${msg.from}, thumbnail: ${thumbnailLocalPath}");
+                    break;
+                  case MessageType.VIDEO:
+                    ChatClient.getInstance.chatManager.downloadThumbnail(msg);
+                    ChatImageMessageBody imgBody = msg.body as ChatImageMessageBody;
+                    String? thumbnailLocalPath = imgBody.thumbnailLocalPath;
+                    break;
+                  case MessageType.LOCATION:
+                    break;
+                  case MessageType.VOICE:
+                    break;
+                  case MessageType.FILE:
+                    ChatClient.getInstance.chatManager.downloadAttachment(msg);
+                    ChatFileMessageBody fileBody = msg.body as ChatFileMessageBody;
+                    String? localPath = fileBody.localPath;
+
+                    break;
+                  case MessageType.CMD:
+                    break;
+                  case MessageType.CUSTOM:
+                    break;
+                }
+              }
+            }));
+  }
+
   @override
   void dispose() async {
     print('================onDispose========================');
+    _signOut();
     context.read<UserProvider>().getCall.channelId == null ? null : await callMethods.endCall(call: context.read<UserProvider>().getCall);
     super.dispose();
+  }
+
+  void _signOut() async {
+    try {
+      await ChatClient.getInstance.logout(true);
+      ChatClient.getInstance.chatManager.removeMessageEvent("UNIQUE_HANDLER_ID");
+      ChatClient.getInstance.contactManager.removeEventHandler("UNIQUE_HANDLER_ID");
+      ChatClient.getInstance.chatManager.removeEventHandler("UNIQUE_HANDLER_ID");
+    } on ChatError catch (e) {
+      print("sign out failed, code: ${e.code}, desc: ${e.description}");
+    }
   }
 
   @override
@@ -97,7 +207,7 @@ class _DashBoardState extends State<DashBoard> {
                                 : page == 1 //no bottom nav
                                     ? VitalAndTracks(scaffold)
                                     : page == 5
-                                        ? ChatListScreen(scaffold, logController)
+                                        ? ChatListScreen(scaffold, logController, messageBox)
                                         : page == 6
                                             ? MyInvoicePage()
                                             : page == 7 //no bottom nav
@@ -139,7 +249,9 @@ class _DashBoardState extends State<DashBoard> {
                                                                                                                     ? FindDoctorsPage(scaffold)
                                                                                                                     : page == -13
                                                                                                                         ? SocialMedia(scaffold)
-                                                                                                                        : AccountPage(),
+                                                                                                                        : page == -18
+                                                                                                                            ? PayLinkPage()
+                                                                                                                            : AccountPage(),
                     !isVisible && (!removeBottom.contains(page) && !removeBottom1.contains(page))
                         ? Align(
                             alignment: Alignment.bottomCenter,

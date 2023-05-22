@@ -13,14 +13,22 @@ const LINKEDIN_SECRET = 'aQF6dRF0wmkPm366';
 const LINKEDIN_REDIRECT = 'https://www.linkedin.com/developers/tools/oauth/redirect';
 const LINKEDIN_ACCESS =
     'AQUQv9Hzq_OEB82jAgynLLVp8PADGaUcE2bBug-WWAg100hOYKIWBAH1Vt8fXS-y20jB5YSYbr5yLq0Itv7H-s72JHxVfochrVOf-WSneoxOhMiriw16WwGlabu1PwbtvFTaAoyVYYL943stj_Qb7bj76GKqQPTOlTQlGwYfqB8NS1_YLzNdsx9M3rZrnMKAoOH6IiQW-T8YfTUyfYeRj0tLn2MMqDbr1kh2h5yMY8uEm-tmsP451X5L_UBNcrPf_GKkODH-kyZvO6PofJOP3rSKoZ41O1hLjPcYkKV8-lLdDHLgTXylWdQQ_3yIeJb5vVeMYTX7FhtX32EfMXObS3deTYinzw';
+
+//todo change on deployment
 const String APP_ID = "1d1fe1466c1c45ed96448ec99ed1a000";
 const String APP_CERTIFICATE = 'b9f0048275624f139cf78716987fee8e';
+const String AGORA_ORGNAME = '71376350';
+const String AGORA_APPNAME = '1118140';
+
 const String FIREBASE_WEB_TOKEN = "AAAAqF03j5w:APA91bFWo0NcDfGQSWBlMOXw5S7_PoxTzn8ysxuB2CVVUEJXYujYJxxxw6Yl_qTI4bUgICzdTtx66o1QhKfJAcCd_wsqqrcEyItKJRXhIo5xAsV8mVGrmq07QiBorF-J4_HEIic7aR8W";
 //const String TOKEN = "006ee267e6dae9e4c66bf1946fb905646abIABNQv9e6lg/MtUKvQqYkDmT0aH4d1kc/LnMGrln4Am4xVgUM64AAAAAEACGukDPGADwYgEAAQAXAPBi";
 const String CALL_STATUS_DIALLED = "dialled";
 const String CALL_STATUS_RECEIVED = "received";
 const String CALL_STATUS_MISSED = "missed";
 const USERPATH = 'details';
+//save the agora token to hive database
+const BOXAGORATOKEN = 'agoraAppToken';
+const BOXMESSAGEBOX = 'Initialization';
 
 List<User> users = [
   // User(
@@ -186,8 +194,8 @@ getNavdraweritem(BuildContext context) {
   ];
 }
 
-List removeBottom = [1, -10, 3, 8, -14, -8, -5, 9, -9, -6, -19, -7, -12, 6, 8, -2, -13, 7, -17];
-List removeBottom1 = [1, -10, 3, 8, -14, -8, -5, 9, -9, -6, -19, -7, -12, 6, 8, -2, -13, 7 - 17];
+List removeBottom = [1, -10, 3, 8, -14, -8, -5, 9, -9, -6, -19, -7, -12, 6, 8, -2, -13, 7, -17, -18];
+List removeBottom1 = [1, -10, 3, 8, -14, -8, -5, 9, -9, -6, -19, -7, -12, 6, 8, -2, -13, 7 - 17, -18];
 
 List shop_by_categgory = [
   {'title': 'OTC MEDICINES', 'color': Colors.blueGrey, 'icon': 'assets/estore/estore5.png'},

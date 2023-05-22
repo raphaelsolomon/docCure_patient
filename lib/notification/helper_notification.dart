@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:agora_chat_sdk/agora_chat_sdk.dart';
 import 'package:doccure_patient/services/request.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -8,7 +12,6 @@ class HelperNotification {
   static final onNotification = BehaviorSubject<String?>();
 
   static Future<void> initialize() async {
-    FirebaseMessaging.instance.getToken().then((value) => print(value));
     var androidInitializer = AndroidInitializationSettings('@mipmap/ic_launcher');
     var iosInitializer = DarwinInitializationSettings();
     var initializationSettings = InitializationSettings(android: androidInitializer, iOS: iosInitializer);

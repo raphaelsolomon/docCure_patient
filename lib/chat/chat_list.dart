@@ -1,17 +1,19 @@
 import 'package:agora_chat_sdk/agora_chat_sdk.dart';
-import 'package:agora_rtm/src/agora_rtm_client.dart';
 import 'package:doccure_patient/chat/msg_screen.dart';
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/msg_log.dart';
+import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 
 class ChatListScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffold;
   final LogController logController;
-  const ChatListScreen(this.scaffold, this.logController, {Key? key}) : super(key: key);
+  final Box messageBox;
+  const ChatListScreen(this.scaffold, this.logController, this.messageBox, {Key? key}) : super(key: key);
 
   @override
   State<ChatListScreen> createState() => _ChatListScreenState();
@@ -20,56 +22,27 @@ class ChatListScreen extends StatefulWidget {
 class _ChatListScreenState extends State<ChatListScreen> {
   final controller = TextEditingController();
   final box = Hive.box<User>(BoxName);
+  var usersData = Set<String>();
 
   @override
   void initState() {
-    _signInAgoraChat();
-    _initSDK();
-    _addChatListener();
+    getChatClientUssers();
     super.initState();
   }
 
   @override
   void dispose() {
     controller.dispose();
-    ChatClient.getInstance.chatManager.removeEventHandler(box.get(USERPATH)!.uid!);
-    ChatClient.getInstance.logout(true);
+    ChatClient.getInstance.chatManager.removeEventHandler("UNIQUE_HANDLER_ID");
     super.dispose();
   }
 
-  void _signInAgoraChat() async {
-    try {
-      await ChatClient.getInstance.loginWithAgoraToken(box.get(USERPATH)!.uid!, '007eJxTYJjvnzQxRG5TwP0pAbvYX4pVs/H+3rTh7M/3neZzO2/wBXIrMBimGKalGpqYmSUbJpuYpqZYmpmYWKQmW1qmphgmGhgYlD/0T2kIZGSQXHKalZGBlYGRgYkBxGdgAACUch3l');
-      print('login succcess, userID: ${box.get(USERPATH)!.uid!}');
-    } on ChatError catch (e) {
-      print('login failed, code: ${e.code}, desc: ${e.description}');
-    }
-  }
-
-  void _initSDK() async {
-    ChatOptions options = ChatOptions(
-      appKey: '71376350#1118140',
-      autoLogin: false,
-    );
-    await ChatClient.getInstance.init(options);
-  }
-
-  void _addChatListener() {
-    ChatClient.getInstance.chatManager.addEventHandler(box.get(USERPATH)!.uid!, ChatEventHandler(onCmdMessagesReceived: (messages) {}));
-  }
-
-  void sendMessage() async {
-    if (controller.text.trim().isEmpty) {
-      return;
-    }
-
-    var message = ChatMessage.createTxtSendMessage(targetId: 'target_ID', content: controller.text);
-    if (message.status == MessageStatus.SUCCESS) {
-      widget.logController.addLog('send message: ${controller.text}');
-    } else if (message.status == MessageStatus.FAIL) {
-      widget.logController.addLog('send message failed: ${controller.text}');
-    }
-    ChatClient.getInstance.chatManager.sendMessage(message);
+  getChatClientUssers() async {
+    context.read<UserProvider>().allMessages(widget.messageBox).map((e) {
+      if (e.from != 'phoenixk545')
+        usersData.add(e.from!);
+      else if (e.to != 'phoenixk545') usersData.add(e.to!);
+    }).toList();
   }
 
   @override
@@ -80,9 +53,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
         color: BLUECOLOR,
         child: Column(children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
             width: MediaQuery.of(context).size.width,
-            height: 86.0,
+            height: 85.0,
             color: BLUECOLOR,
             child: Column(children: [
               const SizedBox(
@@ -102,7 +75,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                     ),
                   ),
                   Icon(
-                    Icons.notifications_active,
+                    null,
                     color: Colors.white,
                   )
                 ],
@@ -124,7 +97,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                       padding: const EdgeInsets.all(0.0),
                       scrollDirection: Axis.vertical,
                       itemBuilder: (ctx, i) => getChatItems(() {
-                            Get.to(() => MessageScreen(widget.logController, users[i]));
+                            Get.to(() => MessageScreen(widget.logController, users[i], widget.messageBox));
                           })))
             ]),
           ))
@@ -157,12 +130,12 @@ class _ChatListScreenState extends State<ChatListScreen> {
                       Flexible(
                         child: Text(
                           'Bernadette Carol',
-                          style: getCustomFont(size: 19.0, color: Colors.black, weight: FontWeight.w400),
+                          style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w400),
                         ),
                       ),
                       Text(
                         '09:25 AM',
-                        style: getCustomFont(size: 12.0, color: Colors.black45, weight: FontWeight.w400),
+                        style: getCustomFont(size: 9.0, color: Colors.black45, weight: FontWeight.w400),
                       ),
                     ],
                   ),
@@ -185,7 +158,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                               DUMMYTEXT,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: getCustomFont(size: 14.0, color: Colors.black45, weight: FontWeight.w400),
+                              style: getCustomFont(size: 12.0, color: Colors.black45, weight: FontWeight.w400),
                             ),
                           )),
                         ],

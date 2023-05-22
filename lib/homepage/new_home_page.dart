@@ -180,12 +180,12 @@ class _AllHomePageState extends State<AllHomePage> {
                 fit: BoxFit.contain,
               ),
               const SizedBox(
-                height: 12.0,
+                height: 10.0,
               ),
               Text(
                 '${homeItem1['title']}',
                 textAlign: TextAlign.center,
-                style: getCustomFont(size: 15.5, color: Colors.black, weight: FontWeight.w600),
+                style: getCustomFont(size: 13.5, color: Colors.black, weight: FontWeight.w600),
               ),
               const SizedBox(
                 height: 5.0,
@@ -193,8 +193,8 @@ class _AllHomePageState extends State<AllHomePage> {
               Text(
                 '${homeItem1['desc']}',
                 textAlign: TextAlign.center,
-                maxLines: 3,
-                style: getCustomFont(size: 13.0, color: Colors.black45, weight: FontWeight.w400),
+                maxLines: 2,
+                style: getCustomFont(size: 12.0, color: Colors.black45, weight: FontWeight.w400),
               ),
               const SizedBox(
                 height: 5.0,
