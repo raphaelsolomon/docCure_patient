@@ -1,5 +1,6 @@
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/dialog/subscribe.dart';
+import 'package:doccure_patient/dialog/virtual_acct/pos_request.dart';
 import 'package:doccure_patient/dialog/virtual_acct/top_up.dart';
 import 'package:doccure_patient/dialog/virtual_acct/conversion.dart';
 import 'package:doccure_patient/dialog/virtual_acct/request_page.dart';
@@ -83,7 +84,7 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 accountProcesses1(context),
                 const SizedBox(
-                  height: 10.0,
+                  height: 15.0,
                 ),
                 accountProcesses2(context),
                 const SizedBox(
@@ -408,7 +409,7 @@ class _AccountPageState extends State<AccountPage> {
                 width: 10.0,
               ),
               GestureDetector(
-                onTap: () => showRequestSheet(context, ConversionPage()),
+                onTap: () => showRequestSheet(context, PosRequest()),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 7.0),
                   decoration: BoxDecoration(color: Colors.red.shade100.withOpacity(.5), borderRadius: BorderRadius.circular(8.0)),
@@ -418,7 +419,7 @@ class _AccountPageState extends State<AccountPage> {
                     children: [
                       CircleAvatar(
                         backgroundColor: Colors.red,
-                        child: Icon(Icons.next_plan, color: Colors.white),
+                        child: Icon(Icons.point_of_sale_outlined, color: Colors.white),
                       ),
                       const SizedBox(width: 7.0),
                       Flexible(

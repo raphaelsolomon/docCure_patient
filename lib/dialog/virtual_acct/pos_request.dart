@@ -39,7 +39,7 @@ class _PosRequestState extends State<PosRequest> {
             ),
             Flexible(
               child: Text(
-                'Convert Currency',
+                'POS Terminal Request',
                 style: getCustomFont(size: 18.0, color: Colors.black87, weight: FontWeight.normal, letterSpacing: 1.2),
               ),
             ),
@@ -55,9 +55,9 @@ class _PosRequestState extends State<PosRequest> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Text.rich(
-              TextSpan(text: 'Convert between any of the available pairs.', children: []),
+              TextSpan(text: 'Request for your POS Terminal from anywhere', children: []),
               textAlign: TextAlign.center,
-              style: GoogleFonts.lato(color: Colors.black54, fontSize: 12.0, height: 1.4, fontWeight: FontWeight.w400, letterSpacing: 1.2),
+              style: GoogleFonts.lato(color: Colors.black54, fontSize: 12.0, height: 1.0, fontWeight: FontWeight.w400, letterSpacing: 1.2),
             ),
           ),
           const SizedBox(
@@ -65,85 +65,30 @@ class _PosRequestState extends State<PosRequest> {
           ),
           Expanded(
               child: Container(
+            width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.symmetric(horizontal: 15.0),
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.white),
             child: SingleChildScrollView(
               child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
                 const SizedBox(height: 20.0),
-                getCardForm('I want to convert', '', ctl: null),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                SizedBox(width: double.infinity, child: Text('Available Balance - NGN 102,322,344.00 ', textAlign: TextAlign.end, style: getCustomFont(size: 10.0, color: Colors.black54, letterSpacing: 1.2, weight: FontWeight.w800))),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                getCardForm('I want to receive', '', ctl: null),
-                const SizedBox(
-                  height: 30.0,
-                ),
-                Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(7.0), color: Colors.lightBlueAccent.shade100.withOpacity(.4)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 20.0),
-                                Text('Exchange Rate: ', style: getCustomFont(size: 11.0, color: Colors.black54, letterSpacing: 1.2, weight: FontWeight.w800)),
-                                const SizedBox(height: 10.0),
-                                Text('1 NGN = 0.00 USD', style: getCustomFont(size: 12.0, color: Colors.black, weight: FontWeight.w500, letterSpacing: 1.2)),
-                                const SizedBox(height: 7.0),
-                                Text('1 USD = NGN 388.50', style: getCustomFont(size: 12.0, color: Colors.black, weight: FontWeight.w500, letterSpacing: 1.2)),
-                                const SizedBox(height: 20.0),
-                              ],
-                            ),
-                          ),
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 20.0),
-                                Text('Transaction fee', style: getCustomFont(size: 11.0, color: Colors.black54, letterSpacing: 1.2, weight: FontWeight.w800)),
-                                const SizedBox(height: 10.0),
-                                Text('NGN 1,000.00', style: getCustomFont(size: 12.0, color: Colors.black, weight: FontWeight.w500, letterSpacing: 1.2)),
-                                const SizedBox(height: 20.0),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10.0),
-                      Text('Settlement Date: ', style: getCustomFont(size: 11.0, color: Colors.black54, letterSpacing: 1.2, weight: FontWeight.w800)),
-                      const SizedBox(height: 10.0),
-                      Text('12/5/2023 16:04:32', style: getCustomFont(size: 12.0, color: Colors.black, weight: FontWeight.w500, letterSpacing: 1.2)),
-                      const SizedBox(height: 20.0),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 30.0,
-                ),
-                Text(
-                  'New quote will be generated in 22s',
-                  style: getCustomFont(size: 11.0, color: Colors.black, weight: FontWeight.normal, letterSpacing: 1.2),
-                ),
-                const SizedBox(
-                  height: 30.0,
-                ),
-                getButton(context, () {}, text: 'Convert to USD 254.83'),
-                const SizedBox(
-                  height: 30.0,
-                ),
+                getDropDownAssurance(['Traction SOLO', 'Traction ONE'], 'Select Accessory type'),
+                const SizedBox(height: 15.0),
+                getDropDownAssurance(['Traction SOLO', 'Traction ONE'], 'Select Option Plan', label: 'Option Plan'),
+                const SizedBox(height: 15.0),
+                getCardForm('Numbers Of POS', '10', keyboardType: TextInputType.number),
+                const SizedBox(height: 15.0),
+                getCardForm('Email Address', 'johnDoe@example.com'),
+                const SizedBox(height: 15.0),
+                getCardForm('Mobile Number', '+xxx xxxxxxxxx'),
+                const SizedBox(height: 15.0),
+                getCardForm('Address', '+xxx xxxxxxxxx'),
+                const SizedBox(height: 15.0),
+                getCardForm('City', '+xxx xxxxxxxxx'),
+                const SizedBox(height: 20.0),
+                getDropDownAssurance(['Nigeria', 'Ghana', 'Australia'], 'Select Country', label: 'Select Country'),
+                const SizedBox(height: 40.0),
+                getButton(context, () {}, text: 'Send Request'),
+                const SizedBox(height: 40.0),
               ]),
             ),
           ))
@@ -152,71 +97,7 @@ class _PosRequestState extends State<PosRequest> {
     );
   }
 
-  getCardForm(hint, label, {ctl}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '$hint',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.lato(color: Colors.black87, fontSize: 13.0, height: 1.4, fontWeight: FontWeight.bold, letterSpacing: 1.2),
-          ),
-          const SizedBox(height: 5.0),
-          Container(
-            height: 45.0,
-            decoration: BoxDecoration(border: Border.all(width: .5, color: Colors.grey), borderRadius: BorderRadius.circular(5.0)),
-            child: Row(
-              children: [
-                Flexible(
-                    flex: 2,
-                    child: Container(
-                      decoration: BoxDecoration(color: Colors.grey.shade100, border: Border.all(width: .5, color: Colors.grey), borderRadius: BorderRadius.only(topLeft: Radius.circular(5.0), bottomLeft: Radius.circular(5.0))),
-                      child: FormBuilderDropdown<String>(
-                        name: 'select',
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Colors.black,
-                        ),
-                        onChanged: (value) => paymentMethod = value!,
-                        decoration: InputDecoration(
-                          hintText: 'NGN',
-                          hintStyle: getCustomFont(size: 13.0, color: Colors.black, letterSpacing: 1.2, weight: FontWeight.w500),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 9.9, vertical: 5.0),
-                          border: OutlineInputBorder(borderRadius: const BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide.none),
-                        ),
-                        items: ['Paystack', 'Fincra']
-                            .map((gender) => DropdownMenuItem<String>(
-                                  value: gender,
-                                  child: Text(
-                                    gender,
-                                    style: getCustomFont(size: 13.0, color: Colors.black87),
-                                  ),
-                                ))
-                            .toList(),
-                      ),
-                    )),
-                Flexible(
-                  flex: 3,
-                  child: TextField(
-                    controller: ctl,
-                    style: getCustomFont(size: 14.0, color: Colors.black45),
-                    // onChanged: (value) => setState(() => amount = value),
-                    maxLines: 1,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(hintText: label, contentPadding: const EdgeInsets.symmetric(horizontal: 10.0), hintStyle: getCustomFont(size: 13.0, color: Colors.black45), border: OutlineInputBorder(borderSide: BorderSide.none)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  getDropDownAssurance(hint) {
+  getDropDownAssurance(List<String> list, hint, {label = 'Select Accessory'}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -225,11 +106,108 @@ class _PosRequestState extends State<PosRequest> {
           child: Text(
             '$hint',
             textAlign: TextAlign.center,
-            style: GoogleFonts.lato(color: Colors.black, fontSize: 13.0, height: 1.4, fontWeight: FontWeight.bold, letterSpacing: 1.2),
+            style: GoogleFonts.lato(color: Colors.black54, fontSize: 12.0, height: 1.4, fontWeight: FontWeight.bold, letterSpacing: 1.2),
           ),
         ),
         const SizedBox(height: 5.0),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          margin: const EdgeInsets.symmetric(horizontal: 5.0),
+          height: 45.0,
+          decoration: BoxDecoration(border: Border.all(width: .5, color: Colors.grey), borderRadius: BorderRadius.circular(5.0)),
+          child: FormBuilderDropdown<String>(
+            name: 'select',
+            icon: const Icon(
+              Icons.keyboard_arrow_down,
+              color: Colors.black,
+            ),
+            onChanged: (value) => paymentMethod = value!,
+            decoration: InputDecoration(
+              hintText: '$label',
+              hintStyle: getCustomFont(size: 13.0, color: Colors.black45),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 9.9, vertical: 5.0),
+              border: OutlineInputBorder(borderRadius: const BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide.none),
+            ),
+            items: list
+                .map((gender) => DropdownMenuItem<String>(
+                      value: gender,
+                      child: Text(
+                        gender,
+                        style: getCustomFont(size: 13.0, color: Colors.black87),
+                      ),
+                    ))
+                .toList(),
+          ),
+        ),
       ],
+    );
+  }
+
+  getCardForm(hint, label, {ctl, visible = false, keyboardType = TextInputType.text}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '$hint',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.lato(color: Colors.black54, fontSize: 13.0, height: 1.4, fontWeight: FontWeight.w500, letterSpacing: 1.2),
+          ),
+          const SizedBox(height: 5.0),
+          Container(
+            height: 45.0,
+            decoration: BoxDecoration(border: Border.all(width: .5, color: Colors.grey), borderRadius: BorderRadius.circular(5.0)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                visible
+                    ? Container(
+                        width: 90,
+                        decoration: BoxDecoration(color: Colors.grey.shade100, border: Border.all(width: .5, color: Colors.grey), borderRadius: BorderRadius.only(topLeft: Radius.circular(5.0), bottomLeft: Radius.circular(5.0))),
+                        child: Center(
+                          child: FormBuilderDropdown<String>(
+                            name: 'select',
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.black54,
+                            ),
+                            onChanged: (value) => paymentMethod = value!,
+                            decoration: InputDecoration(
+                              hintText: 'NGN',
+                              hintStyle: getCustomFont(size: 13.0, color: Colors.black54, letterSpacing: 1.2, weight: FontWeight.w500),
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 10.9, vertical: 5.0),
+                              border: OutlineInputBorder(borderRadius: const BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide.none),
+                            ),
+                            items: ['AUD', 'EUR', 'NGN', 'JPY']
+                                .map((gender) => DropdownMenuItem<String>(
+                                      value: gender,
+                                      child: Text(
+                                        gender,
+                                        style: getCustomFont(size: 13.0, color: Colors.black54),
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
+                Flexible(
+                  flex: 3,
+                  child: TextField(
+                    controller: ctl,
+                    style: getCustomFont(size: 14.0, color: Colors.black45),
+                    //onChanged: (value) => setState(() => amount = value),
+                    maxLines: 1,
+                    keyboardType: keyboardType,
+                    decoration: InputDecoration(hintText: label, contentPadding: const EdgeInsets.symmetric(horizontal: 10.0), hintStyle: getCustomFont(size: 13.0, color: Colors.black45), border: OutlineInputBorder(borderSide: BorderSide.none)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
