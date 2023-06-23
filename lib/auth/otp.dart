@@ -83,10 +83,7 @@ class _AuthOtpState extends State<AuthOtp> {
                 ),
                 Text(
                   'Two-Step Verification',
-                  style: GoogleFonts.poppins(
-                      fontSize: 18.0,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500),
+                  style: GoogleFonts.poppins(fontSize: 18.0, color: Colors.black, fontWeight: FontWeight.w500),
                 ),
                 Icon(
                   null,
@@ -100,31 +97,22 @@ class _AuthOtpState extends State<AuthOtp> {
             Expanded(
               child: SingleChildScrollView(
                 child: Column(children: [
-                  Image.asset('assets/auth/3.jpeg',
-                      repeat: ImageRepeat.noRepeat, fit: BoxFit.contain),
+                  Image.asset('assets/auth/3.jpeg', repeat: ImageRepeat.noRepeat, fit: BoxFit.contain),
                   const SizedBox(
                     height: 20.0,
                   ),
                   Text(
                     'Please enter the OTP (one time password) to verify your account. A code has been sent to this ',
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                        fontSize: 14.0,
-                        color: Colors.black45,
-                        fontWeight: FontWeight.w400),
+                    style: GoogleFonts.poppins(fontSize: 14.0, color: Colors.black45, fontWeight: FontWeight.w400),
                   ),
                   const SizedBox(
                     height: 20.0,
                   ),
                   Text(
-                    widget.body.isEmail
-                        ? replaceValue(widget.body)
-                        : replacePhone(widget.body),
+                    widget.body.isEmail ? replaceValue(widget.body) : replacePhone(widget.body),
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                        fontSize: 14.0,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400),
+                    style: GoogleFonts.poppins(fontSize: 14.0, color: Colors.black, fontWeight: FontWeight.w400),
                   ),
                   const SizedBox(
                     height: 50.0,
@@ -229,44 +217,31 @@ class _AuthOtpState extends State<AuthOtp> {
                       Flexible(
                         child: Text(
                           'Not received your code? ',
-                          style: GoogleFonts.poppins(
-                              fontSize: 14.0,
-                              color: Colors.black45,
-                              fontWeight: FontWeight.normal),
+                          style: GoogleFonts.poppins(fontSize: 14.0, color: Colors.black45, fontWeight: FontWeight.normal),
                         ),
                       ),
                       const SizedBox(
                         width: 3.0,
                       ),
                       isResending
-                          ? Text('Resending',
-                              style: GoogleFonts.poppins(
-                                  fontSize: 14.0,
-                                  color: BLUECOLOR.withOpacity(.5),
-                                  fontWeight: FontWeight.normal))
+                          ? Text('Resending', style: GoogleFonts.poppins(fontSize: 14.0, color: BLUECOLOR.withOpacity(.5), fontWeight: FontWeight.normal))
                           : InkWell(
                               onTap: () {
                                 resendCode();
                               },
-                              child: Text('Resend code',
-                                  style: GoogleFonts.poppins(
-                                      fontSize: 14.0,
-                                      color: BLUECOLOR,
-                                      fontWeight: FontWeight.normal)),
+                              child: Text('Resend code', style: GoogleFonts.poppins(fontSize: 14.0, color: BLUECOLOR, fontWeight: FontWeight.normal)),
                             )
                     ],
                   ),
                   const SizedBox(
                     height: 15.0,
                   ),
-                   widget.body.isEmail ? const SizedBox() : InkWell(
-                    onTap: () {},
-                    child: Text('Call me',
-                        style: GoogleFonts.poppins(
-                            fontSize: 14.0,
-                            color: BLUECOLOR,
-                            fontWeight: FontWeight.normal)),
-                  ),
+                  widget.body.isEmail
+                      ? const SizedBox()
+                      : InkWell(
+                          onTap: () {},
+                          child: Text('Call me', style: GoogleFonts.poppins(fontSize: 14.0, color: BLUECOLOR, fontWeight: FontWeight.normal)),
+                        ),
                   const SizedBox(
                     height: 50.0,
                   ),
@@ -280,8 +255,7 @@ class _AuthOtpState extends State<AuthOtp> {
   void validDate() async {
     print(listOTp);
     if (listOTp.length < 4) {
-      popupMessage.dialogMessage(
-          context, popupMessage.serviceMessage(context, 'Input not valid'));
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Input not valid'));
       return;
     }
 
@@ -294,20 +268,17 @@ class _AuthOtpState extends State<AuthOtp> {
           body: widget.body.isEmail
               ? {
                   'email': widget.body.trim(),
-                  'otp':
-                      '${listOTp['1']}${listOTp['2']}${listOTp['3']}${listOTp['4']}'
+                  'otp': '${listOTp['1']}${listOTp['2']}${listOTp['3']}${listOTp['4']}',
                 }
               : {
-                  'phone': widget.body.trim(),
-                  'otp':
-                      '${listOTp['1']}${listOTp['2']}${listOTp['3']}${listOTp['4']}'
+                  'phone_number': widget.body.trim(),
+                  'otp': '${listOTp['1']}${listOTp['2']}${listOTp['3']}${listOTp['4']}',
                 });
       if (res.statusCode == 200) {
         final parsed = jsonDecode(res.body);
         popupMessage.dialogMessage(
             context,
-            popupMessage.serviceMessage(context, parsed['message'],
-                status: true, cB: () {
+            popupMessage.serviceMessage(context, parsed['message'], status: true, cB: () {
               if (widget.isLoggedIn) {
                 User user = box.get(USERPATH)!;
                 user.verified = true;
@@ -319,17 +290,10 @@ class _AuthOtpState extends State<AuthOtp> {
             barrierDismiss: false);
       } else {
         final parsed = jsonDecode(res.body);
-        popupMessage.dialogMessage(
-            context,
-            popupMessage.serviceMessage(context, parsed['message'],
-                status: false));
+        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, parsed['message'], status: false));
       }
     } on SocketException {
-      popupMessage.dialogMessage(
-          context,
-          popupMessage.serviceMessage(
-              context, 'Plase check internect connection',
-              status: false));
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Plase check internect connection', status: false));
     } finally {
       setState(() {
         isLoading = false;
@@ -344,30 +308,18 @@ class _AuthOtpState extends State<AuthOtp> {
   void resendCode() async {
     setState(() => isResending = true);
     try {
-      final res = await http.post(Uri.parse('${ROOTAPI}/api/user/otp/resend'),
-          body: widget.body.isEmail ? {'email': widget.body.trim()} : {'phone': widget.body.trim()});
+      final res = await http.post(Uri.parse('${ROOTAPI}/api/user/otp/resend'), body: widget.body.isEmail ? {'email': widget.body.trim()} : {'phone': widget.body.trim()});
       if (res.statusCode == 200) {
         final parsed = jsonDecode(res.body);
-        popupMessage.dialogMessage(
-            context,
-            popupMessage.serviceMessage(context, parsed['message'],
-                status: true, cB: () {}),
-            barrierDismiss: false);
+        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, parsed['message'], status: true, cB: () {}), barrierDismiss: false);
       } else {
         final parsed = jsonDecode(res.body);
-        popupMessage.dialogMessage(
-            context,
-            popupMessage.serviceMessage(context, parsed['message'],
-                status: false));
+        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, parsed['message'], status: false));
       }
       setState(() => isResending = false);
     } on SocketException {
       setState(() => isResending = false);
-      popupMessage.dialogMessage(
-          context,
-          popupMessage.serviceMessage(
-              context, 'Plase check internect connection',
-              status: false));
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Plase check internect connection', status: false));
     }
   }
 
@@ -376,11 +328,6 @@ class _AuthOtpState extends State<AuthOtp> {
   }
 
   String replacePhone(String phoneNumber) {
-    return "(" +
-        phoneNumber.substring(0, 3) +
-        ")" +
-        phoneNumber
-            .substring(3)
-            .replaceRange(1, phoneNumber.substring(3).length - 2, '****');
+    return "(" + phoneNumber.substring(0, 3) + ")" + phoneNumber.substring(3).replaceRange(1, phoneNumber.substring(3).length - 2, '****');
   }
 }

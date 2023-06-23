@@ -222,7 +222,7 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
 
     try {
       final res =
-          await http.post(Uri.parse('${ROOTAPI}/api/user/forget/password/init'),
+          await http.post(Uri.parse('${ROOTAPI}/api/v1/forget-password'),
               body: isEmail
                   ? {
                       'email': email.text.trim(),

@@ -57,31 +57,16 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   void getFrom() {
     setState(() {
       fullname.text = box.get(USERPATH)!.name!;
-      email.text =
-          box.get(USERPATH)!.email == null ? '' : box.get(USERPATH)!.email!;
-      address.text =
-          box.get(USERPATH)!.address == null ? '' : box.get(USERPATH)!.address!;
-      city.text =
-          box.get(USERPATH)!.city == null ? '' : box.get(USERPATH)!.city!;
-      state.text =
-          box.get(USERPATH)!.state == null ? '' : box.get(USERPATH)!.state!;
-      zip_code.text = box.get(USERPATH)!.zip_code == null
-          ? ''
-          : box.get(USERPATH)!.zip_code!;
-
-      var i = countryList.indexWhere(
-          (element) => '${element['id']}' == '${box.get(USERPATH)!.country}');
-
+      email.text = box.get(USERPATH)!.email == null ? '' : box.get(USERPATH)!.email!;
+      address.text = box.get(USERPATH)!.address == null ? '' : box.get(USERPATH)!.address!;
+      city.text = box.get(USERPATH)!.city == null ? '' : box.get(USERPATH)!.city!;
+      state.text = box.get(USERPATH)!.state == null ? '' : box.get(USERPATH)!.state!;
+      zip_code.text = box.get(USERPATH)!.zip_code == null ? '' : box.get(USERPATH)!.zip_code!;
+      var i = countryList.indexWhere((element) => '${element['id']}' == '${box.get(USERPATH)!.country}');
       country.text = countryList.elementAt(i)['name'];
       country_id = '${countryList.elementAt(i)['id']}';
-
-      bloodGroup = box.get(USERPATH)!.bloodgroup == null
-          ? 'AA'
-          : box.get(USERPATH)!.bloodgroup!;
-
-      _selectedDate = box.get(USERPATH)!.dob == null
-          ? DateTime.now()
-          : DateTime.parse(box.get(USERPATH)!.dob!);
+      bloodGroup = box.get(USERPATH)!.bloodgroup == null ? 'AA' : box.get(USERPATH)!.bloodgroup!;
+      _selectedDate = box.get(USERPATH)!.dob == null ? DateTime.now() : DateTime.parse(box.get(USERPATH)!.dob!);
     });
   }
 
@@ -93,8 +78,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
         color: Color(0xFFf6f6f6),
         child: Column(children: [
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
             width: MediaQuery.of(context).size.width,
             color: BLUECOLOR,
             child: Column(children: [
@@ -111,8 +95,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                         color: Colors.white,
                         size: 18.0,
                       )),
-                  Text('Profile Settings',
-                      style: getCustomFont(color: Colors.white, size: 16.0)),
+                  Text('Profile Settings', style: getCustomFont(color: Colors.white, size: 16.0)),
                   Icon(
                     null,
                     color: Colors.white,
@@ -135,13 +118,9 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15.0, horizontal: 5.0),
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 0.0, horizontal: 10.0),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.0)),
+                    padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
+                    margin: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -157,11 +136,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                           child: Center(
                             child: GestureDetector(
                               onTap: () async {
-                                var img = await _picker.pickImage(
-                                    source: ImageSource.gallery);
-                                setState(() {
-                                  image = File(img!.path);
-                                });
+                                var img = await _picker.pickImage(source: ImageSource.gallery);
+                                ApiServices.changePatientImage(context, img!.path, box);
                               },
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(100.0),
@@ -189,15 +165,9 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                           height: 10.0,
                         ),
                         GestureDetector(
-                            child: getFormBox('Date of Birth',
-                                '${DateFormat('yyyy-MM-dd').format(_selectedDate)}'),
+                            child: getFormBox('Date of Birth', '${DateFormat('yyyy-MM-dd').format(_selectedDate)}'),
                             onTap: () async {
-                              showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1950),
-                                      lastDate: DateTime.now())
-                                  .then((pickedDate) {
+                              showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1950), lastDate: DateTime.now()).then((pickedDate) {
                                 if (pickedDate == null) {
                                   return;
                                 }
@@ -275,14 +245,11 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     print(country_id);
 
     try {
-      var request = http.Request(
-          'PATCH', Uri.parse('${ROOTAPI}/api/v1/auth/patient/update-profile'));
+      var request = http.Request('PATCH', Uri.parse('${ROOTAPI}/api/v1/auth/patient/update-profile'));
       request.body = json.encode({
         "email": email.text.trim(),
         "name": fullname.text.trim(),
-        "phone": phoneController.value == null
-            ? ''
-            : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+        "phone": phoneController.value == null ? '' : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
         "dob": DateFormat('yyyy-MM-dd').format(_selectedDate),
         "blood_group": bloodGroup,
         "address": address.text,
@@ -290,13 +257,9 @@ class _ProfileSettingsState extends State<ProfileSettings> {
         "state": state.text,
         "country": country_id,
         "zip_code": zip_code.text,
-        "profile_picture":
-            "https://www.whatspaper.com/wp-content/uploads/2021/12/hd-itachi-uchiha-wallpaper-whatspaper-21.jpg"
+        "profile_picture": box.get(USERPATH)!.profilePhoto
       });
-      request.headers.addAll({
-        'Authorization': '${box.get(USERPATH)!.token}',
-        'Content-Type': 'application/json'
-      });
+      request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}', 'Content-Type': 'application/json'});
 
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
@@ -324,29 +287,20 @@ class _ProfileSettingsState extends State<ProfileSettings> {
           );
           box.put(USERPATH, user).then((value) {
             getFrom();
-            popupMessage.dialogMessage(
-                context,
-                popupMessage.serviceMessage(context, result['message'],
-                    status: true));
+            popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, result['message'], status: true));
           });
         });
       } else {
         setState(() {
           isloading = false;
         });
-        popupMessage.dialogMessage(
-            context,
-            popupMessage.serviceMessage(context, response.reasonPhrase,
-                status: false));
+        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
       }
     } on SocketException {
       setState(() {
         isloading = false;
       });
-      popupMessage.dialogMessage(
-          context,
-          popupMessage.serviceMessage(context, 'Check Internet Connection',
-              status: false));
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Check Internet Connection', status: false));
     }
   }
 
@@ -361,10 +315,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
             ),
             Text(
               'Select Country',
-              style: GoogleFonts.poppins(
-                  fontSize: 28.0,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w700),
+              style: GoogleFonts.poppins(fontSize: 28.0, color: Colors.black, fontWeight: FontWeight.w700),
             ),
             const SizedBox(
               height: 20.0,
@@ -382,8 +333,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        country.text =
-                                            '${countryList[i]['name']}';
+                                        country.text = '${countryList[i]['name']}';
                                         country_id = '${countryList[i]['id']}';
                                       });
                                       Navigator.pop(context);
@@ -392,8 +342,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                                       padding: const EdgeInsets.all(5.0),
                                       child: Text(
                                         '${countryList[i]['name']}',
-                                        style: getCustomFont(
-                                            size: 16.0, color: Colors.black),
+                                        style: getCustomFont(size: 16.0, color: Colors.black),
                                       ),
                                     ),
                                   ),
@@ -438,13 +387,9 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                     controller: ctl,
                     decoration: InputDecoration(
                         hintText: hint,
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 10.0),
-                        hintStyle:
-                            getCustomFont(size: 14.0, color: Colors.black45),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(0.0))),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        hintStyle: getCustomFont(size: 14.0, color: Colors.black45),
+                        border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(0.0))),
                   ),
                 ),
               ],
@@ -484,14 +429,11 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                         color: Colors.black,
                       ),
                       decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 9.9, vertical: 5.0),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 9.9, vertical: 5.0),
                         hintText: bloodGroup,
                         border: OutlineInputBorder(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10.0)),
-                          borderSide:
-                              BorderSide(width: 0.6, color: Colors.grey),
+                          borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                          borderSide: BorderSide(width: 0.6, color: Colors.grey),
                         ),
                       ),
                       onChanged: (s) => callBack(s),
@@ -500,8 +442,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                                 value: gender,
                                 child: Text(
                                   gender,
-                                  style: getCustomFont(
-                                      size: 13.0, color: Colors.black),
+                                  style: getCustomFont(size: 13.0, color: Colors.black),
                                 ),
                               ))
                           .toList(),
@@ -535,30 +476,19 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                     key: Key('phone-field'),
                     controller: ctl, // controller & initialValue value
                     shouldFormat: true, // default
-                    defaultCountry: IsoCode.NG, // default
+                    defaultCountry: 'NG', // default
                     style: getCustomFont(size: 14.0, color: Colors.black45),
                     autovalidateMode: AutovalidateMode.disabled,
                     decoration: InputDecoration(
                         contentPadding: const EdgeInsets.all(0.0),
                         hintText: 'Mobile Number', // default to null
-                        hintStyle:
-                            getCustomFont(size: 15.0, color: Colors.black45),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(
-                                width: 0.6,
-                                color: Colors
-                                    .black45)) // default to UnderlineInputBorder(),
+                        hintStyle: getCustomFont(size: 15.0, color: Colors.black45),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(width: 0.6, color: Colors.black45)) // default to UnderlineInputBorder(),
                         ),
                     validator: null,
-                    isCountryChipPersistent: false, // default
-                    isCountrySelectionEnabled: true, // default
-                    countrySelectorNavigator: CountrySelectorNavigator.dialog(),
                     showFlagInInput: true, // default
                     flagSize: 15, // default
-                    autofillHints: [
-                      AutofillHints.telephoneNumber
-                    ], // default to null
+                    autofillHints: [AutofillHints.telephoneNumber], // default to null
                     enabled: true, // default
                   ),
                 )),
@@ -585,16 +515,14 @@ class _ProfileSettingsState extends State<ProfileSettings> {
               Container(
                   width: MediaQuery.of(context).size.width,
                   height: 45.0,
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 10.0),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     border: Border.all(width: 0.6, color: Colors.black45),
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
                   margin: const EdgeInsets.only(top: 5.0),
-                  child: Text('$label',
-                      style: getCustomFont(size: 15.0, color: Colors.black45)))
+                  child: Text('$label', style: getCustomFont(size: 15.0, color: Colors.black45)))
             ],
           ),
         ),

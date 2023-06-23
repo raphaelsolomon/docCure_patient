@@ -47,10 +47,7 @@ class _UpdateFamilyState extends State<UpdateFamily> {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 1.5,
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 9.0),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0))),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -84,10 +81,7 @@ class _UpdateFamilyState extends State<UpdateFamily> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'Name',
-                    style: getCustomFont(
-                        size: 15.0,
-                        color: Colors.black,
-                        weight: FontWeight.w500),
+                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -101,10 +95,7 @@ class _UpdateFamilyState extends State<UpdateFamily> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'Relationship',
-                    style: getCustomFont(
-                        size: 15.0,
-                        color: Colors.black,
-                        weight: FontWeight.w500),
+                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -118,10 +109,7 @@ class _UpdateFamilyState extends State<UpdateFamily> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'E-mail Address',
-                    style: getCustomFont(
-                        size: 15.0,
-                        color: Colors.black,
-                        weight: FontWeight.w500),
+                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -135,10 +123,7 @@ class _UpdateFamilyState extends State<UpdateFamily> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'Gender',
-                    style: getCustomFont(
-                        size: 15.0,
-                        color: Colors.black,
-                        weight: FontWeight.w500),
+                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -152,10 +137,7 @@ class _UpdateFamilyState extends State<UpdateFamily> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'Blood Group',
-                    style: getCustomFont(
-                        size: 15.0,
-                        color: Colors.black,
-                        weight: FontWeight.w500),
+                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -169,10 +151,7 @@ class _UpdateFamilyState extends State<UpdateFamily> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'Phone number',
-                    style: getCustomFont(
-                        size: 15.0,
-                        color: Colors.black,
-                        weight: FontWeight.w500),
+                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -199,10 +178,7 @@ class _UpdateFamilyState extends State<UpdateFamily> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'Photo',
-                    style: getCustomFont(
-                        size: 15.0,
-                        color: Colors.black,
-                        weight: FontWeight.w500),
+                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -254,8 +230,7 @@ class _UpdateFamilyState extends State<UpdateFamily> {
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5.0),
-                  border:
-                      Border.all(color: const Color(0xFFE8E8E8), width: 1.0),
+                  border: Border.all(color: const Color(0xFFE8E8E8), width: 1.0),
                   color: Colors.grey.shade300,
                 ),
                 child: Center(
@@ -265,9 +240,7 @@ class _UpdateFamilyState extends State<UpdateFamily> {
                 )),
               ),
             ),
-            Flexible(
-                child: Text('$text',
-                    style: getCustomFont(size: 13.0, color: Colors.black45))),
+            Flexible(child: Text('$text', style: getCustomFont(size: 13.0, color: Colors.black45))),
           ],
         ),
       );
@@ -277,18 +250,12 @@ class _UpdateFamilyState extends State<UpdateFamily> {
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Container(
         height: 48.0,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5.0),
-            color: BLUECOLOR.withOpacity(.1)),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: BLUECOLOR.withOpacity(.1)),
         child: TextField(
           style: getCustomFont(size: 14.0, color: Colors.black45),
           controller: ctl,
           maxLines: 1,
-          decoration: InputDecoration(
-              hintText: hint,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
-              hintStyle: getCustomFont(size: 14.0, color: Colors.black45),
-              border: OutlineInputBorder(borderSide: BorderSide.none)),
+          decoration: InputDecoration(hintText: hint, contentPadding: const EdgeInsets.symmetric(horizontal: 10.0), hintStyle: getCustomFont(size: 14.0, color: Colors.black45), border: OutlineInputBorder(borderSide: BorderSide.none)),
         ),
       ),
     );
@@ -299,9 +266,7 @@ class _UpdateFamilyState extends State<UpdateFamily> {
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.symmetric(horizontal: 15.0),
       height: 49.0,
-      decoration: BoxDecoration(
-          color: BLUECOLOR.withOpacity(.1),
-          borderRadius: BorderRadius.circular(5.0)),
+      decoration: BoxDecoration(color: BLUECOLOR.withOpacity(.1), borderRadius: BorderRadius.circular(5.0)),
       child: FormBuilderDropdown(
         name: 'gender',
         icon: const Icon(
@@ -309,11 +274,8 @@ class _UpdateFamilyState extends State<UpdateFamily> {
           color: Colors.black,
         ),
         decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 9.9, vertical: 5.0),
-          border: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-              borderSide: BorderSide.none),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 9.9, vertical: 5.0),
+          border: OutlineInputBorder(borderRadius: const BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide.none),
         ),
         initialValue: 'Male',
         onChanged: (s) => onChange(s),
@@ -335,9 +297,7 @@ class _UpdateFamilyState extends State<UpdateFamily> {
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.symmetric(horizontal: 15.0),
       height: 49.0,
-      decoration: BoxDecoration(
-          color: BLUECOLOR.withOpacity(.1),
-          borderRadius: BorderRadius.circular(5.0)),
+      decoration: BoxDecoration(color: BLUECOLOR.withOpacity(.1), borderRadius: BorderRadius.circular(5.0)),
       child: FormBuilderDropdown(
         name: 'bloodgroup',
         icon: const Icon(
@@ -345,11 +305,8 @@ class _UpdateFamilyState extends State<UpdateFamily> {
           color: Colors.black,
         ),
         decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 9.9, vertical: 5.0),
-          border: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-              borderSide: BorderSide.none),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 9.9, vertical: 5.0),
+          border: OutlineInputBorder(borderRadius: const BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide.none),
         ),
         initialValue: 'AA',
         onChanged: (s) => onChange(s),
@@ -381,8 +338,7 @@ class _UpdateFamilyState extends State<UpdateFamily> {
             Flexible(
                 child: Padding(
               padding: const EdgeInsets.only(left: 10.0),
-              child: Text('$text',
-                  style: getCustomFont(size: 13.0, color: Colors.black45)),
+              child: Text('$text', style: getCustomFont(size: 13.0, color: Colors.black45)),
             )),
             GestureDetector(
               onTap: () => callBack(),
@@ -392,8 +348,7 @@ class _UpdateFamilyState extends State<UpdateFamily> {
                 borderRadius: BorderRadius.circular(100.0),
                 shadowColor: Colors.grey,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 9.0, vertical: 9.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 9.0, vertical: 9.0),
                   child: Icon(
                     Icons.calendar_month,
                     size: 17.0,
@@ -424,26 +379,20 @@ class _UpdateFamilyState extends State<UpdateFamily> {
                 key: Key('phone-field'),
                 controller: ctl, // controller & initialValue value
                 shouldFormat: true, // default
-                defaultCountry: IsoCode.NG, // default
+                defaultCountry: 'NG', // default
                 style: getCustomFont(size: 14.0, color: Colors.black45),
                 autovalidateMode: AutovalidateMode.disabled,
                 decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(0.0),
                     hintText: 'Mobile Number', // default to null
                     hintStyle: getCustomFont(size: 15.0, color: Colors.black45),
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide
-                            .none) // default to UnderlineInputBorder(),
+                    border: OutlineInputBorder(borderSide: BorderSide.none) // default to UnderlineInputBorder(),
                     ),
                 validator: null,
-                isCountryChipPersistent: false, // default
-                isCountrySelectionEnabled: true, // default
-                countrySelectorNavigator: CountrySelectorNavigator.dialog(),
+
                 showFlagInInput: true, // default
                 flagSize: 15, // default
-                autofillHints: [
-                  AutofillHints.telephoneNumber
-                ], // default to null
+                autofillHints: [AutofillHints.telephoneNumber], // default to null
                 enabled: true, // default
               ),
             )),
@@ -453,8 +402,7 @@ class _UpdateFamilyState extends State<UpdateFamily> {
               borderRadius: BorderRadius.circular(100.0),
               shadowColor: Colors.grey,
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0, vertical: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
                 child: Icon(
                   Icons.smartphone,
                   size: 18.0,
@@ -472,13 +420,11 @@ class _UpdateFamilyState extends State<UpdateFamily> {
           width: MediaQuery.of(context).size.width,
           height: 45.0,
           margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
-          decoration: BoxDecoration(
-              color: BLUECOLOR, borderRadius: BorderRadius.circular(50.0)),
+          decoration: BoxDecoration(color: BLUECOLOR, borderRadius: BorderRadius.circular(50.0)),
           child: Center(
             child: Text(
               'Update Member',
-              style: getCustomFont(
-                  size: 14.0, color: Colors.white, weight: FontWeight.normal),
+              style: getCustomFont(size: 14.0, color: Colors.white, weight: FontWeight.normal),
             ),
           ),
         ),
@@ -504,7 +450,7 @@ class _UpdateFamilyState extends State<UpdateFamily> {
       request.body = jsonEncode({
         'name': fullname.text,
         'picture': 'https://wallpaperaccess.com/full/8054251.jpg',
-        'relationship': relationship.text, 
+        'relationship': relationship.text,
         'gender': gender,
         'number': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
         'bloodgroup': bloodGroup,
@@ -514,14 +460,14 @@ class _UpdateFamilyState extends State<UpdateFamily> {
       });
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
-          setState(() => isloading = false);
-          popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Dependent Updated successfully', status: true));
+        setState(() => isloading = false);
+        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Dependent Updated successfully', status: true));
       } else {
-         setState(() => isloading = false);
+        setState(() => isloading = false);
         popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
       }
     } on SocketException {
-       setState(() => isloading = false);
+      setState(() => isloading = false);
       popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Check Internet Connection', status: false));
     }
   }
@@ -539,9 +485,9 @@ class _UpdateFamilyState extends State<UpdateFamily> {
     if (foundedCountry.isNotEmpty) {
       //var dialCode = phoneWithDialCode.substring(0, '+${foundedCountry["code"]}'.length);
       var newPhoneNumber = phoneWithDialCode.substring('+${foundedCountry["code"]}'.length);
-      phoneController = PhoneController(PhoneNumber(nsn: newPhoneNumber, isoCode: IsoCode.NG));
+      phoneController = PhoneController(PhoneNumber(nsn: newPhoneNumber, isoCode: 'NG'));
     } else {
-       phoneController = PhoneController(null);
+      phoneController = PhoneController(null);
     }
   }
 }

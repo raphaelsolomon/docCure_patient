@@ -28,9 +28,17 @@ class _MyProfileState extends State<MyProfile> {
 
   String index = 'Overview';
   String country = '';
+
   PrescriptionModel? presModel;
+  Map<String, dynamic> appointmentResult = {};
+  Map<String, dynamic> medicalRecordResult = {};
+
   bool isPrescriptionLoading = true;
+  bool isAppointmentLoading = true;
+  bool isMedicalRecordLoading = true;
   final _refreshController = RefreshController(initialRefresh: false);
+  final _refreshAppointController = RefreshController(initialRefresh: false);
+  final _refreshMedicalController = RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -40,6 +48,16 @@ class _MyProfileState extends State<MyProfile> {
       ApiServices.getPrescriptions(_refreshController, box).then((value) => setState(() {
             this.presModel = value;
             isPrescriptionLoading = false;
+          }));
+
+      ApiServices.getAppointments(_refreshAppointController, box).then((value) => setState(() {
+            this.appointmentResult = value;
+            isAppointmentLoading = false;
+          }));
+
+      ApiServices.getAllMedicalRecords(_refreshMedicalController, context, box).then((value) => setState(() {
+            this.medicalRecordResult = value;
+            isMedicalRecordLoading = false;
           }));
     });
     super.initState();
@@ -99,9 +117,18 @@ class _MyProfileState extends State<MyProfile> {
                   ),
                   index == 'Appointments'
                       ? Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: List.generate(5, (index) => appointmentItem()),
+                          child: SmartRefresher(
+                            controller: _refreshAppointController,
+                            enablePullDown: true,
+                            header: WaterDropHeader(waterDropColor: BLUECOLOR.withOpacity(.5)),
+                            onRefresh: () => ApiServices.getAppointments(_refreshAppointController, box).then((value) => setState(() {
+                                  this.appointmentResult = value;
+                                })),
+                            child: ListView.builder(
+                              padding: const EdgeInsets.all(0.0),
+                              itemCount: presModel!.data!.length,
+                              shrinkWrap: true,
+                              itemBuilder: (ctx, index) => appointmentItem(),
                             ),
                           ),
                         )
@@ -109,32 +136,44 @@ class _MyProfileState extends State<MyProfile> {
                           ? Expanded(
                               child: !isPrescriptionLoading
                                   ? Center(child: CircularProgressIndicator(color: BLUECOLOR))
-                                  : ListView.builder(
-                                      padding: const EdgeInsets.all(0.0),
-                                      itemCount: presModel == null ? dummyData().data!.length : presModel!.data!.length,
-                                      shrinkWrap: true,
-                                      itemBuilder: ((context, i) => prescriptionItem(presModel == null ? dummyData().data![i] : presModel!.data![i]))))
+                                  : SmartRefresher(
+                                      controller: _refreshController,
+                                      enablePullDown: true,
+                                      header: WaterDropHeader(waterDropColor: BLUECOLOR.withOpacity(.5)),
+                                      onRefresh: () => ApiServices.getPrescriptions(_refreshController, box).then((value) => setState(() {
+                                            this.presModel = value;
+                                          })),
+                                      child: ListView.builder(padding: const EdgeInsets.all(0.0), itemCount: presModel!.data!.length, shrinkWrap: true, itemBuilder: ((context, i) => prescriptionItem(presModel!.data![i]))),
+                                    ))
                           : index == 'Medical Records'
                               ? Expanded(
+                                  child: SmartRefresher(
+                                  controller: _refreshMedicalController,
+                                  enablePullDown: true,
+                                  header: WaterDropHeader(waterDropColor: BLUECOLOR.withOpacity(.5)),
+                                  onRefresh: () => ApiServices.getAllMedicalRecords(_refreshMedicalController, context, box).then((value) => setState(() {
+                                        this.medicalRecordResult = value;
+                                      })),
                                   child: Stack(
-                                  children: [
-                                    tableInvoice(context),
-                                    Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-                                        child: FloatingActionButton.extended(
-                                          label: Text('Add Record'),
-                                          icon: Icon(
-                                            Icons.add,
-                                            color: Colors.white,
+                                    children: [
+                                      tableInvoice(context),
+                                      Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                                          child: FloatingActionButton.extended(
+                                            label: Text('Add Record'),
+                                            icon: Icon(
+                                              Icons.add,
+                                              color: Colors.white,
+                                            ),
+                                            onPressed: () => showRequestSheet(context, AddMedical()),
+                                            backgroundColor: BLUECOLOR,
                                           ),
-                                          onPressed: () => showRequestSheet(context, AddMedical()),
-                                          backgroundColor: BLUECOLOR,
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ))
                               : index == 'Overview'
                                   ? Expanded(child: patientProfile())

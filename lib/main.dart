@@ -16,12 +16,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:phone_form_field/l10n/generated/phone_field_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -149,25 +147,25 @@ class _MyAppState extends State<MyApp> {
           return false;
         },
         child: GetMaterialApp(
-          localizationsDelegates: const [RefreshLocalizations.delegate, GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate, GlobalCupertinoLocalizations.delegate, PhoneFieldLocalization.delegate],
-          locale: Locale('en'),
-          supportedLocales: const [
-            const Locale('en'),
-            const Locale('zh'),
-            const Locale('ja'),
-            const Locale('uk'),
-            const Locale('it'),
-            const Locale('ru'),
-            const Locale('fr'),
-            const Locale('es'),
-            const Locale('nl'),
-            const Locale('sv'),
-            const Locale('pt'),
-            const Locale('ko'),
-          ],
-          localeListResolutionCallback: (locales, supportedLocales) {
-            return locales!.first;
-          },
+          // localizationsDelegates: const [RefreshLocalizations.delegate, GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate, GlobalCupertinoLocalizations.delegate, PhoneFieldLocalization.delegate],
+          // locale: Locale('en'),
+          // supportedLocales: const [
+          //   const Locale('en'),
+          //   const Locale('zh'),
+          //   const Locale('ja'),
+          //   const Locale('uk'),
+          //   const Locale('it'),
+          //   const Locale('ru'),
+          //   const Locale('fr'),
+          //   const Locale('es'),
+          //   const Locale('nl'),
+          //   const Locale('sv'),
+          //   const Locale('pt'),
+          //   const Locale('ko'),
+          // ],
+          // localeListResolutionCallback: (locales, supportedLocales) {
+          //   return locales!.first;
+          // },
           title: 'Patient',
           defaultTransition: Transition.zoom,
           debugShowCheckedModeBanner: true,

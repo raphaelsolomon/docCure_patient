@@ -26,15 +26,25 @@ class User extends HiveObject {
   @HiveField(10)
   String? dob;
   @HiveField(11)
-  String? bloodgroup;
+  String? user_type;
   @HiveField(12)
   String? address;
   @HiveField(13)
-  String? zip_code;
+  String? google_id;
   @HiveField(14)
   String? created_at;
   @HiveField(15)
   bool? onboarded;
+  @HiveField(16)
+  String? zip_code;
+  @HiveField(17)
+  String? bloodgroup;
+  @HiveField(18)
+  String? weight;
+  @HiveField(19)
+  String? height;
+  @HiveField(20)
+  String? facebook_id;
 
   User(
       {this.uid,
@@ -47,11 +57,16 @@ class User extends HiveObject {
       this.token,
       this.city,
       this.state,
-      this.bloodgroup,
+      this.user_type,
       this.dob,
       this.address,
-      this.zip_code,
+      this.google_id,
       this.created_at,
+      this.bloodgroup,
+      this.zip_code,
+      this.weight,
+      this.height,
+      this.facebook_id,
       this.onboarded});
 
   Map toMap(User user) {
@@ -66,12 +81,17 @@ class User extends HiveObject {
     data["token"] = user.token;
     data["city"] = user.city;
     data["state"] = user.state;
-    data["zip_code"] = user.zip_code;
+    data["google_id"] = user.google_id;
     data["address"] = user.address;
-    data["blood_group"] = user.bloodgroup;
+    data["user_type"] = user.user_type;
     data["created_at"] = user.created_at;
     data["dob"] = user.dob;
     data['onboarded'] = user.onboarded;
+    data["zip_code"] = user.zip_code;
+    data['bloodgroup'] = user.bloodgroup;
+    data['weight'] = user.weight;
+    data['height'] = user.height;
+    data['facebook_id'] = user.facebook_id;
     return data;
   }
 
@@ -87,11 +107,16 @@ class User extends HiveObject {
     token = mapData['token'];
     city = mapData['city'];
     state = mapData['state'];
-    zip_code = mapData['zip_code'];
+    user_type = mapData['user_type'];
     dob = mapData['dob'];
     address = mapData['address'];
-    bloodgroup = mapData['blood_group'];
+    google_id = mapData['google_id'];
     created_at = mapData['created_at'];
     onboarded = mapData['onboarded'];
+    bloodgroup = mapData['bloodgroup'];
+    zip_code = mapData['zip_code'];
+    facebook_id = mapData['facebook_id'];
+    weight = mapData['weight'];
+    height = mapData['height'];
   }
 }

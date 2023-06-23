@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-const String ROOTAPI = 'https://patientapi.gettheskydoctors.com';
+const String ROOTAPI = 'https://api.gettheskydoctors.com';
 
 const String ROOTAGORA = 'https://a71.chat.agora.io/${AGORA_ORGNAME}/${AGORA_APPNAME}/users';
 
@@ -80,20 +80,6 @@ class ApiServices {
     return {};
   }
 
-  static Future<void> changePassword(BuildContext c, token, oldPass, newPass) async {
-    var request = http.Request('PATCH', Uri.parse('${ROOTAPI}/api/patient/change-password'));
-    request.body = '''{\n    "old_password": "${oldPass}",\n    "new_password": "${newPass}"\n}''';
-    request.headers.addAll({'Authorization': 'Bearer $token', 'Content-Type': 'application/json'});
-    http.StreamedResponse response = await request.send();
-    if (response.statusCode == 200) {
-      final parsed = jsonDecode(await response.stream.bytesToString());
-      popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['success']['message'], status: true));
-    } else {
-      final parsed = jsonDecode(await response.stream.bytesToString());
-      popupMessage.dialogMessage(c, popupMessage.serviceMessage(c, parsed['error']['message'], status: false));
-    }
-  }
-
   static Future<void> updateProfile(BuildContext c, token, body) async {
     var request = http.Request('PATCH', Uri.parse('${ROOTAPI}/api/v1/auth/patient/update-profile'));
     request.body = jsonEncode({"url": "http://patient.gettheskydoctors.com", "name": "Uchiha Madara"});
@@ -109,9 +95,9 @@ class ApiServices {
   }
 
   //================================ MEDICAL RECORD SET =================================
-  static Future<Map<String, dynamic>> getAllMedicalRecords(BuildContext c, token) async {
-    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/records/all-medical-records'));
-    request.headers.addAll({'Authorization': '$token'});
+  static Future<Map<String, dynamic>> getAllMedicalRecords(RefreshController controller, BuildContext c, box) async {
+    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/records/all-medical-records'));
+    request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       return response.stream.bytesToString().then((value) {
@@ -140,7 +126,7 @@ class ApiServices {
 
   //================================ DEPENDENTS =================================
   static Future<Map<String, dynamic>> getAllDepends(BuildContext c, token) async {
-    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/dependents/all-dependents'));
+    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/dependents/all-dependents'));
     request.headers.addAll({'Authorization': '$token', 'Content-Type': 'application/json'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -155,7 +141,7 @@ class ApiServices {
   }
 
   static Future addDependents(BuildContext c, token) async {
-    var request = http.Request('POST', Uri.parse('${ROOTAPI}/api/v1/auth/patient/dependents/add-dependent'));
+    var request = http.Request('POST', Uri.parse('${ROOTAPI}/api/dependents/add-dependent'));
     request.body = jsonEncode({"url": "http://patient.gettheskydoctors.com", "name": "John Doe", "picture": "test-picure", "relationship": "test-relationship", "gender": "test-gender", "number": "34567890", "bloodgroup": "A+"});
     request.headers.addAll({'Authorization': 'Bearer $token', 'Content-Type': 'application/json'});
     http.StreamedResponse response = await request.send();
@@ -263,7 +249,7 @@ class ApiServices {
   //======================================PRESCRIPTION================================================================
   static Future<PrescriptionModel> getPrescriptions(RefreshController controller, box) async {
     PrescriptionModel model = new PrescriptionModel();
-    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/prescriptions/all'));
+    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/prescriptions/all'));
     request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -274,5 +260,66 @@ class ApiServices {
     }
     controller.refreshFailed();
     return model;
+  }
+
+  static Future<Map<String, dynamic>> getAppointments(RefreshController controller, box) async {
+    var result = Map<String, dynamic>();
+    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/appointment/view'));
+    request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      controller.refreshCompleted();
+      return response.stream.bytesToString().then((value) {
+        return result = jsonDecode(value);
+      });
+    }
+    controller.refreshFailed();
+    return result;
+  }
+
+  static Future<Map<String, dynamic>> getFavouriteDocs(RefreshController controller, box) async {
+    var result = Map<String, dynamic>();
+    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/favorites/all'));
+    request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      controller.refreshCompleted();
+      return response.stream.bytesToString().then((value) {
+        return result = jsonDecode(value);
+      });
+    }
+    controller.refreshFailed();
+    return result;
+  }
+
+  static Future<Map<String, dynamic>> getFavouriteDocProfile(RefreshController controller, box, String id) async {
+    var result = Map<String, dynamic>();
+    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/favorites/view/${id}'));
+    request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      controller.refreshCompleted();
+      return response.stream.bytesToString().then((value) {
+        return result = jsonDecode(value);
+      });
+    }
+    controller.refreshFailed();
+    return result;
+  }
+
+  static Future<void> changePatientImage(BuildContext context, String file, box) async {
+    var request = http.MultipartRequest('POST', Uri.parse('${ROOTAPI}/api/v1/users/image/upload'));
+    request.files.add(await http.MultipartFile.fromPath('profile_image', '${file}'));
+    request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      String result = await response.stream.bytesToString();
+      final parsed = jsonDecode(result);
+      box.get(USERPATH)!.profilePhoto = parsed['data']['image_url'];
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, parsed['message'], status: true));
+    } else {
+      print(response.reasonPhrase);
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
+    }
   }
 }

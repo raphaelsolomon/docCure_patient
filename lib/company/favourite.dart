@@ -1,11 +1,16 @@
 import 'package:doccure_patient/constant/strings.dart';
+import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
+import 'package:doccure_patient/services/request.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MyFavourite extends StatefulWidget {
   const MyFavourite({Key? key}) : super(key: key);
@@ -16,6 +21,22 @@ class MyFavourite extends StatefulWidget {
 
 class _MyFavouriteState extends State<MyFavourite> {
   String past = 'Medicines';
+  final box = Hive.box<User>(BoxName);
+
+  Map<String, dynamic> favDoctorsResult = {};
+  bool isDoctorsLoading = true;
+  final _refreshDoctorsController = RefreshController(initialRefresh: false);
+
+  @override
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      ApiServices.getFavouriteDocs(_refreshDoctorsController, box).then((value) => setState(() {
+            this.favDoctorsResult = value;
+            isDoctorsLoading = false;
+          }));
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +47,7 @@ class _MyFavouriteState extends State<MyFavourite> {
         color: Color(0xFFf6f6f6),
         child: Column(children: [
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
             width: MediaQuery.of(context).size.width,
             color: BLUECOLOR,
             child: Column(children: [
@@ -37,13 +57,9 @@ class _MyFavouriteState extends State<MyFavourite> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
-                      onTap: () => context.read<HomeController>().onBackPress(),
-                      child: Icon(Icons.arrow_back_ios,
-                          size: 18.0, color: Colors.white)),
+                  GestureDetector(onTap: () => context.read<HomeController>().onBackPress(), child: Icon(Icons.arrow_back_ios, size: 18.0, color: Colors.white)),
                   Flexible(
-                    child: Text('Favourites',
-                        style: getCustomFont(size: 16.0, color: Colors.white)),
+                    child: Text('Favourites', style: getCustomFont(size: 16.0, color: Colors.white)),
                   ),
                   Icon(
                     null,
@@ -61,10 +77,7 @@ class _MyFavouriteState extends State<MyFavourite> {
           ),
           Container(
             padding: const EdgeInsets.all(6.0),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40.0),
-                color: Colors.white,
-                boxShadow: SHADOW),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(40.0), color: Colors.white, boxShadow: SHADOW),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               GestureDetector(
                 onTap: () {
@@ -73,21 +86,12 @@ class _MyFavouriteState extends State<MyFavourite> {
                   });
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 8.0),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50.0),
-                      color:
-                          past == 'Medicines' ? BLUECOLOR : Colors.transparent,
-                      boxShadow: past == 'Medicines' ? SHADOW : null),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(50.0), color: past == 'Medicines' ? BLUECOLOR : Colors.transparent, boxShadow: past == 'Medicines' ? SHADOW : null),
                   child: FittedBox(
                     child: Text(
                       'Medicines',
-                      style: getCustomFont(
-                          size: 13.0,
-                          color: past == 'Medicines'
-                              ? Colors.white
-                              : Colors.black),
+                      style: getCustomFont(size: 13.0, color: past == 'Medicines' ? Colors.white : Colors.black),
                     ),
                   ),
                 ),
@@ -99,19 +103,12 @@ class _MyFavouriteState extends State<MyFavourite> {
                   });
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 8.0),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50.0),
-                      color: past == 'Doctors' ? BLUECOLOR : Colors.transparent,
-                      boxShadow: past == 'Doctors' ? SHADOW : null),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(50.0), color: past == 'Doctors' ? BLUECOLOR : Colors.transparent, boxShadow: past == 'Doctors' ? SHADOW : null),
                   child: FittedBox(
                     child: Text(
                       'Doctors',
-                      style: getCustomFont(
-                          size: 13.0,
-                          color:
-                              past == 'Doctors' ? Colors.white : Colors.black),
+                      style: getCustomFont(size: 13.0, color: past == 'Doctors' ? Colors.white : Colors.black),
                     ),
                   ),
                 ),
@@ -123,21 +120,12 @@ class _MyFavouriteState extends State<MyFavourite> {
                   });
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 8.0),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50.0),
-                      color:
-                          past == 'Hospitals' ? BLUECOLOR : Colors.transparent,
-                      boxShadow: past == 'Hospitals' ? SHADOW : null),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(50.0), color: past == 'Hospitals' ? BLUECOLOR : Colors.transparent, boxShadow: past == 'Hospitals' ? SHADOW : null),
                   child: FittedBox(
                     child: Text(
                       'Hospitals',
-                      style: getCustomFont(
-                          size: 13.0,
-                          color: past == 'Hospitals'
-                              ? Colors.white
-                              : Colors.black),
+                      style: getCustomFont(size: 13.0, color: past == 'Hospitals' ? Colors.white : Colors.black),
                     ),
                   ),
                 ),
@@ -149,25 +137,28 @@ class _MyFavouriteState extends State<MyFavourite> {
           ),
           past == 'Doctors'
               ? Expanded(
-                  child: ListView.builder(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 0.0, vertical: 0.0),
-                      itemCount: 5,
-                      shrinkWrap: true,
-                      itemBuilder: (ctx, i) => findDoctors(context)))
+                  child: isDoctorsLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : SmartRefresher(
+                          controller: _refreshDoctorsController,
+                          enablePullDown: true,
+                          header: WaterDropHeader(waterDropColor: BLUECOLOR.withOpacity(.5)),
+                          onRefresh: () => ApiServices.getAppointments(_refreshDoctorsController, box).then((value) => setState(() {
+                                this.favDoctorsResult = value;
+                              })),
+                          child: ListView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+                            itemCount: 5,
+                            shrinkWrap: true,
+                            itemBuilder: (ctx, i) => findDoctors(context),
+                          )))
               : past == 'Medicines'
                   ? Expanded(
                       child: GridView.builder(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15.0, vertical: 10.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: returnCrossAxis(size.width),
-                                  mainAxisSpacing: 10.0,
-                                  mainAxisExtent: 210.0,
-                                  crossAxisSpacing: 10.0),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: returnCrossAxis(size.width), mainAxisSpacing: 10.0, mainAxisExtent: 210.0, crossAxisSpacing: 10.0),
                           itemCount: 10,
                           itemBuilder: (ctx, i) => productItem(context)),
                     )
@@ -179,13 +170,7 @@ class _MyFavouriteState extends State<MyFavourite> {
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(
-              color: Colors.black12,
-              spreadRadius: 1.0,
-              blurRadius: 10.0,
-              offset: Offset(0.0, 1.0))
-        ], color: Colors.white, borderRadius: BorderRadius.circular(13.0)),
+        decoration: BoxDecoration(boxShadow: [BoxShadow(color: Colors.black12, spreadRadius: 1.0, blurRadius: 10.0, offset: Offset(0.0, 1.0))], color: Colors.white, borderRadius: BorderRadius.circular(13.0)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -210,17 +195,11 @@ class _MyFavouriteState extends State<MyFavourite> {
                   children: [
                     Text(
                       'Dr. Ruby Perrln',
-                      style: GoogleFonts.poppins(
-                          color: Colors.black,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w600),
+                      style: GoogleFonts.poppins(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.w600),
                     ),
                     Text(
                       'MDS - periodontology, BDS',
-                      style: GoogleFonts.poppins(
-                          color: Colors.black,
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400),
+                      style: GoogleFonts.poppins(color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w400),
                     ),
                     const SizedBox(
                       height: 4.0,
@@ -251,20 +230,14 @@ class _MyFavouriteState extends State<MyFavourite> {
                               ),
                               Text(
                                 'Dentist',
-                                style: GoogleFonts.poppins(
-                                    color: Colors.lightBlue,
-                                    fontSize: 13.0,
-                                    fontWeight: FontWeight.w400),
+                                style: GoogleFonts.poppins(color: Colors.lightBlue, fontSize: 13.0, fontWeight: FontWeight.w400),
                               ),
                             ],
                           ),
                         ),
                         Text(
                           '9+ Exp',
-                          style: GoogleFonts.poppins(
-                              color: Colors.redAccent,
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w400),
+                          style: GoogleFonts.poppins(color: Colors.redAccent, fontSize: 14.0, fontWeight: FontWeight.w400),
                         ),
                       ],
                     ),
@@ -298,10 +271,7 @@ class _MyFavouriteState extends State<MyFavourite> {
                               ),
                               Text(
                                 '(47)',
-                                style: GoogleFonts.poppins(
-                                    color: Colors.black,
-                                    fontSize: 13.0,
-                                    fontWeight: FontWeight.w400),
+                                style: GoogleFonts.poppins(color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
                               ),
                             ],
                           ),
@@ -315,10 +285,7 @@ class _MyFavouriteState extends State<MyFavourite> {
                             ),
                             Text(
                               'Florida, USA',
-                              style: GoogleFonts.poppins(
-                                  color: Colors.black,
-                                  fontSize: 13.0,
-                                  fontWeight: FontWeight.w400),
+                              style: GoogleFonts.poppins(color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
                             ),
                           ],
                         ),
@@ -347,8 +314,7 @@ class _MyFavouriteState extends State<MyFavourite> {
                         borderRadius: BorderRadius.circular(100.0),
                         shadowColor: Colors.grey,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 5.0, vertical: 5.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
                           child: Icon(
                             Icons.thumb_up,
                             size: 12.0,
@@ -361,10 +327,7 @@ class _MyFavouriteState extends State<MyFavourite> {
                       ),
                       Text(
                         '98%',
-                        style: GoogleFonts.poppins(
-                            color: Colors.black,
-                            fontSize: 14.5,
-                            fontWeight: FontWeight.w400),
+                        style: GoogleFonts.poppins(color: Colors.black, fontSize: 14.5, fontWeight: FontWeight.w400),
                       ),
                     ],
                   ),
@@ -377,8 +340,7 @@ class _MyFavouriteState extends State<MyFavourite> {
                       borderRadius: BorderRadius.circular(100.0),
                       shadowColor: Colors.grey,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 5.0, vertical: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
                         child: Icon(
                           Icons.money,
                           size: 12.0,
@@ -391,10 +353,7 @@ class _MyFavouriteState extends State<MyFavourite> {
                     ),
                     Text(
                       '\$300 - \$1000',
-                      style: GoogleFonts.poppins(
-                          color: Colors.black,
-                          fontSize: 14.5,
-                          fontWeight: FontWeight.w400),
+                      style: GoogleFonts.poppins(color: Colors.black, fontSize: 14.5, fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),
@@ -424,40 +383,30 @@ class _MyFavouriteState extends State<MyFavourite> {
         ),
       );
 
-  Widget getProfileButton(context, callBack, {text = 'View Profile'}) =>
-      GestureDetector(
+  Widget getProfileButton(context, callBack, {text = 'View Profile'}) => GestureDetector(
         onTap: () => callBack(),
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: 40.0,
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(width: 1.0, color: BLUECOLOR),
-              borderRadius: BorderRadius.circular(7.0)),
+          decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 1.0, color: BLUECOLOR), borderRadius: BorderRadius.circular(7.0)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
                 text,
-                style: GoogleFonts.poppins(
-                    fontSize: 15.0,
-                    color: BLUECOLOR,
-                    fontWeight: FontWeight.normal),
+                style: GoogleFonts.poppins(fontSize: 15.0, color: BLUECOLOR, fontWeight: FontWeight.normal),
               ),
             ),
           ),
         ),
       );
 
-  Widget getAppointment(context, callBack,
-          {color = BLUECOLOR, text = 'Search Now'}) =>
-      GestureDetector(
+  Widget getAppointment(context, callBack, {color = BLUECOLOR, text = 'Search Now'}) => GestureDetector(
         onTap: () => callBack(),
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: 40.0,
-          decoration: BoxDecoration(
-              color: color, borderRadius: BorderRadius.circular(7.0)),
+          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(7.0)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
@@ -465,10 +414,7 @@ class _MyFavouriteState extends State<MyFavourite> {
                 child: Text(
                   text,
                   maxLines: 1,
-                  style: GoogleFonts.poppins(
-                      fontSize: 13.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.normal),
+                  style: GoogleFonts.poppins(fontSize: 13.0, color: Colors.white, fontWeight: FontWeight.normal),
                 ),
               ),
             ),

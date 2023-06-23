@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:doccure_patient/model/referral/referral.dart';
+import 'dart:io';
+import 'package:doccure_patient/auth/complete_register.dart';
 import 'package:doccure_patient/resources/firebase_method.dart';
 import 'package:doccure_patient/auth/forgotpass.dart';
 import 'package:doccure_patient/auth/register.dart';
@@ -34,23 +35,6 @@ class _AuthLoginState extends State<AuthLogin> {
   final password = TextEditingController();
   final box = Hive.box<User>(BoxName);
   final refbox = Hive.box(ReferralBox);
-  User user = User(
-      uid: '8et7fugcsiahicsa',
-      name: 'Uchiha Itachi',
-      email: 'phoenixk545@gmail.com',
-      phone: '+2349067618740',
-      country: '161',
-      token: 'Bearer ',
-      profilePhoto: 'https://cdn.britannica.com/52/219152-050-D500476A/Chinese-film-actor-Jet-Li-2008.jpg',
-      verified: true,
-      dob: '10-04-1998',
-      city: 'Agege',
-      state: 'Lagos',
-      address: '1278, Bolton, Manchester',
-      bloodgroup: 'O-',
-      zip_code: '2344301',
-      created_at: '23-05-2023',
-      onboarded: false);
 
   @override
   void initState() {
@@ -220,7 +204,6 @@ class _AuthLoginState extends State<AuthLogin> {
                 children: [
                   Flexible(
                     child: GestureDetector(
-                      onTap: () => box.put(USERPATH, user).then((value) => Get.to(() => DashBoard())),
                       child: Text(
                         'Don\'t have an account?',
                         style: GoogleFonts.poppins(fontSize: 15.0, color: Colors.black45, fontWeight: FontWeight.normal),
@@ -290,93 +273,100 @@ class _AuthLoginState extends State<AuthLogin> {
       );
 
   void validDate() async {
-    box.put(USERPATH, user).then((value) => Get.offAll(() => DashBoard()));
-    // if (password.text.trim().isEmpty) {
-    //   popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'password required'));
-    //   return;
-    // }
+    if (password.text.trim().isEmpty) {
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'password required'));
+      return;
+    }
 
-    // if (isEmail && email.text.trim().isEmpty) {
-    //   popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'E-mail is required'));
-    //   return;
-    // }
+    if (isEmail && email.text.trim().isEmpty) {
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'E-mail is required'));
+      return;
+    }
 
-    // if (isEmail && !email.text.trim().isEmail) {
-    //   popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'E-mail is not valid'));
-    //   return;
-    // }
+    if (isEmail && !email.text.trim().isEmail) {
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'E-mail is not valid'));
+      return;
+    }
 
-    // if (!isEmail && phoneController.value == null) {
-    //   popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Phone Nuber is required'));
-    //   return;
-    // }
+    if (!isEmail && phoneController.value == null) {
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Phone Nuber is required'));
+      return;
+    }
 
-    // setState(() {
-    //   isLoading = true;
-    // });
+    setState(() {
+      isLoading = true;
+    });
 
-    // try {
-    //   final res = await http.post(Uri.parse('${ROOTAPI}/api/user/login'),
-    //       body: isEmail
-    //           ? {
-    //               'email': email.text.trim(),
-    //               'password': password.text.trim(),
-    //             }
-    //           : {
-    //               'phone': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
-    //               'password': password.text.trim(),
-    //             });
-    //   if (res.statusCode == 200) {
-    //     final parsed = jsonDecode(res.body);
-    //     Map<String, dynamic> result = await ApiServices.getProfile(parsed['data']['access_token']);
-    //     User user = User(
-    //         uid: '${result['data']['user_id']}',
-    //         name: result['data']['name'],
-    //         email: result['data']['email'],
-    //         phone: result['data']['phone'],
-    //         country: result['data']['country'],
-    //         token: 'Bearer ${parsed['data']['access_token']}',
-    //         profilePhoto: result['data']['profile_picture'],
-    //         verified: result['data']['is_verified'] == '1',
-    //         dob: result['data']['dob'],
-    //         city: result['data']['city'],
-    //         state: result['data']['state'],
-    //         address: result['data']['address'],
-    //         bloodgroup: result['data']['blood_group'],
-    //         zip_code: result['data']['zip_code'],
-    //         created_at: result['data']['created_at'],
-    //         onboarded: parsed['data']['onboarded'] == '1');
-    //     box.put(USERPATH, user).then((value) => getReferral(parsed['data']['access_token']));
-    //   } else {
-    //     setState(() {
-    //       isLoading = false;
-    //     });
-    //     final parsed = jsonDecode(res.body);
-    //     popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, parsed['message'], status: false));
-    //   }
-    // } on SocketException {
-    //   setState(() {
-    //     isLoading = false;
-    //   });
-    //   popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Please check internect connection', status: false));
-    // } finally {
-    //   setState(() {
-    //     isLoading = false;
-    //   });
-    // }
-  }
-
-  getReferral(token) async {
-    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/referral/code'));
-    request.headers.addAll({'Authorization': 'Bearer ' + token});
-    http.StreamedResponse response = await request.send();
-    if (response.statusCode == 200) {
-      response.stream.bytesToString().then((value) {
-        final ref = ReferralModel.fromJson(jsonDecode(value));
-        refbox.put(USERPATH, jsonEncode(ref.toJson())).then((value) => Get.offAll(() => DashBoard()));
+    try {
+      final res = await http.post(Uri.parse('${ROOTAPI}/api/v1/login'),
+          body: isEmail
+              ? {
+                  'email': email.text.trim(),
+                  'password': password.text.trim(),
+                }
+              : {
+                  'phone_number': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+                  'password': password.text.trim(),
+                });
+      if (res.statusCode == 200) {
+        final parsed = jsonDecode(res.body);
+        //Map<String, dynamic> result = await ApiServices.getProfile(parsed['data']['token']);
+        User user = User(
+            uid: '${parsed['data']['id']}',
+            name: '${parsed['data']['first_name']} ${parsed['data']['last_name']}',
+            email: parsed['data']['email'],
+            phone: parsed['data']['phone'] ?? '',
+            country: parsed['data']['country_id'] ?? '',
+            token: 'Bearer ${parsed['data']['token']}',
+            profilePhoto: parsed['data']['profile_image'] ?? '',
+            verified: parsed['data']['is_verified'] == '1',
+            dob: parsed['data']['dob'] ?? '',
+            city: parsed['data']['city_id'] ?? '',
+            state: parsed['data']['state_id_id'] ?? '',
+            address: parsed['data']['address'] ?? '',
+            user_type: parsed['data']['user_type'],
+            google_id: parsed['data']['google_id'] ?? '',
+            facebook_id: parsed['data']['facebook_id'] ?? '',
+            created_at: parsed['data']['created_at'] ?? '',
+            weight: parsed['data']['weight'] ?? '',
+            height: parsed['data']['height'] ?? '',
+            bloodgroup: '',
+            zip_code: '',
+            onboarded: parsed['data']['onboarded'] == 0 ? false : true);
+        if (parsed['data']['onboarded'] == 0) {
+          box.put(USERPATH, user).then((value) => Get.offAll(() => CompleteOnboarded()));
+        } else
+          box.put(USERPATH, user).then((value) => Get.offAll(() => DashBoard()));
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        final parsed = jsonDecode(res.body);
+        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, parsed['message'], status: false));
+      }
+    } on SocketException {
+      setState(() {
+        isLoading = false;
       });
-    } else {
-      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Please check internect connection', status: false));
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
+
+  // getReferral(token) async {
+  //   var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/referral/code'));
+  //   request.headers.addAll({'Authorization': 'Bearer ' + token});
+  //   http.StreamedResponse response = await request.send();
+  //   if (response.statusCode == 200) {
+  //     response.stream.bytesToString().then((value) {
+  //       final ref = ReferralModel.fromJson(jsonDecode(value));
+  //       refbox.put(USERPATH, jsonEncode(ref.toJson())).then((value) => Get.offAll(() => DashBoard()));
+  //     });
+  //   } else {
+  //     popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
+  //   }
+  // }
 }

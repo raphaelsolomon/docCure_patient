@@ -126,7 +126,7 @@ class SupportPage extends StatelessWidget {
                   key: Key('phone-field'),
                   controller: ctl, // controller & initialValue value
                   shouldFormat: true, // default
-                  defaultCountry: IsoCode.NG, // default
+                  defaultCountry: 'NG', // default
                   style: getCustomFont(size: 14.0, color: Colors.black45),
                   autovalidateMode: AutovalidateMode.disabled,
                   decoration: InputDecoration(
@@ -136,9 +136,6 @@ class SupportPage extends StatelessWidget {
                       border: OutlineInputBorder(borderSide: BorderSide.none) // default to UnderlineInputBorder(),
                       ),
                   validator: null,
-                  isCountryChipPersistent: false, // default
-                  isCountrySelectionEnabled: true, // default
-                  countrySelectorNavigator: CountrySelectorNavigator.dialog(),
                   showFlagInInput: true, // default
                   flagSize: 15, // default
                   autofillHints: [AutofillHints.telephoneNumber], // default to null

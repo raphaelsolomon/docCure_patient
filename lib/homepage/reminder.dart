@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/model/person/user.dart';
@@ -14,6 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:http/http.dart' as http;
+import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
 
 class MyReminder extends StatefulWidget {
   const MyReminder({Key? key}) : super(key: key);
@@ -39,10 +41,10 @@ class _MyReminderState extends State<MyReminder> {
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      // getReminders(_refreshController).then((value) => setState(() {
-      //       this.reminderModel = value;
-      //       isLoading = false;
-      //     }));
+      getReminders(_refreshController).then((value) => setState(() {
+            this.reminderModel = value;
+            isLoading = false;
+          }));
     });
     super.initState();
   }
@@ -113,7 +115,7 @@ class _MyReminderState extends State<MyReminder> {
                                   itemCount: reminderModel!.data!.length,
                                   itemBuilder: (ctx, i) {
                                     List<String> listdays = [];
-                                    reminderModel!.data![i].reminderDates!.forEach((element) => {listdays.add(element.date!)});
+                                    reminderModel!.data![i].reminderDates!.forEach((element) => listdays.add(element.date!));
                                     return Container(
                                       width: MediaQuery.of(context).size.width,
                                       margin: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 5.0),
@@ -448,34 +450,34 @@ class _MyReminderState extends State<MyReminder> {
       reminderModel!.data!.add(reminder);
       counter = 0;
     });
-    // try {
-    //   final response = await http.Client().post(Uri.parse('${ROOTAPI}/api/v1/auth/patient/reminders/add'),
-    //       body: jsonEncode({
-    //         "pill_name": "Chlorophinecol",
-    //         "reminder_dates": [
-    //           {"date": "Monday"},
-    //           {"date": "Tuesday"},
-    //           {"date": "Friday"},
-    //           {"date": "Sunday"}
-    //         ],
-    //         "frequency": "Daily",
-    //         "no_of_times": "2"
-    //       }),
-    //       headers: {'Authorization': '${box.get(USERPATH)!.token}', 'Content-Type': 'application/json'});
-    //   if (response.statusCode == 200) {
-    //     return getReminders(_refreshController).then((value) => setState(() {
-    //           this.reminderModel = value;
-    //           isLoading = false;
-    //           return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, jsonDecode(response.body)['message'], status: true));
-    //         }));
-    //   }
-    //   popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
-    // } on SocketException {
-    // } finally {
-    //   setState(() {
-    //     addButtonLoading = false;
-    //   });
-    // }
+    try {
+      final response = await http.Client().post(Uri.parse('${ROOTAPI}/api/v1/auth/patient/reminders/add'),
+          body: jsonEncode({
+            "pill_name": "Chlorophinecol",
+            "reminder_dates": [
+              {"date": "Monday"},
+              {"date": "Tuesday"},
+              {"date": "Friday"},
+              {"date": "Sunday"}
+            ],
+            "frequency": "Daily",
+            "no_of_times": "2"
+          }),
+          headers: {'Authorization': '${box.get(USERPATH)!.token}', 'Content-Type': 'application/json'});
+      if (response.statusCode == 200) {
+        return getReminders(_refreshController).then((value) => setState(() {
+              this.reminderModel = value;
+              isLoading = false;
+              return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, jsonDecode(response.body)['message'], status: true));
+            }));
+      }
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
+    } on SocketException {
+    } finally {
+      setState(() {
+        addButtonLoading = false;
+      });
+    }
   }
 
   onDelete(List<ReminderData>? data, int i) async {

@@ -6,6 +6,7 @@ import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
 import 'package:doccure_patient/services/request.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -14,16 +15,17 @@ import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
 
 import '../model/person/user.dart';
 
-class AuthChangePass extends StatefulWidget {
-  const AuthChangePass({Key? key}) : super(key: key);
+class ResetPassword extends StatefulWidget {
+  final String username;
+  const ResetPassword(this.username, {Key? key}) : super(key: key);
 
   @override
-  State<AuthChangePass> createState() => _AuthChangePassState();
+  State<ResetPassword> createState() => _ResetPasswordState();
 }
 
-class _AuthChangePassState extends State<AuthChangePass> {
+class _ResetPasswordState extends State<ResetPassword> {
   bool isloading = false;
-  final oldPass = TextEditingController();
+  final token = TextEditingController();
   final newPass = TextEditingController();
   final confirmPass = TextEditingController();
   final box = Hive.box<User>(BoxName);
@@ -90,9 +92,9 @@ class _AuthChangePassState extends State<AuthChangePass> {
                   // const SizedBox(
                   //   height: 50.0,
                   // ),
-                  getRegisterPasswordForm(
-                    ctl: oldPass,
-                    hint: 'Old Password',
+                  getRegisterForm(
+                    ctl: token,
+                    hint: 'Token',
                   ),
                   const SizedBox(
                     height: 10.0,
@@ -129,8 +131,8 @@ class _AuthChangePassState extends State<AuthChangePass> {
   }
 
   void onExecute() async {
-    if (oldPass.text.trim().isEmpty) {
-      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Old password required'));
+    if (token.text.trim().isEmpty) {
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Token required'));
       return;
     }
 
@@ -154,9 +156,11 @@ class _AuthChangePassState extends State<AuthChangePass> {
     });
 
     try {
-      var request = http.Request('POST', Uri.parse('${ROOTAPI}/api/v1/change/password'));
-      request.body = json.encode({"current_password": oldPass.text.trim(), "new_password": newPass.text.trim(), 'confirm_new_password': confirmPass.text.trim()});
-      request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}', 'Content-Type': 'application/json'});
+      var request = http.Request('POST', Uri.parse('${ROOTAPI}/api/v1/reset/password'));
+      if (widget.username.isEmail)
+        request.body = json.encode({"token": token.text.trim(), "password": newPass.text.trim(), 'password_confirmation': confirmPass.text.trim(), "email": widget.username});
+      else
+        request.body = json.encode({"token": token.text.trim(), "password": newPass.text.trim(), 'password_confirmation': confirmPass.text.trim(), "phone_number": widget.username});
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
         response.stream.bytesToString().then((value) {
@@ -179,7 +183,7 @@ class _AuthChangePassState extends State<AuthChangePass> {
       popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Check Internet Connection', status: false));
     } finally {
       setState(() {
-        oldPass.clear();
+        token.clear();
         newPass.clear();
         confirmPass.clear();
       });

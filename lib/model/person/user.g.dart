@@ -27,12 +27,17 @@ class UserAdapter extends TypeAdapter<User> {
       token: fields[7] as String?,
       city: fields[8] as String?,
       state: fields[9] as String?,
-      bloodgroup: fields[11] as String?,
+      user_type: fields[11] as String?,
       dob: fields[10] as String?,
       address: fields[12] as String?,
-      zip_code: fields[13] as String?,
+      google_id: fields[13] as String?,
       created_at: fields[14] as String?,
       onboarded: fields[15] as bool?,
+      zip_code: fields[16] as String?,
+      bloodgroup: fields[17] as String?,
+      weight: fields[18] as String?,
+      height: fields[19] as String?,
+      facebook_id: fields[20] as String?,
     );
   }
 
@@ -63,15 +68,25 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(10)
       ..write(obj.dob)
       ..writeByte(11)
-      ..write(obj.bloodgroup)
+      ..write(obj.user_type)
       ..writeByte(12)
       ..write(obj.address)
       ..writeByte(13)
-      ..write(obj.zip_code)
+      ..write(obj.google_id)
       ..writeByte(14)
       ..write(obj.created_at)
       ..writeByte(15)
-      ..write(obj.onboarded);
+      ..write(obj.onboarded)
+      ..writeByte(16)
+      ..write(obj.zip_code)
+      ..writeByte(17)
+      ..write(obj.bloodgroup)
+      ..writeByte(18)
+      ..write(obj.weight)
+      ..writeByte(19)
+      ..write(obj.height)
+      ..writeByte(20)
+      ..write(obj.facebook_id);
   }
 
   @override
