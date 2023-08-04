@@ -1,4 +1,6 @@
+import 'package:doccure_patient/homepage/dashboard.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -23,10 +25,12 @@ class _CompleteOnboardedState extends State<CompleteOnboarded> {
       //..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
-          onProgress: (int progress) {
-            // Update loading bar.
+          onProgress: (int progress) {},
+          onPageStarted: (String url) {
+            if (url == 'https://gettheskydoctors.com/home/patient-dashboard.html') {
+              Get.offAll(() => DashBoard());
+            }
           },
-          onPageStarted: (String url) {},
           onPageFinished: (String url) {},
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {

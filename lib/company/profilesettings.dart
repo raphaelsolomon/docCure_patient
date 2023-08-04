@@ -12,7 +12,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:phone_form_field/phone_form_field.dart';
+import 'package:phone_form_field/phone_form_field.dart' as phone_number;
+import 'package:phone_number/phone_number.dart';
+import '../resuable/phoen_form_field.dart' as phone_form_field;
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
@@ -30,7 +32,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   File image = File('');
   var country_id = '';
   var bloodGroup = '';
-  PhoneController phoneController = PhoneController(null);
+  phone_number.PhoneController phoneController = phone_number.PhoneController(null);
 
   final address = TextEditingController();
   final city = TextEditingController();
@@ -43,8 +45,12 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   var _selectedDate = DateTime.now();
   final box = Hive.box<User>(BoxName);
 
-  final fullname = TextEditingController();
-  var dateOfBirth = '';
+  final firstname = TextEditingController();
+  final lastname = TextEditingController();
+  final middle = TextEditingController();
+  final about_me = TextEditingController();
+
+  var gender = '';
 
   @override
   void initState() {
@@ -54,9 +60,17 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     super.initState();
   }
 
-  void getFrom() {
+  void getFrom() async {
+    if (box.get(USERPATH)!.phone != null || box.get(USERPATH)!.phone!.isNotEmpty) {
+      var phoneNumberValue = await PhoneNumberUtil().parse(box.get(USERPATH)!.phone!.startsWith('+') ? box.get(USERPATH)!.phone! : '+${box.get(USERPATH)!.phone!}');
+      phoneController = phone_number.PhoneController(phone_number.PhoneNumber(isoCode: phoneNumberValue.regionCode, nsn: phoneNumberValue.nationalNumber));
+    }
+
     setState(() {
-      fullname.text = box.get(USERPATH)!.name!;
+      firstname.text = box.get(USERPATH)!.name!.split(' ')[0] ?? '';
+      lastname.text = box.get(USERPATH)!.name!.split(' ')[1] ?? '';
+      middle.text = box.get(USERPATH)!.name!.split(' ')[2] ?? '';
+
       email.text = box.get(USERPATH)!.email == null ? '' : box.get(USERPATH)!.email!;
       address.text = box.get(USERPATH)!.address == null ? '' : box.get(USERPATH)!.address!;
       city.text = box.get(USERPATH)!.city == null ? '' : box.get(USERPATH)!.city!;
@@ -65,6 +79,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
       var i = countryList.indexWhere((element) => '${element['id']}' == '${box.get(USERPATH)!.country}');
       country.text = countryList.elementAt(i)['name'];
       country_id = '${countryList.elementAt(i)['id']}';
+      gender = box.get(USERPATH)!.gender ?? 'Rather Not Say';
+      about_me.text = box.get(USERPATH)!.about_me ?? '';
       bloodGroup = box.get(USERPATH)!.bloodgroup == null ? 'AA' : box.get(USERPATH)!.bloodgroup!;
       _selectedDate = box.get(USERPATH)!.dob == null ? DateTime.now() : DateTime.parse(box.get(USERPATH)!.dob!);
     });
@@ -126,7 +142,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                       children: [
                         Text(
                           'Basic Information',
-                          style: getCustomFont(size: 16.0, color: Colors.black),
+                          style: getCustomFont(size: 14.0, color: Colors.black),
                         ),
                         const SizedBox(
                           height: 10.0,
@@ -142,8 +158,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(100.0),
                                   child: image.path == ''
-                                      ? Image.asset(
-                                          'assets/imgs/1.png',
+                                      ? Image.network(
+                                          box.get(USERPATH)!.profilePhoto!.replaceAll('http://localhost:8003', ROOTAPI),
                                           width: 100.0,
                                           height: 100.0,
                                           fit: BoxFit.contain,
@@ -160,7 +176,15 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                         const SizedBox(
                           height: 15.0,
                         ),
-                        getFormBox('Full Name', '', ctl: fullname),
+                        getFormBox('First Name', '', ctl: firstname),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        getFormBox('Last Name', '', ctl: lastname),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        getFormBox('Middle Name', '', ctl: middle),
                         const SizedBox(
                           height: 10.0,
                         ),
@@ -188,11 +212,20 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                         const SizedBox(
                           height: 10.0,
                         ),
-                        getFormBox('Email ID', '', ctl: email),
+                        dropDown(
+                          ['Male', 'Female', 'Rather Not Say'],
+                          text: 'Gender',
+                          label: gender,
+                          callBack: (s) => gender = s,
+                        ),
                         const SizedBox(
                           height: 10.0,
                         ),
-                        phoneNumber('Mobile', '', ctl: phoneController),
+                        getFormBox('Email Address', '', ctl: email),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        phoneNumber('Mobile', '', phoneController),
                         const SizedBox(
                           height: 10.0,
                         ),
@@ -212,7 +245,11 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                         const SizedBox(
                           height: 10.0,
                         ),
-                        getFormBox('Zip Code', '', ctl: zip_code),
+                        // getFormBox('Zip Code', '', ctl: zip_code),
+                        // const SizedBox(
+                        //   height: 20.0,
+                        // ),
+                        getRichFormBox('About me', '', ctl: about_me),
                         const SizedBox(
                           height: 20.0,
                         ),
@@ -223,7 +260,10 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                                     child: CircularProgressIndicator(
                                   color: BLUECOLOR,
                                 )))
-                            : getButton(context, () => onExecute(), 'Done'),
+                            : Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                child: getButton(context, () => onExecute(), 'Done'),
+                              ),
                         const SizedBox(
                           height: 20.0,
                         ),
@@ -242,25 +282,24 @@ class _ProfileSettingsState extends State<ProfileSettings> {
       isloading = true;
     });
 
-    print(country_id);
-
     try {
-      var request = http.Request('PATCH', Uri.parse('${ROOTAPI}/api/v1/auth/patient/update-profile'));
+      var request = http.Request('PUT', Uri.parse('${ROOTAPI}/api/v1/users/${box.get(USERPATH)!.uid}'));
       request.body = json.encode({
-        "email": email.text.trim(),
-        "name": fullname.text.trim(),
-        "phone": phoneController.value == null ? '' : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+        "first_name": "${firstname.text.trim()}",
+        "last_name": "${lastname.text.trim()}",
+        "middle_name": "${middle.text.trim()}",
+        "email": "${email.text.trim()}",
+        "phone_number": phoneController.value == null ? '' : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+        "address": "${address.text}",
+        "state_id_id": 3,
+        "country_id": 1,
+        "city_id": 2,
         "dob": DateFormat('yyyy-MM-dd').format(_selectedDate),
-        "blood_group": bloodGroup,
-        "address": address.text,
-        "city": city.text,
-        "state": state.text,
-        "country": country_id,
-        "zip_code": zip_code.text,
-        "profile_picture": box.get(USERPATH)!.profilePhoto
+        "age": "10",
+        "about_me": about_me.text.trim(),
+        "gender": "${gender}",
       });
       request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}', 'Content-Type': 'application/json'});
-
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
         response.stream.bytesToString().then((value) {
@@ -268,27 +307,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
             isloading = false;
           });
           final result = jsonDecode(value);
-          User user = User(
-            uid: '${result['data']['id']}',
-            name: result['data']['name'],
-            email: result['data']['email'],
-            phone: result['data']['phone'],
-            country: result['data']['country'],
-            token: '${box.get(USERPATH)!.token}',
-            profilePhoto: result['data']['profile_picture'],
-            verified: result['data']['is_verified'] == '1',
-            dob: result['data']['dob'],
-            city: result['data']['city'],
-            state: result['data']['state'],
-            address: result['data']['address'],
-            bloodgroup: result['data']['blood_group'],
-            zip_code: result['data']['zip_code'],
-            created_at: result['data']['created_at'],
-          );
-          box.put(USERPATH, user).then((value) {
-            getFrom();
-            popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, result['message'], status: true));
-          });
+          print(result);
+          popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, result['message'], status: true));
         });
       } else {
         setState(() {
@@ -301,6 +321,40 @@ class _ProfileSettingsState extends State<ProfileSettings> {
         isloading = false;
       });
       popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Check Internet Connection', status: false));
+    } finally {
+      var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/users/${box.get(USERPATH)!.uid}'));
+      request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}', 'Content-Type': 'application/json'});
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        response.stream.bytesToString().then((value) {
+          final parsed = jsonDecode(value);
+          User user = User(
+              uid: '${parsed['data']['id']}',
+              name: '${parsed['data']['first_name']} ${parsed['data']['last_name'] ?? ''} ${parsed['data']['middle_name'] ?? ''}',
+              email: parsed['data']['email'],
+              phone: parsed['data']['phone_number'] ?? '',
+              country: parsed['data']['country_id'] ?? '',
+              token: '${box.get(USERPATH)!.token}',
+              profilePhoto: parsed['data']['profile_image'] ?? '',
+              dob: parsed['data']['dob'] ?? '',
+              city: parsed['data']['city_id'] ?? '',
+              state: parsed['data']['state_id_id'] ?? '',
+              address: parsed['data']['address'] ?? '',
+              gender: parsed['data']['gender'],
+              google_id: parsed['data']['google_id'] ?? '',
+              facebook_id: parsed['data']['facebook_id'] ?? '',
+              created_at: parsed['data']['created_at'] ?? '',
+              weight: parsed['data']['weight'] ?? '',
+              height: parsed['data']['height'] ?? '',
+              bloodgroup: '',
+              zip_code: '',
+              about_me: about_me.text.trim(),
+              onboarded: parsed['data']['onboarded'] == 0 ? false : true);
+          box.put(USERPATH, user).then((value) {
+            getFrom();
+          });
+        });
+      }
     }
   }
 
@@ -382,13 +436,55 @@ class _ProfileSettingsState extends State<ProfileSettings> {
               children: [
                 Flexible(
                   child: TextField(
-                    style: getCustomFont(size: 14.0, color: Colors.black45),
+                    style: getCustomFont(size: 13.0, color: Colors.black45),
                     maxLines: 1,
                     controller: ctl,
                     decoration: InputDecoration(
                         hintText: hint,
                         contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        hintStyle: getCustomFont(size: 14.0, color: Colors.black45),
+                        hintStyle: getCustomFont(size: 13.0, color: Colors.black45),
+                        border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(0.0))),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  getRichFormBox(text, hint, {ctl}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '$text',
+            style: getCustomFont(size: 12.0, color: Colors.black),
+          ),
+          const SizedBox(
+            height: 4.0,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(width: 0.6, color: Colors.black45),
+              color: Colors.transparent,
+            ),
+            child: Row(
+              children: [
+                Flexible(
+                  child: TextField(
+                    style: getCustomFont(size: 13.0, color: Colors.black45),
+                    maxLines: null,
+                    controller: ctl,
+                    keyboardType: TextInputType.multiline,
+                    decoration: InputDecoration(
+                        hintText: hint,
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        hintStyle: getCustomFont(size: 13.0, color: Colors.black45),
                         border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(0.0))),
                   ),
                 ),
@@ -430,7 +526,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                       ),
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.symmetric(horizontal: 9.9, vertical: 5.0),
-                        hintText: bloodGroup,
+                        hintText: label,
+                        hintStyle: getCustomFont(size: 13.0, color: Colors.black45),
                         border: OutlineInputBorder(
                           borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                           borderSide: BorderSide(width: 0.6, color: Colors.grey),
@@ -442,7 +539,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                                 value: gender,
                                 child: Text(
                                   gender,
-                                  style: getCustomFont(size: 13.0, color: Colors.black),
+                                  style: getCustomFont(size: 13.0, color: Colors.black45),
                                 ),
                               ))
                           .toList(),
@@ -455,7 +552,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
         ),
       );
 
-  Widget phoneNumber(text, label, {ctl}) => Padding(
+  Widget phoneNumber(text, label, phone_number.PhoneController ctl) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -472,17 +569,20 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                 Flexible(
                     child: Padding(
                   padding: const EdgeInsets.only(top: 2.0),
-                  child: PhoneFormField(
+                  child: phone_form_field.PhoneFormField(
                     key: Key('phone-field'),
                     controller: ctl, // controller & initialValue value
                     shouldFormat: true, // default
                     defaultCountry: 'NG', // default
-                    style: getCustomFont(size: 14.0, color: Colors.black45),
+                    style: getCustomFont(size: 13.0, color: Colors.black45),
                     autovalidateMode: AutovalidateMode.disabled,
+
                     decoration: InputDecoration(
+                        prefixStyle: getCustomFont(size: 13.0, color: Colors.black45),
                         contentPadding: const EdgeInsets.all(0.0),
                         hintText: 'Mobile Number', // default to null
-                        hintStyle: getCustomFont(size: 15.0, color: Colors.black45),
+                        hintStyle: getCustomFont(size: 13.0, color: Colors.black45),
+                        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(width: 0.6, color: Colors.black45)),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(width: 0.6, color: Colors.black45)) // default to UnderlineInputBorder(),
                         ),
                     validator: null,
@@ -522,7 +622,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
                   margin: const EdgeInsets.only(top: 5.0),
-                  child: Text('$label', style: getCustomFont(size: 15.0, color: Colors.black45)))
+                  child: Text('$label', style: getCustomFont(size: 13.0, color: Colors.black45)))
             ],
           ),
         ),

@@ -273,31 +273,35 @@ class _AuthRegisterState extends State<AuthRegister> {
     });
 
     try {
-      final res = await http.post(Uri.parse('${ROOTAPI}/api/v1/register'),
-          body: isEmail
-              ? {
-                  'email': email.text.trim(),
-                  'first_name': firstname.text.trim(),
-                  'last_name': lasttname.text.trim(),
-                  'password': password.text.trim(),
-                  'password_confirmation': confirmPassword.text.trim(),
-                  'user_type': "Patient"
-                  //'country_id': '$country_id'
-                }
-              : {
-                  'phone': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
-                  'first_name': firstname.text.trim(),
-                  'last_name': lasttname.text.trim(),
-                  'password': password.text.trim(),
-                  'password_confirmation': confirmPassword.text.trim(),
-                  'user_type': "Patient"
-                  // 'country_id': '$country_id'
-                });
+      final res = await http
+          .post(Uri.parse('${ROOTAPI}/api/v1/register'),
+              body: isEmail
+                  ? {
+                      'email': email.text.trim(),
+                      'first_name': firstname.text.trim(),
+                      'last_name': lasttname.text.trim(),
+                      'password': password.text.trim(),
+                      'password_confirmation': confirmPassword.text.trim(),
+                      'user_type': "Patient"
+                      //'country_id': '$country_id'
+                    }
+                  : {
+                      'phone': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+                      'first_name': firstname.text.trim(),
+                      'last_name': lasttname.text.trim(),
+                      'password': password.text.trim(),
+                      'password_confirmation': confirmPassword.text.trim(),
+                      'user_type': "Patient"
+                      // 'country_id': '$country_id'
+                    })
+          .timeout(Duration(seconds: 15), onTimeout: () {
+        setState(() => isLoading = false);
+        return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Connection Timeout..', status: false));
+      });
       if (res.statusCode == 200) {
-        final parsed = jsonDecode(res.body);
         popupMessage.dialogMessage(
             context,
-            popupMessage.serviceMessage(context, parsed['message'], status: true, cB: () {
+            popupMessage.serviceMessage(context, 'Registration successfully.', status: true, cB: () {
               Get.to(() => AuthOtp(isEmail ? email.text.trim() : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}', false));
             }),
             barrierDismiss: false);

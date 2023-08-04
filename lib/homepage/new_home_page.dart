@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
+import '../services/request.dart';
+
 class AllHomePage extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffold;
   const AllHomePage(this.scaffold, {super.key});
@@ -63,7 +65,9 @@ class _AllHomePageState extends State<AllHomePage> {
                             GestureDetector(onTap: () => widget.scaffold.currentState!.openDrawer(), child: Icon(Icons.menu, color: Colors.white)),
                             CircleAvatar(
                               backgroundColor: Colors.white,
-                              backgroundImage: isImage ? NetworkImage(user!.profilePhoto!) : NetworkImage('https://img.freepik.com/free-vector/flat-hand-drawn-patient-taking-medical-examination-illustration_23-2148859982.jpg?w=2000'),
+                              backgroundImage: isImage
+                                  ? NetworkImage(box.get(USERPATH)!.profilePhoto!.replaceAll('http://localhost:8003', ROOTAPI))
+                                  : NetworkImage('https://img.freepik.com/free-vector/flat-hand-drawn-patient-taking-medical-examination-illustration_23-2148859982.jpg?w=2000'),
                               radius: 20.0,
                             ),
                           ],
@@ -103,7 +107,7 @@ class _AllHomePageState extends State<AllHomePage> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                !user!.verified!
+                !user!.onboarded!
                     ? const SizedBox()
                     : Column(
                         children: [

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/model/reminder_model.dart';
@@ -10,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +34,7 @@ class _MyReminderState extends State<MyReminder> {
   bool addButtonLoading = false;
 
   bool isLoading = false;
-  ReminderModel? reminderModel = ReminderModel(message: '', status: null, data: []);
+  ReminderModel? reminderModel;
   final box = Hive.box<User>(BoxName);
   final _refreshController = RefreshController(initialRefresh: false);
 
@@ -112,10 +112,8 @@ class _MyReminderState extends State<MyReminder> {
                                   })),
                               child: ListView.builder(
                                   padding: const EdgeInsets.all(0.0),
-                                  itemCount: reminderModel!.data!.length,
+                                  itemCount: reminderModel == null ? 0 : reminderModel!.data.length,
                                   itemBuilder: (ctx, i) {
-                                    List<String> listdays = [];
-                                    reminderModel!.data![i].reminderDates!.forEach((element) => listdays.add(element.date!));
                                     return Container(
                                       width: MediaQuery.of(context).size.width,
                                       margin: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 5.0),
@@ -139,19 +137,19 @@ class _MyReminderState extends State<MyReminder> {
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                Text('${reminderModel!.data![i].pillName}', style: getCustomFont(size: 16.0, weight: FontWeight.w500, color: Colors.black)),
+                                                Text('${reminderModel!.data[i].pillName}'.capitalizeFirst!, style: getCustomFont(size: 13.0, weight: FontWeight.bold, color: Colors.black)),
                                                 const SizedBox(
                                                   height: 4.0,
                                                 ),
-                                                Text('${listdays.join(', ')}', style: getCustomFont(size: 14.0, weight: FontWeight.normal, color: Colors.black54)),
+                                                Text('${reminderModel!.data[i].reminderDates.capitalizeFirst}', style: getCustomFont(size: 13.0, weight: FontWeight.normal, color: Colors.black54)),
                                                 const SizedBox(
                                                   height: 3.0,
                                                 ),
-                                                Text('${reminderModel!.data![i].noOfTimes} times, ${reminderModel!.data![i].frequency}', style: getCustomFont(size: 14.0, weight: FontWeight.w500, color: Colors.black54))
+                                                Text('${reminderModel!.data[i].noOfTimes} times, ${reminderModel!.data[i].frequency.capitalizeFirst}', style: getCustomFont(size: 12.0, weight: FontWeight.w500, color: Colors.black54))
                                               ],
                                             ),
                                           ),
-                                          reminderModel!.data![i].isDeleteLoading
+                                          reminderModel!.data[i].isDeleteLoading!
                                               ? SizedBox(
                                                   height: 20.0,
                                                   width: 20.0,
@@ -411,8 +409,8 @@ class _MyReminderState extends State<MyReminder> {
       );
 
   Future<ReminderModel> getReminders(RefreshController controller) async {
-    ReminderModel model = new ReminderModel();
-    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/v1/auth/patient/reminders/all'));
+    ReminderModel? model;
+    var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/reminders/all'));
     request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -422,7 +420,7 @@ class _MyReminderState extends State<MyReminder> {
       });
     }
     controller.refreshFailed();
-    return model;
+    return model!;
   }
 
   Future<void> addReminders() async {
@@ -443,27 +441,18 @@ class _MyReminderState extends State<MyReminder> {
     }
 
     setState(() {
-      //addButtonLoading = true;
-
-      var reminder =
-          ReminderData(id: Random().nextInt(2312), patientId: '41133', pillName: pillname.text, noOfTimes: pillNumbers.text, frequency: frequency, createdAt: '', reminderDates: days.map<ReminderDates>((e) => ReminderDates(date: e)).toList());
-      reminderModel!.data!.add(reminder);
-      counter = 0;
+      addButtonLoading = true;
     });
+
     try {
-      final response = await http.Client().post(Uri.parse('${ROOTAPI}/api/v1/auth/patient/reminders/add'),
-          body: jsonEncode({
-            "pill_name": "Chlorophinecol",
-            "reminder_dates": [
-              {"date": "Monday"},
-              {"date": "Tuesday"},
-              {"date": "Friday"},
-              {"date": "Sunday"}
-            ],
-            "frequency": "Daily",
-            "no_of_times": "2"
-          }),
-          headers: {'Authorization': '${box.get(USERPATH)!.token}', 'Content-Type': 'application/json'});
+      final response = await http.Client().post(Uri.parse('${ROOTAPI}/api/reminders/add'), body: {
+        "pill_name": pillname.text,
+        "reminder_dates": days.map<String>((e) => e).toList().join(', '),
+        "frequency": frequency,
+        "no_of_times": pillNumbers.text,
+      }, headers: {
+        'Authorization': '${box.get(USERPATH)!.token}'
+      });
       if (response.statusCode == 200) {
         return getReminders(_refreshController).then((value) => setState(() {
               this.reminderModel = value;
@@ -482,30 +471,30 @@ class _MyReminderState extends State<MyReminder> {
 
   onDelete(List<ReminderData>? data, int i) async {
     setState(() {
-      reminderModel!.data!.removeAt(i);
+      reminderModel!.data.removeAt(i);
     });
-    // setState(() {
-    //   data![i].setisDeleteLoading(true);
-    // });
+    setState(() {
+      data![i].setIsDeleteLoading(true);
+    });
 
-    // try {
-    //   var request = http.Request('DELETE', Uri.parse('${ROOTAPI}/api/v1/auth/patient/reminders/delete/${data![i].id}'));
-    //   request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
-    //   http.StreamedResponse response = await request.send();
-    //   if (response.statusCode == 200) {
-    //     return response.stream.bytesToString().then((value) {
-    //       data.removeAt(i);
-    //       return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, jsonDecode(value)['message'], status: true));
-    //     });
-    //   } else {
-    //     return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
-    //   }
-    // } on SocketException {
-    //   popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Please Check Internet Connection', status: false));
-    // } finally {
-    //   setState(() {
-    //     data![i].setisDeleteLoading(false);
-    //   });
-    // }
+    try {
+      var request = http.Request('GET', Uri.parse('${ROOTAPI}/api/reminders/delete/${data![i].id}'));
+      request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}'});
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        return response.stream.bytesToString().then((value) {
+          data.removeAt(i);
+          return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, jsonDecode(value)['message'], status: true));
+        });
+      } else {
+        return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
+      }
+    } on SocketException {
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Please Check Internet Connection', status: false));
+    } finally {
+      setState(() {
+        data![i].setIsDeleteLoading(false);
+      });
+    }
   }
 }

@@ -156,25 +156,27 @@ class _ResetPasswordState extends State<ResetPassword> {
     });
 
     try {
-      var request = http.Request('POST', Uri.parse('${ROOTAPI}/api/v1/reset/password'));
-      if (widget.username.isEmail)
-        request.body = json.encode({"token": token.text.trim(), "password": newPass.text.trim(), 'password_confirmation': confirmPass.text.trim(), "email": widget.username});
-      else
-        request.body = json.encode({"token": token.text.trim(), "password": newPass.text.trim(), 'password_confirmation': confirmPass.text.trim(), "phone_number": widget.username});
-      http.StreamedResponse response = await request.send();
-      if (response.statusCode == 200) {
-        response.stream.bytesToString().then((value) {
-          final parsed = json.decode(value);
-          setState(() {
-            isloading = false;
-          });
-          popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, parsed['message'], status: true));
+      var request = await http.Client()
+          .post(Uri.parse('${ROOTAPI}/api/v1/reset/password'),
+              body: widget.username.isEmail
+                  ? {"token": token.text.trim(), "password": newPass.text.trim(), 'password_confirmation': confirmPass.text.trim(), "email": widget.username}
+                  : {"token": token.text.trim(), "password": newPass.text.trim(), 'password_confirmation': confirmPass.text.trim(), "phone_number": widget.username})
+          .timeout(Duration(seconds: 15), onTimeout: () {
+        setState(() => isloading = false);
+        return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Connection Timeout..', status: false));
+      });
+
+      if (request.statusCode == 200) {
+        final parsed = json.decode(request.body);
+        setState(() {
+          isloading = false;
         });
+        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, parsed['message'], status: true));
       } else {
         setState(() {
           isloading = false;
         });
-        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
+        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, request.body, status: false));
       }
     } on SocketException {
       setState(() {

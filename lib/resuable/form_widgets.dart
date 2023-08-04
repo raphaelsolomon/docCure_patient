@@ -13,8 +13,12 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:provider/provider.dart';
+
+import '../model/person/user.dart';
+import '../services/request.dart';
 
 getRegisterForm({ctl, obscure = false, hint, icon = Icons.email_outlined, cp, height = 54.0}) => Container(
       height: height,
@@ -31,7 +35,7 @@ getRegisterForm({ctl, obscure = false, hint, icon = Icons.email_outlined, cp, he
             controller: ctl,
             obscureText: obscure,
             keyboardType: TextInputType.text,
-            style: getCustomFont(size: 15.0, color: Colors.black45),
+            style: getCustomFont(size: 12.0, color: Colors.black45),
             decoration: InputDecoration(
                 hintText: obscure
                     ? cp != null
@@ -41,7 +45,7 @@ getRegisterForm({ctl, obscure = false, hint, icon = Icons.email_outlined, cp, he
                         ? 'johndoe@example.com'
                         : hint,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-                hintStyle: getCustomFont(size: 15.0, color: Colors.black45),
+                hintStyle: getCustomFont(size: 12.0, color: Colors.black45),
                 border: const OutlineInputBorder(borderSide: BorderSide.none)),
           )),
           PhysicalModel(
@@ -77,9 +81,9 @@ getRegisterPasswordForm({ctl, hint}) => Container(
             controller: ctl,
             obscureText: true,
             keyboardType: TextInputType.text,
-            style: getCustomFont(size: 15.0, color: Colors.black45),
+            style: getCustomFont(size: 12.0, color: Colors.black45),
             decoration:
-                InputDecoration(hintText: hint, contentPadding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0), hintStyle: getCustomFont(size: 15.0, color: Colors.black45), border: const OutlineInputBorder(borderSide: BorderSide.none)),
+                InputDecoration(hintText: hint, contentPadding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0), hintStyle: getCustomFont(size: 12.0, color: Colors.black45), border: const OutlineInputBorder(borderSide: BorderSide.none)),
           )),
           PhysicalModel(
             elevation: 10.0,
@@ -214,7 +218,7 @@ getButton(context, callBack, {text = 'Sign In', color = BLUECOLOR, textcolor = C
           child: Center(
             child: Text(
               text,
-              style: GoogleFonts.poppins(fontSize: 17.0, color: textcolor, fontWeight: FontWeight.normal),
+              style: GoogleFonts.poppins(fontSize: 13.0, color: textcolor, fontWeight: FontWeight.normal),
             ),
           ),
         ),
@@ -222,7 +226,7 @@ getButton(context, callBack, {text = 'Sign In', color = BLUECOLOR, textcolor = C
     );
 
 getOtpForm({ctl, node, onChange}) => Container(
-      width: 55.0,
+      width: 45.0,
       height: 45.0,
       decoration: BoxDecoration(color: Colors.white, border: Border.all(color: Colors.grey, width: 1.0), borderRadius: BorderRadius.circular(4.0)),
       child: TextFormField(
@@ -240,7 +244,7 @@ getOtpForm({ctl, node, onChange}) => Container(
       ),
     );
 
-navDrawer(BuildContext context, scaffold, box) => Container(
+navDrawer(BuildContext context, scaffold, Box<User> box) => Container(
       width: (MediaQuery.of(context).size.width / 2) + 100.0,
       height: MediaQuery.of(context).size.height,
       color: Colors.white,
@@ -266,7 +270,7 @@ navDrawer(BuildContext context, scaffold, box) => Container(
                       context.read<HomeController>().setPage(-2);
                     },
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage('${box.get(USERPATH).profilePhoto}'),
+                      backgroundImage: NetworkImage('${box.get(USERPATH)!.profilePhoto!.replaceAll('http://localhost:8003', ROOTAPI)}'),
                       radius: 40.0,
                       backgroundColor: Colors.white,
                     ),
@@ -276,7 +280,7 @@ navDrawer(BuildContext context, scaffold, box) => Container(
                   ),
                   Flexible(
                       child: Text(
-                    'John Deo',
+                    '${box.get(USERPATH)!.name}',
                     style: GoogleFonts.poppins(fontSize: 15.0, color: Colors.white),
                   ))
                 ],
@@ -315,7 +319,7 @@ navDrawer(BuildContext context, scaffold, box) => Container(
                             Flexible(
                                 child: Text(
                               e.title,
-                              style: GoogleFonts.poppins(fontSize: 14.0, fontWeight: FontWeight.w500, color: Colors.black87.withOpacity(.7)),
+                              style: GoogleFonts.poppins(fontSize: 12.0, fontWeight: FontWeight.w500, color: Colors.black87.withOpacity(.7)),
                             ))
                           ]),
                         ),
@@ -334,7 +338,7 @@ navDrawer(BuildContext context, scaffold, box) => Container(
                         ),
                         title: Text(
                           e.title,
-                          style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black87.withOpacity(.7)),
+                          style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black87.withOpacity(.7)),
                         ),
                         children: e.children.map((entries) {
                           return GestureDetector(
@@ -343,7 +347,7 @@ navDrawer(BuildContext context, scaffold, box) => Container(
                               padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 13.0),
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width,
-                                child: Text(entries['title'], style: getCustomFont(size: 14.0, color: Colors.black87.withOpacity(.7))),
+                                child: Text(entries['title'], style: getCustomFont(size: 12.0, color: Colors.black87.withOpacity(.7))),
                               ),
                             ),
                           );
@@ -446,7 +450,7 @@ setClickListener(e, BuildContext context) {
   }
 }
 
-Widget dropDown({list, text, label}) => Padding(
+Widget dropDown({list, text, label, callBack}) => Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -462,7 +466,7 @@ Widget dropDown({list, text, label}) => Padding(
             children: [
               Flexible(
                 child: Container(
-                  height: 45.0,
+                  height: 40.0,
                   decoration: const BoxDecoration(
                     color: Color(0xFFFFFFFF),
                     borderRadius: BorderRadius.all(Radius.circular(5.0)),
@@ -486,7 +490,7 @@ Widget dropDown({list, text, label}) => Padding(
                         borderSide: BorderSide(width: 1.0, color: Colors.grey),
                       ),
                     ),
-                    // initialValue: 'Male',
+                    onChanged: (value) => callBack(value),
                     items: ['boy', 'girl', 'man', 'woman']
                         .map((gender) => DropdownMenuItem(
                               value: gender,

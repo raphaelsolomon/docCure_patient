@@ -26,7 +26,7 @@ class User extends HiveObject {
   @HiveField(10)
   String? dob;
   @HiveField(11)
-  String? user_type;
+  String? gender;
   @HiveField(12)
   String? address;
   @HiveField(13)
@@ -45,6 +45,8 @@ class User extends HiveObject {
   String? height;
   @HiveField(20)
   String? facebook_id;
+  @HiveField(21)
+  String? about_me;
 
   User(
       {this.uid,
@@ -57,7 +59,7 @@ class User extends HiveObject {
       this.token,
       this.city,
       this.state,
-      this.user_type,
+      this.gender,
       this.dob,
       this.address,
       this.google_id,
@@ -67,6 +69,7 @@ class User extends HiveObject {
       this.weight,
       this.height,
       this.facebook_id,
+      this.about_me,
       this.onboarded});
 
   Map toMap(User user) {
@@ -83,7 +86,7 @@ class User extends HiveObject {
     data["state"] = user.state;
     data["google_id"] = user.google_id;
     data["address"] = user.address;
-    data["user_type"] = user.user_type;
+    data["user_type"] = user.gender;
     data["created_at"] = user.created_at;
     data["dob"] = user.dob;
     data['onboarded'] = user.onboarded;
@@ -91,6 +94,7 @@ class User extends HiveObject {
     data['bloodgroup'] = user.bloodgroup;
     data['weight'] = user.weight;
     data['height'] = user.height;
+    data['about_me'] = user.about_me;
     data['facebook_id'] = user.facebook_id;
     return data;
   }
@@ -107,7 +111,7 @@ class User extends HiveObject {
     token = mapData['token'];
     city = mapData['city'];
     state = mapData['state'];
-    user_type = mapData['user_type'];
+    gender = mapData['gender'];
     dob = mapData['dob'];
     address = mapData['address'];
     google_id = mapData['google_id'];
@@ -117,6 +121,7 @@ class User extends HiveObject {
     zip_code = mapData['zip_code'];
     facebook_id = mapData['facebook_id'];
     weight = mapData['weight'];
+    about_me = mapData['about_me'];
     height = mapData['height'];
   }
 }

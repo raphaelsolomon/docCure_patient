@@ -64,10 +64,7 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
                   ),
                   Text(
                     '',
-                    style: GoogleFonts.poppins(
-                        fontSize: 18.0,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500),
+                    style: GoogleFonts.poppins(fontSize: 18.0, color: Colors.black, fontWeight: FontWeight.w500),
                   ),
                   Icon(
                     null,
@@ -78,8 +75,7 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
               const SizedBox(
                 height: 20.0,
               ),
-              Image.asset('assets/auth/4.jpeg',
-                  repeat: ImageRepeat.noRepeat, fit: BoxFit.contain),
+              Image.asset('assets/auth/4.jpeg', repeat: ImageRepeat.noRepeat, fit: BoxFit.contain),
               const SizedBox(
                 height: 20.0,
               ),
@@ -88,8 +84,7 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
                 children: [
                   Text(
                     'Forgot Password?',
-                    style: GoogleFonts.poppins(
-                        fontSize: 18.0, color: Colors.black),
+                    style: GoogleFonts.poppins(fontSize: 15.0, color: Colors.black),
                   ),
                   const SizedBox(
                     height: 10.0,
@@ -101,22 +96,14 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
                 height: 25.0,
               ),
               Text(
-                isEmail
-                    ? 'Enter your Registered email address to receive your password reset instruction'
-                    : 'Enter your Registered Mobile Number to receive your password reset instruction',
+                isEmail ? 'Enter your Registered email address to receive your password reset instruction' : 'Enter your Registered Mobile Number to receive your password reset instruction',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
-                    fontSize: 14.0,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w400),
+                style: GoogleFonts.poppins(fontSize: 12.0, color: Colors.black54, fontWeight: FontWeight.w400),
               ),
               const SizedBox(
                 height: 30.0,
               ),
-              isEmail
-                  ? getRegisterForm(
-                      ctl: email, obscure: false, hint: 'Email Address')
-                  : getPhoneNumberForm(ctl: phoneController),
+              isEmail ? getRegisterForm(ctl: email, obscure: false, hint: 'Email Address') : getPhoneNumberForm(ctl: phoneController),
               const SizedBox(
                 height: 50.0,
               ),
@@ -127,8 +114,7 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
                         child: CircularProgressIndicator(color: BLUECOLOR),
                       ),
                     )
-                  : getButton(context, () => validDate(),
-                      text: 'Reset Password'),
+                  : getButton(context, () => validDate(), text: 'Reset Password'),
               const SizedBox(
                 height: 30.0,
               ),
@@ -136,10 +122,7 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
                 onTap: () => Get.off(() => AuthLogin()),
                 child: Text(
                   'Back to login',
-                  style: GoogleFonts.poppins(
-                      fontSize: 14.0,
-                      color: BLUECOLOR,
-                      fontWeight: FontWeight.w400),
+                  style: GoogleFonts.poppins(fontSize: 14.0, color: BLUECOLOR, fontWeight: FontWeight.w400),
                 ),
               ),
               const SizedBox(
@@ -159,17 +142,13 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
               onTap: () => setState(() => isEmail = true),
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    color: isEmail ? BLUECOLOR : Colors.transparent,
-                    borderRadius: BorderRadius.circular(5.0)),
+                decoration: BoxDecoration(color: isEmail ? BLUECOLOR : Colors.transparent, borderRadius: BorderRadius.circular(5.0)),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                       child: Text(
                     'with Email Address',
-                    style: GoogleFonts.poppins(
-                        fontSize: 12.0,
-                        color: isEmail ? Colors.white : BLUECOLOR),
+                    style: GoogleFonts.poppins(fontSize: 11.0, color: isEmail ? Colors.white : BLUECOLOR),
                   )),
                 ),
               ),
@@ -183,18 +162,14 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
               onTap: () => setState(() => isEmail = false),
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    color: !isEmail ? BLUECOLOR : Colors.transparent,
-                    borderRadius: BorderRadius.circular(5.0)),
+                decoration: BoxDecoration(color: !isEmail ? BLUECOLOR : Colors.transparent, borderRadius: BorderRadius.circular(5.0)),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                       child: Text(
                     'with Mobile Number',
                     maxLines: 1,
-                    style: GoogleFonts.poppins(
-                        fontSize: 12.0,
-                        color: !isEmail ? Colors.white : BLUECOLOR),
+                    style: GoogleFonts.poppins(fontSize: 11.0, color: !isEmail ? Colors.white : BLUECOLOR),
                   )),
                 ),
               ),
@@ -204,15 +179,15 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
       );
 
   void validDate() async {
+    String emailString = isEmail ? email.text.trim() : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}';
+
     if (isEmail && email.text.trim().isEmpty) {
-      popupMessage.dialogMessage(
-          context, popupMessage.serviceMessage(context, 'Input not valid'));
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Input not valid'));
       return;
     }
 
     if (!isEmail && phoneController.value == null) {
-      popupMessage.dialogMessage(
-          context, popupMessage.serviceMessage(context, 'Input not valid'));
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Input not valid'));
       return;
     }
 
@@ -221,42 +196,29 @@ class _AuthForgotPassState extends State<AuthForgotPass> {
     });
 
     try {
-      final res =
-          await http.post(Uri.parse('${ROOTAPI}/api/v1/forget-password'),
-              body: isEmail
-                  ? {
-                      'email': email.text.trim(),
-                    }
-                  : {
-                      'phone':
-                          '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
-                    });
+      final res = await http.post(Uri.parse('${ROOTAPI}/api/v1/forgot-password'),
+          body: isEmail
+              ? {
+                  'email': email.text.trim(),
+                }
+              : {
+                  'phone': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+                });
       if (res.statusCode == 200) {
+        print(res.body);
         final parsed = jsonDecode(res.body);
         popupMessage.dialogMessage(
             context,
-            popupMessage.serviceMessage(context, parsed['message'],
-                status: true, cB: () {
-              Get.to(() => ForgotOtp(
-                  isEmail
-                      ? email.text.trim()
-                      : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
-                  false));
+            popupMessage.serviceMessage(context, parsed['message'], status: true, cB: () {
+              Get.to(() => ForgotOtp(isEmail ? emailString : '+${phoneController.value!.countryCode}${phoneController.value!.nsn}', false));
             }),
             barrierDismiss: false);
       } else {
         final parsed = jsonDecode(res.body);
-        popupMessage.dialogMessage(
-            context,
-            popupMessage.serviceMessage(context, parsed['message'],
-                status: false));
+        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, parsed['message'], status: false));
       }
     } on SocketException {
-      popupMessage.dialogMessage(
-          context,
-          popupMessage.serviceMessage(
-              context, 'Plase check internect connection',
-              status: false));
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Plase check internect connection', status: false));
     } finally {
       setState(() {
         isLoading = false;

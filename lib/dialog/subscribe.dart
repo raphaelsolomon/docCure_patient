@@ -2,13 +2,19 @@ import 'package:doccure_patient/auth/login.dart';
 import 'package:doccure_patient/constant/strings.dart';
 import 'package:doccure_patient/dialog/add_family.dart';
 import 'package:doccure_patient/main.dart';
+import 'package:doccure_patient/model/person/user.dart';
+import 'package:doccure_patient/providers/loading.controller.dart';
 import 'package:doccure_patient/resuable/form_widgets.dart';
+import 'package:doccure_patient/services/request.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:doccure_patient/dialog/subscribe.dart' as popupMessage;
+import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 
 dialogMessage(BuildContext context, widget, {barrierDismiss = true}) {
   showDialog(context: context, barrierDismissible: barrierDismiss, builder: (BuildContext context) => widget);
@@ -44,10 +50,15 @@ Widget serviceMessage(BuildContext context, m, {status = false, cB}) {
               const SizedBox(
                 height: 20.0,
               ),
-              Text(
-                '$m',
-                textAlign: TextAlign.center,
-                style: getCustomFont(size: 14.0, color: Colors.black),
+              Expanded(
+                flex: 0,
+                child: SingleChildScrollView(
+                  child: Text(
+                    '$m',
+                    textAlign: TextAlign.center,
+                    style: getCustomFont(size: 12.0, color: Colors.black),
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 40.0,
@@ -533,7 +544,7 @@ Widget familyPop(BuildContext context) {
               const SizedBox(
                 height: 10.0,
               ),
-              Text('Are you sure you want to create a family', textAlign: TextAlign.center, style: getCustomFont(size: 16.0, color: Colors.black, weight: FontWeight.w500)),
+              Text('Are you sure you want to create a family', textAlign: TextAlign.center, style: getCustomFont(size: 12.0, color: Colors.black, weight: FontWeight.w500)),
               const SizedBox(
                 height: 10.0,
               ),
@@ -548,7 +559,7 @@ Widget familyPop(BuildContext context) {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
                     child: Text(
                       'Cancel',
-                      style: getCustomFont(size: 14.0, color: Colors.black),
+                      style: getCustomFont(size: 12.0, color: Colors.black),
                     ),
                   ),
                 )),
@@ -563,7 +574,7 @@ Widget familyPop(BuildContext context) {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                     child: Text(
                       'Continue',
-                      style: getCustomFont(size: 14.0, color: Colors.white),
+                      style: getCustomFont(size: 12.0, color: Colors.white),
                     ),
                   ),
                 )),
@@ -737,7 +748,7 @@ Widget familyPopStart(BuildContext context) {
   );
 }
 
-Widget blood_pressure(BuildContext context) {
+Widget blood_pressure(BuildContext context, controller, controller2, box) {
   return Stack(
     alignment: Alignment.center,
     children: <Widget>[
@@ -760,7 +771,7 @@ Widget blood_pressure(BuildContext context) {
                 children: [
                   Text(
                     'ADD NEW RECORD',
-                    style: getCustomFont(size: 15.0, color: Colors.black),
+                    style: getCustomFont(size: 14.0, color: Colors.black),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -777,29 +788,46 @@ Widget blood_pressure(BuildContext context) {
               const SizedBox(
                 height: 20.0,
               ),
-              getFormBox('Systolic', 'Type here', 'mmHg'),
+              getFormBox('Systolic', 'Type here', 'mmHg', ctl: controller),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(
-                  'Top numbers usually between 90 - 250',
-                  style: getCustomFont(size: 11.0, color: Colors.black45),
+                child: FittedBox(
+                  child: Text(
+                    'Top numbers usually between 90 - 250',
+                    style: getCustomFont(size: 11.0, color: Colors.black45),
+                  ),
                 ),
               ),
               const SizedBox(
                 height: 20.0,
               ),
-              getFormBox('Diastolic', 'Type here', 'mmHg'),
+              getFormBox('Diastolic', 'Type here', 'mmHg', ctl: controller2),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(
-                  'bottom numbers usually between 60 - 140',
-                  style: getCustomFont(size: 11.0, color: Colors.black45),
+                child: FittedBox(
+                  child: Text(
+                    'bottom numbers usually between 60 - 140',
+                    style: getCustomFont(size: 11.0, color: Colors.black45),
+                  ),
                 ),
               ),
               const SizedBox(
                 height: 20.0,
               ),
-              getPayButton(context, () {}, 'SAVE'),
+              Consumer<LoadingController>(
+                builder: (context, value, child) => SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: value.bloodPressure
+                      ? Center(child: CircularProgressIndicator())
+                      : getPayButton(context, () async {
+                          if (controller.text.trim().isEmpty) return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, "Input must not be empty", status: false));
+                          if (controller2.text.trim().isEmpty) return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, "Input must not be empty", status: false));
+                          context.read<LoadingController>().setBloodPressureValue(true);
+
+                          ApiServices.addBloodPressure(context, box, controller.text.trim(), controller2.text.trim());
+                        }, 'Save'),
+                ),
+              ),
               const SizedBox(
                 height: 20.0,
               ),
@@ -811,7 +839,8 @@ Widget blood_pressure(BuildContext context) {
   );
 }
 
-Widget cholesterol(BuildContext context) {
+Widget cholesterol(BuildContext context, dhl, ldl, total, Box<User> box) {
+  String prefered_unit = "";
   return Stack(
     alignment: Alignment.center,
     children: <Widget>[
@@ -852,23 +881,37 @@ Widget cholesterol(BuildContext context) {
                 const SizedBox(
                   height: 20.0,
                 ),
-                dropDown(text: 'Preferred Unit', label: 'Select Type'),
+                dropDown(text: 'Preferred Unit', label: 'Select Type', callBack: (s) => prefered_unit = s),
                 const SizedBox(
                   height: 20.0,
                 ),
-                getFormBox('HDL Cholesterol', 'Type here', 'Mg/Dl'),
+                getFormBox('HDL Cholesterol', 'Type here', 'Mg/Dl', inputType: TextInputType.number, ctl: dhl),
                 const SizedBox(
                   height: 20.0,
                 ),
-                getFormBox('LDL Cholesterol', 'Type here', 'Mg/Dl'),
+                getFormBox('LDL Cholesterol', 'Type here', 'Mg/Dl', inputType: TextInputType.number, ctl: ldl),
                 const SizedBox(
                   height: 20.0,
                 ),
-                getFormBox('Total Cholesterol', 'Type here', 'Mg/Dl'),
+                getFormBox('Total Cholesterol', 'Type here', 'Mg/Dl', inputType: TextInputType.number, ctl: total),
                 const SizedBox(
                   height: 20.0,
                 ),
-                getPayButton(context, () {}, 'SAVE'),
+                Consumer<LoadingController>(
+                  builder: (context, value, child) => SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: value.cholesterolLoader
+                        ? Center(child: CircularProgressIndicator())
+                        : getPayButton(context, () async {
+                            if (dhl.text.trim().isEmpty) return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, "Input must not be empty", status: false));
+                            if (ldl.text.trim().isEmpty) return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, "Input must not be empty", status: false));
+                            if (total.text.trim().isEmpty) return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, "Input must not be empty", status: false));
+                            if (prefered_unit.isEmpty) return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, "Select unit type", status: false));
+                            context.read<LoadingController>().setCholesterolLoader(true);
+                            ApiServices.addCholesterol(context, box, {"unit": "${prefered_unit}", "HDL": "${dhl.text.trim()}", "LDL": "${ldl.text.trim()}", "total_cholesterol": "${total.text.trim()}"});
+                          }, 'Save'),
+                  ),
+                ),
                 const SizedBox(
                   height: 20.0,
                 ),
@@ -881,7 +924,8 @@ Widget cholesterol(BuildContext context) {
   );
 }
 
-Widget blood_sugar(BuildContext context) {
+Widget blood_sugar(BuildContext context, Box<User> box, f_blood_sugar, aic, blood_sugar) {
+  String preferredUnit = "";
   return Stack(
     alignment: Alignment.center,
     children: <Widget>[
@@ -922,44 +966,64 @@ Widget blood_sugar(BuildContext context) {
                 const SizedBox(
                   height: 20.0,
                 ),
-                dropDown(text: 'Preferred Unit', label: 'Select Type'),
+                dropDown(text: 'Preferred Unit', label: 'Select Type', callBack: (s) => preferredUnit = s),
                 const SizedBox(
                   height: 20.0,
                 ),
-                getFormBox('Fast blood sugar', 'Type here', 'Mg/Dl'),
+                getFormBox('Fast blood sugar', 'Type here', 'Mg/Dl', ctl: f_blood_sugar),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Text(
-                    'usually between 70.0 to 130.0 Mg/Dl',
-                    style: getCustomFont(size: 11.0, color: Colors.black45),
+                  child: FittedBox(
+                    child: Text(
+                      'usually between 70.0 to 130.0 Mg/Dl',
+                      style: getCustomFont(size: 11.0, color: Colors.black45),
+                    ),
                   ),
                 ),
                 const SizedBox(
                   height: 20.0,
                 ),
-                getFormBox('Blood sugar 1-2 hours after meal', 'Type here', 'Mg/Dl'),
+                getFormBox('Blood sugar 1-2 hours after meal', 'Type here', 'Mg/Dl', ctl: blood_sugar),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Text(
-                    'usually less than 180.0 Mg/Dl',
-                    style: getCustomFont(size: 11.0, color: Colors.black45),
+                  child: FittedBox(
+                    child: Text(
+                      'usually less than 180.0 Mg/Dl',
+                      style: getCustomFont(size: 11.0, color: Colors.black45),
+                    ),
                   ),
                 ),
                 const SizedBox(
                   height: 20.0,
                 ),
-                getFormBox('A1C(%)', 'Type here', ''),
+                getFormBox('A1C(%)', 'Type here', '', ctl: aic),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Text(
-                    'usually less than 7%',
-                    style: getCustomFont(size: 11.0, color: Colors.black45),
+                  child: FittedBox(
+                    child: Text(
+                      'usually less than 7%',
+                      style: getCustomFont(size: 11.0, color: Colors.black45),
+                    ),
                   ),
                 ),
                 const SizedBox(
                   height: 20.0,
                 ),
-                getPayButton(context, () {}, 'SAVE'),
+                Consumer<LoadingController>(
+                  builder: (context, value, child) => SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: value.bloodSugarLoader
+                        ? Center(child: CircularProgressIndicator())
+                        : getPayButton(context, () async {
+                            if (f_blood_sugar.text.trim().isEmpty) return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, "Input must not be empty", status: false));
+                            if (aic.text.trim().isEmpty) return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, "Input must not be empty", status: false));
+                            if (blood_sugar.text.trim().isEmpty) return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, "Input must not be empty", status: false));
+                            if (preferredUnit.isEmpty) return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, "Select unit type", status: false));
+                            context.read<LoadingController>().setBloodSugarLoader(true);
+                            ApiServices.addBloodSugar(context, box, {"fast_blood_sugar": "${f_blood_sugar.text.trim()}", "unit": "${preferredUnit}", "blood_sugar_after_meal": "${f_blood_sugar.text.trim()}", "A1C": "${aic.text.trim()}"});
+                          }, 'Save'),
+                  ),
+                ),
                 const SizedBox(
                   height: 20.0,
                 ),
@@ -972,7 +1036,7 @@ Widget blood_sugar(BuildContext context) {
   );
 }
 
-Widget weight(BuildContext context) {
+Widget weight(BuildContext context, TextEditingController weightController, Box<User> box) {
   return Stack(
     alignment: Alignment.center,
     children: <Widget>[
@@ -994,7 +1058,7 @@ Widget weight(BuildContext context) {
                 children: [
                   Text(
                     'ADD NEW RECORD',
-                    style: getCustomFont(size: 15.0, color: Colors.black),
+                    style: getCustomFont(size: 13.0, color: Colors.black),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -1011,11 +1075,22 @@ Widget weight(BuildContext context) {
               const SizedBox(
                 height: 20.0,
               ),
-              getFormBox('Weight', 'Type here', 'Kg'),
+              getFormBox('Weight', 'Type here', 'Kg', ctl: weightController),
               const SizedBox(
                 height: 20.0,
               ),
-              getPayButton(context, () {}, 'SAVE'),
+              Consumer<LoadingController>(
+                builder: (context, value, child) => SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: value.weightLoader
+                      ? Center(child: CircularProgressIndicator())
+                      : getPayButton(context, () async {
+                          if (weightController.text.trim().isEmpty) return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, "Input must not be empty", status: false));
+                          context.read<LoadingController>().sweWeightLoader(true);
+                          ApiServices.addWeight(context, box, weightController.text.trim());
+                        }, 'Save'),
+                ),
+              ),
               const SizedBox(
                 height: 20.0,
               ),
@@ -1027,7 +1102,7 @@ Widget weight(BuildContext context) {
   );
 }
 
-getFormBox(text, hint, unit, {ctl}) {
+getFormBox(text, hint, unit, {ctl, readOnly = false, inputType = TextInputType.text}) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10.0),
     child: Column(
@@ -1044,15 +1119,17 @@ getFormBox(text, hint, unit, {ctl}) {
           children: [
             Flexible(
               child: SizedBox(
-                height: 45.0,
+                height: 40.0,
                 child: TextField(
-                  style: getCustomFont(size: 14.0, color: Colors.black45),
+                  style: getCustomFont(size: 12.0, color: Colors.black45),
                   maxLines: 1,
                   controller: ctl,
+                  readOnly: readOnly,
+                  keyboardType: inputType,
                   decoration: InputDecoration(
                       hintText: hint,
                       contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      hintStyle: getCustomFont(size: 14.0, color: Colors.black45),
+                      hintStyle: getCustomFont(size: 12.0, color: Colors.black45),
                       border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 1.0), borderRadius: BorderRadius.circular(8.0))),
                 ),
               ),
@@ -1210,11 +1287,11 @@ Widget getPayButton(context, callBack, text) => GestureDetector(
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(color: BLUECOLOR, borderRadius: BorderRadius.circular(6.0)),
         child: Padding(
-          padding: const EdgeInsets.all(13.0),
+          padding: const EdgeInsets.all(8.0),
           child: Center(
             child: Text(
               '$text',
-              style: getCustomFont(size: 18.0, color: Colors.white, weight: FontWeight.normal),
+              style: getCustomFont(size: 14.0, color: Colors.white, weight: FontWeight.normal),
             ),
           ),
         ),
@@ -1227,11 +1304,11 @@ Widget getButton(context, callBack, text, {textColor = Colors.white, bgColor = B
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(100.0)),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(8.0),
           child: Center(
             child: Text(
               '$text',
-              style: getCustomFont(size: 16.0, color: textColor, weight: FontWeight.normal),
+              style: getCustomFont(size: 13.0, color: textColor, weight: FontWeight.normal),
             ),
           ),
         ),

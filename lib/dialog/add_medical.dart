@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/services/request.dart';
@@ -73,7 +72,7 @@ class _AddMedicalState extends State<AddMedical> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'Name',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
+                    style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -87,7 +86,7 @@ class _AddMedicalState extends State<AddMedical> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'BMI',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
+                    style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -101,7 +100,7 @@ class _AddMedicalState extends State<AddMedical> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'Heart Rate',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
+                    style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -115,7 +114,7 @@ class _AddMedicalState extends State<AddMedical> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'FBC Status',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
+                    style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -129,7 +128,7 @@ class _AddMedicalState extends State<AddMedical> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'Weight',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
+                    style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -412,24 +411,22 @@ class _AddMedicalState extends State<AddMedical> {
     });
 
     try {
-      var request = http.Request('PATCH', Uri.parse('${ROOTAPI}/api/v1/auth/patient/records/other-medical-record/add'));
-      request.body = jsonEncode({
+      var request = await http.Client().post(Uri.parse('${ROOTAPI}/api/records/other-medical-record/add'), body: {
         'name': fullname.text,
         "bmi": bmi.text.trim(),
         "heart_rate": heartRate.text.trim(),
         "fbc_status": fcb.text.trim(),
         "weight": weight.text.trim(),
+      }, headers: {
+        'Authorization': '${box.get(USERPATH)!.token}'
       });
-      request.headers.addAll({
-        'Authorization': '${box.get(USERPATH)!.token}',
-      });
-      http.StreamedResponse response = await request.send();
-      if (response.statusCode == 200) {
+
+      if (request.statusCode == 200) {
         setState(() => isloading = false);
         popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Medical record added successfully', status: true));
       } else {
         setState(() => isloading = false);
-        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
+        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, request.body, status: false));
       }
     } on SocketException {
       setState(() => isloading = false);

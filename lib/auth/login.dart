@@ -92,7 +92,7 @@ class _AuthLoginState extends State<AuthLogin> {
                 children: [
                   Text(
                     'Sign in to your account to continue',
-                    style: GoogleFonts.poppins(fontSize: 13.0, color: Colors.black45),
+                    style: GoogleFonts.poppins(fontSize: 12.0, color: Colors.black45),
                   ),
                   const SizedBox(
                     height: 20.0,
@@ -118,7 +118,7 @@ class _AuthLoginState extends State<AuthLogin> {
                       onTap: () => Get.to(() => AuthForgotPass()),
                       child: Text(
                         'Forgotten Password?',
-                        style: GoogleFonts.poppins(fontSize: 14.5, color: Colors.black54),
+                        style: GoogleFonts.poppins(fontSize: 12.5, color: Colors.black54),
                       ),
                     ),
                   ),
@@ -146,7 +146,7 @@ class _AuthLoginState extends State<AuthLogin> {
                   const SizedBox(width: 15.0),
                   Text(
                     'Or Sign in using',
-                    style: GoogleFonts.poppins(fontSize: 13.0, color: Color(0xFF838391), fontWeight: FontWeight.w400),
+                    style: GoogleFonts.poppins(fontSize: 12.0, color: Color(0xFF838391), fontWeight: FontWeight.w400),
                   ),
                   const SizedBox(width: 15.0),
                   Flexible(
@@ -206,7 +206,7 @@ class _AuthLoginState extends State<AuthLogin> {
                     child: GestureDetector(
                       child: Text(
                         'Don\'t have an account?',
-                        style: GoogleFonts.poppins(fontSize: 15.0, color: Colors.black45, fontWeight: FontWeight.normal),
+                        style: GoogleFonts.poppins(fontSize: 12.0, color: Colors.black45, fontWeight: FontWeight.normal),
                       ),
                     ),
                   ),
@@ -215,7 +215,7 @@ class _AuthLoginState extends State<AuthLogin> {
                   ),
                   InkWell(
                     onTap: () => Get.to(() => AuthRegister()),
-                    child: Text('Sign Up', style: GoogleFonts.poppins(fontSize: 16.0, color: BLUECOLOR, fontWeight: FontWeight.normal)),
+                    child: Text('Sign Up', style: GoogleFonts.poppins(fontSize: 13.0, color: BLUECOLOR, fontWeight: FontWeight.w700)),
                   ),
                 ],
               ),
@@ -298,33 +298,37 @@ class _AuthLoginState extends State<AuthLogin> {
     });
 
     try {
-      final res = await http.post(Uri.parse('${ROOTAPI}/api/v1/login'),
-          body: isEmail
-              ? {
-                  'email': email.text.trim(),
-                  'password': password.text.trim(),
-                }
-              : {
-                  'phone_number': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
-                  'password': password.text.trim(),
-                });
+      final res = await http
+          .post(Uri.parse('${ROOTAPI}/api/v1/login'),
+              body: isEmail
+                  ? {
+                      'email': email.text.trim(),
+                      'password': password.text.trim(),
+                    }
+                  : {
+                      'phone_number': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+                      'password': password.text.trim(),
+                    })
+          .timeout(Duration(seconds: 15), onTimeout: () {
+        setState(() => isLoading = false);
+        return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Connection Timeout..', status: false));
+      });
       if (res.statusCode == 200) {
         final parsed = jsonDecode(res.body);
         //Map<String, dynamic> result = await ApiServices.getProfile(parsed['data']['token']);
         User user = User(
             uid: '${parsed['data']['id']}',
-            name: '${parsed['data']['first_name']} ${parsed['data']['last_name']}',
+            name: '${parsed['data']['first_name']} ${parsed['data']['last_name'] ?? ''} ${parsed['data']['middle_name'] ?? ''}',
             email: parsed['data']['email'],
-            phone: parsed['data']['phone'] ?? '',
+            phone: parsed['data']['phone_number'] ?? '',
             country: parsed['data']['country_id'] ?? '',
             token: 'Bearer ${parsed['data']['token']}',
             profilePhoto: parsed['data']['profile_image'] ?? '',
-            verified: parsed['data']['is_verified'] == '1',
             dob: parsed['data']['dob'] ?? '',
             city: parsed['data']['city_id'] ?? '',
             state: parsed['data']['state_id_id'] ?? '',
             address: parsed['data']['address'] ?? '',
-            user_type: parsed['data']['user_type'],
+            gender: parsed['data']['gender'] ?? 'Rather Not Say',
             google_id: parsed['data']['google_id'] ?? '',
             facebook_id: parsed['data']['facebook_id'] ?? '',
             created_at: parsed['data']['created_at'] ?? '',
@@ -332,8 +336,9 @@ class _AuthLoginState extends State<AuthLogin> {
             height: parsed['data']['height'] ?? '',
             bloodgroup: '',
             zip_code: '',
-            onboarded: parsed['data']['onboarded'] == 0 ? false : true);
-        if (parsed['data']['onboarded'] == 0) {
+            about_me: parsed['data']['about_me'],
+            onboarded: parsed['data']['onboarded'] == "0" ? false : true);
+        if (parsed['data']['onboarded'] == "0") {
           box.put(USERPATH, user).then((value) => Get.offAll(() => CompleteOnboarded()));
         } else
           box.put(USERPATH, user).then((value) => Get.offAll(() => DashBoard()));

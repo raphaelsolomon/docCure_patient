@@ -255,7 +255,10 @@ class _AuthOtpState extends State<AuthOtp> {
   void validDate() async {
     print(listOTp);
     if (listOTp.length < 4) {
-      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Input not valid'));
+      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Input not valid')).timeout(Duration(seconds: 15), onTimeout: () {
+        setState(() => isLoading = false);
+        return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Connection Timeout..', status: false));
+      });
       return;
     }
 
@@ -264,21 +267,27 @@ class _AuthOtpState extends State<AuthOtp> {
     });
 
     try {
-      final res = await http.post(Uri.parse('${ROOTAPI}/api/user/email/verify'),
-          body: widget.body.isEmail
-              ? {
-                  'email': widget.body.trim(),
-                  'otp': '${listOTp['1']}${listOTp['2']}${listOTp['3']}${listOTp['4']}',
-                }
-              : {
-                  'phone_number': widget.body.trim(),
-                  'otp': '${listOTp['1']}${listOTp['2']}${listOTp['3']}${listOTp['4']}',
-                });
+      final res = await http
+          .post(Uri.parse('${ROOTAPI}/api/v1/user/verify'),
+              body: widget.body.isEmail
+                  ? {
+                      'email': widget.body.trim(),
+                      'otp': '${listOTp['1']}${listOTp['2']}${listOTp['3']}${listOTp['4']}',
+                    }
+                  : {
+                      'phone_number': widget.body.trim(),
+                      'otp': '${listOTp['1']}${listOTp['2']}${listOTp['3']}${listOTp['4']}',
+                    })
+          .timeout(Duration(seconds: 15), onTimeout: () {
+        setState(() => isLoading = false);
+        return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Connection Timeout..', status: false));
+      });
+
       if (res.statusCode == 200) {
         final parsed = jsonDecode(res.body);
         popupMessage.dialogMessage(
             context,
-            popupMessage.serviceMessage(context, parsed['message'], status: true, cB: () {
+            popupMessage.serviceMessage(context, 'User Verified Successfully', status: true, cB: () {
               if (widget.isLoggedIn) {
                 User user = box.get(USERPATH)!;
                 user.verified = true;

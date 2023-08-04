@@ -24,8 +24,11 @@ class _MyFavouriteState extends State<MyFavourite> {
   final box = Hive.box<User>(BoxName);
 
   Map<String, dynamic> favDoctorsResult = {};
+  Map<String, dynamic> pharmaciesResult = {};
   bool isDoctorsLoading = true;
+  bool isPharmacyLoading = true;
   final _refreshDoctorsController = RefreshController(initialRefresh: false);
+  final _refreshPharmacyController = RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -33,6 +36,11 @@ class _MyFavouriteState extends State<MyFavourite> {
       ApiServices.getFavouriteDocs(_refreshDoctorsController, box).then((value) => setState(() {
             this.favDoctorsResult = value;
             isDoctorsLoading = false;
+          }));
+
+      ApiServices.getFavouritePharmacy(_refreshPharmacyController, box).then((value) => setState(() {
+            this.pharmaciesResult = value;
+            isPharmacyLoading = false;
           }));
     });
     super.initState();
@@ -143,7 +151,7 @@ class _MyFavouriteState extends State<MyFavourite> {
                           controller: _refreshDoctorsController,
                           enablePullDown: true,
                           header: WaterDropHeader(waterDropColor: BLUECOLOR.withOpacity(.5)),
-                          onRefresh: () => ApiServices.getAppointments(_refreshDoctorsController, box).then((value) => setState(() {
+                          onRefresh: () => ApiServices.getFavouriteDocs(_refreshDoctorsController, box).then((value) => setState(() {
                                 this.favDoctorsResult = value;
                               })),
                           child: ListView.builder(
@@ -152,7 +160,7 @@ class _MyFavouriteState extends State<MyFavourite> {
                             shrinkWrap: true,
                             itemBuilder: (ctx, i) => findDoctors(context),
                           )))
-              : past == 'Medicines'
+              : past == 'Hospitals'
                   ? Expanded(
                       child: GridView.builder(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
@@ -162,7 +170,23 @@ class _MyFavouriteState extends State<MyFavourite> {
                           itemCount: 10,
                           itemBuilder: (ctx, i) => productItem(context)),
                     )
-                  : const SizedBox()
+                  : Expanded(
+                      child: SmartRefresher(
+                        controller: _refreshPharmacyController,
+                        enablePullDown: true,
+                        header: WaterDropHeader(waterDropColor: BLUECOLOR.withOpacity(.5)),
+                        onRefresh: () => ApiServices.getFavouritePharmacy(_refreshPharmacyController, box).then((value) => setState(() {
+                              this.pharmaciesResult = value;
+                            })),
+                        child: GridView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: returnCrossAxis(size.width), mainAxisSpacing: 10.0, mainAxisExtent: 210.0, crossAxisSpacing: 10.0),
+                            itemCount: 10,
+                            itemBuilder: (ctx, i) => productItem(context)),
+                      ),
+                    )
         ]));
   }
 

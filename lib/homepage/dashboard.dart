@@ -187,6 +187,7 @@ class _DashBoardState extends State<DashBoard> {
   @override
   Widget build(BuildContext context) {
     final page = context.watch<HomeController>().getPage;
+    print(box.get(USERPATH)!.profilePhoto);
     return KeyboardVisibilityBuilder(
       builder: (context, isVisible) => WillPopScope(
         onWillPop: () => context.read<HomeController>().onBackPress(),
@@ -194,6 +195,7 @@ class _DashBoardState extends State<DashBoard> {
             user: box.get('details'),
             scaffold: Scaffold(
                 key: scaffold,
+                resizeToAvoidBottomInset: true,
                 drawer: !removeBottom.contains(page) ? navDrawer(context, scaffold, box) : null,
                 backgroundColor: Colors.white,
                 body: Stack(

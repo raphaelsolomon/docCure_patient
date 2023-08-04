@@ -27,7 +27,7 @@ class UserAdapter extends TypeAdapter<User> {
       token: fields[7] as String?,
       city: fields[8] as String?,
       state: fields[9] as String?,
-      user_type: fields[11] as String?,
+      gender: fields[11] as String?,
       dob: fields[10] as String?,
       address: fields[12] as String?,
       google_id: fields[13] as String?,
@@ -38,6 +38,7 @@ class UserAdapter extends TypeAdapter<User> {
       weight: fields[18] as String?,
       height: fields[19] as String?,
       facebook_id: fields[20] as String?,
+      about_me: fields[21] as String?,
     );
   }
 
@@ -68,7 +69,7 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(10)
       ..write(obj.dob)
       ..writeByte(11)
-      ..write(obj.user_type)
+      ..write(obj.gender)
       ..writeByte(12)
       ..write(obj.address)
       ..writeByte(13)
@@ -86,16 +87,14 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(19)
       ..write(obj.height)
       ..writeByte(20)
-      ..write(obj.facebook_id);
+      ..write(obj.facebook_id)
+      ..writeByte(21)
+      ..write(obj.about_me);
   }
 
   @override
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is UserAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+  bool operator ==(Object other) => identical(this, other) || other is UserAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

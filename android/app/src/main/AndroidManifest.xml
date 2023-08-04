@@ -22,7 +22,7 @@
         tools:ignore="ProtectedPermissions" />
         
     <application
-        android:label="patient"
+        android:label="Patient"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

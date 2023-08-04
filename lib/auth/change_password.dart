@@ -154,23 +154,26 @@ class _AuthChangePassState extends State<AuthChangePass> {
     });
 
     try {
-      var request = http.Request('POST', Uri.parse('${ROOTAPI}/api/v1/change/password'));
-      request.body = json.encode({"current_password": oldPass.text.trim(), "new_password": newPass.text.trim(), 'confirm_new_password': confirmPass.text.trim()});
-      request.headers.addAll({'Authorization': '${box.get(USERPATH)!.token}', 'Content-Type': 'application/json'});
-      http.StreamedResponse response = await request.send();
-      if (response.statusCode == 200) {
-        response.stream.bytesToString().then((value) {
-          final parsed = json.decode(value);
-          setState(() {
-            isloading = false;
-          });
-          popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, parsed['message'], status: true));
+      var request = await http.Client().post(
+        Uri.parse('${ROOTAPI}/api/v1/change/password'),
+        body: {"current_password": oldPass.text.trim(), "new_password": newPass.text.trim(), 'confirm_new_password': confirmPass.text.trim()},
+        headers: {'Authorization': '${box.get(USERPATH)!.token}', 'Content-Type': 'application/json'},
+      ).timeout(Duration(seconds: 15), onTimeout: () {
+        setState(() => isloading = false);
+        return popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Connection Timeout..', status: false));
+      });
+
+      if (request.statusCode == 200) {
+        final parsed = json.decode(request.body);
+        setState(() {
+          isloading = false;
         });
+        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, parsed['message'], status: true));
       } else {
         setState(() {
           isloading = false;
         });
-        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
+        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, request.body, status: false));
       }
     } on SocketException {
       setState(() {

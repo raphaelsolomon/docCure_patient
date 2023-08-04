@@ -29,28 +29,16 @@ class _TimeAndDateState extends State<TimeAndDate> {
     {'title': 'Chat', 'icon': FontAwesome5.facebook_messenger},
     {'title': 'Physical Visit', 'icon': FontAwesome5.walking}
   ];
-  var _selected  = DateTime.now();
+  var _selected = DateTime.now();
   String type = 'Audio Call';
 
   List<TimingModel> timemodel = [
-    TimingModel(
-        from: DateFormat('hh:mm a').format(DateTime.now()),
-        to: DateFormat('hh:mm a').format(DateTime.now())),
-    TimingModel(
-        from: DateFormat('hh:mm a').format(DateTime.now()),
-        to: DateFormat('hh:mm a').format(DateTime.now())),
-    TimingModel(
-        from: DateFormat('hh:mm a').format(DateTime.now()),
-        to: DateFormat('hh:mm a').format(DateTime.now())),
-    TimingModel(
-        from: DateFormat('hh:mm a').format(DateTime.now()),
-        to: DateFormat('hh:mm a').format(DateTime.now())),
-    TimingModel(
-        from: DateFormat('hh:mm a').format(DateTime.now()),
-        to: DateFormat('hh:mm a').format(DateTime.now())),
-    TimingModel(
-        from: DateFormat('hh:mm a').format(DateTime.now()),
-        to: DateFormat('hh:mm a').format(DateTime.now())),
+    TimingModel(from: DateFormat('hh:mm a').format(DateTime.now()), to: DateFormat('hh:mm a').format(DateTime.now())),
+    TimingModel(from: DateFormat('hh:mm a').format(DateTime.now()), to: DateFormat('hh:mm a').format(DateTime.now())),
+    TimingModel(from: DateFormat('hh:mm a').format(DateTime.now()), to: DateFormat('hh:mm a').format(DateTime.now())),
+    TimingModel(from: DateFormat('hh:mm a').format(DateTime.now()), to: DateFormat('hh:mm a').format(DateTime.now())),
+    TimingModel(from: DateFormat('hh:mm a').format(DateTime.now()), to: DateFormat('hh:mm a').format(DateTime.now())),
+    TimingModel(from: DateFormat('hh:mm a').format(DateTime.now()), to: DateFormat('hh:mm a').format(DateTime.now())),
   ];
 
   String index = 'Time and Date';
@@ -71,8 +59,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
         child: Column(
           children: [
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
               width: MediaQuery.of(context).size.width,
               color: BLUECOLOR,
               child: Column(children: [
@@ -83,15 +70,13 @@ class _TimeAndDateState extends State<TimeAndDate> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                        onTap: () =>
-                            context.read<HomeController>().onBackPress(),
+                        onTap: () => context.read<HomeController>().onBackPress(),
                         child: Icon(
                           Icons.arrow_back_ios,
                           color: Colors.white,
                           size: 18.0,
                         )),
-                    Text('Time And Date',
-                        style: getCustomFont(color: Colors.white, size: 16.0)),
+                    Text('Time And Date', style: getCustomFont(color: Colors.white, size: 16.0)),
                     Icon(
                       null,
                       color: Colors.white,
@@ -114,9 +99,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: [
-                          ...headers.map((e) => _dashList(e)).toList()
-                        ],
+                        children: [...headers.map((e) => _dashList(e)).toList()],
                       ),
                     ),
                   ),
@@ -148,9 +131,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                    children: [
-                      ...CONSULT_TYPE.map((e) => _dashTypeList(e)).toList()
-                    ],
+                    children: [...CONSULT_TYPE.map((e) => _dashTypeList(e)).toList()],
                   ),
                 ),
                 const SizedBox(
@@ -175,17 +156,11 @@ class _TimeAndDateState extends State<TimeAndDate> {
         onTap: () => setState(() => index = e),
         child: Container(
             margin: const EdgeInsets.only(right: 5.0),
-            padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
-            decoration: BoxDecoration(
-                color: index == e ? BLUECOLOR : Colors.transparent,
-                borderRadius: BorderRadius.circular(50.0)),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+            decoration: BoxDecoration(color: index == e ? BLUECOLOR : Colors.transparent, borderRadius: BorderRadius.circular(50.0)),
             child: Text(
               '$e',
-              style: getCustomFont(
-                  size: 14.0,
-                  color: index == e ? Colors.white : Colors.black,
-                  weight: FontWeight.normal),
+              style: getCustomFont(size: 12.0, color: index == e ? Colors.white : Colors.black, weight: FontWeight.normal),
             )),
       );
 
@@ -193,25 +168,19 @@ class _TimeAndDateState extends State<TimeAndDate> {
         onTap: () => setState(() => type = e['title']),
         child: Container(
             margin: const EdgeInsets.only(right: 5.0),
-            padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
-            decoration: BoxDecoration(
-                color: type == e['title'] ? BLUECOLOR : Colors.transparent,
-                borderRadius: BorderRadius.circular(50.0)),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+            decoration: BoxDecoration(color: type == e['title'] ? BLUECOLOR : Colors.transparent, borderRadius: BorderRadius.circular(50.0)),
             child: Row(
               children: [
                 Icon(
                   e['icon'],
                   color: type == e['title'] ? Colors.white : Colors.black,
-                  size: 14.0,
+                  size: 13.0,
                 ),
                 const SizedBox(width: 10),
                 Text(
                   '${e['title']}',
-                  style: getCustomFont(
-                      size: 14.0,
-                      color: type == e['title'] ? Colors.white : Colors.black,
-                      weight: FontWeight.normal),
+                  style: getCustomFont(size: 12.0, color: type == e['title'] ? Colors.white : Colors.black, weight: FontWeight.normal),
                 ),
               ],
             )),
@@ -241,16 +210,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.symmetric(horizontal: 4.0),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.0),
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey.shade300,
-                  spreadRadius: 1.0,
-                  blurRadius: 10.0,
-                  offset: Offset(0.0, 1.0))
-            ]),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.0), color: Colors.white, boxShadow: [BoxShadow(color: Colors.grey.shade300, spreadRadius: 1.0, blurRadius: 10.0, offset: Offset(0.0, 1.0))]),
         child: Column(children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -284,16 +244,13 @@ class _TimeAndDateState extends State<TimeAndDate> {
                     onTap: () {},
                     child: Container(
                       height: 35.0,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 1.0),
-                          borderRadius: BorderRadius.circular(5.0)),
+                      decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1.0), borderRadius: BorderRadius.circular(5.0)),
                       child: Center(
                           child: FittedBox(
                         child: Text(
                           timingModel.timerFrom,
                           maxLines: 1,
-                          style:
-                              getCustomFont(size: 13.0, color: Colors.black45),
+                          style: getCustomFont(size: 13.0, color: Colors.black45),
                         ),
                       )),
                     ),
@@ -318,16 +275,13 @@ class _TimeAndDateState extends State<TimeAndDate> {
                     onTap: () {},
                     child: Container(
                       height: 35.0,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 1.0),
-                          borderRadius: BorderRadius.circular(5.0)),
+                      decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1.0), borderRadius: BorderRadius.circular(5.0)),
                       child: Center(
                           child: FittedBox(
                         child: Text(
                           timingModel.timerTo,
                           maxLines: 1,
-                          style:
-                              getCustomFont(size: 14.0, color: Colors.black45),
+                          style: getCustomFont(size: 14.0, color: Colors.black45),
                         ),
                       )),
                     ),
@@ -353,23 +307,22 @@ class _TimeAndDateState extends State<TimeAndDate> {
                     Container(
                       width: MediaQuery.of(context).size.width,
                       padding: const EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black12,
-                                spreadRadius: 1.0,
-                                blurRadius: 10.0,
-                                offset: Offset(0.0, 1.0))
-                          ]),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.0), color: Colors.white, boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          spreadRadius: 1.0,
+                          blurRadius: 10.0,
+                          offset: Offset(0.0, 1.0),
+                        )
+                      ]),
                       child: DatePicker(
                         DateTime.now(),
+                        height: 90,
                         initialSelectedDate: DateTime.now(),
                         selectionColor: BLUECOLOR,
-                        dayTextStyle: getCustomFont(color: Colors.black, size: 10.0),
+                        dayTextStyle: getCustomFont(color: Colors.black, size: 9.0),
                         dateTextStyle: getCustomFont(color: Colors.black, size: 19.0),
-                        monthTextStyle: getCustomFont(color: Colors.black, size: 10.0),
+                        monthTextStyle: getCustomFont(color: Colors.black, size: 9.0),
                         onDateChange: (date) {
                           _selected = date;
                         },
@@ -382,14 +335,9 @@ class _TimeAndDateState extends State<TimeAndDate> {
                         padding: const EdgeInsets.all(0.0),
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: returnCrossAxis(width),
-                            mainAxisSpacing: 15.0,
-                            mainAxisExtent: 120,
-                            crossAxisSpacing: 8.0),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: returnCrossAxis(width), mainAxisSpacing: 15.0, mainAxisExtent: 120, crossAxisSpacing: 8.0),
                         itemCount: timemodel.length,
-                        itemBuilder: (ctx, i) =>
-                            getTimeItems(timemodel[i], i, context)),
+                        itemBuilder: (ctx, i) => getTimeItems(timemodel[i], i, context)),
                     const SizedBox(
                       height: 20.0,
                     ),
@@ -419,20 +367,13 @@ class _TimeAndDateState extends State<TimeAndDate> {
             children: [
               Container(
                 width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 11.0),
-                decoration: BoxDecoration(
-                    color: BLUECOLOR, borderRadius: BorderRadius.circular(8.0)),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 11.0),
+                decoration: BoxDecoration(color: BLUECOLOR, borderRadius: BorderRadius.circular(8.0)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Amount to pay ',
-                        style: getCustomFont(color: Colors.white, size: 13.0)),
-                    Text('\$31.0 ',
-                        style: getCustomFont(
-                            color: Colors.white,
-                            size: 15.0,
-                            weight: FontWeight.w700)),
+                    Text('Amount to pay ', style: getCustomFont(color: Colors.white, size: 13.0)),
+                    Text('\$31.0 ', style: getCustomFont(color: Colors.white, size: 15.0, weight: FontWeight.w700)),
                   ],
                 ),
               ),
@@ -448,27 +389,19 @@ class _TimeAndDateState extends State<TimeAndDate> {
                 color: Colors.black,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 5.0),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.0)),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8.0)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Flexible(
                         child: Row(
                           children: [
-                            Icon(Icons.wallet_giftcard,
-                                color: Colors.lightBlue),
+                            Icon(Icons.wallet_giftcard, color: Colors.lightBlue),
                             const SizedBox(
                               width: 10.0,
                             ),
-                            Text('Wallet ',
-                                style: getCustomFont(
-                                    color: Colors.black,
-                                    size: 16.0,
-                                    weight: FontWeight.w700)),
+                            Text('Wallet ', style: getCustomFont(color: Colors.black, size: 16.0, weight: FontWeight.w700)),
                           ],
                         ),
                       ),
@@ -476,11 +409,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                         onTap: () {
                           dialogMessage(context, walletTop(context));
                         },
-                        child: Text('\$314.50 ',
-                            style: getCustomFont(
-                                color: Colors.black,
-                                size: 15.0,
-                                weight: FontWeight.w700)),
+                        child: Text('\$314.50 ', style: getCustomFont(color: Colors.black, size: 15.0, weight: FontWeight.w700)),
                       ),
                     ],
                   ),
@@ -491,8 +420,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
               ),
               Text(
                 'Cards',
-                style: getCustomFont(
-                    weight: FontWeight.bold, size: 20.0, color: Colors.black45),
+                style: getCustomFont(weight: FontWeight.bold, size: 20.0, color: Colors.black45),
               ),
               const SizedBox(
                 height: 10.0,
@@ -505,8 +433,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
               ),
               Text(
                 'Cash',
-                style: getCustomFont(
-                    weight: FontWeight.bold, size: 20.0, color: Colors.black45),
+                style: getCustomFont(weight: FontWeight.bold, size: 20.0, color: Colors.black45),
               ),
               const SizedBox(
                 height: 10.0,
@@ -519,8 +446,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
               ),
               Text(
                 'Bank',
-                style: getCustomFont(
-                    weight: FontWeight.bold, size: 20.0, color: Colors.black45),
+                style: getCustomFont(weight: FontWeight.bold, size: 20.0, color: Colors.black45),
               ),
               const SizedBox(
                 height: 10.0,
@@ -537,8 +463,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
               ),
               Text(
                 'Others',
-                style: getCustomFont(
-                    weight: FontWeight.bold, size: 20.0, color: Colors.black45),
+                style: getCustomFont(weight: FontWeight.bold, size: 20.0, color: Colors.black45),
               ),
               const SizedBox(
                 height: 10.0,
@@ -563,19 +488,12 @@ class _TimeAndDateState extends State<TimeAndDate> {
                   width: 15.0,
                 ),
                 Flexible(
-                  child: Text('$text',
-                      style: getCustomFont(
-                          color: Colors.black,
-                          size: 14.0,
-                          weight: FontWeight.w500)),
+                  child: Text('$text', style: getCustomFont(color: Colors.black, size: 14.0, weight: FontWeight.w500)),
                 ),
               ],
             ),
           ),
-          SizedBox(
-              height: 10.0,
-              width: 10.0,
-              child: Radio(onChanged: (b) {}, value: false, groupValue: true)),
+          SizedBox(height: 10.0, width: 10.0, child: Radio(onChanged: (b) {}, value: false, groupValue: true)),
           const SizedBox(
             width: 20.0,
           )
@@ -609,9 +527,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                   hintText: hint,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
                   hintStyle: getCustomFont(size: 14.0, color: Colors.black45),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                      borderRadius: BorderRadius.circular(8.0))),
+                  border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 1.0), borderRadius: BorderRadius.circular(8.0))),
             ),
           )
         ],
@@ -623,9 +539,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
     return Container(
       width: 150.0,
       height: 40.0,
-      decoration: BoxDecoration(
-          border: Border.all(width: 1.0, color: Colors.grey.shade200),
-          borderRadius: BorderRadius.circular(8.0)),
+      decoration: BoxDecoration(border: Border.all(width: 1.0, color: Colors.grey.shade200), borderRadius: BorderRadius.circular(8.0)),
       child: FormBuilderDropdown(
         name: 'skill',
         icon: const Icon(
@@ -633,8 +547,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
           color: Colors.black,
         ),
         decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 9.9, vertical: 5.0),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 9.9, vertical: 5.0),
           border: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(5.0)),
             borderSide: BorderSide(width: 1.0, color: Colors.grey),
@@ -660,36 +573,28 @@ class _TimeAndDateState extends State<TimeAndDate> {
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: 40.0,
-        decoration: BoxDecoration(
-            border: Border.all(width: 1.0, color: Colors.grey.shade200),
-            borderRadius: BorderRadius.circular(8.0)),
+        decoration: BoxDecoration(border: Border.all(width: 1.0, color: Colors.grey.shade200), borderRadius: BorderRadius.circular(8.0)),
         child: Row(
           children: [
             Flexible(
               child: TextField(
-                style: getCustomFont(size: 14.0, color: Colors.black45),
+                style: getCustomFont(size: 12.0, color: Colors.black45),
                 maxLines: 1,
                 decoration: InputDecoration(
-                    hintText: 'Coupon Code',
-                    contentPadding: const EdgeInsets.only(
-                        left: 10.0, right: 10.0, top: 3.0),
-                    hintStyle: getCustomFont(size: 14.0, color: Colors.black45),
-                    border: OutlineInputBorder(borderSide: BorderSide.none)),
+                    hintText: 'Coupon Code', contentPadding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 3.0), hintStyle: getCustomFont(size: 12.0, color: Colors.black45), border: OutlineInputBorder(borderSide: BorderSide.none)),
               ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(8.0),
-                    bottomRight: Radius.circular(8.0)),
+                borderRadius: BorderRadius.only(topRight: Radius.circular(8.0), bottomRight: Radius.circular(8.0)),
                 color: BLUECOLOR,
               ),
               child: Center(
                   child: Text(
                 'Apply',
-                style: getCustomFont(size: 15.0, color: Colors.white),
+                style: getCustomFont(size: 12.0, color: Colors.white),
               )),
             )
           ],
@@ -702,17 +607,13 @@ class _TimeAndDateState extends State<TimeAndDate> {
         onTap: () => callBack(),
         child: Container(
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-              color: BLUECOLOR, borderRadius: BorderRadius.circular(50.0)),
+          decoration: BoxDecoration(color: BLUECOLOR, borderRadius: BorderRadius.circular(50.0)),
           child: Padding(
             padding: const EdgeInsets.all(13.0),
             child: Center(
               child: Text(
                 'Confirm And Pay',
-                style: GoogleFonts.poppins(
-                    fontSize: 17.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal),
+                style: GoogleFonts.poppins(fontSize: 17.0, color: Colors.white, fontWeight: FontWeight.normal),
               ),
             ),
           ),
@@ -732,15 +633,11 @@ class _TimeAndDateState extends State<TimeAndDate> {
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: 45.0,
-          decoration: BoxDecoration(
-              color: BLUECOLOR, borderRadius: BorderRadius.circular(50.0)),
+          decoration: BoxDecoration(color: BLUECOLOR, borderRadius: BorderRadius.circular(50.0)),
           child: Center(
             child: Text(
               text,
-              style: GoogleFonts.poppins(
-                  fontSize: 16.0,
-                  color: Colors.white,
-                  fontWeight: FontWeight.normal),
+              style: GoogleFonts.poppins(fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.normal),
             ),
           ),
         ),
@@ -755,10 +652,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
               Container(
                 padding: const EdgeInsets.all(15.0),
                 width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.0),
-                    color: Colors.white,
-                    boxShadow: SHADOW),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.0), color: Colors.white, boxShadow: SHADOW),
                 child: Row(children: [
                   CircleAvatar(
                     radius: 30.0,
@@ -772,10 +666,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                     children: [
                       Text(
                         'Dr. Ruby Perrln',
-                        style: getCustomFont(
-                            color: Colors.black,
-                            size: 17.0,
-                            weight: FontWeight.w500),
+                        style: getCustomFont(color: Colors.black, size: 15.0, weight: FontWeight.w500),
                       ),
                       const SizedBox(
                         height: 5.0,
@@ -801,10 +692,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                           ),
                           Text(
                             '(47)',
-                            style: getCustomFont(
-                                color: Colors.black,
-                                size: 13.0,
-                                weight: FontWeight.w400),
+                            style: getCustomFont(color: Colors.black, size: 13.0, weight: FontWeight.w400),
                           ),
                         ],
                       ),
@@ -823,10 +711,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                           ),
                           Text(
                             'Florida, USA',
-                            style: getCustomFont(
-                                color: Colors.black,
-                                size: 13.0,
-                                weight: FontWeight.w400),
+                            style: getCustomFont(color: Colors.black, size: 12.0, weight: FontWeight.w400),
                           ),
                         ],
                       ),
@@ -835,21 +720,16 @@ class _TimeAndDateState extends State<TimeAndDate> {
                 ]),
               ),
               const SizedBox(
-                height: 15.0,
+                height: 20.0,
               ),
               Text(
                 'Booking Summary',
-                style: getCustomFont(
-                    size: 18.0, color: Colors.black, weight: FontWeight.normal),
-              ),
-              const SizedBox(
-                height: 5.0,
+                style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.normal),
               ),
               Expanded(
                   child: SingleChildScrollView(
                 child: Column(
-                  children:
-                      List.generate(1, (index) => bookSummaryItem(context)),
+                  children: List.generate(1, (index) => bookSummaryItem(context)),
                 ),
               )),
               getButton(context, () {
@@ -866,10 +746,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
       padding: const EdgeInsets.all(15.0),
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.0),
-          color: Colors.white,
-          boxShadow: SHADOW),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.0), color: Colors.white, boxShadow: SHADOW),
       child: Column(
         children: [
           Row(
@@ -877,17 +754,11 @@ class _TimeAndDateState extends State<TimeAndDate> {
             children: [
               Text(
                 'Date',
-                style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w500),
               ),
               Text(
                 '16 Nov 2022',
-                style: GoogleFonts.poppins(
-                    color: Colors.black45,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400),
+                style: GoogleFonts.poppins(color: Colors.black45, fontSize: 12.0, fontWeight: FontWeight.w400),
               ),
             ],
           ),
@@ -899,17 +770,11 @@ class _TimeAndDateState extends State<TimeAndDate> {
             children: [
               Text(
                 'Time',
-                style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w500),
               ),
               Text(
                 '10:00 AM',
-                style: GoogleFonts.poppins(
-                    color: Colors.black45,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400),
+                style: GoogleFonts.poppins(color: Colors.black45, fontSize: 12.0, fontWeight: FontWeight.w400),
               ),
             ],
           ),
@@ -921,17 +786,11 @@ class _TimeAndDateState extends State<TimeAndDate> {
             children: [
               Text(
                 'Booking Type',
-                style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w500),
               ),
               Text(
                 'Video call',
-                style: GoogleFonts.poppins(
-                    color: Colors.black45,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400),
+                style: GoogleFonts.poppins(color: Colors.black45, fontSize: 12.0, fontWeight: FontWeight.w400),
               ),
             ],
           ),
@@ -943,17 +802,11 @@ class _TimeAndDateState extends State<TimeAndDate> {
             children: [
               Text(
                 'Patient Country',
-                style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w500),
               ),
               Text(
                 'Nigeria',
-                style: GoogleFonts.poppins(
-                    color: Colors.black45,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400),
+                style: GoogleFonts.poppins(color: Colors.black45, fontSize: 12.0, fontWeight: FontWeight.w400),
               ),
             ],
           ),
@@ -965,17 +818,11 @@ class _TimeAndDateState extends State<TimeAndDate> {
             children: [
               Text(
                 'Consulting Fee',
-                style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w500),
               ),
               Text(
                 '\$100.0',
-                style: GoogleFonts.poppins(
-                    color: Colors.black45,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400),
+                style: GoogleFonts.poppins(color: Colors.black45, fontSize: 12.0, fontWeight: FontWeight.w400),
               ),
             ],
           ),
@@ -987,17 +834,11 @@ class _TimeAndDateState extends State<TimeAndDate> {
             children: [
               Text(
                 'Slot Timing Fees',
-                style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w500),
               ),
               Text(
                 '\$10.0',
-                style: GoogleFonts.poppins(
-                    color: Colors.black45,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400),
+                style: GoogleFonts.poppins(color: Colors.black45, fontSize: 12.0, fontWeight: FontWeight.w400),
               ),
             ],
           ),
@@ -1009,17 +850,11 @@ class _TimeAndDateState extends State<TimeAndDate> {
             children: [
               Text(
                 'Video Call',
-                style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w500),
               ),
               Text(
                 '\$50.0',
-                style: GoogleFonts.poppins(
-                    color: Colors.black45,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400),
+                style: GoogleFonts.poppins(color: Colors.black45, fontSize: 12.0, fontWeight: FontWeight.w400),
               ),
             ],
           ),
@@ -1031,17 +866,11 @@ class _TimeAndDateState extends State<TimeAndDate> {
             children: [
               Text(
                 'Payment Amount',
-                style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w500),
               ),
               Text(
                 '\$160.0',
-                style: GoogleFonts.poppins(
-                    color: Colors.black45,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400),
+                style: GoogleFonts.poppins(color: Colors.black45, fontSize: 12.0, fontWeight: FontWeight.w400),
               ),
             ],
           ),
@@ -1050,10 +879,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
           ),
           Text(
             'Apply a coupon code',
-            style: GoogleFonts.poppins(
-                color: Colors.lightBlueAccent,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w400),
+            style: GoogleFonts.poppins(color: Colors.lightBlueAccent, fontSize: 12.0, fontWeight: FontWeight.w400),
           ),
           const SizedBox(
             height: 15.0,
@@ -1067,17 +893,11 @@ class _TimeAndDateState extends State<TimeAndDate> {
             children: [
               Text(
                 'Discount(10% Off)',
-                style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w500),
               ),
               Text(
                 '\$16.0',
-                style: GoogleFonts.poppins(
-                    color: Colors.black45,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400),
+                style: GoogleFonts.poppins(color: Colors.black45, fontSize: 12.0, fontWeight: FontWeight.w400),
               ),
             ],
           ),
@@ -1089,17 +909,11 @@ class _TimeAndDateState extends State<TimeAndDate> {
             children: [
               Text(
                 'Total Amount',
-                style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w500),
               ),
               Text(
                 '\$144.0',
-                style: GoogleFonts.poppins(
-                    color: Colors.black45,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400),
+                style: GoogleFonts.poppins(color: Colors.black45, fontSize: 12.0, fontWeight: FontWeight.w400),
               ),
             ],
           ),
@@ -1111,8 +925,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: 45.0,
-          decoration: BoxDecoration(
-              color: BLUECOLOR, borderRadius: BorderRadius.circular(50.0)),
+          decoration: BoxDecoration(color: BLUECOLOR, borderRadius: BorderRadius.circular(50.0)),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: Row(
@@ -1120,17 +933,11 @@ class _TimeAndDateState extends State<TimeAndDate> {
               children: [
                 Text(
                   'Total - \$144',
-                  style: GoogleFonts.poppins(
-                      fontSize: 14.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.normal),
+                  style: GoogleFonts.poppins(fontSize: 12.0, color: Colors.white, fontWeight: FontWeight.normal),
                 ),
                 Text(
                   'Continue',
-                  style: GoogleFonts.poppins(
-                      fontSize: 14.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.normal),
+                  style: GoogleFonts.poppins(fontSize: 12.0, color: Colors.white, fontWeight: FontWeight.normal),
                 ),
               ],
             ),
@@ -1144,22 +951,20 @@ class _TimeAndDateState extends State<TimeAndDate> {
       children: [
         Container(
             padding: const EdgeInsets.all(13.0),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
-                border: Border.all(width: 1.0, color: Colors.black45)),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), border: Border.all(width: 1.0, color: Colors.black45)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'You are booking a visit with Dr. Rajendra Mohanlal Gandhi. Please enter your booking details below.',
-                  style: getCustomFont(size: 13.0, color: Colors.black),
+                  style: getCustomFont(size: 12.0, color: Colors.black),
                 ),
                 const SizedBox(
                   height: 15.0,
                 ),
                 Text(
                   'Are you booking for yourself?',
-                  style: getCustomFont(size: 13.0, color: Colors.black),
+                  style: getCustomFont(size: 12.0, color: Colors.black),
                 ),
                 Row(
                   children: [
@@ -1167,27 +972,27 @@ class _TimeAndDateState extends State<TimeAndDate> {
                       Radio(value: false, groupValue: true, onChanged: (b) {}),
                       Text(
                         'Yes',
-                        style: getCustomFont(size: 13.0, color: Colors.black),
+                        style: getCustomFont(size: 12.0, color: Colors.black),
                       ),
                     ]),
                     Row(children: [
                       Radio(value: false, groupValue: true, onChanged: (b) {}),
                       Text(
                         'No',
-                        style: getCustomFont(size: 13.0, color: Colors.black),
+                        style: getCustomFont(size: 12.0, color: Colors.black),
                       ),
                     ])
                   ],
                 ),
                 Text(
                   'Patient Name',
-                  style: getCustomFont(size: 13.0, color: Colors.black),
+                  style: getCustomFont(size: 12.0, color: Colors.black),
                 ),
                 TextFormField(
-                  style: getCustomFont(size: 13.0, color: Colors.black),
+                  style: getCustomFont(size: 12.0, color: Colors.black),
                   decoration: InputDecoration(
                     hintText: 'Enter Patient Name',
-                    hintStyle: getCustomFont(size: 13.0, color: Colors.black45),
+                    hintStyle: getCustomFont(size: 12.0, color: Colors.black45),
                   ),
                 ),
                 const SizedBox(
@@ -1195,7 +1000,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                 ),
                 Text(
                   'Do you have insurance?',
-                  style: getCustomFont(size: 13.0, color: Colors.black),
+                  style: getCustomFont(size: 12.0, color: Colors.black),
                 ),
                 Row(
                   children: [
@@ -1203,7 +1008,7 @@ class _TimeAndDateState extends State<TimeAndDate> {
                       Radio(value: false, groupValue: true, onChanged: (b) {}),
                       Text(
                         'Yes',
-                        style: getCustomFont(size: 13.0, color: Colors.black),
+                        style: getCustomFont(size: 12.0, color: Colors.black),
                       ),
                     ]),
                     Row(children: [
@@ -1228,12 +1033,8 @@ class _TimeAndDateState extends State<TimeAndDate> {
           style: getCustomFont(size: 13.0, color: Colors.black),
           maxLines: 10,
           keyboardType: TextInputType.multiline,
-          decoration: InputDecoration(
-              hintText: 'Enter Patient Name',
-              hintStyle: getCustomFont(size: 13.0, color: Colors.black45),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: BorderSide(width: 1.0, color: Colors.black))),
+          decoration:
+              InputDecoration(hintText: 'Enter Description', hintStyle: getCustomFont(size: 12.0, color: Colors.black45), border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0), borderSide: BorderSide(width: 1.0, color: Colors.black))),
         ),
       ],
     );

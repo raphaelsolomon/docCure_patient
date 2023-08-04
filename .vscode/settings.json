@@ -1,0 +1,18 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "wgh11.wghservers.com",
+            "port": 3306,
+            "driver": "MySQL",
+            "database": "dechcons_dashboard",
+            "username": "dechcons_phoenix",
+            "password": "Available1@@",
+            "name": "Darkseid"
+        }
+    ]
+}

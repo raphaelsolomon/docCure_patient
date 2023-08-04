@@ -5,6 +5,7 @@ import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/services/request.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -29,8 +30,7 @@ class _MyFamilyState extends State<MyFamily> {
             color: Color(0xFFf6f6f6),
             child: Column(children: [
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
                 width: MediaQuery.of(context).size.width,
                 color: BLUECOLOR,
                 child: Column(children: [
@@ -41,16 +41,13 @@ class _MyFamilyState extends State<MyFamily> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                          onTap: () =>
-                              context.read<HomeController>().onBackPress(),
+                          onTap: () => context.read<HomeController>().onBackPress(),
                           child: Icon(
                             Icons.arrow_back_ios,
                             color: Colors.white,
                             size: 18.0,
                           )),
-                      Text('Family',
-                          style:
-                              getCustomFont(color: Colors.white, size: 16.0)),
+                      Text('Family', style: getCustomFont(color: Colors.white, size: 16.0)),
                       Icon(
                         null,
                         color: Colors.white,
@@ -63,8 +60,7 @@ class _MyFamilyState extends State<MyFamily> {
                 ]),
               ),
               FutureBuilder<Map<String, dynamic>>(
-                  future: ApiServices.getAllDepends(
-                      context, box.get(USERPATH)!.token),
+                  future: ApiServices.getAllDepends(context, box.get(USERPATH)!.token),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Expanded(
@@ -81,21 +77,15 @@ class _MyFamilyState extends State<MyFamily> {
                           child: Stack(
                             children: [
                               Container(
-                                  child: ListView.builder(
-                                      itemCount: snapshot.data!['data'].length,
-                                      padding: const EdgeInsets.all(0.0),
-                                      itemBuilder: (ctx, i) =>
-                                          listItem(snapshot.data!['data'][i])),
+                                  child: ListView.builder(itemCount: snapshot.data!['data'].length, padding: const EdgeInsets.all(0.0), itemBuilder: (ctx, i) => listItem(snapshot.data!['data'][i])),
                                   width: MediaQuery.of(context).size.width,
                                   height: MediaQuery.of(context).size.height),
                               Align(
                                   alignment: Alignment.bottomRight,
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0, vertical: 20.0),
+                                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                                     child: FloatingActionButton(
-                                        onPressed: () => dialogMessage(
-                                            context, familyPop(context)),
+                                        onPressed: () => dialogMessage(context, familyPop(context)),
                                         backgroundColor: BLUECOLOR,
                                         child: Icon(
                                           Icons.add,
@@ -108,9 +98,7 @@ class _MyFamilyState extends State<MyFamily> {
                         return Expanded(child: emptyContainer(context));
                       }
                     }
-                    return Text('${snapshot.error}',
-                        style:
-                            getCustomFont(size: 14.0, color: Colors.black45));
+                    return Text('${snapshot.error}', style: getCustomFont(size: 14.0, color: Colors.black45));
                   })
             ])),
         Visibility(
@@ -137,26 +125,19 @@ class _MyFamilyState extends State<MyFamily> {
   listItem(e) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
         margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 5.0),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            color: Colors.white,
-            boxShadow: SHADOW),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.0), color: Colors.white, boxShadow: SHADOW),
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Flexible(
             child: Row(
               children: [
                 Container(
                   width: 50,
                   height: 50,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100.0),
-                      border: Border.all(
-                          width: 2.0, color: BLUECOLOR.withOpacity(.4))),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(100.0), border: Border.all(width: 2.0, color: BLUECOLOR.withOpacity(.4))),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100.0),
                     child: Image.network(
-                      '${e['picture']}',
+                      '${e['picture'] == null ? 'https://i.pinimg.com/originals/7d/34/d9/7d34d9d53640af5cfd2614c57dfa7f13.png' : e['picture']}',
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -166,8 +147,8 @@ class _MyFamilyState extends State<MyFamily> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${e['name']}',
-                      style: getCustomFont(size: 16.0, color: Colors.black),
+                      '${e['name']}'.capitalizeFirst!,
+                      style: getCustomFont(size: 14.0, color: Colors.black, weight: FontWeight.bold),
                     ),
                     Row(
                       children: [
@@ -178,9 +159,8 @@ class _MyFamilyState extends State<MyFamily> {
                         ),
                         const SizedBox(width: 4.0),
                         Text(
-                          '${e['gender']}, ${e['relationship']}',
-                          style:
-                              getCustomFont(size: 14.0, color: Colors.black45),
+                          '${e['gender'].toString().capitalizeFirst}, ${e['relationship'].toString().capitalizeFirst}',
+                          style: getCustomFont(size: 12.0, color: Colors.black45, weight: FontWeight.w500),
                         ),
                       ],
                     ),
@@ -199,11 +179,13 @@ class _MyFamilyState extends State<MyFamily> {
                   size: 18.0,
                 ),
               ),
-              const SizedBox(width: 20.0,),
+              const SizedBox(
+                width: 20.0,
+              ),
               GestureDetector(
-                onTap: () => ApiServices.deleteDependent(context, box.get(USERPATH)!.token, e['id'], (){setState(() {
-                  
-                });}),
+                onTap: () => ApiServices.deleteDependent(context, box.get(USERPATH)!.token, e['id'], () {
+                  setState(() {});
+                }),
                 child: Icon(
                   Icons.delete,
                   color: Colors.redAccent,
@@ -228,7 +210,7 @@ class _MyFamilyState extends State<MyFamily> {
             ),
             Text(
               'You have not created a family',
-              style: getCustomFont(size: 17.0, color: Colors.black54),
+              style: getCustomFont(size: 14.0, color: Colors.black54),
             ),
             const SizedBox(
               height: 10.0,
@@ -236,7 +218,7 @@ class _MyFamilyState extends State<MyFamily> {
             Text(
               'Family member can pay for services and medications from one linked wallet.',
               textAlign: TextAlign.center,
-              style: getCustomFont(color: Colors.black45, size: 14.0),
+              style: getCustomFont(color: Colors.black45, size: 12.0),
             ),
             const SizedBox(
               height: 20.0,
@@ -246,19 +228,15 @@ class _MyFamilyState extends State<MyFamily> {
                 dialogMessage(context, familyPop(context));
               },
               child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0), color: BLUECOLOR),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 28.0, vertical: 11.0),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.0), color: BLUECOLOR),
+                padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 11.0),
                 child: Text(
                   'Create a family',
-                  style: getCustomFont(size: 15.0, color: Colors.white),
+                  style: getCustomFont(size: 12.0, color: Colors.white),
                 ),
               ),
             )
           ],
         ),
       );
-
-
 }

@@ -50,13 +50,6 @@ List<User> users = [
       country: 'Nigeria'),
 ];
 
-List firstList = [
-  {'title': 'Heart Rate', 'icon': 'assets/imgs/heart.png', 'count': '12', 'unit': 'bmp'},
-  {'title': 'Temperature', 'icon': 'assets/imgs/temp.png', 'count': '18', 'unit': 'c'},
-  {'title': 'Glucose Level', 'icon': 'assets/imgs/gas.png', 'count': '70 - 90', 'unit': ''},
-  {'title': 'Blood Pressure', 'icon': 'assets/imgs/pressure.png', 'count': '202/90', 'unit': 'mg/dl'},
-];
-
 List secondList = [
   {
     'title': 'BMI Status',
@@ -194,8 +187,8 @@ getNavdraweritem(BuildContext context) {
   ];
 }
 
-List removeBottom = [1, -10, 3, 8, -14, -8, -5, 9, -9, -6, -19, -7, -12, 6, 8, -2, -13, 7, -17, -18, -4];
-List removeBottom1 = [1, -10, 3, 8, -14, -8, -5, 9, -9, -6, -19, -7, -12, 6, 8, -2, -13, 7 - 17, -18, -4];
+List removeBottom = [-1, 1, -10, 3, 8, -14, -8, -5, 9, -9, -6, -19, -7, -12, 6, 8, -2, -13, 7, -17, -18, -4];
+List removeBottom1 = [-1, 1, -10, 3, 8, -14, -8, -5, 9, -9, -6, -19, -7, -12, 6, 8, -2, -13, 7 - 17, -18, -4];
 
 List shop_by_categgory = [
   {'title': 'OTC MEDICINES', 'color': Colors.blueGrey, 'icon': 'assets/estore/estore5.png'},

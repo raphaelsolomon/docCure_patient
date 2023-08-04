@@ -26,8 +26,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
             Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 17.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 17.0),
                   width: MediaQuery.of(context).size.width,
                   height: 130.0,
                   color: BLUECOLOR,
@@ -40,17 +39,11 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                         Flexible(
                           child: Row(
                             children: [
-                              GestureDetector(
-                                  onTap: () => widget.scaffold.currentState!
-                                      .openDrawer(),
-                                  child: Icon(Icons.menu,
-                                      color: Colors.white, size: 18.0)),
+                              GestureDetector(onTap: () => widget.scaffold.currentState!.openDrawer(), child: Icon(Icons.menu, color: Colors.white, size: 18.0)),
                               const SizedBox(
                                 width: 10.0,
                               ),
-                              Text('Search Doctor',
-                                  style: GoogleFonts.poppins(
-                                      color: Colors.white, fontSize: 16.0))
+                              Text('Search Doctor', style: GoogleFonts.poppins(color: Colors.white, fontSize: 16.0))
                             ],
                           ),
                         ),
@@ -76,15 +69,13 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                           children: [
                             Text(
                               'Specialities',
-                              style: getCustomFont(
-                                  size: 19.0, color: Colors.black),
+                              style: getCustomFont(size: 19.0, color: Colors.black),
                             ),
                             InkWell(
                               onTap: () => null,
                               child: Text(
                                 'View All',
-                                style: getCustomFont(
-                                    size: 15.0, color: Colors.black),
+                                style: getCustomFont(size: 15.0, color: Colors.black),
                               ),
                             )
                           ],
@@ -101,18 +92,13 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                               children: [
                                 ...Specialities.map((e) {
                                   return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
+                                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                     child: Column(
                                       children: [
                                         Container(
                                           width: 68.0,
                                           height: 68.0,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                              boxShadow: SHADOW,
-                                              color: Colors.white),
+                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), boxShadow: SHADOW, color: Colors.white),
                                           child: Center(
                                               child: Image.asset(
                                             e['asset'],
@@ -126,8 +112,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                                         ),
                                         Text(
                                           e['title'],
-                                          style: getCustomFont(
-                                              size: 14.0, color: Colors.black),
+                                          style: getCustomFont(size: 14.0, color: Colors.black),
                                         )
                                       ],
                                     ),
@@ -146,16 +131,13 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                           children: [
                             Text(
                               'Find Doctors',
-                              style: getCustomFont(
-                                  size: 19.0, color: Colors.black),
+                              style: getCustomFont(size: 19.0, color: Colors.black),
                             ),
                             InkWell(
-                              onTap: () =>
-                                  context.read<HomeController>().setPage(-1),
+                              onTap: () => context.read<HomeController>().setPage(-1),
                               child: Text(
                                 'View All',
-                                style: getCustomFont(
-                                    size: 15.0, color: Colors.black),
+                                style: getCustomFont(size: 15.0, color: Colors.black),
                               ),
                             )
                           ],
@@ -167,9 +149,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
-                          children: [
-                            ...List.generate(3, (index) => findDoctors())
-                          ],
+                          children: [...List.generate(3, (index) => findDoctors())],
                         ),
                       ),
                       const SizedBox(
@@ -180,9 +160,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
                           child: Row(
-                            children: [
-                              ...Advert.map((e) => advert(e)).toList()
-                            ],
+                            children: [...Advert.map((e) => advert(e)).toList()],
                           ),
                         ),
                       ),
@@ -201,19 +179,9 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
               child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: 160.0,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0, vertical: 5.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                   margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                  decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black26,
-                            spreadRadius: 1.0,
-                            blurRadius: 10.0,
-                            offset: Offset(0.0, 1.0))
-                      ],
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0)),
+                  decoration: BoxDecoration(boxShadow: [BoxShadow(color: Colors.black26, spreadRadius: 1.0, blurRadius: 10.0, offset: Offset(0.0, 1.0))], color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
                   child: getDoctors()),
             )
           ],
@@ -226,8 +194,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
           Flexible(
               child: Stack(
             children: [
-              SearchField(
-                  Icons.location_on, 'Search Location (Ex: Chennai etc)'),
+              SearchField(Icons.location_on, 'Search Location (Ex: Chennai etc)'),
               Positioned(
                   top: 40.0,
                   left: 18.0,
@@ -237,8 +204,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                   )),
               Padding(
                 padding: const EdgeInsets.only(top: 50.0),
-                child: SearchField(
-                    Icons.local_hospital, 'GKN Hospital, Bangalore'),
+                child: SearchField(Icons.local_hospital, 'GKN Hospital, Bangalore'),
               ),
             ],
           )),
@@ -254,25 +220,15 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
   Widget advert(e) => Container(
         width: MediaQuery.of(context).size.width - 90,
         margin: const EdgeInsets.only(right: 8.0),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.0),
-            color: Colors.grey.shade200),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.0), color: Colors.grey.shade200),
         child: Row(
           children: [
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12.0),
-                      bottomLeft: Radius.circular(12.0),
-                      topRight: Radius.circular(50.0),
-                      bottomRight: Radius.circular(80.0)),
-                  color: BLUECOLOR),
+              padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
+              decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12.0), bottomLeft: Radius.circular(12.0), topRight: Radius.circular(50.0), bottomRight: Radius.circular(80.0)), color: BLUECOLOR),
               child: Text(
                 e['title'],
-                style: getCustomFont(
-                    color: Colors.white, size: 26.0, weight: FontWeight.bold),
+                style: getCustomFont(color: Colors.white, size: 26.0, weight: FontWeight.bold),
               ),
             ),
             Flexible(
@@ -281,11 +237,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(e['desc'],
-                      style: getCustomFont(
-                          color: Colors.black54,
-                          size: 16.0,
-                          weight: FontWeight.bold)),
+                  Text(e['desc'], style: getCustomFont(color: Colors.black54, size: 16.0, weight: FontWeight.bold)),
                   const SizedBox(
                     height: 10.0,
                   ),
@@ -295,10 +247,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                       alignment: Alignment.centerRight,
                       child: Text(
                         'know more',
-                        style: getCustomFont(
-                            color: BLUECOLOR,
-                            size: 15.0,
-                            weight: FontWeight.w500),
+                        style: getCustomFont(color: BLUECOLOR, size: 15.0, weight: FontWeight.w500),
                       ),
                     ),
                   ),
@@ -317,8 +266,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
             borderRadius: BorderRadius.circular(100.0),
             shadowColor: Colors.grey,
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
               child: Icon(
                 icon,
                 size: 18.0,
@@ -332,67 +280,49 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
           Flexible(
             child: TextFormField(
                 cursorColor: BLUECOLOR,
-                style:
-                    GoogleFonts.poppins(fontSize: 14.0, color: Colors.black54),
+                style: GoogleFonts.poppins(fontSize: 14.0, color: Colors.black54),
                 decoration: InputDecoration(
                   focusColor: Colors.black54,
-                  contentPadding:
-                      const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+                  contentPadding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
                   hintText: '$label',
-                  hintStyle: GoogleFonts.poppins(
-                      fontSize: 14.0, color: Colors.black54),
+                  hintStyle: GoogleFonts.poppins(fontSize: 14.0, color: Colors.black54),
                 )),
           )
         ],
       );
 
-  Widget getButton(context, callBack,
-          {color = BLUECOLOR, text = 'Search Now'}) =>
-      GestureDetector(
+  Widget getButton(context, callBack, {color = BLUECOLOR, text = 'Search Now'}) => GestureDetector(
         onTap: () => callBack(),
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: 40.0,
-          decoration: BoxDecoration(
-              color: color, borderRadius: BorderRadius.circular(7.0)),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: FittedBox(
-                child: Text(
-                  text,
-                  maxLines: 1,
-                  style: GoogleFonts.poppins(
-                      fontSize: 13.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.normal),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-
-  Widget getProfileButton(context, callBack, {text = 'View Profile'}) =>
-      GestureDetector(
-        onTap: () => callBack(),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: 40.0,
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(width: 1.0, color: BLUECOLOR),
-              borderRadius: BorderRadius.circular(7.0)),
+          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(7.0)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
                 text,
                 maxLines: 1,
-                style: GoogleFonts.poppins(
-                    fontSize: 13.0,
-                    color: BLUECOLOR,
-                    fontWeight: FontWeight.normal),
+                style: GoogleFonts.poppins(fontSize: 11.0, color: Colors.white, fontWeight: FontWeight.normal),
+              ),
+            ),
+          ),
+        ),
+      );
+
+  Widget getProfileButton(context, callBack, {text = 'View Profile'}) => GestureDetector(
+        onTap: () => callBack(),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: 40.0,
+          decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 1.0, color: BLUECOLOR), borderRadius: BorderRadius.circular(7.0)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                text,
+                maxLines: 1,
+                style: GoogleFonts.poppins(fontSize: 11.0, color: BLUECOLOR, fontWeight: FontWeight.normal),
               ),
             ),
           ),
@@ -403,13 +333,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
         width: MediaQuery.of(context).size.width - 29,
         padding: const EdgeInsets.all(15.0),
         margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(
-              color: Colors.black12,
-              spreadRadius: 1.0,
-              blurRadius: 10.0,
-              offset: Offset(0.0, 1.0))
-        ], color: Colors.white, borderRadius: BorderRadius.circular(13.0)),
+        decoration: BoxDecoration(boxShadow: [BoxShadow(color: Colors.black12, spreadRadius: 1.0, blurRadius: 10.0, offset: Offset(0.0, 1.0))], color: Colors.white, borderRadius: BorderRadius.circular(13.0)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -434,17 +358,11 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                   children: [
                     Text(
                       'Dr. Ruby Perrln',
-                      style: GoogleFonts.poppins(
-                          color: Colors.black,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w600),
+                      style: GoogleFonts.poppins(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.w600),
                     ),
                     Text(
                       'MDS - periodontology, BDS',
-                      style: GoogleFonts.poppins(
-                          color: Colors.black,
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400),
+                      style: GoogleFonts.poppins(color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w400),
                     ),
                     const SizedBox(
                       height: 4.0,
@@ -475,20 +393,14 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                               ),
                               Text(
                                 'Dentist',
-                                style: GoogleFonts.poppins(
-                                    color: Colors.lightBlue,
-                                    fontSize: 13.0,
-                                    fontWeight: FontWeight.w400),
+                                style: GoogleFonts.poppins(color: Colors.lightBlue, fontSize: 13.0, fontWeight: FontWeight.w400),
                               ),
                             ],
                           ),
                         ),
                         Text(
                           '9+ Exp',
-                          style: GoogleFonts.poppins(
-                              color: Colors.redAccent,
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w400),
+                          style: GoogleFonts.poppins(color: Colors.redAccent, fontSize: 14.0, fontWeight: FontWeight.w400),
                         ),
                       ],
                     ),
@@ -508,8 +420,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                                 allowHalfRating: true,
                                 itemCount: 5,
                                 itemSize: 15.0,
-                                itemPadding:
-                                    EdgeInsets.symmetric(horizontal: 0.0),
+                                itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
                                 itemBuilder: (context, _) => Icon(
                                   Icons.star,
                                   color: Colors.amber,
@@ -524,10 +435,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                               ),
                               Text(
                                 '(47)',
-                                style: GoogleFonts.poppins(
-                                    color: Colors.black,
-                                    fontSize: 13.0,
-                                    fontWeight: FontWeight.w400),
+                                style: GoogleFonts.poppins(color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
                               ),
                             ],
                           ),
@@ -541,10 +449,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                             ),
                             Text(
                               'Florida, USA',
-                              style: GoogleFonts.poppins(
-                                  color: Colors.black,
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w400),
+                              style: GoogleFonts.poppins(color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w400),
                             ),
                           ],
                         ),
@@ -578,8 +483,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                         borderRadius: BorderRadius.circular(100.0),
                         shadowColor: Colors.grey,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 5.0, vertical: 5.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
                           child: Icon(
                             Icons.thumb_up,
                             size: 12.0,
@@ -592,10 +496,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                       ),
                       Text(
                         '98%',
-                        style: GoogleFonts.poppins(
-                            color: Colors.black,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400),
+                        style: GoogleFonts.poppins(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w400),
                       ),
                     ],
                   ),
@@ -608,8 +509,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                       borderRadius: BorderRadius.circular(100.0),
                       shadowColor: Colors.grey,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 5.0, vertical: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
                         child: Icon(
                           Icons.money,
                           size: 12.0,
@@ -622,10 +522,7 @@ class _FindDoctorsPageState extends State<FindDoctorsPage> {
                     ),
                     Text(
                       '\$300 - \$1000',
-                      style: GoogleFonts.poppins(
-                          color: Colors.black,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w400),
+                      style: GoogleFonts.poppins(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),

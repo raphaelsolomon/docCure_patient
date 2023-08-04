@@ -79,7 +79,7 @@ class _EditMedicalState extends State<EditMedical> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'Name',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
+                    style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -93,7 +93,7 @@ class _EditMedicalState extends State<EditMedical> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'BMI',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
+                    style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -107,7 +107,7 @@ class _EditMedicalState extends State<EditMedical> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'Heart Rate',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
+                    style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -121,7 +121,7 @@ class _EditMedicalState extends State<EditMedical> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'FBC Status',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
+                    style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -135,7 +135,7 @@ class _EditMedicalState extends State<EditMedical> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'Weight',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
+                    style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -209,10 +209,10 @@ class _EditMedicalState extends State<EditMedical> {
         height: 48.0,
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: BLUECOLOR.withOpacity(.1)),
         child: TextField(
-          style: getCustomFont(size: 14.0, color: Colors.black45),
+          style: getCustomFont(size: 12.0, color: Colors.black45),
           controller: ctl,
           maxLines: 1,
-          decoration: InputDecoration(hintText: hint, contentPadding: const EdgeInsets.symmetric(horizontal: 10.0), hintStyle: getCustomFont(size: 14.0, color: Colors.black45), border: OutlineInputBorder(borderSide: BorderSide.none)),
+          decoration: InputDecoration(hintText: hint, contentPadding: const EdgeInsets.symmetric(horizontal: 10.0), hintStyle: getCustomFont(size: 12.0, color: Colors.black45), border: OutlineInputBorder(borderSide: BorderSide.none)),
         ),
       ),
     );

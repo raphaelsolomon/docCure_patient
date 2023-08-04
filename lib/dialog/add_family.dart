@@ -74,7 +74,7 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'Name',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
+                    style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -88,7 +88,7 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'Relationship',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
+                    style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -98,25 +98,25 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                 const SizedBox(
                   height: 15.0,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text(
-                    'E-mail Address',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
-                  ),
-                ),
-                const SizedBox(
-                  height: 5.0,
-                ),
-                getCardForm('johndoe@example.com', ctl: email),
-                const SizedBox(
-                  height: 15.0,
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                //   child: Text(
+                //     'E-mail Address',
+                //     style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 5.0,
+                // ),
+                // getCardForm('johndoe@example.com', ctl: email),
+                // const SizedBox(
+                //   height: 15.0,
+                // ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'Gender',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
+                    style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
@@ -130,27 +130,27 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     'Blood Group',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
+                    style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(
                   height: 5.0,
                 ),
                 getBloodGroup(onChange: (s) => bloodGroup = s),
-                const SizedBox(
-                  height: 15.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text(
-                    'Phone number',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
-                  ),
-                ),
-                const SizedBox(
-                  height: 5.0,
-                ),
-                getPhoenNumber(phoneController),
+                // const SizedBox(
+                //   height: 15.0,
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                //   child: Text(
+                //     'Phone number',
+                //     style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 5.0,
+                // ),
+                // getPhoenNumber(phoneController),
                 // getDateForm(DateFormat('yyyy-MM-dd').format(selectedDate),
                 //     () async {
                 //   final DateTime? picked = await showDatePicker(
@@ -164,20 +164,20 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                 //     });
                 //   }
                 // }),
-                const SizedBox(
-                  height: 15.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text(
-                    'Photo',
-                    style: getCustomFont(size: 15.0, color: Colors.black, weight: FontWeight.w500),
-                  ),
-                ),
-                const SizedBox(
-                  height: 5.0,
-                ),
-                getUploadForm(filename.path),
+                // const SizedBox(
+                //   height: 15.0,
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                //   child: Text(
+                //     'Photo',
+                //     style: getCustomFont(size: 13.0, color: Colors.black, weight: FontWeight.w500),
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 5.0,
+                // ),
+                // getUploadForm(filename.path),
                 const SizedBox(
                   height: 30.0,
                 ),
@@ -245,10 +245,10 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
         height: 48.0,
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: BLUECOLOR.withOpacity(.1)),
         child: TextField(
-          style: getCustomFont(size: 14.0, color: Colors.black45),
+          style: getCustomFont(size: 13.0, color: Colors.black45),
           controller: ctl,
           maxLines: 1,
-          decoration: InputDecoration(hintText: hint, contentPadding: const EdgeInsets.symmetric(horizontal: 10.0), hintStyle: getCustomFont(size: 14.0, color: Colors.black45), border: OutlineInputBorder(borderSide: BorderSide.none)),
+          decoration: InputDecoration(hintText: hint, contentPadding: const EdgeInsets.symmetric(horizontal: 10.0), hintStyle: getCustomFont(size: 13.0, color: Colors.black45), border: OutlineInputBorder(borderSide: BorderSide.none)),
         ),
       ),
     );
@@ -373,12 +373,12 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
                 controller: ctl, // controller & initialValue value
                 shouldFormat: true, // default
                 defaultCountry: 'NG', // default
-                style: getCustomFont(size: 14.0, color: Colors.black45),
+                style: getCustomFont(size: 13.0, color: Colors.black45),
                 autovalidateMode: AutovalidateMode.disabled,
                 decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(0.0),
                     hintText: 'Mobile Number', // default to null
-                    hintStyle: getCustomFont(size: 15.0, color: Colors.black45),
+                    hintStyle: getCustomFont(size: 13.0, color: Colors.black45),
                     border: OutlineInputBorder(borderSide: BorderSide.none) // default to UnderlineInputBorder(),
                     ),
                 validator: null,
@@ -428,17 +428,13 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
       return;
     }
 
-    if (phoneController.value == null) {
-      popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Phone Nuber is required'));
-      return;
-    }
-
+    //Uint8List imagebytes = await filename.readAsBytes();
     final data = {
       'name': fullname.text,
-      'picture': 'https://wallpaperaccess.com/full/8054251.jpg',
+      'picture': 'dkkd.png', //base64.encode(imagebytes ?? [3414, 1412]),
       'relationship': relationship.text,
       'gender': gender,
-      'number': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
+      // 'number': '+${phoneController.value!.countryCode}${phoneController.value!.nsn}',
       'bloodgroup': bloodGroup,
     };
 
@@ -452,11 +448,10 @@ class _AddFamilyDailogState extends State<AddFamilyDailog> {
       });
       if (response.statusCode == 200) {
         setState(() => isloading = false);
-        Navigator.pop(context);
         popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, 'Dependent added successfully', status: true));
       } else {
         setState(() => isloading = false);
-        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false));
+        popupMessage.dialogMessage(context, popupMessage.serviceMessage(context, response.reasonPhrase, status: false), barrierDismiss: true);
       }
     } on SocketException {
       setState(() => isloading = false);

@@ -9,6 +9,7 @@ import 'package:doccure_patient/homepage/dashboard.dart';
 import 'package:doccure_patient/model/message/message.dart';
 import 'package:doccure_patient/model/person/user.dart';
 import 'package:doccure_patient/notification/helper_notification.dart';
+import 'package:doccure_patient/providers/loading.controller.dart';
 import 'package:doccure_patient/providers/page_controller.dart';
 import 'package:doccure_patient/providers/user_provider.dart';
 import 'package:doccure_patient/services/request.dart';
@@ -133,6 +134,7 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
         ChangeNotifierProvider<HomeController>(create: (_) => HomeController()),
+        ChangeNotifierProvider<LoadingController>(create: (_) => LoadingController()),
       ],
       child: RefreshConfiguration(
         footerTriggerDistance: 15,
